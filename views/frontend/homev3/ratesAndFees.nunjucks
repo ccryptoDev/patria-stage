@@ -1,0 +1,228 @@
+{% extends "frontend/homev3/newHome.nunjucks" %}
+{% block body %}
+
+<div class="rates-title">
+	<div class="rates-title-container">
+		<h3>Rates & Fees</h3>
+		<div class="page-track-container">
+			<ul class="page-track">
+				<li>You are here: </li>
+				<li class="home"><a href="/"> Home </a></li>
+				<li class="active"><a href="/ratesAndFees"> Rates & Fees</a></li>
+		</div>
+	</div>
+</div>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>The Difference | Installment Loans</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info how-it-works">
+				<p>Installment loans charge daily interest (simple interest method) unlike payday loans where you are charged a “flat fee” for the loan. Think of an installment loan similar to a car loan in the sense that the quicker and more frequently you pay, the less interest you will have paid on that loan. The difference is we do not secure collateral to make a loan to you other than verified facts based upon your application you submitted.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>How Much Can I Borrow?</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info how-it-works">
+				<p>You can qualify for up to $1,500 with a simple interest installment loan online with Patria.com. Your unique circumstance such as your current income and other basic factors will be considered to determine your qualified loan amount. Any new borrowers of Patria, will be subject to our first time max loan amount of $600. All current VIP customers who have paid according to their agreement may be eligible for a larger loan amount.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>How Much Will My Loan Cost?</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>This is a great question to ask so you can be in control of your financial decisions. If your circumstances require that you take out an installment loan, the most efficient way to save money is to pay the loan off quickly. Reality of life happens to us so it is best to understand how your loan works. Your APR and repayment will vary depending on several factors like dollar amount, length of your loan, and repayment frequency. APR range for a $300-$1500 is 420%-780%.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>Example Loan Terms</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info how-it-works">
+				<ul>
+					<li>Loan Amount: $300 </li>
+					<li>Term: 12 Months.</li>
+					<li>APR: 660%</li>
+					<li>Payment: $76.37 (Bi-Weekly repayments)<br><br></li>
+				</ul>
+				<div class="row"  style="text-align: center">
+					<div class="col-1-4">
+						<div class="section_b_info">
+							<p><b>The cost of your credit as a yearly rate</b></p>
+							<p>660%</p>
+						</div>
+					</div>
+					<div class="col-1-4">
+						<div class="section_b_info">
+							<p><b>The dollar amount the credit will cost you</b></p>
+							<p>$1,680.20</p>
+						</div>
+					</div>
+					<div class="col-1-4">
+						<div class="section_b_info">
+							<p><b>The amount of credit provided to you on your behalf</b></p>
+							<p>$300.00</p>
+						</div>
+					</div>
+					<div class="col-1-4">
+						<div class="section_b_info">
+							<p><b>The amount of credit provided to you on your behalf</b></p>
+							<p>$1,980.20</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>Example Estimated Payment Schedule</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<div class="row" style="text-align: center">
+					<div class="col-1-3">
+						<div class="section_b_info">
+							<p><b>Number of Payments</b></p>
+							<p>1<br><br>2<br><br>3<br><br>4<br><br>5<br><br>6<br><br>7<br><br>8<br><br>9<br><br>10<br><br>11<br><br>12<br><br>13<br><br>14<br><br>15<br><br>16<br><br>17<br><br>18<br><br>19<br><br>20<br><br>21<br><br>22<br><br>23<br><br>24<br><br>25<br><br>26<p>
+						</div>
+					</div>
+					<div class="col-1-3">
+						<div class="section_b_info">
+							<p><b>Payment Amount</b></p>
+							<p>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37<br><br>$76.37</p>
+						</div>
+					</div>
+					<div class="col-1-3">
+						<div class="section_b_info">
+							<p><b>Payment Due Date</b></p>
+							<p>1/3/14<br><br>1/17/14<br><br>1/31/14<br><br>2/14/14<br><br>2/28/14<br><br>3/14/14<br><br>3/28/14<br><br>4/11/14<br><br>4/25/14<br><br>5/9/14<br><br>5/23/14<br><br>6/6/14<br><br>6/20/14<br><br>7/4/14<br><br>7/18/14<br><br>8/1/14<br><br>8/15/14<br><br>8/29/14<br><br>9/12/14<br><br>9/26/14<br><br>10/10/14<br><br>10/24/14<br><br>11/7/14<br><br>11/21/14<br><br>12/5/14<br><br>12/19/14</p>
+						</div>
+					</div>
+				</div>
+				<p><b>*ANNUAL PERCENTAGE RATE</b>: APR (Annual Percentage Rate) the APR is the total cost of your loan expressed as an annual rate. The above APR’s are based on the example loan terms of payment due bi-weekly (26 repayments) over 12 months. The APR will increase if the actual loan term is shorter than the examples given and will decrease if the term is longer.<br><br>Patria, LLC loan agreements are governed by the lipay Nation of Santa Ysabel, a federally recognized Indian Tribe.<br><br>Patria, LLC<br>PO Box 645<br>Santa Ysabel, CA 92070<br>(888) 767-7033</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>When Will My Patria Loan Be Due?</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>Making the loan process easy and friendly is one of our goals at Axis Advance. You have the option of choosing between 4 months or 12 months to repay your installment loan. We base your payments on how frequently you are paid such as bi-weekly or semi-monthly.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>Is Extending My Loan An Option?</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>Unlike payday loans, there isn’t an “extension” available. We provide you a longer payback period which in return helps you budget for your finances easier.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>Late Payments</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>Late payment or non-payment of your loan may result in additional fees or collection activities, or both. Please review your loan agreement for further information.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>How Do I Qualify For A Loan?</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info how-it-works">
+				<p>To be considered for an Axis Advance installment loan, you must provide:</p>
+				<ul>
+					<li>U.S. Citizen</li>
+					<li>Valid Driver's License or State Issued ID.</li>
+					<li>Social Security Number is verifiable</li>
+					<li>Home or mobile phone is valid</li>
+					<li>Debit card in your name (Visa or Mastercard linked to your checking account)</li>
+					<li>Actively using a checking account in good standings for more than 90 days</li>
+					<li>Proof of your income</li>
+					<li>Not active Military</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_7">
+	<div class="section_7_items">
+		<h2>Need To Contact Us?</h2>
+		<a href="/contact" class="button button-apply">Go Here</a>
+	</div>
+</section>
+{% endblock %}

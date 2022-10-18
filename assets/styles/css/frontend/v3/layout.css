@@ -1,0 +1,109 @@
+/* TEXT */
+.flex{
+    display: flex;
+  }
+  .flex-j-start{
+    display: flex;
+    justify-content: flex-start;
+  }
+  .flex-j-center{
+    display: flex;
+    justify-content: center;
+  }
+  .flex-j-end{
+    display: flex;
+    justify-content: flex-end;
+  }
+  .flex-align-start{
+    display: flex;
+    align-items: flex-start;
+  }
+  .flex-align-center{
+    display: flex;
+    align-items: center;
+  }
+  .flex-align-end{
+    display: flex;
+    align-items: flex-end;
+  }
+  .flex-column{
+    display: flex;
+    flex-direction: column;
+  }
+  .flex-row{
+    display: flex;
+    flex-direction: row;
+  }
+  .flex-wrap{
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .flex-j-space-around{
+    display: flex;
+    justify-content: space-around;
+  }
+  .flex-j-space-evenly{
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .flex-j-space-between{
+    display: flex;
+    justify-content: space-between;
+  }
+  .flex-grow {
+    flex-grow: 1;
+  }
+
+
+.document-divider {
+  overflow: visible;
+  padding: 0;
+  border: none;
+  border-top: medium double #333;
+  color: #333;
+  text-align: center;
+  height: 3px;
+}
+.document-divider:after {
+  content: "§";
+  display: inline-block;
+  position: relative;
+  top: -15px;
+  font-size: 21px;
+  padding: 0 0.25em;
+  background: white;
+  font-family: "Avenir Next LT Pro",'Avenir Next',Roboto,Frutiger,'Frutiger Linotype',Univers,Calibri,'Gill Sans','Gill Sans MT','Myriad Pro',Myriad,'DejaVu Sans Condensed','Liberation Sans','Nimbus Sans L',Tahoma,Geneva,'Helvetica Neue',Helvetica,Arial,sans-serif;
+}
+
+.document-divider-2 {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
+
+.input-70{
+  width: 70% !important;
+}
+.input-60{
+  width: 60% !important;
+}
+.input-50{
+  width: 50% !important;
+}
+.input-40{
+  width: 40% !important;
+}
+.input-30{
+  width: 30% !important;
+}
+
+.input-row div:not(:last-child){
+	margin-right: 10px;
+}
+.btn-row button:not(:last-child){
+	margin-right: 8px;
+}
+
+.relative{
+  position: relative;
+}

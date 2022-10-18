@@ -1,0 +1,130 @@
+<style type="text/css">
+	h2 {
+		font-size: 160%;
+		text-align: center;
+	}
+    .table {
+	    border-collapse: collapse;
+	    border-spacing: 0;
+	}
+	.table-bordered > thead > tr > th, .table-bordered > tbody > tr > td {
+		border:1px solid #dddddd;
+		padding: 8px;
+    	line-height: 1.42857143;
+		vertical-align: middle;
+	}
+</style>
+<h2><p><strong>DISBURSEMENT AND PAYMENT CHOICE AUTHORIZATION</strong></p>
+</h2>
+
+<p>Unless you chose to mail to us a check(s) or money order(s) as payment for this Loan, you voluntarily authorize us to initiate disbursement credits and payment debits you have authorized, This Disbursement and Payment Choice Authorization is a part of and relates to the Loan Agreement dated {{ todaydate }} (the "Loan Agreement"). The words "you" and "your" mean the borrower who has electronically signed this Disbursement and Payment Choice Authorization.  The words "we", "us" and "our" mean WLCC Lending FHC d/b/a Patria and our successors and assigns.</p>
+
+<p>
+<strong>Disbursements to Your Bank Account.</strong>  You authorize us to process your loan proceeds with a credit deposit to your following bank account ("Your Bank Account"):
+</p>
+
+<div class="table-responsive">
+  <table class="table" bordercolor="#fff" style="width:100%;">
+<tbody>
+<tr>
+	<td align="center" width="50%">Bank Name:</td>
+
+	<td align="center" class="policy-txt1">
+    {{bankName}}
+	</td>
+</tr>
+
+<tr>
+	<td align="center" width="50%">Transit ABA Number: </td>
+	<td align="center" class="policy-txt1">
+    {{bankRoutingNumber}}
+    </td>
+</tr>
+
+<tr>
+	<td align="center" width="50%">Deposit Account Number: </td>
+	<td align="center" class="policy-txt1">
+    {{bankAccountNumber}}
+	</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<p>
+We will make this disbursement credit by using any commercially available method we choose, such as (but not limited to) Automated Clearing House (ACH) entries, wire transfers, or transactions through your debit card accessing Your Bank Account. As a data security measure, you will separately provide us with your debit card information.
+</p>
+
+<p>
+<strong>Your Payment Choice: </strong>
+</p>
+
+<div style="margin-left: 2em;">
+<p>
+<strong>Automatic Payment from Your Bank Account.</strong>  You authorize us to process payment debit entries out of Your Bank Account by using any commercially available methods we choose, such as (but not limited to) ACH entries or transactions through your debit card accessing Your Bank Account according to the Payment Schedule above, plus any late charges, returned payment fees and, if you are in default, all principal, finance charges and other amounts due to us as provided in the Agreement. You authorize us to re-process debit entries for the same amounts if any attempted payment transaction is dishonored.
+<br>
+</p>
+
+<p>
+<strong>Payments You will Make Directly.</strong>  Please note, you are not required to authorize this payment choice authorization option in order to be funded your loan. If you prefer to pay via manual payments, please contact customer service at (866) 677-1500 to set up this alternate payment option. If you choose to pay via manual payments, your loan will not be funded until after you have successfully contacted customer service and have completed a loan agreement with manual payments as your payment choice. Manual payments include payments by cashier’s check or money order.
+<br>
+</p>
+
+<p>
+<strong>REMOTELY CREATED CHECKS:</strong>  if we do not receive your check or money order or payment via ACH or by debit card authorization by the Due Dates, You agree to make all payments required under the Loan Agreement by having us create paper checks drawn on your Bank Account and bearing your typed name rather than your handwritten signature ( "Remotely Created Checks" ). You authorize us and our agents, successors and assigns   to submit each Remotely Created Check for payment to the Paying Bank in the amount of each payment owing under this Loan Agreement, including any returned payment charges or other amounts owing to us upon acceleration of this Loan as a result of your Default. Your typed name shall constitute your authorized signature fully reflecting your intent to authenticate these Remotely Created Checks, which are also known as demand drafts, tele-checks, preauthorized drafts, or paper drafts. If you believe we charged your Bank Account in a manner not contemplated by this authorization, then please contact us on at our toll free phone number (866) 677-1500 or sending us an e-mail to <a href="mailto:support@patria.com">support@patria.com</a>. You authorize us to vary the amount of any pre-authorized payment by Remotely Created Check as needed to repay installments due on the loan as modified by any prepayments.
+<br>
+</p>
+
+<p>
+<strong>RETURNED ITEM FEE:</strong>  If any payment made by you on this Loan is not honored or cannot be processed for any reason, including not enough money in your Bank Account, you agree to pay us a fee of ${{financeCharge}}. You authorize   us and our agents to make a one-time withdrawal from your Bank Account to collect this fee, if you have also selected the ACH Debit Authorization. Your financial institution may also impose a fee.
+<br>
+</p>
+
+<p>
+<strong>NOTICE OF VARYING AMOUNTS:</strong>  For those customers who have chosen the ACH Debit Authorization, please note that you have the right to receive notice of all withdrawals from your Bank Account by an ACH Debit that vary in amount. However, by agreeing to let us withdraw the money from your Bank Account, you agree we only have to tell you the range of withdrawals that we can make. The range of withdrawals will be either an amount equal to your installment payment or an amount equal to the outstanding balance under the Loan (which may   be greater than or less than an installment payment based upon your payment history). For any withdrawal outside of this specified range, we will send you a notice 10 days prior to the date of the debit. Therefore, by signing this Agreement below, you acknowledge that you will only receive notice when a withdrawal exceeds    the amount in the specified range. You authorize us to vary the amount of any withdrawal as needed to repay installments due on the Loan as modified by any partial prepayments you make.
+<br>
+</p>
+</div>
+
+<p>
+You agree that this Payment Choice Authorization will remain in effect until your loan, including principal, finance charges and other charges, is paid in full. You may only revoke the above authorization by contacting us directly. If you revoke your authorization, you agree to provide us with another form of payment acceptable to us.
+</p>
+
+<p>
+<strong>BY TYPING YOUR NAME AND TODAY'S DATE AND CLICKING THE "I AGREE" BUTTON BELOW, YOU ARE ELECTRONICALLY SIGNING THIS PAYMENT CHOICE AUTHORIZATION AND AGREEING TO ALL THE TERMS OF THIS AUTHORIZATION.</strong>
+</p>
+
+<p>
+<strong>YOU ALSO ACKNOWLEDGE YOUR ABILITY TO DOWNLOAD OR PRINT A FULLY COMPLETED COPY OF THIS PAYMENT CHOICE AUTHORIZATION FOR YOUR RECORDS.</strong>
+</p>
+
+<p>
+	<input type="checkbox" id="disbursementAuthAgree" class="required" {% if isPropertyTrue(agreementCheckboxes, "disbursementAuthAgree", true) and agreementCheckboxes.disbursementAuthAgree  %}checked{% endif %} />
+	<label for="disbursementAuthAgree">I agree to the disbursement and payment choice authorization (test)</label>
+</p>
+<div class="table-responsive">
+  	<table class="table" bordercolor="#fff" style="width:100%;">
+		<tbody>
+			<tr>
+				<td align="center" width="33%">{{eSignatureText}} </td>
+
+				<td align="center" width="33%">
+				{{todaydate}}
+				</td>
+				<td align="center" width="33%">
+				{{ip}}
+				</td>
+			</tr>
+
+			<tr>
+				<td align="center"><strong>Consumer Name</strong></td>
+				<td align="center">
+				<strong>Date/Time</strong>
+				</td>
+				<td align="center">
+				<strong>Signature IP Address</strong>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

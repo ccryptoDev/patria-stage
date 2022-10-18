@@ -1,0 +1,4 @@
+{% extends "frontend/layoutv3/layout.nunjucks" %}
+{% block body %}
+
+{% endblock %}

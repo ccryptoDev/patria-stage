@@ -1,0 +1,547 @@
+<style type="text/css">
+	h2 {
+		font-size: 160%;
+		text-align: center;
+	}
+	.table-bordered > thead > tr > th, .table-bordered > tbody > tr > td {
+		border:1px solid #dddddd;
+		padding: 8px;
+    	line-height: 1.42857143;
+	}
+    .centered {
+        margin: 0 auto;
+        width: 80%;
+    }
+    .darked {
+        background-color: #E7E7E7;
+    }
+    .indent {
+        margin-left:7%;
+        margin-right:7%;
+    }
+
+    // For TRUTH-IN-LENDING DISCLOSURE:
+        .font-verdana {
+            font-family: Verdana, Arial, sans-serif;
+        }
+        .disclosure-boxes {
+            height: 200px;
+            border: 1px solid black !important;
+            padding: 8px 16px !important;
+        }
+        #truth-in-lending-disclosure {
+            width: 100%;
+            border-width: 1px;
+            border-collapse: separate;
+            border-spacing: 2px;
+            border-color: black !important;
+        }
+        .disclosure-box-instruction {
+            color: #525659;
+        }
+        .flex {
+            height: 100%;
+        }
+        .words-gray {
+            color: #545454;
+        }
+        .large-font {
+            font-size: 1.1em;
+        }
+        .box-bottom {
+            border: 1px solid black !important;
+            padding: 1px 3px !important;
+            font-family: 'Times New Romen';
+        }
+        #beneath-table-box {
+            position: relative;
+            top: -14px;
+        }
+        h5 {
+            margin-top: 0;
+        }
+        .shift {
+            padding-top: 5px;
+        }
+
+</style>
+<h2>
+<p><strong>CONSUMER LOAN AGREEMENT AND FEDERAL TRUTH-IN-LENDING DISCLOSURES</strong></p>
+</h2>
+
+<div class="table-responsive centered">
+<table class="table table-bordered">
+<tbody>
+<tr>
+	<td>
+    <p>Loan No: {{loanID}}</p>
+    <p>Application Date: {{ todaydate }}<br>This is the date you signed and submitted this application to the lender.</p>
+
+    </td>
+
+	<td>
+    <p>Effective Date (e): {{fundingDate}}<br>The date you begin to pay interest on the loan.</p>
+
+    <br>
+    <p>Maturity Date: {{maturityDate}} </p>
+    </td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2>
+<p><strong>THIS AGREEMENT SHALL NOT CONSTITUTE A "NEGOTIABLE INSTRUMENT"</strong></p>
+</h2>
+
+<div class="table-responsive">
+  <table class="table centered" bordercolor="#fff" style="width:100%;">
+<tbody>
+<tr>
+	<td width="50%">
+    <p>Lender's Name: {{MerchantName}}<br>
+    dba: {{StoreName}}<br>
+    Address: {{Address}}<br>
+    City, State, Zip: {{City}},{{State}},{{Zip}}<br>
+    Phone: {{LenderPhone}}<br>
+    Email: <a href="mailto:support@patria.com">support@patria.com</a></p>
+    </td>
+
+	<td width="50%">
+    <p>Borrower's Name: {{fname}} {{lname}}<br>
+    Borrower's ID: {{driversLicense}}<br>
+    Borrower Address: {{street}} {{unitapt}}<br>
+    City, State, Zip: {{city}}, {{state}} {{zipCode}}<br>
+    Phone: {{phoneNumber}}<br>
+    Borrower's Bank and Account Number for ACH Transfers (the "Bank Account")<br>
+    {{bankName}}: {{bankAccountNumber}}</p>
+    </td>
+</tr>
+
+</tbody>
+</table>
+</div>
+
+
+<!-- Here -->
+<h2>
+<p><strong>TRUTH-IN-LENDING DISCLOSURES</strong></p>
+</h2>
+
+<div class="table-responsive">
+  <table id="truth-in-lending-disclosure" class="table" bordercolor="#000">
+<tbody>
+<tr style="text-align: center">
+	<td class = "darked disclosure-boxes" width="25%">
+    <div class="flex">
+        <div>
+            <h5 class="font-verdana words-gray"><strong><u>ANNUAL<br>PERCENTAGE<br>RATE<br></u></strong></h5>
+            <p class="font-verdana disclosure-box-instruction">The cost of Your credit as a yearly rate.<br><br><span style="visibility: hidden">_</span></p>
+        </div>
+        <div class="shift">
+            <u>{{apr}}</u>%
+        </div>
+    </div>
+    </td>
+
+	<td class = "darked disclosure-boxes" width="25%">
+    <div class="flex">
+        <div>
+            <h5 class="font-verdana words-gray"><strong><u>FINANCE<br>CHARGE</u></strong></h5>
+            <p class="font-verdana disclosure-box-instruction">The dollar amount the credit will cost you.<br><br><br><span style="visibility: hidden">_</span></p>
+        </div>
+        <div>
+            <u>{{totalPaymentsFeeChargeAmount | $format}}</u>
+        </div>
+    </div>
+    </td>
+
+    <td class="disclosure-boxes" width="25%">
+    <div class="flex">
+        <div>
+            <h5 class="font-verdana words-gray">Amount<br>Financed</h5>
+            <p class="font-verdana disclosure-box-instruction">The amount of credit provided to You or on Your behalf.<br><br><span style="visibility: hidden">_</span></p>
+        </div>
+        <div>
+            <u>{{totalPaymentsPrincipalAmount | $format}}</u>
+        </div>
+    </div>
+    </td>
+
+	<td class="disclosure-boxes" width="25%">
+            <br/>
+            <h5 class="font-verdana words-gray">Total of Payments Made<span style="visibility: hidden">_</span></h5>
+            <div>
+                <u>{{totalPaymentsPaidAmount | $format}}</u>
+            </div>
+            <br/>
+        <h5 class="font-verdana words-gray">Total of Payments<span style="visibility: hidden">_</span></h5>
+        <p class="font-verdana disclosure-box-instruction">The amount You will have paid after making all payments as scheduled.</p>
+        <div>
+            <u>{{totalPaymentAmount | $format}}</u>
+        </div>
+        <div style="visibility: hidden">Empty Placeholder</div>
+    </td>
+</tr>
+    <tr>
+        <td colspan="4" style="border-style: hidden">
+            <strong class="large-font">Your Payment Schedule will be{% if paymentFrequencyDisplay %} ({{ paymentFrequencyDisplay  }}){% endif %}:</strong>
+        </td>
+    </tr>
+    <tr>
+        <td><strong class="words-gray">Payment</strong></td>
+        <td ><strong class="words-gray">Amount of Payments</strong></td>
+        <td ><strong class="words-gray">Status</strong></td>
+        <td><strong class="words-gray">When Payments Are Due</strong></td>
+    </tr>
+    {% for paymentDate in paymentSchedule %}
+        <tr >
+            <td>
+                {{ loop.index }}
+            </td>
+            <td>
+                {{ paymentDate.amount | $format }}
+            </td>
+            <td>
+                {{ paymentDate.statusForDisplay if paymentDate.statusForDisplay else ""  }}
+            </td>
+            <td>
+                {{ paymentDate.date | dateMinusTz("MM/DD/YYYY") }}
+            </td>
+        </tr>
+    {% endfor %}
+<tr>
+	<td colspan="4" class="policy-txt1">
+    <p style="margin-bottom: 0">
+    <strong class="large-font">Late Charge:</strong>  <span class="words-gray"> If a payment is 7 days or more late, you may be charged a late payment fee of $25. </span><br>
+    <strong class="large-font">Prepayment:</strong>  <span class="words-gray"> If you pay off early, you will not have to pay a penalty. </span><br>
+    <span class="words-gray"> See this Loan Agreement for any additional information about nonpayment, default, any required repayment in full before the scheduled date and any prepayment penalties. </span>
+    </p>
+	</td>
+</tr>
+<tr>
+    <td colspan="4" class="box-bottom">All numerical disclosures except the Late Charge are estimates</td>
+</tr>
+<!--
+<tr>
+	<td colspan="4" class="policy-txt1">
+    <p>
+    <strong>Security:</strong>  If you voluntarily choose to make your regularly scheduled payment under the preauthorized Electronic Funds Transfer option, you are giving Lender a security interest in the ACH Debit Authorization.<br>
+    <strong>Prepayment:</strong>  If you pay off early you will not have to pay a penalty. You will not be entitled to a refund of part of the finance charge. <br>
+    <strong>See your Contract documents</strong>  for any additional information about nonpayment, default, any required repayment in full before the scheduled date, and prepayment refunds and penalties.<br>
+    (e) All numerical disclosures are estimates
+    </p>
+	</td>
+</tr>
+-->
+</tbody>
+</table>
+</div>
+
+<div id="beneath-table-box">
+    <p style="margin-bottom: 0"><strong><u>ITEMIZATION OF AMOUNT FINANCED:</u></strong></p>
+    <table id="itemization-amount-financed">
+        <tbody>
+            <tr>
+                <td>1. Amount given directly to you:</td>
+                <td>${{ totalPaymentsPrincipalAmount }}(the "Cash Advance")</td>
+            </tr>
+            <tr>
+                <td>2. Plus Amount paid on my loan account:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</td>
+                <td>${{ totalPaymentsFeeChargeAmount }}</td>
+            </tr>
+            <tr>
+                <td>3. Equal Amount Financed:</td>
+                <td>${{ totalPaymentsFinancedAmount }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!--
+<p>  Itemization of Amount Financed: Amount given to you directly: ${{totalLoanAmount}}.</p>
+-->
+
+
+<h2>
+<p><strong>LOAN AGREEMENT</strong></p>
+</h2>
+
+<p class="words-gray">
+<strong>This is our Agreement with you regarding your loan. It contains important terms and conditions. You should read it carefully before you electronically sign it.</strong>
+</p>
+
+<p class="indent">
+    <input type="checkbox" id="loanAgreement" class="required">
+    <label for="loanAgreement">By checking this box you understand that by entering into a transaction with WLCC Lending FHC d/b/a Patria, you are agreeing to have the law of the Oglala Sioux Tribe govern this Loan. The law of the Oglala Sioux Tribe relating to lending does not limit the rate of interest or fees that may be charged; WLCC Lending FHC d/b/a Patria is wholly owned by the Wakpamni Lake Community ("WLCC"), a local tribal government. As a tribal government, WLCC is a sovereign corporation and follows all applicable tribal and federal laws. State laws, regulations, and interest rates are not applicable to WLCC Lending FHC d/b/a Patria or WLCC. Please acknowledge that you have read and understand this disclosure by checking the box.</label>
+</p>
+
+<p>
+In this Loan Agreement (the "Agreement") the words "you" and "your" mean the borrower who has electronically signed it. The words "Lender", "we", "us" and "our" mean WLCC Lending FHC d/b/a Patria. We are a sovereign enterprise, an economic development arm and instrumentality of, and wholly owned and controlled by, the Wakpamni Lake Community (the "Community"), a political subdivision of the Oglala Sioux Tribe (the "Tribe"), a federally-recognized sovereign American Indian Tribe. This means that your loan is provided by a sovereign government and the proceeds of our business fund governmental services for Community citizens. All disclosures in this Agreement are also terms and conditions of this Agreement.
+</p>
+
+<p class="words-gray">
+<strong>You must electronically sign this Loan Agreement and submit it to us with your application. We will then approve or deny your application. If we approve it, the proceeds of your loan will be disbursed to you and this Agreement will be in full effect.</strong>
+</p>
+
+<p>
+<strong>VERIFICATION.</strong>  We reserve the right to verify the accuracy of all information you provide and to deny your loan application in case of any inaccuracy or omission in your loan application, or any other violation of this Agreement. We reserve the right to verify any information you submit through the production of appropriate documentation, and also reserve the right to conduct such verification through a third party. You hereby authorize us to request and obtain data from a third party to verify any information you provide us in connection with your application.
+</p>
+
+<p>
+<strong>RIGHT TO CANCEL.</strong>  You have the right to cancel this Agreement without cost within three days from the date we notify you that your application has been approved by us. If you decide to cancel this Agreement you must send us your notice of cancellation by email to <a href="mailto:support@patria.com">support@patria.com</a> or by fax to 866-630-8484 no later than midnight Central time on the second day after the Disbursement Date (the "Midnight Deadline"). You must also return all proceeds of your loan that you received by the Midnight Deadline. To return those amounts to us, your notice of cancellation must also include your authorization for us to use one of the payment methods you selected on your Disbursement and Payment Choice. If we do not receive your notice of cancellation and return of your loan proceeds by the Midnight Deadline, then this Agreement will remain in full force and effect.
+</p>
+
+<p>
+<strong>TRUTH IN LENDING DISCLOSURES:</strong>  The Truth-in-Lending Disclosures above are provided to you so that you may compare the cost of this loan to other loan products you might obtain in the United States. Our inclusion of these disclosures does not mean that we or any subsequent holder of this Agreement consent to application of state or U.S. federal law to us, to the loan, or this Agreement.
+</p>
+
+<p>
+<strong><u>YOUR PROMISE TO PAY.</u></strong>  You promise to pay to the order of Lender or any assignee of this Agreement from the Disbursement Date above the principal sum of ${{loanamount}} (Principal) plus interest (and any applicable fees) on the unpaid principal balance of the loan until the amount you owe under this Agreement is repaid in full (the Loan). You promise to repay this amount in installments in the amounts and on the dates set forth above in the Payment Schedule section of the Federal Truth in Lending Disclosure. You agree to make your payments using the method or methods you selected in your Disbursement and Payment Choice Authorization.
+</p>
+
+<p>
+<strong><u>YOUR INTEREST CHARGES.</u></strong>  You agree to pay interest on the outstanding Principal at a rate of {{apr}}% per annum (the Contract Rate ) from the loan date until paid in full. To figure interest, we divide the Interest Rate by 365, which equals a daily rate of {{ (apr/365) | $format(true, 2) }}% (Daily Rate). We then multiply the Daily Rate by the outstanding principal balance. This gives us a daily interest charge. We then multiply the daily interest charge by the number of days the principal balance is outstanding. Interest accrues from the Effective Date to the date your loan is paid in-full. Late payments made after the due date will result in additional interest charges.
+</p>
+
+<p>
+<strong><u>APPLICATION OF PAYMENTS.</u></strong>  We will apply all payment we receive in the following order: (1) fees; (2) accrued and unpaid interest; and (3) principal. If you make an extra payment (in addition to your regularly scheduled installment payment) and you are not in default, we will apply it according to the order of payment described in this section.
+</p>
+
+<p>
+<strong>ESTIMATES.</strong>  All numerical disclosures in the Truth-in-Lending Disclosures are estimates made assuming the Disbursement Date is the business day after your loan is approved.
+</p>
+
+<p>
+<strong>REPAYMENT SCHEDULE.</strong>  You must repay this Loan in payments according to the Payment Schedule set forth above in the Federal Truth-in-Lending Disclosure. Your payment shall be made up of principal and interest repayments. The Truth-in-Lending Disclosures are calculated based on the assumption that you will make each payment on the date it is due.
+</p>
+
+<p>
+<strong>PREPAYMENT.</strong>  You may prepay all or part of the amount that you owe under this Agreement at any time without having to pay a penalty. Since finance charges are not precomputed, you will not be entitled to a prepayment refund. To arrange to prepay your loan in whole or in part, you must go online at www.patria.com or call us at (866) 677-1500 to alert us of your intention to make a prepayment and then follow our instructions. Partial prepayments will not change the amount or due date of your remaining payments until this Agreement is paid in full.
+</p>
+
+<p>
+<strong>DISBURSEMENT.</strong>  If your Loan is approved, we will disburse your loan proceeds within 2 Business Days. A Business Day is a regular workday and does not include Saturday, Sunday or holidays. You authorize us to use commercially reasonable efforts to initiate a credit entry by depositing the proceeds of your Loan into the bank account or onto the payment instrument that you first authorized in your Disbursement and Payment Choice Authorization. The date that your loan proceeds are deposited to Your Bank Account or onto your payment instrument is the "Disbursement Date", which is set out above. Unavoidable delays such as bank holidays, the processing schedule of your individual bank, inadvertent processing errors, "acts of God" or "acts of terror" may extend the time for the deposit.
+</p>
+
+<p>
+<strong>ALL SUMS DUE.</strong>  If you fail to make your payments on time, we can require you to pay your unpaid balance in full. We can also require you to pay your unpaid balance in full if you break any promise you made in this Agreement or if any statement that you made in your application or in connection with your loan is untrue or becomes untrue. This means that you must pay us all principal, finance charges and other amounts that you owe us.
+</p>
+
+<p>
+<strong>LATE PAYMENT FEE.</strong>  If your payment is 3 or more days late we may charge you a late payment fee of $25.
+</p>
+
+<p>
+<strong>RETURNED PAYMENT CHARGE.</strong>  If your payment method is stopped, denied or otherwise dishonored, then you agree to pay us a returned payment fee of $25. Your returned payment may also cause your payment to be late which could result in you also having to pay a late charge. Your bank may also charge you a fee.
+</p>
+
+<p>
+<strong>CONSUMER REPORTS.</strong>  You authorize us to obtain consumer reports about you now or in the future as long as you owe us money under this Agreement. We may use the consumer report for any purpose authorized by applicable law in connection with a credit transaction involving you and involving the extension of credit to you or review or collection of your account, including but not limited to (i) for authentication purposes, to make sure you are who you say you are, (ii) to make credit decisions; (iii) to determine how much debt you currently have, in order to determine your debt-to- income ratio, and (iv) to obtain information and characteristics from your credit report from one or more consumer credit reporting agencies. We may report information about your performance under this Agreement to credit reporting agencies. Late payments, missed payments and defaults may be reported. This may negatively impact your ability to receive loans or advances from other companies or to write checks.
+</p>
+
+<p>
+<strong>CREDIT DISPUTES; IDENTITY THEFT.</strong>  If you believe that any information about your loan that we have furnished to a consumer reporting agency is inaccurate, or if you believe that you have been the victim of identity theft in connection with any loan made by us, write to us at PO Box 196, Batesland, SD 57716. In your letter (i) provide your name and loan number, (ii) identify the specific information that is being disputed, (iii) explain the basis for the dispute and (iv) provide any supporting documentation you have that substantiates the basis of the dispute. If You believe that you have been the victim of identity theft, submit an identity theft affidavit or identity theft report.
+</p>
+
+<p>
+<strong>ENTIRE AGREEMENT.</strong>  This Agreement contains the entire agreement between you and us relating to it. Any change to this Agreement must be in writing and we must sign it. No oral changes are binding.
+</p>
+
+<p>
+<strong>OTHER RIGHTS.</strong>  We may delay enforcing any of our rights without losing them. We can enforce this Agreement against your heirs and legal representatives.  We may assign this Agreement and our rights under it without notice to you and we don't need your consent.
+</p>
+
+<p>
+<strong>ASSIGNMENT.</strong>  We may assign or transfer this Agreement or any of our rights under this Agreement.
+</p>
+
+<p>
+<strong>DEFAULT.</strong>  Time is of the essence, and you will be in default under this Agreement (as it may be amended) if you do not make any payment when due. Upon default, we may, without notice or demand, declare the entire amount then unpaid immediately due and payable.
+</p>
+
+<p>
+<strong>ATTORNEY FEES AND COLLECTION COSTS.</strong>  If the Loan is in default as described above, and we pursue collection efforts against you, subject to applicable law, then you agree to pay all reasonable collection agency fees, court costs and other collection costs actually incurred by us and our agents, successors and assigns. If we refer your Loan to an attorney who is not our salaried employee for collection, you agree that we may charge and collect from you reasonable attorney fees incurred by us.
+</p>
+
+<p>
+<strong>USURY SAVINGS CLAUSE.</strong>  Notwithstanding any other provision herein, the aggregate interest rate of the Loan (including all charges or fees in connection with this Loan that are deemed in the nature of interest under applicable law) shall not exceed the highest lawful interest rate. If Lender contracts for, charges, or receives any consideration which constitutes interest in excess of the highest lawful rate, then any such excess shall be cancelled automatically and, if previously paid, shall at such Lender s option be applied to the outstanding amount of the Loan made hereunder or be refunded to you.
+</p>
+
+<p>
+<strong>GOVERNING LAW.</strong>  This Agreement is governed by the laws of the Oglala Sioux Nation of the Pine Ridge Reservation ("Tribal Law"), a federally recognized Indian Tribe and the Indian Commerce Clause of the United States Constitution and applicable federal law, and the Arbitration Agreement below is additionally governed by the Federal Arbitration Act (FAA) and the decisions of the United States Supreme Court interpreting the FAA. We do not have a presence in South Dakota or any other State of the United States of America. Neither this Agreement nor the Lender is subject to the laws of any State of the United States. You agree to be bound by Tribal Law and in the event of a bona fide dispute between you and us, Tribal Law and applicable federal law shall exclusively apply to such dispute.
+</p>
+
+<p>
+<strong>SOVEREIGN IMMUNITY.</strong>  This Agreement together with any related documents are being submitted by you to us as a sovereign enterprise, an economic development arm and instrumentality of the Community which shares in the governmental sovereign immunity of the Tribe. Because we and the Tribe are entitled to sovereign immunity, you will be limited as to what claims, if any, you may be able to assert against us. To encourage resolution of consumer complaints, any complaint may be submitted by you or on your behalf to arbitration as described below.
+</p>
+
+<p>
+<strong>PRESERVATION OF SOVEREIGN IMMUNITY.</strong>  It is the express intention of the Community and us operating as an economic arm of the Community, to fully preserve, and not waive other than as expressly provided in this Agreement, our sovereign governmental immunity from suit, and any other rights, titles, privileges, and immunities, to which we or the Community are entitled. To protect and preserve the rights of the parties, no person may assume a waiver of sovereign immunity. No waiver is or can be made except by express written declaration of the Community's governing Council specifically authorizing a waiver for the matter in question. Except as pertaining to a single, potential arbitration between you, as an individual consumer, and us, no such waiver has been made with respect to this Agreement, your Disbursement and Payment Choice Authorization or any other related document.
+</p>
+
+<p>
+<strong>TELEPHONE CALLS AND TEXT MESSAGES REGARDING YOUR LOAN.</strong>  You agree that we may monitor and/or record any of your phone conversations with any of our representatives. We may use automated telephone dialing, text messaging systems and electronic mail to provide messages to You about payment due dates, missed payments, options to amend this Agreement and other important information. The telephone messages are played by a machine automatically when the telephone is answered whether answered by You or someone else. These messages may also be recorded by Your answering machine. By providing us with your cell or mobile telephone number, you authorize us to contact you from time to time regarding your application and loan at that number using text messages. Standard text messaging and/or calling charges by your communications carrier may apply. You may withdraw your consent to receive text messages by calling us at (866) 677-1500 or emailing us at <a href="mailto:support@patria.com">support@patria.com</a>. We will not impose any fee to process the withdrawal of your consent to receive text messages. Any withdrawal of your consent to use text messages will be effective only after we have a reasonable period of time to process your withdrawal.
+</p>
+
+<p>
+<strong>HOW TO UPDATE YOUR RECORDS.</strong>  You must notify us immediately if your cell phone number changes or you give your cell phone to someone else. You may update your cell number by calling us at (866) 677-1500 or sending an email to <a href="mailto:support@patria.com">support@patria.com</a>. If you give us an inaccurate cell number, you will hold us and our employees, agents, and related parties harmless from all claims, costs, or losses that may result. your obligations under this section will survive termination of this Agreement.
+</p>
+
+<p>
+<strong>ADVERTISING OR TELEMARKETING TEXT MESSAGES AND TELEPHONE CALLS.</strong>  By signing this section, you consent to our sending you advertising and telemarketing text messages to the mobile phone number you have provided below. You also consent to our making advertising or telemarketing calls to you at your mobile phone number using automatic telephone dialing system or an artificial or prerecorded voice.
+</p>
+
+<p>
+    <input type="checkbox" id="consentAdvertisingOrTelemarketing" class="required">
+    <label for="consentAdvertisingOrTelemarketing">Your checking this box will be deemed to be your signature acknowledging your consent to receive advertising and telemarketing text messages and telephone calls as described above to your mobile phone at {{phoneNumber}}.</label>
+</p>
+
+<p>
+You are <strong>not required to consent</strong> to advertising or telemarketing text messages or calls to obtain credit or other services from us. At any time, you may withdraw your consent to receive advertising or marketing text messages or marketing calls to the mobile number provided by calling us at (866) 677-1500 or emailing us at <a href="mailto:support@patria.com">support@patria.com</a>.
+</p>
+
+<p>
+You understand that: any Text Messages we send you may be accessed by anyone with access to your Text Messages; and your mobile phone service provider may charge you fees for Text Messages that we send you, and you agree that we shall have no liability for the cost of any Text Messages.
+</p>
+
+<p style="font-size: 1.1em">
+<strong><u>Please notify us immediately if you change mobile or cell phone numbers or plan to give your phone to someone else.</u></strong>
+</p>
+
+<p>
+<strong>OPT-OUT or STOP.</strong>  This policy applies to the text messages sent by WLCC Lending FHC d/b/a Patria to our customers while and after they use our product. If you wish to stop receiving advertising and marketing text messages from WLCC Lending FHC d/b/a Patria, reply to any text message we have sent you and in the reply, text simply type STOP. If you wish to stop receiving all text messages from WLCC Lending FHC d/b/a Patria, including those with information about payment due dates or missed payments, type STOP ALL in the reply text you send us. Any withdrawal of your consent to send text messages will be effective in one day.
+</p>
+
+<p>
+<strong>HELP OR SUPPORT.</strong> If at any time you need our contact information or information on how to stop text messages, reply to any text we sent you and in the reply simply type HELP. Upon receiving your text message we will send you a text with this information. We will send you no more than 10 advertising or telemarketing text messages or calls each week. In general, the messages we send to you provide you with information about your account, ways to reduce your payments, and potential offers and opportunities. Some of the text messages we send you may include links to websites. To access these websites, you will need a web browser and internet access.
+</p>
+
+<p>
+<strong>BANKRUPTCY.</strong> You promise that You are not currently a debtor in any bankruptcy proceeding, you are not contemplating bankruptcy and you have not consulted with an attorney regarding a potential bankruptcy filing in the past six months. You must provide any notice(s) of any future bankruptcy petition and all subsequent filings, motions, orders or correspondence to Us at PO Box 196, Batesland, SD 57716. You agree that any other written or oral communication concerning a bankruptcy is null and void and of no effect.
+</p>
+
+<p>
+<strong>COMMITMENT TO CUSTOMER SERVICE.</strong> We believe our customer service team should be able to make things right for our customers. We would prefer that you contact us first with any questions or concerns regarding your loan. We will work diligently to try to effectively resolve any questions or issues that you have. Please direct any questions, issues or disputes in the first instance to our management, in writing at PO Box 196, Batesland, SD 57716 or by fax at (866) 630-8484 and we will do our best to help you quickly. If you have already contacted Customer Service in an attempt to resolve an issue or concern and still need additional assistance, please contact the Wakpamni Lake Community Consumer Complaint Tribal Hotline at 1 - (800) 677-3860 between the hours of 9 AM and 5 PM Central Time. If this is your first call to Customer Service, please call (866) 677-1500.
+</p>
+
+
+<p>
+<strong>WAIVER OF JURY TRIAL AND ARBITRATION.</strong>
+</p>
+
+<p>
+YOUR RIGHT TO OPT OUT.<strong class="words-gray"> IF YOU DO NOT WISH YOUR ACCOUNT TO BE SUBJECT TO THIS AGREEMENT TO ARBITRATE, YOU MUST ADVISE US VIA E-MAIL AT <a href="mailto:support@patria.com">SUPPORT@HUNTERFINANCE.COM.</a>. YOU MUST CLEARLY PRINT OR TYPE YOUR NAME AND ACCOUNT NUMBER OR SOCIAL SECURITY NUMBER AND STATE THAT YOU REJECT ARBITRATION. YOU MUST GIVE WRITTEN NOTICE; IT IS NOT SUFFICIENT TO TELEPHONE US. WE MUST RECEIVE YOUR LETTER OR E-MAIL WITHIN SIXTY (60) DAYS AFTER THE DATE YOUR LOAN FUNDS OR YOUR REJECTION OF ARBITRATION WILL NOT BE EFFECTIVE. IN THE EVENT YOU OPT OUT OF THIS AGREEMENT TO ARBITRATE, ANY DISPUTES HEREUNDER SHALL NONETHELESS BE GOVERNED UNDER THE LAWS OF THE Oglala SIOUX TRIBE AND MUST BE BROUGHT WITHIN THE COURT SYSTEM THEREOF.</strong>
+</p>
+
+<p>
+<strong>PLEASE READ THIS PROVISION OF THE AGREEMENT CAREFULLY.</strong>  Unless you exercise your right to opt-out of arbitration in the manner described above, any dispute you have with Lender or anyone else under this Agreement will be resolved by binding arbitration. Arbitration replaces the right to go to court, including the right to have a jury, to engage in discovery (except as may be provided in the arbitration rules), and to participate in a class action or similar proceeding. In arbitration, a dispute is resolved by an arbitrator instead of a judge or jury. Arbitration procedures are simpler and more limited than court procedures. Any arbitration will be limited to addressing your dispute individually and will not be part of a class-wide or consolidated arbitration proceeding.
+</p>
+
+<p>
+<strong>Agreement to Arbitrate.</strong> You agree that any Dispute (defined below) will be resolved by arbitration as described below and in accordance with any applicable Oglala Sioux tribal law and applicable federal law.
+</p>
+
+<p>
+<strong>Arbitration Defined.</strong> Arbitration is a means of having an independent third party resolve a Dispute. A "Dispute" is any controversy or claim between you and Lender, its marketing agent, collection agent, any subsequent holder of this Agreement, or any of their respective agents, affiliates, assigns, employees, officers, managers, members or shareholders (each considered a "Holder" for purposes of this Agreement). The term Dispute is to be given its broadest possible meaning and includes, without limitation, all claims or demands (whether past, present, or future, including events that occurred prior to the opening of this Account), based on any legal or equitable theory (tort, contract, or otherwise), and regardless of the type of relief sought (i.e. money, injunctive relief, or declaratory relief). A Dispute includes, by way of example and without limitation, any claim arising from, related to or based upon marketing or solicitations to obtain the loan and the handling or servicing of your account whether such Dispute is based on a tribal, federal or state constitution, statute, ordinance, regulation, or that occurred prior to the opening of this Account), based on any legal or equitable theory (tort, contract, or otherwise), and regardless of the type of relief sought (i.e. money, injunctive relief, or declaratory relief). A Dispute includes, by way of example and without limitation, any claim arising from, related to or based upon marketing or solicitations to obtain the loan and the handling or servicing of your account whether such Dispute is based on a tribal, federal or state constitution, statute, ordinance, regulation, or common law, and including any issue concerning the validity, enforceability, or scope of this loan or the Agreement to Arbitrate.
+</p>
+
+<p>
+<strong>You acknowledge and agree that by entering into this Arbitration Provision:</strong>
+</p>
+
+<p class="words-gray">
+<strong>(a)	YOU ARE GIVING UP YOUR RIGHT TO HAVE A TRIAL BY JURY TO RESOLVE ANY DISPUTE ALLEGED AGAINST US OR RELATED THIRD PARTIES;</strong>
+</p>
+
+<p class="words-gray">
+<strong>(b)	YOU ARE GIVING UP YOUR RIGHT TO HAVE A COURT RESOLVE ANY DISPUTE ALLEGED AGAINST US OR RELATED THIRD PARTIES; and</strong>
+</p>
+
+<p class="words-gray">
+<strong>(c)	YOU ARE GIVING UP YOUR RIGHT TO SERVE AS A REPRESENTATIVE, AS A PRIVATE ATTORNEY GENERAL, OR IN ANY OTHER REPRESENTATIVE CAPACITY, AND/OR TO PARTICIPATE AS A MEMBER OF A CLASS OF CLAIMANTS, IN ANY LAWSUIT FILED AGAINST US AND/OR RELATED THIRD PARTIES.</strong>
+</p>
+
+<p>
+<strong>Choice of Arbitrator.</strong> Any party to a Dispute, including a Holder or its related third parties, may send the other party written notice by certified mail return receipt requested at the address appearing at the top of this Agreement of their intent to arbitrate and setting forth the subject of the dispute along with the relief requested, even if a lawsuit has been filed. Regardless of who demands arbitration, you shall have the right to select any of the following arbitration organizations to administer the arbitration: the American Arbitration Association http://www.adr.org; Judicial Arbitration and Mediation ("JAMS") (1-800- 352-5267) http://www.jamsadr.com; or an arbitration organization agreed upon by you and the other parties to the Dispute. The arbitration will be governed by the chosen arbitration organization rules and procedures applicable to consumer disputes, to the extent that those rules and procedures do not contradict either the law of the Oglala Sioux Tribe or the express terms of this Agreement to Arbitrate, including the limitations on the Arbitrator below. The party receiving notice of Arbitration will respond in writing by certified mail return receipt requested within twenty (20) days. You understand that if you demand Arbitration, you must inform us of your demand and of the arbitration organization you have selected. You also understand that if you fail to notify us, then we have the right to select the arbitration organization. Any arbitration under this Agreement may be conducted either on tribal land or within thirty miles of your residence, at your choice, provided that this accommodation for you shall not be construed in any way (a) as a relinquishment or waiver of the Oglala Sioux's Tribes sovereign status or immunity, or (b) to allow for the application of any law other than the law of the Oglala Sioux Tribe or applicable federal law.
+</p>
+
+<p>
+<strong>Cost of Arbitration.</strong> We will pay the filing fee and any costs or fees charged by the arbitrator regardless of which party initiates the arbitration. Except where otherwise provided by the law of the Oglala Sioux Tribe, each party will be responsible for its own attorneys' fees and other expenses. Unless prohibited by law, the arbitrator may award fees, costs, and reasonable attorneys' fees to the party who substantially prevails in the arbitration.
+</p>
+
+<p>
+<strong>Waiver of Jury Trial and Waiver of Ability to Participate in a Class Action.</strong> YOU HEREBY AGREE THAT YOU ARE WAIVING YOUR RIGHT TO A JURY TRIAL, TO HAVE A COURT DECIDE YOUR DISPUTE, AND YOU ARE WAIVING YOUR ABILITY TO SERVE AS A REPRESENTATIVE, AS A PRIVATE ATTORNEY GENERAL, TO PARTICIPATE IN A CLASS ACTION LAWSUIT, OR IN ANY OTHER REPRESENTATIVE CAPACITY FOR OTHERS IN THE ARBITRATION, AND TO CERTAIN DISCOVERY AND OTHER PROCEDURES THAT WOULD BE AVAILABLE IN A LAWSUIT. The arbitrator has the ability to award all remedies available under the Oglala Sioux Tribe's tribal law and applicable federal law, whether at law or in equity, to the prevailing party, except that the parties agree that the arbitrator has no authority to conduct class-wide proceedings and will be restricted to resolving the individual Disputes between the parties. The validity, effect, and enforceability of this waiver of class action lawsuit and class-wide arbitration is to be determined solely by a court of competent jurisdiction located within the Oglala Sioux Tribe, and not by the arbitrator. If the court refuses to enforce the class-wide arbitration waiver, or if the arbitrator fails or refuses to enforce the waiver of class-wide arbitration, the parties agree that the Dispute will proceed in tribal court and will be decided by a tribal court judge, sitting without a jury, under applicable court rules and procedures and may be enforced by such court through any measures or reciprocity provisions available.
+</p>
+
+<p>
+<strong>The Decision of the Arbitrator.</strong> At the request of either us or you, the arbitrator shall provide a written explanation for the award. The arbitrator must approve the explanation. The arbitrator will apply the applicable substantive law relating to the Dispute and award any remedies available as if the Dispute was heard by a court. The arbitrator's award may be filed with any court having jurisdiction. Regardless of whether the arbitrator renders a decision or an award in your favor resolving the Dispute, you will not be responsible for reimbursing us for your portion of the Arbitration Fees.
+</p>
+
+<p>
+<strong>Appeal of Decision.</strong> The arbitrator's decision is final and binding, except for any right of appeal provided by the FAA. However, if the amount of the dispute is greater than $7500, either we or you can appeal the award to a three-arbitrator panel administered by the selected Administrator which shall reconsider any aspect of the initial award requested by the appealing party.
+</p>
+
+<p>
+<strong>Applicable Law and Judicial Review.</strong> THIS AGREEMENT TO ARBITRATE IS MADE PURSUANT TO A TRANSACTION INVOLVING THE INDIAN COMMERCE CLAUSE OF THE CONSTITUTION OF THE UNITED STATES OF AMERICA, AND SHALL BE GOVERNED BY THE
+LAW OF THE OGLALA SIOUX TRIBE AND THE FEDERAL ARBITRATION ACT. The arbitrator will apply the laws of the Oglala Sioux Tribe and applicable federal law to the terms of this Agreement, including the Agreement to Arbitrate. The arbitrator must apply the terms of this Agreement to Arbitrate, including without limitation the waiver of class-wide arbitration. The arbitrator may decide, with or without a hearing, any motion that is substantially similar to a motion to dismiss for failure to state a claim or a motion for summary judgment. If allowed by statute or applicable law, the arbitrator may award statutory damages and/or reasonable attorneys' fees and expenses. The arbitrator will make written findings and the arbitrator's award may be filed with the tribal court. The arbitration award will be supported by substantial evidence and must be consistent with this Agreement and applicable law or may be set aside by the tribal court upon judicial review.
+</p>
+
+<p>
+<strong>Other Provisions.</strong> This Agreement to Arbitrate will survive: (i) termination or changes in this Agreement, the Loan, or the relationship between us concerning the Loan; (ii) the bankruptcy of any party; and (iii) any transfer, sale or assignment of my Agreement, or any amounts owed on your account, to any other person or entity. This Agreement to Arbitrate benefits and is binding upon you, your respective heirs, successors and assigns. It also benefits and is binding upon us, our successors and assigns, and related third parties. The Agreement to Arbitrate continues in full force and effect, even if your obligations have been paid or discharged through bankruptcy. The Agreement to Arbitrate survives any termination, amendment, expiration, or performance of any transaction between you and us and continues in full force and effect unless you and we otherwise agree in writing. If any of this Agreement to Arbitrate is held invalid, the remainder shall remain in effect.
+</p>
+
+<h2>
+<p><strong>SIGNATURE AND ACCEPTANCE OF ALL TERMS AND CONDITIONS</strong></p>
+</h2>
+
+<p>
+<strong>BY TYPING YOUR NAME AND "I AGREE" BELOW, YOU ARE ELECTRONICALLY SIGNING THIS AGREEMENT AND AGREEING TO ALL THE TERMS OF THIS AGREEMENT INCLUDING THE ARBITRATION PROVISION AND THE CONSENT TO ELECTRONIC COMMUNICATIONS.</strong>
+</p>
+
+<p>
+<strong>YOU ALSO ACKNOWLEDGE YOUR ABILITY TO DOWNLOAD OR PRINT A FULLY COMPLETED COPY OF THIS AGREEMENT FOR YOUR RECORDS.</strong>
+</p>
+
+<p><strong>{{USERDEFINEDFIELD_2}} By checking this box, you agree to the SMS disclosures and terms as outlined in the loan agreement above which includes receiving advertising and telemarketing text messages, autodialed text messages, robocalls/robo texts and telephone calls.</strong></p>
+<br>
+
+<p>
+    <input type="checkbox" id="loanAgreementDisclosuresAgree" class="required" {% if isPropertyTrue(agreementCheckboxes, "loanAgreementDisclosuresAgree", true)  %}checked{% endif %} />
+    <label for="loanAgreementDisclosuresAgree">I agree to the Loan Agreement and Disclosures (test)</label>
+</p>
+<div class="table-responsive">
+  <table class="table table-bordered" bordercolor="#fff" style="width:100%;">
+<tbody>
+<tr>
+	<td align="center" width="33%">{{eSignatureText}} </td>
+
+	<td align="center" width="33%">
+    {{todaydate}}
+	</td>
+    <td align="center" width="33%">
+    {{ip}}
+	</td>
+</tr>
+
+<tr>
+	<td align="center"><strong>Consumer Name</strong></td>
+	<td align="center" >
+    <strong>Date/Time</strong>
+    </td>
+    <td align="center">
+    <strong>Signature IP Address</strong>
+    </td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-bordered" bordercolor="#fff">
+<tbody>
+<tr>
+	<td align="left">Rev: AUG 2018</td>
+</tr>
+</tbody>
+</table>
+</div>

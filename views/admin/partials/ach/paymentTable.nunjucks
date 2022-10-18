@@ -1,0 +1,140 @@
+
+        <table class="table table-bordered pay-information-smaller-details">
+            <thead>
+            <tr>
+                <th>Action</th>
+                <th style="width: 10px">#</th>
+                <th>Schedule Date</th>
+                <th>Payment Type</th>
+                <th>Payment Amount</th>
+                <th>Going to Interest</th>
+                <th>Going to Principal</th>
+                <th>Start Principal Balance</th>
+                <th>End Principal Balance</th>
+                <th>Status</th>
+                <th>Start Accrued Date</th>
+                <th>End Accrued Date</th>
+                <th>Period Accrued Interest</th>
+                <th>Charged Accrued Interest</th>
+                <th>Deferred Until Interest</th>
+                <th>Forgivable Interest</th>
+                <th>Forgiven Interest</th>
+                <th>Applied Forgiven Interest</th>
+                <th>Applied Accrued Interest</th>
+                <th>Applied Deferred Interest</th>
+                <th>Applied Unpaid Interest</th>
+                <th>Applied Unpaid Principal</th>
+                <th>Applied Scheduled Principal</th>
+                <th>Remaining Interest</th>
+                <th>Remaining Principal</th>
+            </tr>
+            </thead>
+            <tbody id="paymentScheduleTable">
+            {% set p = 0 %}
+            {% for paymentSchedule in  paymentmanagementdata.paymentSchedule %}
+                {% set p = p+1 %}
+                <tr class="{% if paymentSchedule.isBalloonPayment%}pay-schedule-is-balloon{% endif %} {% if paymentSchedule.status === "Replaced" %}pay-schedule-item-replaced{% endif %}">
+                    <td>
+
+                        {% if paymentmanagementdata.status !== "SETTLED" and paymentmanagementdata.status !== "PAID" %}
+                            <a class="btn btn-danger" id="btnDeleteSchedule" data-toggle="modal" data-target="#exampleModal">
+                                <span class="glyphicon glyphicon-trash"/>
+                            </a>
+                        {% endif %}
+
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body bodyModalDeleteSchedule">
+                                    <input type="hidden" class="paymentScheduleTransaction" name="paymentScheduleTransaction" value="{{paymentSchedule.transaction}}">
+                                    Are you sure you want to remove this scheduled Manual Payment before it is processed?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" id="btnDeleteScheduleConfirm" data-dismiss="modal">Confirm</button>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+                    <td class="count-replaced">{{ p }}</td>
+                    <td>{{ paymentSchedule.date | dateMinusTz("MMM DD, YYYY")}} </td>
+                    <td>{{ "Scheduled Payment" if paymentSchedule.initiator != 'makepayment' else 'Manual Payment'}} </td>
+                    <td>{{ paymentSchedule.amount }} </td>
+                    <td>{{ paymentSchedule.interestAmount | $format(false,2) }}</td>
+                    <td>{{ paymentSchedule.principalAmount | $format(false,2) }}</td>
+                    <td>{{ paymentSchedule.startBalanceAmount | $format(false,2) }}</td>
+                    <td>{{ paymentSchedule.endBalanceAfterPayment | $format(false,2) }}</td>
+                    <td>{% if paymentSchedule.status == 'CLOSED' %} Revoked {% else %} {{ paymentSchedule.status }} {% endif %}  </td>
+                    <td>{{ paymentSchedule.startAccruedDate | dateMinusTz("MMM DD, YYYY")}} </td>
+                    <td>{{ paymentSchedule.endAccruedDate | dateMinusTz("MMM DD, YYYY")}}&nbsp;({{ paymentSchedule.daysInCycle }}) </td>
+                    <td>{{ paymentSchedule.periodAccruedInterest | $format(false,2) }}</td>
+                    <td>{{ paymentSchedule.chargedAccruedInterest | $format(false,2) }}</td>
+                    <td>{{ paymentSchedule.deferredAmount | $format(false,2) }}</td>
+                    <td>{{ paymentSchedule.forgivableInterest | $format(false,2) }}</td>
+                    <td>{{ paymentSchedule.forgivenInterest | $format(false,2) }}</td>
+                    <td>{{ paymentSchedule.appliedForgivenInterest | $format(false,2) }}</td>
+                    <td>{{ paymentSchedule.appliedAccruedInterest | $format(false,2) }}</td>
+                    <td>{{ paymentSchedule.appliedDeferredAmount | $format(false,2) }}</td>
+                    <td>{{ paymentSchedule.appliedRemainingInterest | $format(false,2) }}</td>
+                    <td>{{ paymentSchedule.appliedRemainingPrincipal | $format(false,2) }}</td>
+                    <td>{{ paymentSchedule.appliedScheduledPrincipal | $format(false,2) }}</td>
+                    <td>{{ paymentSchedule.remainingInterest | $format(false,2) }}</td>
+                    <td>{{ paymentSchedule.remainingPrincipal | $format(false,2) }}</td>
+                </tr>
+                {% if paymentSchedule.status === "Replaced" %}
+                    {% set p = p-1 %}
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+<style type="text/css">
+    .bodyModalDeleteSchedule {
+        text-align: center;
+    }
+    .pay-information-smaller-details .pay-schedule-item-replaced td {
+        text-decoration: line-through;
+    }
+    .pay-information-smaller-details .pay-schedule-is-balloon td {
+        color: blue;
+    }
+    .floating-button {
+        float: right;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+    .pay-schedule-info-header-container h3 {
+        display: inline-block;
+    }
+    .pay-schedule-info-header-container {
+
+    }
+
+    @media (max-width: 520px) {
+        .floating-button {
+            float: unset;
+        }
+        .pay-schedule-info-header-container h3 {
+            display: block;
+        }
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function() {
+    	$("#btnChangeSchedule").on("click", function(e) {
+    		e.preventDefault();
+            $("#changePaymentScheduleModal").modal("show");
+        });
+    	$("#btnMarkPaymentBankruptcy").on("click", function(e) {
+            e.preventDefault();
+            toggleBankruptcyModal(true);
+        });
+
+    });
+</script>

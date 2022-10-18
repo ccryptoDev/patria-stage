@@ -1,0 +1,281 @@
+{% extends "layout/layout.nunjucks" %}
+{% block body %}
+<style type="text/css">
+	.ion {
+		padding:10px 0px 5px 0px;
+	}
+	.fixheight{
+		min-height:150px;
+	}
+	.small-box > .inner {
+		height: 135px;
+	}
+	.bg-dark-grey{
+		background-color:#566573;
+		color: #fff;
+	}
+	.bg-search-blue{
+		background-color:#4d90fe;
+		color: #fff;
+	}
+	.bg-tan{
+		background-color:#D2B48C;
+		color: #fff;
+	}
+	.bg-lightsteelblue{
+		background-color:#B0C4DE;
+		color: #fff;
+	}
+	.bg-coral{
+		background-color:#FF7F50;
+		color: #fff;
+	}
+	.bg-rosybrown{
+		background-color:#BC8F8F;
+		color: #fff;
+	}
+	.bg-goldenrod{
+		background-color:#DAA520;
+		color: #fff;
+	}
+	.small-box p {
+		font-size: 24px;
+	}
+	.dashboardErr {
+		font-size: 18px;
+		color: red;
+		margin-left: 15px;
+	}
+</style>
+
+<section class="content-header">
+	<h1>Dashboard</h1>
+	<ol class="breadcrumb">
+		<li><a href="javascript:void(0)"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li class="active">Dashboard</li>
+	</ol>
+</section>
+<br />
+{% if( err ) %}
+	<div class="dashboardErr"> Server Error: The amount of users in each cube may be incorrect.</div>
+{% endif %}
+<br/>
+<section class="content">
+
+	{% if req.user.rolename =='Rep' or req.user.rolename =='Admin' %}
+		<!-- Row 1 of Cubes -->
+		<div class="row">
+
+			<!-- Incomplete Cube -->
+			<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 fixheight">
+				<div class="small-box bg-purple">
+					<div class="inner">
+						<h3>{{ freshLeadsCount }}</h3>
+						<p class="cubeText">Fresh Leads</p>
+					</div>
+					{# <div class="icon">
+						<i class="ion ion-clipboard"></i>
+					</div> #}
+					<a href="/admin/freshLeadsList" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i> </a>
+				</div>
+			</div>
+
+
+			<!-- Pending Cube -->
+			<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 fixheight">
+				<div class="small-box bg-orange">
+					<div class="inner">
+						<h3>{{ pendingCount }}</h3>
+						<p class="cubeText">Pending Applications</p>
+					</div>
+					{# <div class="icon">
+						<i class="ion ion-ios-analytics"></i>
+					</div> #}
+					<a href="/admin/getOpenApplicationDetails" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i> </a>
+				</div>
+			</div>
+
+
+			<!-- Performing Cube -->
+			<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 fixheight">
+				<div class="small-box bg-green">
+					<div class="inner">
+						<h3>{{ performingCount }}</h3>
+						<p class="cubeText">Active Contracts</p>
+					</div>
+					{# <div class="icon">
+						<i class="ion ion-cash"></i>
+					</div> #}
+					<a href="/admin/showAllPerforming" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i> </a>
+				</div>
+			</div>
+
+			<!-- Completed Cube -->
+			<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 fixheight">
+				<div class="small-box bg-blue">
+					<div class="inner">
+						<h3>{{ completedCount }}</h3>
+						<p class="cubeText">Completed Contracts</p>
+					</div>
+					<a href="/admin/showAllCompleted" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i> </a>
+				</div>
+			</div>
+
+			<!-- Charge Off Cube -->
+			<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 fixheight">
+				<div class="small-box bg-dark-grey">
+					<div class="inner">
+						<h3>{{ chargeoffCount }}</h3>
+						<p class="cubeText">Charge Off Contracts</p>
+					</div>
+					<a href="/admin/showChargedOff" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i> </a>
+				</div>
+			</div>
+
+			<!-- Denied Cube -->
+			<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 fixheight">
+				<div class="small-box bg-red">
+					<div class="inner">
+						<h3>{{ deniedCount }}</h3>
+						<p class="cubeText">Denied Applications</p>
+					</div>
+					{# <div class="icon">
+						<i class="ion ion-sad"></i>
+					</div> #}
+					<a href="/admin/showAllDenied" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i> </a>
+				</div>
+			</div>
+
+			<!-- All Patients -->
+			<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 fixheight">
+				<div class="small-box bg-aqua">
+					<div class="inner">
+						<h3>{{ allpatientCount }}</h3>
+						<p class="cubeText">All Users</p>
+					</div>
+					{# <div class="icon">
+						<i class="ion ion-person-stalker"></i>
+					</div> #}
+					<a href="/admin/manageusers" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i> </a>
+				</div>
+			</div>
+
+			{% if req.user.rolename =='Admin' %}
+				<!-- Audit Log -->
+				{# <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 fixheight">
+					<div class="small-box bg-light-salmon">
+						<div class="inner">
+							<h3>
+								&nbsp;
+							</h3>
+							<p>
+								<strong>Audit Log</strong>
+							</p>
+						</div>
+						<div class="icon">
+							<i class="ion ion-pie-graph"></i>
+						</div>
+						<a href="/admin/managelogactivity" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i> </a>
+					</div>
+				</div> #}
+
+				<!-- Admin Users -->
+				{# <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 fixheight">
+					<div class="small-box bg-light-blue">
+						<div class="inner">
+							<h3>
+								&nbsp;
+							</h3>
+							<p>
+								<strong>Admin Users</strong>
+							</p>
+						</div>
+						<div class="icon">
+							<i class="ion ion-person-stalker"></i>
+						</div>
+						<a href="/admin/adminuserlist" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i> </a>
+					</div>
+				</div> #}
+			{% endif %}
+
+			<!-- Create Application -->
+			{# <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 fixheight">
+				<div class="small-box bg-rosybrown">
+					<div class="inner">
+						<h3>
+							&nbsp;
+						</h3>
+						<p>
+							<strong>Create Application</strong>
+						</p>
+					</div>
+					<div class="icon">
+						<i class="ion ion-android-list"></i>
+					</div>
+					<a href="/admin/addApplication" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i> </a>
+				</div>
+			</div> #}
+
+			<!-- Reset Patients -->
+			{# {% if req.user.rolename =='Admin' %}
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 fixheight">
+					<div class="small-box bg-goldenrod">
+						<div class="inner">
+							<h3>
+								&nbsp;
+							</h3>
+							<p>
+								<strong>Reset Patients</strong>
+							</p>
+						</div>
+						<div class="icon">
+							<i class="ion ion-android-list"></i>
+						</div>
+					<a href="/admin/resetusers" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i> </a>
+					</div>
+				</div>
+			{% endif %} #}
+
+			<!-- Credit Reports -->
+			{# {% if req.user.rolename =='Admin'  %}
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 fixheight">
+					<div class="small-box bg-lime-green">
+						<div class="inner">
+							<h3>
+								&nbsp;
+							</h3>
+							<p>
+								<strong>Credit Reports</strong>
+							</p>
+						</div>
+						<div class="icon">
+							<i class="ion ion-android-list"></i>
+						</div>
+					<a href="/admin/practiceCreditReportList" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i> </a>
+					</div>
+				</div>
+			{% endif %} #}
+
+			<!-- Blocked Cube -->
+			<!-- {% if req.user.rolename =='Underwriter' or req.user.rolename =='Customer service' or req.user.rolename =='Admin' %}
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 fixheight">
+					<div class="small-box bg-maroon">
+						<div class="inner">
+							<h3>
+								{{ blockedusercount }}
+							</h3>
+							<p>
+								<strong>Blocked Application</strong>
+							</p>
+						</div>
+						<div class="icon">
+							<i class="ion ion-android-list"></i>
+						</div>
+						<a href="/admin/showAllBlocked" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i> </a>
+					</div>
+				</div>
+			{% endif %} -->
+		</div>
+	{% endif %}
+</section>
+{% endblock %}

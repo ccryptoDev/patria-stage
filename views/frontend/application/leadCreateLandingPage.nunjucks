@@ -1,0 +1,116 @@
+{% extends "frontend/layoutv3/layout.nunjucks" %}
+{% block body %}
+    <div id="usersetpassword">
+        <div class="container-fluid">
+            <div class="heading">
+                <div class="logoMiddle"><img src="/images/imgv3/logo.png" class="img-reponsive" /></div>
+            </div>
+            <div class="col-xs-12 col-xs-offset-0 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+                <div class="whitebox box-login-lg">
+                    <form class="formclass" id="leadCreateUser" action="/leadCreateAccountPost" method="post" data-validation="btnDisable" name="leadCreateUser">
+                        <input type="hidden" name="userid" value="{{user.id}}">
+                        {% if (error)  %}
+                            <div class="alert alert-danger">
+                                {{error}}
+                            </div>
+                        {% endif %}
+
+                        {% if (successval)  %}
+                            <div class="alert alert-success">
+                                {{successval}}
+                            </div>
+                        {% endif %}
+                        <div class="row">
+                            <h1 class="title">Congratulations!</h1>
+                            <br/>
+                            <h3>{{ user.firstname }}, You've been approved for a {% if screenTracking.requestedLoanAmount%}{{ screenTracking.requestedLoanAmount | $format}} loan {% else %} loan up to {{ sails.config.loanDetails.maximumRequestedLoanAmount | $format if  sails.config.loanDetails.maximumRequestedLoanAmount else '1500' | $format }}{% endif %} from Patria.</h1></h3>
+                            <br/>
+                            <h4 style="color:black;">Please set a password to create your account</h4>
+                            <br/>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <label>Password</label>
+                                    <input type="password" name="new_pwd" class="form-control" id="new_pwd" placeholder="Enter Password" autocomplete="off"/>
+                                    <i class="tick-focus-img"></i>
+                                    <label id="new_pwd-error" for="new_pwd" class="error" style="display:none;min-height: 30px;"></label>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <label>Confirm Password</label>
+                                    <input type="password" name="confirm_pwd" class="form-control" id="confirm_pwd" placeholder="Enter Confirm Password" />
+                                    <i class="tick-focus-img"></i>
+                                    <label id="confirm_pwd-error" for="confirm_pwd" class="error" style="display:none;min-height: 30px;"></label>
+                                </div>
+                            </div>
+
+                            <div class="btnMain">
+                                <button type="button" id="btnSubmitNewLeadAccount" class="btn btn-default fillBtn ActivefillBtn">Set Password</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        $(document).ready(function() {
+          $("#btnSubmitNewLeadAccount").on("click",function(e) {
+            e.preventDefault();
+            const formElement = $("#leadCreateUser");
+            if(formElement.valid()) {
+              formElement.submit();
+            }
+          });
+
+          $("#leadCreateUser").validate({
+            rules: {
+
+              new_pwd: {
+                required: true,
+                pwdcheck: true,
+                minlength: 8
+              },
+              confirm_pwd: {
+                required: true,
+                equalTo: "#new_pwd"
+              }
+              //REMOVED VALIDATION on the below fields as jQuery validate plugin conflicts with jQuery.inputmask plugin on currency
+              //"requestedLoanAmount": { min: 0 },
+              //"monthlyIncome": { min: 0 }
+            },
+            messages: {
+              new_pwd: {
+                required: "Please create a password.",
+                pwdcheck: "Password must contain at least 8 characters, one letter, one number and one special character.",
+                minlength: "Password must contain at least 8 characters."
+              },
+              confirm_pwd: {
+                required: "Please confirm your password.",
+                equalTo: "Please enter the same value."
+              }
+              //"requestedLoanAmount": { min: "Please enter a loan amount larger than $0" },
+              //"monthlyIncome": { min: "Monthly income must be larger than $0" }
+            },
+            errorPlacement: function( err, el ) {
+              var errId = err.attr( "id" );
+              var errEl = $( "#" + errId );
+              if( errEl.length === 1 ) {
+                errEl.html( err.html() );
+              } else {
+                err.appendTo( el.parent() );
+              }
+            },
+            unhighlight: function( el ) {
+              var $el = $( "#" + $(el).attr( "id" ) + "-error" );
+              if( $el.length === 1 ) {
+                $el.html( "" );
+              }
+            }
+          } );
+        });
+    </script>
+{% endblock %}

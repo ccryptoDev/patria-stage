@@ -1,0 +1,712 @@
+<style>
+   .note-date {
+   color: rgb(183, 183, 183);
+   font-weight: 600;
+   margin: 24px 0 10px 0;
+   }
+   .address-list {
+   list-style: none;
+   margin: 24px 0;
+   }
+   .address-list li {
+   font-size: 14px;
+   padding: 0;
+   }
+   .address-list li :not(:last-child) {
+   margin-bottom: 10px;
+   }
+   p {
+   margin-bottom: 24px;
+   line-height: 16px;
+   text-align: left;      
+   }
+   p span {
+   font-weight: 600;
+   }
+   .wrapper {
+   padding: 24px 0;
+   }
+   .wrapper .acknowledgenementList {
+   list-style: number;
+   padding-left: 16px;
+   margin-bottom: 24px;
+   }
+   .wrapper .acknowledgenementList li {
+   font-size: 14px;
+   }
+   span {
+   font-size: 14px;
+   line-height: 16px;
+   font-weight: 400;
+   font-weight: normal;
+   color: rgb(34, 34, 34);
+   }
+   h2 {
+   font-weight: 700;
+   position: relative;
+   font-size: 32px;
+   line-height: 35px;
+   color: rgb(34, 34, 34);
+   }
+
+   .ach-note {
+   margin: 24px 0;
+   font-weight: bold;
+   }
+   .bank-info {
+   list-style: none;
+   }
+   .bank-info li :not(:last-child) {
+   margin-bottom: 12px;
+   }
+   .bank-info li p {
+   font-weight: 600;
+   }
+   .fields-wrapper {
+   font-size: 14px;
+   font-weight: 600;
+   text-align: left;
+   line-height: 1.5;
+   margin-bottom: 24px;
+   display: flex;
+   column-gap: 16px;
+   }
+   .fields-wrapper .field-wrapper-borrower {
+   width: 60%;
+   }
+   .fields-wrapper .field-wrapper {
+   display: flex;
+   column-gap: 16px;
+   flex-grow: 1;
+   }
+   .fields-wrapper .field-wrapper .field {
+   flex-grow: 1;
+   border-bottom: 1px solid var(--color-grey-light);
+   height: 30px;
+   position: relative;
+   text-align: center;
+   }
+   .fields-wrapper .field-wrapper .label {
+   font-weight: 600;
+   }
+   .fields-wrapper .field-wrapper .field, .fields-wrapper .field-wrapper .label {
+   padding-bottom: 12px;
+   }
+   .fields-wrapper .field-wrapper:first-child {
+   width: 60%;
+   }
+   .fields-wrapper .field-wrapper:first-child .label {
+   min-width: 100px;
+   }
+   .fields-wrapper .field-wrapper .signature-img {
+   position: absolute;
+   bottom: -14px;
+   left: 50%;
+   transform: translateX(-50%);
+   width: 90%;
+   min-width: 130px;
+   max-width: 300px;
+   }
+   .buttons-wrapper button {
+   width: 100%;
+   }
+   @media screen and (max-width: 767px) {
+   .fields-wrapper {
+   flex-wrap: wrap;
+   column-gap: 0;
+   row-gap: 24px;
+   }
+   .fields-wrapper .field-wrapper {
+   width: 100%;
+   align-items: flex-end;
+   }
+   .fields-wrapper .field-wrapper .field, .fields-wrapper .field-wrapper .label {
+   padding-bottom: 12px;
+   }
+   .fields-wrapper .field-wrapper .signature-img {
+   bottom: 0;
+   }
+   }
+   @media screen and (max-width: 560px) {
+   .field-wrapper .label {
+   max-width: 100px;
+   }
+   }
+</style>
+<h2>Consumer Loan Note and Arbitration Agreement</h2>
+<p class="note-date">Note Date: 11.12.2021</p>
+<p>
+   In this Consumer Loan and Arbitration Agreement (the “Agreement”), “you”
+   and “your” refer to the Consumer identified above. “We”, “our”, “us”,
+   and “Lender” refer to {{ tribe.name }}. “Loan” means this consumer
+   installment loan.
+</p>
+<p>
+   <span>Payments: </span>Lender and its agents are authorized at any time
+   following nonpayment when due of any portion of the indebtedness
+   represented by this Agreement to Initiate a charge to any of my
+   depository accounts at any institution, by ACH or otherwise, for the
+   principal and accrued interest then due on this Agreement. You may
+   revoke the authorization to affect an ACH debit entry at any time, but
+   you may not revoke the authorization to prepare and submit drafts on our
+   behalf until such time as the loan is paid in full. Any such revocation
+   must be in writing in a manner which affords Lender and your financial
+   institution a reasonable opportunity to act it prior to any payment
+   towards your loan and delivered to Lender at the address set forth
+   above. You may choose to make different payment agreements if you do not
+   wish to use EFT or ACH transactions; if so, you must make agreements
+   with us by 3:00 PM Pacific Time, three business days prior to the
+   Payment Due Date, so an ACH debit entry is not initiated. Electronic
+   check is available alternate method of payment. You must contact us,
+   tollfree, at 18557349320 to make those agreements. You may pay each
+   payment owing under this Agreement by electronic check or debit card. If
+   yuo choose to pay by debit card, you must provide personal debit card
+   information, including account number and expiration date, to use for
+   credit transactions. If you have chosen to receive your loan proceeds
+   via debit card, please contact us, tollfree at 18557349320 to make those
+   agreement.
+</p>
+<p>
+   <span>Loan Proceeds: </span>
+   Lender makes loan proceeds available on the business day following the
+   date of this transaction without additional charge. If, at your election
+   made before 12:00 PM Pacific Time on a business day, you request that
+   loan proceeds be made available on the same day by wire transfer or by a
+   third party same day, you request that the loan proceeds be made
+   available on the same day by wire transfer or by a third party same day
+   deposit service, we will charge you the same day transfer funding fee of
+   up to $20. This fee will be deducted from the loan proceeds.
+</p>
+<p>
+   <span>No Contingency: </span>
+   You agree that we cannot make and have not made the Loan contingent upon
+   your obtaining any other product or service from us or anyone else.
+</p>
+<p>
+   <span>Payment Application: </span>
+   We will apply your payments first to any fees due to us, then to earned
+   but unpaid interest, and then to principal amounts outstanding.
+</p>
+<p>
+   <span>When You Begin Paying Interest: </span>
+   You begin to pay us interest on the Loan on the next business day
+   following the date of this Agreement (the “Disbursement Date”).
+   Unavoidable delays as a result of bank holidays, the processing schedule
+   of your individual bank, the untimely receipt of pay stubs, if such pay
+   stubs are required inadventent processing errors, “acts of God”, and/or
+   “acts of terror” my extend the time for disbursement. You will be
+   charged interest on the unpaid amount of the Loan each day from the
+   Disbursement Date until the Loan is paid in full. In calculation your
+   payments, we have assumed you will make each payment on the day and in
+   the amount due. If any payment is received after the Payment Due Date,
+   you must pay any additional interest that accrues after such date. If
+   any installment payment is made in an amount greater than that due on or
+   before the applicable Payment Due Date (a patrial prepayment), all
+   subsequent payments will be reduced and your loan will be subject to a
+   revised payment schedule. Contact us at 1888-988-1531 for more
+   information about your revised payment schedule if you make a partial
+   prepayment. There are no grace periods that apply to this Loan in
+   connection with Payment Due Dates set forth above. If you have elected
+   to repay this Loan via ACH debits to your bank account and any payment
+   is due on a day on which your bank is not open,then such payment shall
+   be due on the day prior to the date on which your bank is not open.
+</p>
+<p>
+   <span>Returned Payment Fee: </span>
+   If any payment made by you on this Loan is not honored or cannot be
+   processed for any reason, including not enough money in your Bank
+   Account, you agree to pay us a fee of $30.00. You authorize us and our
+   agents to make a onetime withdrawal from your Bank Account to collect
+   this fee, if you have to elected to repay this Loan via ACH debits to
+   your Bank Account. Your financial institution may also impose a fee if
+   your Bank Account does not have sufficient funds to cover any debit
+   prosecced for payment fron such Bank Account.
+</p>
+<p>
+   <span>Authorization: </span>
+   You represent that all bank account and other credit information
+   provided by you is correct. You agree not to close bank account from
+   which you have authorized payment to be debited unless your payment
+   authorization is terminated as provided in this agreement. If your
+   check, bank draft, EFT or ACH transaction is returned for insufficient
+   funds, we will charge you, and you will pay, in additional $30.00 each
+   time a payment is returned. You authorize us or any collection agency
+   which we designate to collect all amounts owing hereunder, including
+   without limitation all collection agency fees, through the use of one or
+   more checks, bank drafts, EFT or ACH transactions. At this time you
+   acknowledge that you have been advised that your consent to
+   preauthorized electronic funds transfers as a means of repayment is not
+   a condition of our extension of this Loan. Toy authorize us to obtain
+   and verify the information provided to us in collection with your Loan
+   application, including from a consumer reporting agency or the sources.
+</p>
+<p>
+   <span>Wireless Policy: </span>
+   By providing your cell phone number, you have provided us with consent
+   to send you text messages in conjunctions with the services you have
+   requested. Your cellular provider&apos;s message and data rates may
+   apply to our confirmation message and all subsequent messages. You
+   understand the text messages we send may be seen by anyone with access
+   to your phone. Accordingly, you should take steps to safeguard your
+   phone and your text messages if you want them to remain private. Please
+   notify us immediately if you change mobile numbers or plan to provide
+   your phone to another person. If we modify this message program at any
+   time. If you have any questions about this policy, would like us to mail
+   you a paper copy of this policy or are having problems receiving or
+   stopping our text messages, please contact us using the following
+   information: Eagle Advance, LLC, 100 Schoolhouse Canyone Road, Santa
+   Ysabel, CA 92070. You agree and consent to be contacted by Lender, our
+   agents, employees, affiliates, loan servicing companies, and third-party
+   collectors through the use of email, telephone calls, facsemails, and/or
+   SMS text messages to your cellular, pager, facsemail, home or work
+   numbers, as well as other telephone number you have provided in
+   conjunction with this loan, including the use of automatic telephone
+   dialing systems, autodialers, or an artificial or prerecorded voice for
+   the purpose of providing service to you for this Loan and service and
+   offers for related products and services. You consent to Lender&apos;s
+   use of your personal information to provide the services you have
+   requested, including services that display customized content and
+   advertising.
+</p>
+<p>
+   <span>Optout or Stop: </span>
+   This policy applies to next messages sent by Lender to our customers
+   while and after they use our product. If you wish to stop receiving
+   marketing text messages from us, reply to any text message we have sent
+   you and in the reply simply type STOP. If you wish to stop receiving all
+   text messages from us, including those with information about payment
+   due dates or missed payments, type STOP ALL in the reply text you send
+   us. Your stop request will become effective within one day. You may also
+   stop text messages by calling us or emailing us using the contact
+   information below.
+</p>
+<p>
+   <span>Help or Support: </span>
+   If at any time you need our contact information on how to stop text
+   messages, reply to any text message we have sent you and in the reply
+   text simply type HELP. You may also visit our page at
+   http://www.eagleadvance.com/contact or call us at 855-767-7033. Upon
+   receiving your text message, we will send you a text message with this
+   information. It is our policy to send no more than 20 messages per
+   month. In general, the messages we send provide you with information
+   about your account. Some of the text message we send may include links
+   to websites. To access these websites, you will need a web browser and
+   Internet access.
+</p>
+<p>
+   <span>Regulation E Disclosure: </span>
+   The purpose of this disclosure is to set forth the terms governing
+   electronic fund transfer service offered by us to you on accounts
+   established primarily for personal, family, or household purposes for
+   transactions which are governed by Regulation E to make certain
+   disclosures relative to these service which are required by law. The
+   terms set froth in this disclosure are in additional to those set froth
+   in this Consumer Loan Note and Arbitration Agreement.
+</p>
+<p>
+   <span>Fees for Electronic Transfers: </span>
+   The amounts of the constious fees mentioned in the section which are
+   charged by us are set forth in this Consumer Loan Note and Arbitration
+   Agreement. You agree and consent to be contacted by Lender, our agents,
+   employees, affiliates, loan servicing companies, and third-party
+   collections through the use of email, telephone calls, facsemails,
+   and/or SMS text messages to your cellular, pages, facsemail, home or
+   work numbers, as well as any other telephone number you have provided in
+   conjunction with this loan, including the use of automatic telephone
+   dialing systems, autodialers, or an artificial or prerecorded voice for
+   the purposes of providing service to you for this Loan and service and
+   offers for related products and services. You consent to Lender&apos;s
+   use of your personal information to provide the services you have
+   requested, including services that display customized content and
+   advertising.
+</p>
+<p>
+   <span>
+   Case of Errors or Questions About your Electronic Transfers:
+   </span>
+   Telephone or write us at the telephone number or address showing below
+   as soon as you can if you think you were incorrectly charged or if you
+   need more information about a transfer.
+</p>
+<ul class="address-list">
+   <li>Eagle Advance, LLC</li>
+   <li>100 Schoolhouse Canyon Road</li>
+   <li>Santa Ysabel, CA 92070</li>
+   <li>18557349320</li>
+</ul>
+<p>
+   Customer Service Hours are:8:00 a.m. - 3:00 p.m. (Pacific Time) Monday
+   through Friday (excluding Holidays). For purpose of this disclosure, our
+   business days are Monday through Friday. Holidays are not included. We
+   must hear from you no later than 60 days after we sent the first error
+   on which the problem appeared. Tell us your name and account number.
+   Describe the error or explain as clearly as you can why you believe it
+   is an error or why you need more information.Tell us the dollar amount
+   of the suspected error.
+</p>
+<p>
+   <span>Your Right with Respect to Preauthorized Payments. </span>
+   You have told us in advance to make regular payments out of your
+   account. You can stop any of this payments. Here&apos;s how: Call us ate
+   the telephone number referred to above or write us at the address
+   indicated above in time for us to receive your request three (3)
+   business days or more before the payment is schedule to be made. If you
+   call, we may also require you to put your request in writing and get it
+   to us within 14 days after you call. We reserve the right to charge you
+   a fee of $30 for each stop payment order you give.
+</p>
+<p>
+   <span> Privacy of Your Information. </span>
+   The privacy of your information is very important for us. We will treat
+   your information as described in our Privacy Policy, which you can find
+   by going to http://www.patrialending.com/privacypolicy. You can also
+   contact us at the phone number or address above to request a paper copy.
+</p>
+<p>
+   <span>Collection Costs. </span>
+   If you don&apos;t repay what you owe and we send the matter to an
+   attorney for collection, then you agree to pay reasonable
+   attorney&apos;s fees, plus court cost and disbursements, regardless of
+   whether an action is commenced and, if so, whether in the trial court,
+   appellate court, bankruptcy court, or otherwise.
+</p>
+<p>
+   <span>Collection Costs. </span>
+   If you don&apos;t repay what you owe and we send the matter to an
+   attorney for collection, then you agree to pay reasonable
+   attorney&apos;s fees, plus court cost and disbursements, regardless of
+   whether an action is commenced and, if so, whether in the trial court,
+   appellate court, bankruptcy court, or otherwise.
+</p>
+<p>
+   <span>Verification. </span>
+   You authorize us to verify the information yuo provided to us in
+   connection with your Loan application. You give us consent to obtain
+   information about you from a consumer reporting agency or other sources
+   at any time you have repayment obligations under this Loan. We reserve
+   the right to withhold funding of this Loan, at any time prior to
+   disbursement, to allow us to verify the information you have provided to
+   us.
+</p>
+<p>
+   <span>Credit Reporting. </span>
+   We may report your performance under this Agreement, including late
+   payments, missed payments, or defaults to credit reporting agencies.
+</p>
+<p>
+   <span>Rescission. </span>
+   You have the right to rescind the amount borrowed under this Agreement
+   without incurring any fee the amount borrowed, in full, is returned to
+   us on before the close of business on the business day following the day
+   on which such sum was delivered to you.
+</p>
+<p>
+   <span>Default. </span>
+   You will be in Default with respect to this Agreement if; (a) you
+   provide false or misleading information about yourself, your business or
+   employment, or your financial condition prior to entering into this
+   Agreement, (b) if you fail to make a payment by the due date or if your
+   payment is returned to us for any reason, or (c) if you file bankruptcy
+   or become a debtor under the Federal Bankruptcy Laws. Should we deem
+   your loan in default, we may, at our option, do one or more of the
+   following: (a) require you to immediately pay us everything you owe us;
+   (b) withdraw money from your bank account that was not available when we
+   tried to withdraw it at an earlier time, if you have not terminated or
+   opted out of an ACH authorization; and (c) pursue all legally available
+   means to collect what you owe us. In the event we declare all amounts
+   owed under this Agreement immediately due because you did not pay us,
+   then you further authorize us and our agents to withdraw money from your
+   bank account in the full amount due under this Agreement, if you have
+   not terminated or opted out of an ACH authorization.
+</p>
+<p>
+   <span>Arbitration Agreement and Waiver of Jury Trial. </span>
+   Arbitration is a process in which persons with a dispute: (i) waive
+   their rights to file a lawsuit and proceed in court and to have a jury
+   trial to resolve their disputes; and (ii) agree, instead, to submit
+   their disputes to a neutral third person (an “arbitrator”) for a
+   decision. Each party to the dispute has an opportunity to present some
+   evidence to the arbitrator. Prearbitration discovery may be limited.
+   Arbitration proceedings are private and less formal court trials. The
+   arbitrator will issue a final and binding decision resolving the
+   dispute, which may be enforced as a court judgment.
+</p>
+<p>
+   <!-- <span> -->
+   You Acknowledge and agree as follows:
+   </span>
+</p>
+<ol class="acknowledgenementList">
+   <li>
+      For purpose of this Agreement, the words “dispute” and “disputes” are
+      given the broadest possible meaning and include, without limitation
+      (i) all claims, disputes, or controversies arising from or relating
+      directly or indirectly to the signing of this Agreement, the validity
+      and scope of this Agreement and any claim or attempt to set aside the
+      Agreement, (ii) all federal or state law claims, disputes or
+      controversies, arising from or relating directly or indirectly to this
+      Agreement, the information you gave us before entering into the
+      Agreement, including the Customer Application, and/or any past
+      agreement or agreements between you and us; (iii) all counterclaims,
+      cross claims and third-party claims; (iv) all common law claims vased
+      upon contract, tort, fraud, or other international torts; (v) all
+      claims based upon a violation of any state or federal constitution,
+      statute or regulation; (vi) all claims asserted by us against you,
+      including claims for money damages to collect any sum we claim you owe
+      us; (vii) all claims asserted by you individually against us and/or
+      any of our employees, agents, directors, officers, shareholders,
+      governors, managers, members, parent company or affiliated entities
+      (hereinafter collectively referred to as “related third parties”),
+      including claims for money damages and/or equitable or injunctive
+      relief; (viii) all claims asserted on your behalf by another persons,
+      or in any other representative capacity, against us and/or related
+      third parties (hereinafter referred to as “Representative Claims”);
+      and/or (x) all claims arising from or relating directly or indirectly
+      to the disclosure by us or related to the third parties of any
+      nonpublic personal information about you.
+   </li>
+   <li>
+      By entering into this Agreement: YOU ARE WAIVING YOUR RIGHT TO HAVE A
+      TRIAL BY JURY TO RESOLVE AND DISPUTE ALLEGED AGAINST US OR RELATED
+      THIRD PARTIES; (ii) YOU ARE WAIVING YOUR RIGHT TO HAVE A COURT, OTHER
+      THAN A SMALL CLAIMS TRIBUNAL, RESOLVE ANY DISPUTE ALLEGED THIRD
+      PARTIES; and (jjj) YOU ARE WAIVING YOUR RIGHT TO SERVE AS A
+      REPRESENTIVE, A PRIVATE ATTORNEY GENERAL, OR IN ANY OTHER REPRESANTIVE
+      CAPACITY, AND/OR TO PARTICIPATE AS A MEMBER OF A CLASS OF CLAIMANTS,
+      IN ANY LAWSUIT FILED AGAINST US AND/OR RELATED THIRD PARTIES.
+   </li>
+   <li>
+      Except as provided in Paragraph 8 below, all disputes, including any
+      Representative Claims against us and/or related third parties, shall
+      be resolved by binding arbitration only on an individual basis with
+      you. THEREFORE, THE ARBITRATOR SHALL NOT CONDUCT CLASS ARBITRATION;
+      THAT IS, THE ARBITRATOR SHALL NOT ALLOW YOU TO SERVE AS A
+      REPRESENTATIVE, AS A PRIVATE ATTORNEY GENERAL, OR IN ANY OTHER
+      REPRESENTATIVE CAPACITY FOR OTHERS IN THE ARBITRATION.
+   </li>
+   <li>
+      Any party to a dispute, including related third parties, may send the
+      other party written notice by certified or registered mail, return
+      receipt requested, of their intent to arbitrate and setting forth the
+      subject of the dispute along with the relief requested, even if a
+      lawsuit has been field. Regardless of who demands arbitration, you
+      shall have the right to select any of the following arbitration
+      organizations to administer the arbitration:the American Arbitration
+      Association (18007787879,
+      <a href="http://www.adr.org" target="_blank" rel="noreferrer">
+      http://www.adr.org
+      </a>
+      ), or JAMS (18003525267,
+      <a href=" http://www.jamsadr.com" target="_blank" rel="noreferrer">
+      
+      http://www.jamsadr.com
+      </a>
+      ). However, the parties may agree to select a local arbitration who is
+      an attorney, retired judge, or arbitrator registered and in good
+      standing with an arbitration association and arbitrate pursuant to
+      such arbitrator&apos;s rules. The party receiving notice of
+      arbitration will respond in writing by certified or registered mail,
+      return receipt requested, within twenty (20) days. If you demand
+      arbitration, you must inform us in your demand of the arbitration
+      organization you have selected or whether you desire to select a local
+      arbitrator. If related third parties or we demand arbitration, you
+      must notify us within twenty (20) days in writing by certified mail
+      return receipt requested of your decision to select an arbitration
+      organization. The parties to such dispute will be governed by the laws
+      in the Lipay Nation of Santa Ysabel and such rules and procedures used
+      by the applicable arbitration organization applicable to consumer
+      disputes, to the extent those roles and procedures do not contradict
+      the express terms of this Arbitration Provision or the law of the
+      Lipay Nation of Santa Ysabel, including the limitations on the
+      arbitrator below. You may obtain a copy of the rules and procedures by
+      contracting the arbitration organization listed above.
+   </li>
+   <li>
+      You have the sole and unfettered right to reject arbitration as a
+      means of resolving disputes at any time within ten (10) days following
+      your signature on this Agreement, That is, if, after signing this
+      arbitration provision, you choose not to be bound by it, then you can
+      reject arbitration by giving notice of rejection of arbitration by
+      certified or registered mail, return receipt requested, to Lender at
+      its address for notices specified in this Agreement, postmarked within
+      seven days following your signature hereon. Your written notice must
+      include your name, address, account number or social security number,
+      the date of this Agreement, and a statement that you wish to opt out
+      of this Arbitration Provision submitted by you on this transaction.
+      You cannot reject arbitration after the tenth day following the date
+      of your signature on this Agreement.
+   </li>
+   <li>
+      If you demand arbitration, then at your request we will advance your
+      portion of the expenses associated with the arbitration, including the
+      filling, administrative, hearing and arbitrator&apos;s fees
+      (“Arbitration Fees”). If related third parties or we demand
+      arbitration, then at your written request we will advance your portion
+      of the Arbitration Fees. Throughout the arbitration, each party shall
+      bear his or her own attorney&apos;s fees and expenses, such as witness
+      and expert witness fess. The arbitrator shall apply applicable
+      substantive law consistent with the FAA and applicable statutes of
+      limitation, and shall honor claims of privilege recognized at law. The
+      arbitration hearing will be conducted in the country of your
+      residence, or within 30 miles from such country, or in such other
+      place as shall be ordered by the arbitration, provided, however, that
+      if such binding arbitration occur somewhere other than on Tribal land
+      shall in no way be construed as a waiver of sovereign immunity or
+      allow for the application of any other laws of the Iipsay Nation of
+      Santa Ysabel. The arbitrator may decide with or without any hearing,
+      any motion that is substantially similar to a motion to dismiss for
+      failure to state a claim or a motion for summary judgment. In
+      conducting the arbitration, the arbitrator shall not apply any federal
+      or state rules or civil procedure or evidence. At the timely request
+      of any party, the arbitrator shall provide a written explanation for
+      the award. The arbitrator&apos;s award may be field with any court
+      having jurisdiction. If allowed by statute or applicable law, the
+      arbitrator may award you statutory damages and/or your reasonable
+      attorney&apos;s fees and expenses. Regardless of whether the
+      arbitrator renders a decision or an award in your favor resolving the
+      dispute, you will not be responsible us for your portion of the
+      Arbitration Fees.
+   </li>
+   <li>
+      All parties, including related third parties, shall retain the right
+      to seek adjudication in a small claims tribunal for disputes within
+      the scope of such tribunal&apos;s jurisdiction. Any disputes that
+      cannot be adjudication within the jurisdiction of a small claims
+      tribunal shall be resolved by binding arbitration. Any appeal of a
+      jurisdiction from a small claims tribunal shall be resolved by binding
+      arbitration.
+   </li>
+   <li>
+      This arbitration clause is may pursuant to a transaction involving
+      commerce and shall be governed by the United States Federal
+      Arbitration Act (“FAA”). If a final non appealable judgment of a court
+      having jurisdiction over this transaction finds for any reason that
+      the FAA does not apply to this transaction, then our agreement to
+      arbitrate shall be governed by the laws of the Iipay Nation of Santa
+      Ysabel.
+   </li>
+   <li>
+      This Agreement is binding upon and benefits both parties&apos;
+      respective heirs, successors and assigns. The arbitration and class
+      action waiver provisions of this Agreement continue in full force and
+      effect, even if your obligations have been paid or discharged through
+      bankruptcy. The arbitration and class action waiver provisions survive
+      any termination, amendment, expiration or performance of any
+      transaction between you and us and continues in full force and effect
+      unless you and we otherwise agree in writing.
+   </li>
+</ol>
+<p>
+   <span> Notices. </span>
+   Expect as otherwise provided in the Agreement, you specifically agree
+   that all notices required to be sent to you are effective when mailed or
+   delivered to your last known mail or email address as identified in our
+   records, You agree that we may send provide or provide by electronic
+   communication any notice required under applicable law(s),
+   communication, disclosure amendment or replacement to the Agreement. All
+   notices to us should be forwarded to {{ tribe.name }} at the following
+   postal mailing address: {{ tribe.name }} 100 Schoolhouse Canyon Road,
+   Santa Ysabel, CA 92070; email address:
+   {{ tribe.email }}, or faxed to 18557349320.
+</p>
+<p>
+   <span>Your Electronic Signature. </span>
+   By electronically signing this Agreement below, you certify that the
+   information given in connection with this Agreement is true and correct.
+   You authorize us to verify the information given in connection with this
+   Agreement, and you give us consent to obtain information about you from
+   a consumer reporting agency or other sources. You acknowledge represent
+   and warrant that: (a) you have read, understand and agree to all of the
+   terms and conditions of this Agreement, including the Arbitration
+   Agreement and the waivers contained in the Arbitration Agreement of any
+   rights to a jury trial and any rights to participate in class
+   proceedings, (b) this Agreement contains all of the terms of the
+   Agreement between you and us and that no representations or promises
+   other than those contained in this Agreement have been made, (c) you
+   specifically authorize withdrawals and deposits to and from your Bank
+   Account as described in this Agreement, if you have elected to repay
+   this loan via ACH debits to your Bank Account (as set forth below), (d)
+   you are not a debtor under any proceeding in Bankruptcy and have no
+   intention to file a petition for relief under any chapter of the United
+   States Bankruptcy Code, (e) this Agreement was filled in before you
+   signed it, (f) you have received a copy of our privacy policy, and (g)
+   you have the ability to print or retain a completed copy of this
+   Agreement. You further acknowledge that we may withhold funding of your
+   Loan until we ensure all the information you gave us your application is
+   true and we decided whether you meet our requirements to receive the
+   Laon.
+</p>
+<p>
+   <span>Governing Law. </span>
+   This Agreement is made and accepted in the sovereign territory of the
+   Iipay Nation of Santa Ysabel, and shall be governed by applicable tribal
+   law, including but not limited to the Tribal Financial Services
+   Regulatory Act of the Iipay Nation of Santa Ysabel. You hereby agree
+   that this governing law provision applies no matter where you reside at
+   the time you request your loan from {{ tribe.name }}. 
+   {{ tribe.name }} is regulated by Iipay Nation of Santa Ysabel Tribal Financial
+   Services Regulatory Commission. You may contact the Commission by mail
+   at Canyon Road, Santa Ysabel, CA 92070.
+</p>
+<p>
+   <span>Provisions Severable. </span>
+   Each provision of this Agreement is distinct and severable. If any
+   provision is find invalid or unenforceable, in whole or in part, the
+   determination will only affect that provision and will not affect the
+   validity or enforceability of the remaining provisions of the Agreement.
+</p>
+<p>
+   <span>Third Party Beneficiaries. </span>
+   The parties do not intend the benefits of this Agreement to inure to any
+   third party, and nothing contained herein shall be construed as creating
+   any right, claim or cause of action in favor of any such third party.
+</p>
+<p>
+   <span>Assignment. </span>
+   You may not assign the Agreement to any other party. We may assign the
+   Agreement or delegate any or all our rights and duties under the
+   Agreement to any third party without notifying you. No delay or omission
+   by us in exercising any rights or remedies hereunder shall impair or
+   waive such right or remedy.
+</p>
+<p>
+   <span>Remedies. </span>
+   No delay or omission by us in exercising any rights or remedies under
+   the Agreement shall impair such right or remedy or be construed as a
+   waiver of any such right or remedy. Any single or partial exercise of a
+   right or remedy shall not preclude further exercise of any other right
+   or remedy. No waiver shall be valid unless signed in writing by us.
+</p>
+<p>
+   <span>Entire Agreement. </span>
+   This Agreement constitutes the entire agreement between us and
+   supersedes all prior agreements, understandings, statements or
+   proposals, and representations, whether written or oral. This Agreement,
+   including the provisions of this Section, may not be modified except by
+   written amendment signed by both parties.
+</p>
+<div class="signaturePlace">
+   <div class="fields-wrapper">
+      <div class="field-wrapper-borrower field-wrapper">
+         <div class="label">Borrower&apos;s signature:</div>
+         <div class="field">
+         </div>
+      </div>
+      <div class="closure-date field-wrapper">
+         <div class="label">Date:</div>
+         <div class="field">{{dateSigned}}</div>
+      </div>
+   </div>
+   <div class="fields-wrapper">
+      <div class="field-wrapper-borrower field-wrapper">
+         <div class="label">Applicant&apos;s signature:</div>
+         <div class="field">
+            <img class="signature-img" src="data:image/png;base64,{{signature}}" alt="signature" />
+         </div>
+         <div class="closure-date field-wrapper">
+            <div class="label">Date:</div>
+            <div class="field">{{dateSigned}}</div>
+         </div>
+      </div>
+   </div>
+</div>

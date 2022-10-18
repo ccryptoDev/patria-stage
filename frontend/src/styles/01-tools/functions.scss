@@ -1,0 +1,5 @@
+// CONVERTS Hexadecimal Colors to RGB
+@function hexToRGB($hex) {
+    @return red($hex), green($hex), blue($hex);
+  }
+  

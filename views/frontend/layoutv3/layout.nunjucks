@@ -1,0 +1,123 @@
+<!doctype html>
+  <html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <!-- Favicon -->
+	<!-- <link href="images/favicon.ico" rel="shortcut icon"> -->
+    <!-- meta View port tag -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
+    <!-- Title -->
+	<title>{{LenderShortName}}</title>
+	<link href="/images/imgv3/patria/favicon.png" rel="shortcut icon">
+	<!-- css animations -->
+	<link href="/styles/css/frontend/v3/animate.min.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="/styles/css/jquery-ui-datepicker.css" type="text/css">
+	<link href="/plugins/datepicker/datepicker3.css" rel="stylesheet" type="text/css" >
+    <!-- Font Awesome css -->
+	<link href="/styles/css/frontend/v3/font-awesome.css" rel="stylesheet" type="text/css" />
+	<link href="/styles/css/font-awesome-all.min.css" rel="stylesheet" type="text/css" />
+    <!-- General Font CSS -->
+    <link href="/styles/css/frontend/v3/fonts.css" rel="stylesheet" type="text/css" />
+    <!-- Bootstrap CSS -->
+    <link href="/styles/css/frontend/v3/bootstrap.css" rel="stylesheet" type="text/css" />
+    <!-- Common & Responsive CSS -->
+    <link href="/styles/css/frontend/v3/newcommon.css?ver=4" rel="stylesheet" type="text/css" />
+
+    <link href="/styles/css/frontend/jquery-ui.css" rel="stylesheet">
+    <link href="/styles/css/frontend/v3/custom.css?ver=4" rel="stylesheet" type="text/css" />
+    <link href="/styles/css/frontend/v3/custom1.css?ver=4" rel="stylesheet" type="text/css" />
+	<link href="/styles/css/frontend/v3/newresponsive.css?ver=4" rel="stylesheet" type="text/css" />
+	<link type="text/css" rel="stylesheet" href="/styles/css/frontend/v3/jquery.qtip.min.css" />
+	<!-- Spinner -->
+	<link href="/js/js/spin/spin.css" rel="stylesheet" type="text/css" />
+	<script src="/js/js/spin/spin.js"></script>
+	<!-- Los -->
+	<link href="/styles/los/los.css" rel="stylesheet" type="text/css" />
+	<!-- layout.css -->
+	<link href="/styles/css/frontend/v3/layout.css" rel="stylesheet" type="text/css" />
+	<link type="text/css" rel="stylesheet" href="/styles/css/frontend/skins/mySkins.css" />
+	<style>
+
+	</style>
+
+	<script type="text/javascript" src="/js/dependencies/sails.io.js"></script>
+	<script src="/plugins/jQuery/jquery-2.2.3.min.js"></script>
+	<script src="/js/js/underscore-min.js"></script>
+	<script src="/js/js/ajax-service.js"></script>
+	<script src="/js/js/jquery.validate.js"></script>
+	<script src="/plugins/inputmask/jquery.inputmask.bundle.min.js" ></script>
+	<script src="/styles/los/los.js"></script>
+</head>
+<body>
+
+	{% set name = req.path.split('/') %}
+	{% set urlpath = name[1] %}
+	{% if  req.path != '/home' and req.path != '/signin' and urlpath != 'applicationmanagementlogin' %}
+	{% include "frontend/layoutv3/header.nunjucks" %}
+	{% endif %}
+
+	<div class="spinner-container"  style="display:none;">
+		<div class="loading-spinner">
+			{# <div class="" align="center" style="text-align:center;position:fixed;top:0;left:0;right:0;bottom:0;z-index:100;background:rgba(0,0,0,0.7);">
+                <div style="height:100%;width:100%;background:url('/images/img/ajaxloader.gif') no-repeat center;margin-top:-233px;"></div>
+            </div> #}
+		</div>
+	</div>
+	<!-- Body Section -->
+	<main id="bodyContent" {% if  req.session.appPracticeName and req.session.appPracticeName !='' and req.session.appPracticeName != null %} class="bodyContent personlInfoBC appNewBC" {% else %} class="bodyContent" {% endif %}>
+	{% block body %}
+	{% endblock %}
+	</main>
+
+	{% include "frontend/layoutv3/footer.nunjucks" %}
+
+
+	<div id="alertmsg" class="modal fade" role="dialog" >
+	<div class="modal-dialog modal-md">
+	<!-- Modal content-->
+	<div class="modal-content" style="background-color: #243748">
+		<div class="modal-header bg-tcpa" style="border:0">
+		<button type="button" class="close" data-dismiss="modal" style="color: #FFF; opacity: 1;">&times;</button>
+		<h4 class="modal-title" style="color: #FFF;">Message</h4>
+		</div>
+		<div class="modal-body bgColorWhite" id="alertmsgbody" style="color:#FFF; border:0" >
+		</div>
+	</div>
+	</div>
+	</div>
+</body>
+</html>
+
+<script type="text/javascript">
+	const datepicker = $.fn.datepicker.noConflict(); // return $.fn.datepicker to previously assigned value
+	$.fn.bootstrapDP = datepicker;                 // give $().bootstrapDP the bootstrap-datepicker functionality
+	var spinnerIndex = 0;
+	$(document).ready(function() {
+	$("html, body").animate({ scrollTop: 0 }, "fast");
+
+	var opts = {
+			lines: 8, // The number of lines to draw
+			length: 30, // The length of each line
+			width: 15, // The line thickness
+			radius: 0, // The radius of the inner circle
+			scale: 0.75, // Scales overall size of the spinner
+			corners: 1, // Corner roundness (0..1)
+			color: "rgb(47,97,183)", // CSS color or array of colors
+			fadeColor: "rgba(47,97,183,0.2)", // CSS color or array of colors
+			speed: 1.2, // Rounds per second
+			rotate: 0, // The rotation offset
+			animation: 'spinner-line-fade-more', // The CSS animation name for the lines
+			direction: 1, // 1: clockwise, -1: counterclockwise
+			zIndex: 2e9, // The z-index (defaults to 2000000000)
+			className: 'spinner', // The CSS class to assign to the spinner
+			top: '40%', // Top position relative to parent
+			left: '50%', // Left position relative to parent
+			shadow: '0 0 1px transparent', // Box-shadow for the lines
+			position: 'absolute' // Element positioning
+		};
+		var target = $(".loading-spinner")[ 0 ];
+		var spinner = new Spinner(opts).spin(target);
+		target.appendChild(spinner.el);
+})
+
+</script>

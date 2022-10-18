@@ -1,0 +1,241 @@
+<div class="row">
+    <div class="col-xs-12">
+        <h2>Current Employment</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <table class="table table-bordered">
+            <tr>
+                <th></th>
+                <td><button id="btnEditEmployerData" class="btn btn-primary" >Edit Employment</button></td>
+            </tr>
+            <tr>
+                <th>Employer Name</th>
+                <td>{{currentEmploymentHistory.employerName}}</td>
+            </tr>
+            <tr>
+                <th>Employer Phone</th>
+                <td>{{currentEmploymentHistory.employerPhone}}</td>
+            </tr>
+            <tr>
+                <th>Income Type</th>
+                <td>{{currentEmploymentHistory.typeOfIncome}}</td>
+            </tr>
+            <tr>
+                <th>Pay Frequency</th>
+                <td>{{currentEmploymentHistory.payFrequency | payFrequencyDisplay}}</td>
+            </tr>
+            <tr>
+                <th>Employment Status</th>
+                <td>{{currentEmploymentHistory.employerStatus}}</td>
+            </tr>
+            <tr>
+                <th>Last Pay Date</th>
+                <td>{{currentEmploymentHistory.lastPayDate}}</td>
+            </tr>
+            <tr>
+                <th>Next Pay Date</th>
+                <td>{{currentEmploymentHistory.nextPayDate}}</td>
+            </tr>
+            {% if currentEmploymentHistory.secondPayDate %}
+                <tr>
+                    <th>Second Pay Date</th>
+                    <td>{{currentEmploymentHistory.secondPayDate}}</td>
+                </tr>
+            {% endif %}
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <h2>Add New Employment</h2>
+    </div>
+</div>
+<form id="newEmployment" onsubmit="return handleNewEmploymentSubmit()">
+    <input class="" type="hidden" name="user" value="{{ currentEmploymentHistory.user }}"/>
+    <input class="" type="hidden" name="paymentmanagement" value="{{ paymentmanagementdata.id }}"/>
+    <div class="row">
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <p a="a">Income Type</p>
+            <select class="form-control" name="typeOfIncome">
+                <option disabled="disabled" selected="selected">Select an Option</option>
+                <option value="disability_income">Disability Income</option>
+                <option value="social_security">Social Security</option>
+                <option value="employed">Employed</option>
+                <option value="unemployed">Unemployed</option>
+                <option value="pension">Pension</option>
+                <option value="others">Others (Child Support, Welfare etc.)</option>
+            </select>
+        </div>
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <p align="left">Employer Name</p>
+            <input class="form-control" name="employerName"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <p align="left">Employer Phone</p>
+            <input class="form-control" name="employerPhone">
+        </div>
+
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <p align="left">Employer Status</p>
+            <select class="form-control" name="employerStatus">
+                <option disabled="disabled" selected="selected">Select an Option</option>
+                <option value="full_time">Full Time</option>
+                <option value="part_time">Part Time</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <p align="left">Last Pay Date</p>
+            <input class="form-control" name="lastPayDate" type="date"/>
+        </div>
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <p align="left">Next Pay Date</p>
+            <input class="form-control" name="nextPayDate" type="date"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <button class="btn btn-primary align-right">Save</button>
+        </div>
+    </div>
+</form>
+{% if employmentHistories.length %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>Previous Employment</h2>
+        </div>
+    </div>
+{% endif %}
+{% for employmentHistory in employmentHistories %}
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-xs-12">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Income Type</th>
+                    <td>{{employmentHistory.typeOfIncome}}</td>
+                </tr>
+                <tr>
+                    <th>Employer Name</th>
+                    <td>{{employmentHistory.employerName}}</td>
+                </tr>
+                <tr>
+                    <th>Employer Phone</th>
+                    <td>{{employmentHistory.employerPhone}}</td>
+                </tr>
+                <tr>
+                    <th>Employment Status</th>
+                    <td>{{employmentHistory.employerStatus}}</td>
+                </tr>
+                <tr>
+                    <th>Last Pay Date</th>
+                    <td>{{employmentHistory.lastPayDate}}</td>
+                </tr>
+                <tr>
+                    <th>Next Pay Date</th>
+                    <td>{{employmentHistory.nextPayDate}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+{% endfor %}
+  {% include "admin/partials/ach/editEmploymentInfoPartial.nunjucks" %}
+<style>
+    .form-control {
+        border-radius: 8px;
+        background-color: rgb(246,246,246);
+        height: 40px;
+    }
+</style>
+<script type="text/javascript">
+    function handleNewEmploymentSubmit() {
+        event.preventDefault()
+        const newEmploymentForm = $('#newEmployment');
+
+        if (newEmploymentForm.valid()) {
+            const data = newEmploymentForm
+                .serializeArray()
+                .reduce((accu, {name, value}) => {
+                    accu[name] = value;
+                    return accu;
+                }, {});
+            ajaxPost("/admin/employmentHistory", data).then((response) => {
+                if (response) {
+                    window
+                        .location
+                        .reload();
+                }
+                hideLoadingSpinner();
+            }, (error) => {
+                console.error(JSON.stringify(error));
+                hideLoadingSpinner();
+            })
+        }
+        return false;
+    }
+
+    $(document).ready(() => {
+      $("#btnEditEmployerData").on("click", function(e) {
+        e.preventDefault();
+        showEmployerEditModal();
+      });
+        $("#newEmployment").validate({
+            rules: {
+                "typeOfIncome": {
+                    required: true
+                },
+                "employerName": {
+                    required: true
+                },
+                "employerPhone": {
+                    required: true
+                },
+                "employerStatus": {
+                    required: true
+                },
+                "lastPayDate": {
+                    required: true
+                },
+                "nextPayDate": {
+                    required: true
+                }
+            },
+            messages: {
+                "typeOfIncome": {
+                    required: "Type of Income is required."
+                },
+                "employerName": {
+                    required: "Employer Name is required."
+                },
+                "employerPhone": {
+                    required: "Employer Phone is required."
+                },
+                "employerStatus": {
+                    required: "Employer Status is required."
+                },
+                "lastPayDate": {
+                    required: "Last Pay Date State is required."
+                },
+                "nextPayDate": {
+                    required: "Next Pay Date is required."
+                }
+            },
+            errorPlacement: function (error, element) {
+                error.insertAfter(element);
+            }
+        })
+    });
+    function toggleEmployerChangeErrors(selector, message) {
+      if(!!selector) {
+        if(!message){
+          $(selector).html("").css("display", "none");
+        }else {
+          $(selector).html(message).css("display", "block");
+        }
+      }
+    }
+</script>

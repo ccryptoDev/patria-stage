@@ -1,0 +1,224 @@
+{% extends "frontend/layoutv3/layout.nunjucks" %}
+
+{% block body %}
+<style>
+	.OfferPage h5 {
+		color: #009898;
+	}
+	.offers.row {
+		display: flex;
+		flex-wrap: wrap;
+		flex-flow: row wrap;
+		flex-direction: row;
+		justify-content: center;
+	}
+	.center-container {
+		margin: 0 auto;
+	}
+	.offer-box-outer {
+		font-size: 14px;
+		margin-bottom: 40px;
+		height: 379px;
+		/*width: 329px;*/
+	}
+
+	.offer-box-inner {
+		background: rgb(245,245,245);
+		margin: 10px;
+		border: 1px solid #4c4c48;
+		border-radius: 8px;
+		padding: 20px 10px 30px 10px;
+		height: 100%;
+	}
+
+	.offer-box-inner .select-offer-button-container {
+		text-align: center;
+		position: absolute;
+		bottom: 40px;
+		/* left: calc(100% /2); */
+		width: calc(100% - 70px);
+	}
+
+	.fin-amount {
+		color: #4c4c48;
+		text-align: center;
+		font-weight: 500;
+	}
+	.fin-amount .fin-label {
+		font-size: 18px;
+		color: #8093a5;
+		margin-bottom: 5px;
+	}
+	.modal-body .fin-amount > div {
+		width: 150px;
+		margin: 0 auto 5px auto;
+	}
+	.btn.btn-cancel {
+		background: #aaa;
+		border: 1px solid #888;
+	}
+	.btn.btn-cancel:hover {
+		background: #a0a0a0;
+		border: 1px solid #888;
+	}
+	@media (max-width: 1200px) {
+		.offer-box-outer {
+			width: 100%;
+		}
+	}
+</style>
+<div class="container">
+	<!-- offers loader -->
+	<div class="heading">
+		<div class="logoMiddle">
+			<img src="images/imgv3/logo.png" class="img-reponsive" />
+		</div>
+	</div>
+	<div class="row" id="loaderidoffers" style="display:none;">
+		<div class="" align="center" style="text-align:center;position:fixed;top:0;left:0;right:0;bottom:0;z-index:100;background:rgba(0,0,0,0.7);">
+			<div style="height:100%;width:100%;background:url('/images/img/ajaxloader.gif') no-repeat center;margin-top:-233px;"></div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 personalInfoInner">
+			<div class="whitebox infoForm">
+				<div class="v-center">
+					<div class="h-center">
+						<div class="OfferPage">
+							<h3>Dear {{ user.firstname }},</h3>
+							<br/>
+							<p>Thank you for choosing {{ LenderShortName }} to provide your personal loan financing.</p>
+							{% if errorcode != 201 %}
+								<p>We have verified your credit profile and income, and we are pleased to provide this loan pre-approval on the following terms:</p>
+							{% endif %}
+							<br/>
+						</div>
+						<div class="inner-container">
+							<div class="offers row">
+								{% for offer in screentracking.offers %}
+								{% if( offer.validOffer == false ) %}
+								{% else %}
+									<div class="offer-box-outer col-lg-4">
+										<div class="offer-box-inner numOffers-{{offers | length}}">
+											<h2 class="fin-amount"><div class="fin-label">Monthly Payment</div><div>{{ offer.monthlyPayment | $format }}</div></h2>
+											<div class="table-responsive-sm">
+												<table class="table">
+													<tbody>
+														<tr>
+															<td class="tbl-col-1">Term:</td>
+															<td class="tbl-col-2">{{offer.term}} Months</td>
+														</tr>
+														<tr>
+															<td class="tbl-col-1">Interest Rate:</td>
+															<td class="tbl-col-2">{{offer.interestRate}}%</td>
+														</tr>
+														<tr>
+															<td class="tbl-col-1">APR:</td>
+															<td class="tbl-col-2">{{offer.apr}}%</td>
+														</tr>
+														<tr>
+															<td class="tbl-col-1">Frequency:</td>
+															<td class="tbl-col-2">Monthly</td>
+														</tr>
+														<tr>
+															<td class="tbl-col-1">Loan Amount:</td>
+															<td class="tbl-col-2">{{ offer.financedAmount | $format }}</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<div class="select-offer-button-container" style="text-align:center;">
+												<button type="button" class="btn btn-default btn-application" onclick="selectoffer({{loop.index}})">Select Offer</button>
+											</div>
+										</div>
+									</div>
+								{% endif %}
+								{% else %}
+								<div>No offers available.</div>
+								{% endfor %}
+							</div>
+
+							{% for offer in screentracking.offers %}
+							{% if( offer.validOffer == false ) %}
+							{% else %}
+							<div id="confirmoffer{{loop.index}}" class="modal fade" role="dialog">
+								<div class="modal-dialog modal-md">
+									<!-- Modal content-->
+									<div class="modal-content">
+										<div class="modal-header bg-tcpa user-modal-header">
+											<h4 class="modal-title" id="storyinfopopupheader">Accept Offfer</h4>
+											<button type="button" class="close" data-dismiss="modal" style="color:#FFF; opacity:1;">&times;</button>
+										</div>
+										<div class="modal-body bgColorWhite">
+											<h2 class="fin-amount"><div class="fin-label">Monthly Payment</div><div>{{ offer.monthlyPayment | $format }}</div></h2>
+											<div class="table-responsive-sm">
+												<table class="table">
+													<tbody>
+														<tr>
+															<td class="tbl-col-1">Term:</td>
+															<td class="tbl-col-2">{{offer.term}} Months</td>
+														</tr>
+														<tr>
+															<td class="tbl-col-1">Interest Rate:</td>
+															<td class="tbl-col-2">{{offer.interestRate}}%</td>
+														</tr>
+														<tr>
+															<td class="tbl-col-1">APR:</td>
+															<td class="tbl-col-2">{{offer.apr}}%</td>
+														</tr>
+														<tr>
+															<td class="tbl-col-1">Frequency:</td>
+															<td class="tbl-col-2">Monthly</td>
+														</tr>
+														<tr>
+															<td class="tbl-col-1">Financed Amount:</td>
+															<td class="tbl-col-2">{{ offer.financedAmount | $format }}</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+										<div class="text-center">
+											<button type="button" data-dismiss="modal" class="btn-application btn-cancel">Cancel</button>
+											<button type="button" data-dismiss="modal" class="btn-application" onclick="saveSelectedOffer('{{loop.index}}')">Continue</button>
+										</div>
+										<br /><br />
+									</div>
+								</div>
+							</div>
+							{% endif %}
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+	function selectoffer( idx ) {
+		$( "#confirmoffer" + idx ).modal( "show" );
+	}
+	function saveSelectedOffer( idx ) {
+		startLoader();
+		$.ajax( {
+			cache: false,
+			type: "POST",
+			url: "/saveloanoffer",
+			dataType: "json",
+			contentType: 'application/json;charset=UTF-8',
+			data: JSON.stringify( { "screenid": "{{ screentracking.id }}", "loanId": idx } ),
+			success: function( msg ) {
+				window.location.href = "/contract";
+			}
+		} );
+	}
+	function startLoader() {
+		$('#loaderidoffers').show();
+		return;
+	}
+</script>
+
+{% endblock %}

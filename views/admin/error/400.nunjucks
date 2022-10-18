@@ -1,0 +1,26 @@
+{% extends "layout/layout.nunjucks" %}
+{% block body %}
+    <section class="content-header">
+      <h1>
+        400 Error page
+        <small>preview of 400 Error</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="/admin/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">400 Error page</li>
+      </ol>
+    </section>
+
+    <section class="content">
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">400 Error page</h3>
+        </div>
+        <div class="box-body">
+            <h4>
+              <span class="error">Error: {{ data }}</span>
+            </h4>
+        </div>
+      </div>
+    </section>
+{% endblock %}

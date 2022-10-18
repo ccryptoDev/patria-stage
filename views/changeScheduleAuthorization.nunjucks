@@ -1,0 +1,3 @@
+
+{% set isChangeScheduleAuthorization = true %}
+{% include "contractPage.nunjucks" %}

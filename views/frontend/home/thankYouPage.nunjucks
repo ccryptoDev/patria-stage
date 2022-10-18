@@ -1,0 +1,120 @@
+
+{% extends "frontend/layoutv3/layout2.nunjucks" %}
+{% block body %}
+
+	<div class="container has-practice-name-header-shown" id="finalize-page">
+		<div class="inner-content">
+			<div class="heading">
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 personalInfoInner">
+				<div class="whitebox infoForm">
+					<div class="v-center">
+						<div class="h-center">
+              <div class="centrBox"> 
+                <h1 class="title" style="color: black;">Thank you for choosing Patria</h1>
+
+                <p> You are all set! One of our representatives will reach out to you shortly. You can now view your payment schedule and review your loan documents by going to your Customer Portal.</p>
+                <!-- Go To Dashboard Button -->
+                  <div class="text-right" style="margin-top: 20px;">
+                    <a href="/dashboard">
+                      <div style="text-align: center;">
+                        <button name="btnSubmitThankYou" id="goto-dashboard"  class="nav-apply-btn finishBtn">Go to Customer Portal</button>
+                      </div>
+                    </a>
+                  </div>
+              </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{# <script>
+  $(document).ready(function() {
+    $("#goto-dashboard").on("click", function(e) {
+        e.preventDefault();
+        gotodashboard();
+    });
+  })
+  function gotodashboard() {
+    $("#redirect-text").html("").css("display","none");
+    const screenId = "{{ loan.id }}";
+    $.ajax( {
+        type: "POST",
+        url: "/redirecttodashboard",
+        data: { screenId: screenId },
+        success: function(response) {
+            if (!!response.redirectUrl) {
+                window.location.href=response.redirectUrl;
+            } else {
+                console.error(status);
+            }
+        },
+        error: function(xhr) {
+            document.getElementById("redirect-text").innerHTML =  xhr.responseJSON && xhr.responseJSON.message?"<br>An error had occurred. " + xhr.responseJSON.message:"<br>An error had occurred, please refresh the page and try again.";
+            $("#redirect-text").html( xhr.responseJSON && xhr.responseJSON.message?"<br>An error had occurred. " + xhr.responseJSON.message:"<br>An error had occurred, please refresh the page and try again.").css("display","block");
+        },
+        complete: function() {
+            hideLoadingSpinner();
+        }
+    });
+  }
+</script> #}
+<style>
+
+body {
+	background: url("/images/imgv3/LOS_background.jpg") no-repeat center center fixed;
+	background-size: cover;
+	background-color: rgba(165, 165, 165, 0.6);
+	color: #3F576C;
+	font-family: 'Avenir Next LT Pro';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	height: 100%;
+}
+
+#goto-dashboard {
+  	background: #6874E4;
+		height: 45px;
+		min-width: 100px;
+		line-height: 23px;
+		border-radius: 8px;
+		border: none;
+		color: #FFFFFF;
+		font-size: 15px;
+		font-weight: 500;
+    padding-right: 18px;
+    padding-left: 18px;
+}
+.title {
+  text-align: center;
+}
+.container {
+  color: #5D5C5C
+  font-size: 16px;
+}
+.h-center {
+  width: 50%; 
+  margin: 0 auto; 
+  text-align: center;
+  padding-top: 15%;
+  letter-spacing: 1px;
+}
+.text-right {
+    margin-top: 30px;
+}
+.centrBox {
+  background: white;
+  padding: 20px;
+  border-radius: 6px;
+}
+
+</style>
+{% endblock %}
+
+

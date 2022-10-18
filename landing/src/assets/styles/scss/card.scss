@@ -1,0 +1,31 @@
+.card {
+  width: 100%;
+  padding: 2.4rem;
+  border-radius: 1.4rem;
+  background: var(--color-card-bg);
+  display: flex;
+  flex-direction: column;
+  row-gap: 5.6rem;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+
+  &-content {
+    img {
+      width: 100%;
+      display: block;
+    }
+  }
+  &-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 12px;
+    & img {
+      width: 3rem;
+    }
+    & h5 {
+      color: var(--color-blue-1);
+    }
+  }
+}

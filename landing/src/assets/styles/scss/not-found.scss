@@ -1,0 +1,11 @@
+.page-not-found {
+  border-top: 1px solid var(--color-secondary-2);
+  padding: 2rem 0;
+  &-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20vh;
+    color: var(--color-blue-1);
+  }
+}

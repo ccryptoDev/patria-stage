@@ -1,0 +1,567 @@
+{% extends "layout/layout.nunjucks" %}
+
+{% block body %}
+	<style>
+		.custom-control {
+			width: 325px;
+			margin-bottom: 10px;
+			display: flex;
+			flex: 1 1 25%;
+			justify-content: space-between;
+			align-content: center;
+			padding: 0 30px 0 20px;
+		}
+		.custom-select {
+			width: 325px;
+			margin-bottom: 10px;
+			display: flex;
+			justify-content: space-between;
+			align-content: center;
+			padding-left: 15px;
+		}
+		.custom-select > .dup-days {
+			width: 75px;
+		}
+		.tables {
+			padding-top: 40px;
+
+		}
+
+		.custom-select.dup {
+			padding-left: 20px;
+		}
+
+		.action:hover {
+			cursor: pointer;
+			color: lighten(20%);
+		}
+		.select-styled {
+			text-align: center;
+			width: 141px;
+			padding: 1px;
+			border-radius: 0;
+			border: 1px solid lightgray;
+			position: relative;
+		}
+		.select-styled select {
+			background: transparent;
+			line-height: 1;
+			border: 0;
+			padding: 0;
+			border-radius: 0;
+			width: 100%;
+			z-index: 10;
+			font-size: 1em;
+		}
+		.input-list {
+			width: 141px;
+			padding-left: 10px;
+		}
+	</style>
+
+	<section class="content-header">
+		<h1>
+        Manage Leads
+        <small>Lead generation management</small>
+		</h1>
+		<ol class="breadcrumb">
+			<li>
+				<a href="/admin/dashboard">
+					<i class="fa fa-dashboard"></i> Dashboard</a>
+			</li>
+			<li class="active">Manage Leads </li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="box">
+			<div class="box-header with-border">
+				<h3 class="box-title">Lead Generation</h3>
+			</div>
+			<div class="box-body">
+				<div class="container-fluid">
+					<div class="row ">
+						<div class="col-md-6 controls">
+							<div class="row">
+
+								<h2>Global Lead Gen Controls</h2>
+								<div class="custom-control custom-switch">
+									<label class="custom-control-label" for="purchasingSwitch">Enable Lead Generation</label>
+									{% if config.purchasing %}
+										<input type="checkbox" class="custom-control-input" id="purchasingSwitch" checked>
+									{% else %}
+										<input type="checkbox" class="custom-control-input" id="purchasingSwitch">
+									{% endif %}
+
+								</div>
+								{# <div class="custom-select dup">
+									<label for="selectDupDays">Allow Duplicates After</label>
+									<div class="select-styled">
+										<select id="selectDupDays" class="dup-days">
+											<option selected>30 days</option>
+											<option value="1">60 days</option>
+											<option value="2">90 days</option>
+											<option value="3">120 day</option>
+										</select>
+									</div>
+
+								</div> #}
+								<div class="custom-control custom-switch">
+									<label class="custom-control-label" for="weekendSwitch">Enable Weekends</label>
+									{% if config.purchasingWeekends %}
+										<input type="checkbox" class="custom-control-input" id="weekendSwitch" checked>
+									{% else %}
+										<input type="checkbox" class="custom-control-input" id="weekendSwitch">
+									{% endif %}
+								</div>
+								<div class="custom-control custom-switch">
+									<label class="custom-control-label" for="holidaySwitch">Enable Holidays</label>
+									{% if config.purchasingHolidays %}
+										<input type="checkbox" class="custom-control-input" id="holidaySwitch" checked>
+									{% else %}
+										<input type="checkbox" class="custom-control-input" id="holidaySwitch">
+									{% endif %}
+								</div>
+								<div class="custom-control custom-switch">
+									<label class="custom-control-label" for="autoPromoteSwitch">Enable Automated Campaign</label>
+									{% if config.autoPromoteCampaign %}
+										<input type="checkbox" class="custom-control-input" id="autoPromoteSwitch" checked>
+									{% else %}
+										<input type="checkbox" class="custom-control-input" id="autoPromoteSwitch">
+									{% endif %}
+								</div>
+							</div>
+							<div class="row">
+								<h2>Basic Lead Controls</h2>
+								<div class="custom-select">
+									<label for="perMonth">Monthly Maximum</label>
+									<input id="perMonthMax" class="input-list" type="text" list='perMonth' value="{{config.days30.limit}}">
+									<datalist id="perMonth" >
+										<option value="25"/>
+										<option value="50"/>
+										<option value="100"/>
+										<option value="150"/>
+										<option value="200"/>
+										<option value="250"/>
+										<option value="300"/>
+										<option value="350"/>
+									</datalist>
+								</div>
+								<div class="custom-select">
+									<label for="perDay">Daily Maximum</label>
+									<input id="perDayMax"class="input-list" type="text" list='perDay' value="{{config.today.limit}}">
+									<datalist id="perDay" >
+										<option value="0"/>
+										<option value="5"/>
+										<option value="10"/>
+										<option value="15"/>
+										<option value="20"/>
+										<option value="25"/>
+									</datalist>
+								</div>
+
+								<div class="custom-select time">
+									<label for="startTime">Lead Gen Start Time</label>
+									<div class="select-styled">
+										<select id="startTime"  >
+											<option value="-1">--</option>
+											<option value="0">12:00 am</option>
+											<option value="1">1:00 am</option>
+											<option value="2">2:00 am</option>
+											<option value="3">3:00 am</option>
+											<option value="4">4:00 am</option>
+											<option value="5">5:00 am</option>
+											<option value="6">6:00 am</option>
+											<option value="7">7:00 am</option>
+											<option value="8">8:00 am</option>
+											<option value="9">9:00 am</option>
+											<option value="10">10:00 am</option>
+											<option value="11">11:00 am</option>
+											<option value="12">12:00 pm</option>
+											<option value="13">1:00 pm</option>
+											<option value="14">2:00 pm</option>
+											<option value="15">3:00 pm</option>
+											<option value="16">4:00 pm</option>
+											<option value="17">5:00 pm</option>
+											<option value="18">6:00 pm</option>
+											<option value="19">7:00 pm</option>
+											<option value="20">8:00 pm</option>
+											<option value="21">9:00 pm</option>
+											<option value="22">10:00 pm</option>
+											<option value="23">11:00 pm</option>
+										</select>
+									</div>
+								</div>
+								<div class="custom-select time">
+									<label for="endTime">Lead Gen End Time</label>
+									<div class="select-styled">
+										<select id="endTime">
+											<option value="-1">--</option>
+											<option value="0">12:00 am</option>
+											<option value="1">1:00 am</option>
+											<option value="2">2:00 am</option>
+											<option value="3">3:00 am</option>
+											<option value="4">4:00 am</option>
+											<option value="5">5:00 am</option>
+											<option value="6">6:00 am</option>
+											<option value="7">7:00 am</option>
+											<option value="8">8:00 am</option>
+											<option value="9">9:00 am</option>
+											<option value="10">10:00 am</option>
+											<option value="11">11:00 am</option>
+											<option value="12">12:00 pm</option>
+											<option value="13">1:00 pm</option>
+											<option value="14">2:00 pm</option>
+											<option value="15">3:00 pm</option>
+											<option value="16">4:00 pm</option>
+											<option value="17">5:00 pm</option>
+											<option value="18">6:00 pm</option>
+											<option value="19">7:00 pm</option>
+											<option value="20">8:00 pm</option>
+											<option value="21">9:00 pm</option>
+											<option value="22">10:00 pm</option>
+											<option value="23">11:00 pm</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="w-100"></div>
+						<div class="col-md-6">
+							<h2>Summary</h2>
+							<h3>Last 30 days</h3>
+							<p>Total Purchased Last 30 days: {{stats.days30.purchased}}</p>
+							<p>Total Seen Last 30 days: {{stats.days30.seen}}</p>
+							<h3>Today</h3>
+							<p>Total Purchased Today: {{stats.today.purchased}}</p>
+							<p>Total Seen Today: {{stats.today.seen}}</p>
+						</div>
+
+					</div>
+					<div class="row tables">
+						<div class="col">
+							<div class="panel panel-default">
+								<div class="panel-heading" >Active Campaigns</div>
+								<table id="activeCampaigns_table" class="table table-striped dataTable" >
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Name</th>
+											<th>Referral URL</th>
+											<th>Campaign Limit</th>
+											<th>Leads Purchased Today</th>
+											<th>Leads Purchased in Last 30 Days</th>
+											<th>Leads Seen Today</th>
+											<th>Leads Seen Last 30 Days</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+
+								</table>
+							</div>
+						</div>
+						<div class="w-100"></div>
+						<div class="col">
+							<div class="panel panel-default">
+								<div class="panel-heading">Available Campaigns</div>
+								<table id="availableCampaigns_table" class="table table-striped dataTable" style="padding: 5px;">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Name</th>
+											<th>Referral URL</th>
+											<th>Leads Purchased in Last 30 Days</th>
+											<th>Leads Seen Today</th>
+											<th>Leads Seen Last 30 Days</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<script>
+
+			$('document').ready(function () {
+				if ($('#startTime') && $('#endTime')){
+					$.get(`/admin/lead/config`, function(config){
+						var times = config.today.hourLimits;
+						var isSet = (item)=> item > 0
+						var start = times.findIndex(isSet);
+						var end = times.lastIndexOf(times[start]);
+						$('#startTime').val(start);
+						$('#endTime').val(end);
+
+
+					})
+
+				}
+
+				if ($("#activeCampaigns_table")) {
+					fetchActiveTable();
+				}
+				if ($("#availableCampaigns_table")) {
+					fetchAvailableTable();
+				}
+			});
+
+			$('#purchasingSwitch').change(function () {
+				if (this.checked) {
+					$.ajax({
+						url: `/admin/lead/config/purchasing/true`,
+						type: "PUT"
+						}).done(function () {
+							console.log("Lead Generation Enabled")
+						})
+				} else {
+					$.ajax({
+						url: `/admin/lead/config/purchasing/false`,
+						type: "PUT"
+						}).done(function () {
+							console.log("Lead Generation Disabled")
+						})
+				}
+			});
+
+			$('#weekendSwitch').change(function () {
+				if (this.checked) {
+					$.ajax({
+						url: `/admin/lead/config/purchasing/weekends/true`,
+						type: "PUT"
+						}).done(function () {
+							console.log("Weekends Enabled")
+						})
+				} else {
+					$.ajax({
+						url: `/admin/lead/config/purchasing/weekends/false`,
+						type: "PUT"
+						}).done(function () {
+							console.log("Weekends Disabled")
+						})
+				}
+			});
+			$('#holidaySwitch').change(function () {
+				if (this.checked) {
+					$.ajax({
+						url: `/admin/lead/config/purchasing/holidays/true`,
+						type: "PUT"
+						}).done(function () {
+							console.log("Holidays Enabled")
+						})
+				} else {
+					$.ajax({
+						url: `/admin/lead/config/purchasing/holidays/false`,
+						type: "PUT"
+						}).done(function () {
+							console.log("Holidays Disabled")
+						})
+				}
+			});
+			$("#autoPromoteSwitch").change(function () {
+				if (this.checked) {
+					$.ajax({
+						url: `/admin/lead/config/campaign/autopromote/true`,
+						type: "PUT"
+					}).done(function () {
+						console.log("Automated Campaign Enabled")
+					})
+				} else {
+					$.ajax({
+						url: `/admin/lead/config/campaign/autopromote/false`,
+						type: "PUT"
+					}).done(function () {
+						console.log("Automated Campaign Disabled")
+					})
+				}
+			})
+
+			$('#perMonthMax').change(function () {
+				$.ajax({
+					url: `/admin/lead/config/limit/month/${$(this).val()}`,
+					type: "PUT"
+					}).done(function () {
+						console.log("Monthly purchase limit set")
+					})
+			});
+
+			$('#perDayMax').change(function () {
+				$.ajax({
+					url: `/admin/lead/config/limit/day/${$(this).val()}`,
+					type: "PUT"
+					}).done(function () {
+						console.log("Daily purchase limit set")
+					})
+			});
+
+			$('#startTime').change(function () {
+				if ($(this).val() != -1 && $('#endTime').val()!= -1) {
+					$.ajax({
+						url: `/admin/lead/config/purchasing/hours/${$(this).val()}/${$('#endTime').val()}`,
+						type:"PUT"
+					}).done(function() {
+						console.log('Start/End Time Set');
+					})
+
+				} else {
+
+				}
+
+			});
+			$('#endTime').change(function () {
+	if ($(this).val() != -1 && $('#startTime').val()!= -1) {
+				$.ajax({
+					url: `/admin/lead/config/purchasing/hours/${$('#startTime').val()}/${$(this).val()}`,
+					type: "PUT"
+					}).done(function() {
+						console.log('Start/End Time Set: ')
+					})
+
+				} else {
+					//console.error('panic billy rob, PANIC!!!');
+				}
+
+	});
+
+			function fetchActiveTable() {
+				$('#activeCampaigns_table').dataTable({
+					"responsive": true,
+					"bProcessing": true,
+					"bServerSide": false,
+					"bDestroy": true,
+					"oLanguage": {
+						"sLoadingRecords": "Please wait - loading..."
+					},
+					"processing": true,
+					"sPaginationType": "full_numbers",
+					"aaSorting": [
+						[3, 'dec']
+					],
+					"lengthMenu": [
+						[
+							10, 25, 50, 100
+						],
+						[
+							10, 25, 50, 100
+						]
+					],
+					"iDisplayLength": 50,
+					"sAjaxSource": "/admin/lead/campaignstats?active",
+					"aoColumns": [
+						{
+							"mData": "id",
+							"bSortable": false
+						}, {
+							"mData": "name"
+						}, {
+							"mData": "referral"
+						}, {
+							"mData": "days30.limit"
+						}, {
+							"mData": "today.purchased"
+						}, {
+							"mData": "days30.purchased"
+						}, {
+							"mData": "today.seen"
+						}, {
+							"mData": "days30.seen"
+						}, {
+							"mData": "action",
+							"bSortable": false
+						}
+					]
+				});
+				$('#activeCampaigns_table_filter input').unbind();
+				$('#activeCampaigns_table_filter input').bind('keyup', function (e) {
+					if (e.keyCode == 13) {
+						sTable.fnFilter(this.value);
+					}
+				});
+
+				$('#activeCampaigns_table')
+					.parent()
+					.addClass('table-responsive');
+			};
+
+			function fetchAvailableTable() {
+				$('#availableCampaigns_table').dataTable({
+					"responsive": true,
+					"bProcessing": true,
+					"bServerSide": false,
+					"bDestroy": true,
+					"oLanguage": {
+						"sLoadingRecords": "Please wait - loading..."
+					},
+					"processing": true,
+					"sPaginationType": "full_numbers",
+					"aaSorting": [
+						[3, 'desc']
+					],
+					"lengthMenu": [
+						[
+							10, 25, 50, 100
+						],
+						[
+							10, 25, 50, 100
+						]
+					],
+					"iDisplayLength": 50,
+					"sAjaxSource": "/admin/lead/campaignstats",
+					"rowID": "name",
+					"aoColumns": [
+						{
+							"mData": "id",
+							"bSortable": false
+						}, {
+							"mData": "name"
+						}, {
+							"mData": "referral"
+						}, {
+							"mData": "days30.purchased"
+						}, {
+							"mData": "today.seen"
+						}, {
+							"mData": "days30.seen"
+						}, {
+							"mData": "action",
+							"bSortable": false
+						}
+					]
+				});
+				$('#availableCampaigns_table_filter input').unbind();
+				$('#availableCampaigns_table_filter input').bind('keyup', function (e) {
+					if (e.keyCode == 13) {
+						sTable.fnFilter(this.value);
+					}
+				});
+
+				$('#availableCampaigns_table')
+					.parent()
+					.addClass('table-responsive');
+			}
+
+			function activateCampaign(name) {
+				var limit = prompt(`Enter a limit for ${name}:`, 1);
+				if (limit == null){
+					return;
+				}
+				//console.log(limit);
+				$.ajax({url: `/admin/lead/config/limit/campaign/${name}/month/${limit}`, type: "PUT"})
+					.done(function () {
+						fetchAvailableTable();
+						fetchActiveTable();
+					})
+
+			}
+			function deactivateCampaign(name) {
+				$.ajax({url: `/admin/lead/config/limit/campaign/${name}/month/0`, type: "PUT"})
+					.done(function () {
+						fetchAvailableTable();
+						fetchActiveTable();
+					})
+			}
+		</script>
+
+	{% endblock %}

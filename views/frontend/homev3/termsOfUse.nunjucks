@@ -1,0 +1,209 @@
+{% extends "frontend/homev3/newHome.nunjucks" %}
+{% block body %}
+
+<div class="terms-title">
+	<div class="terms-title-container">
+		<h3>Terms Of Use</h3>
+		<div class="page-track-container">
+			<ul class="page-track">
+				<li>You are here: </li>
+				<li class="home"><a href="/"> Home </a></li>
+				<li class="active"><a href="/terms-of-use"> Terms Of Use</a></li>
+		</div>
+	</div>
+</div>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info how-it-works">
+				<p>Thank you for visiting Patria.com. We provide and maintain this site for your personal information. By accessing and using the site, you accept and agree, without limitation, to the following terms and conditions:</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>Intellectual Property</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info how-it-works">
+				<p>The trademarks, titles, characters, trade names, graphics, designs and other properties, including all software, text and images appearing on this site are protected intellectual properties owned by us, its licensees, or other third parties who have authorized use of such properties on this site. We will aggressively enforce its intellectual property rights to the fullest extent of the law.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>Your Use of this Site</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info how-it-works">
+				<p>We grant you permission to view and make copies of documents, pages, images or other materials or content on this site for the purposes of obtaining a installment loan from or their affiliates for your non-commercial, personal use. We reserve all other rights in this web site and its contents. You may not distribute, display, transmit or disseminate any such documents, pages, images, materials or content without the prior written consent. Except as expressly provided on this site, nothing contained on this site shall be construed as conferring any right or license under any trademark, copyright or other intellectual property right.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>Limitation of Liability and Disclaimer of Warranties</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>We use reasonable efforts to ensure that the information on this site is accurate, but cannot guarantee such accuracy. We make no representations regarding the use or results of any content on this site as to its accuracy, reliability or any other matter. NEITHER WE NOR ANY OTHER PARTY INVOLVED IN CREATING, PRODUCING OR DELIVERING THIS SITE SHALL BE LIABLE FOR ANY DIRECT, INCIDENTAL, CONSEQUENTIAL, INDIRECT OR PUNITIVE DAMAGES ARISING OUT OF YOUR ACCESS TO, OR USE OF, THIS SITE. Everything on this site is provided “AS IS” AND WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO, ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT. Because some jurisdictions may not allow the exclusion of implied warranties or limitation of certain types of damages, some of the above exclusion limitations may not apply to you. Check your local laws.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>Linking</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>This site may contain links to sites maintained by third parties. We are not responsible for the content or privacy policies of those sites, and the existence of such links should not be considered an endorsement or recommendation of those sites or of any product or service offered on those sites or of any party that is associated with those sites.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>Privacy</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>We will use any personal data supplied through this site in accordance with its Privacy Policy.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>Offers Void in Some States</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>The offers advertised on this site may be void in some states.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>Law and Venue</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>Your use of this site is governed by the laws of the Lipay Nation of Santa Ysabel, a federally recognized Indian Tribe, without regard to its choice of law provisions. The Lipay Nation of Santa Ysabel, a federally recognized Indian Tribe’s general jurisdiction will be the exclusive venue for litigating disputes arising out of these Terms and Conditions of Use.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>Modification</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>We reserve the right to modify these terms and conditions from time to time. Your use of this site after such a modification will constitute your acceptance of, and your agreement to, any new or amended terms and conditions.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>Wireless and Text Messaging Policy</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info how-it-works">
+				<p>By providing your cell phone number, you have provided us with consent to send you text messages in conjunctions with the services you have requested. Your cellular provider’s Msg&Data Rates may apply to our confirmation message and all subsequent messages. You understand the text messages we send may be seen by anyone with access to your phone. Accordingly, you should take steps to safeguard your phone and your text messages if you want them to remain private.<br><br>Please notify us immediately if you change mobile numbers or plan to provide your phone to another person. If we modify this Text Message Policy, we will notify you by sending you a text message with a link to the new policy. We may terminate our text message program at any time. If you have any questions about this policy, would like us to mail you a paper copy of this policy or are having problems receiving or stopping our text messages, please contact us using the following information: Patria, LLC, P.O. Box 645, Santa Ysabel, CA 92070.<br><br>You agree and consent to be contacted by Lender, our agents, employees, affiliates, loan servicing companies, and third-party collectors through the use of email, telephone calls, facsimiles and/or SMS text messages to your cellular, pager, facsimile, home or work numbers, as well as any other telephone number you have provided in conjunction with this loan, including the use of automatic telephone dialing systems, autodialers, or an artificial or prerecorded voice for the purposes of providing service to you for this Loan and service and offers for related products and services. You consent to Lender’s use of your personal information to provide the services you have requested, including services that display customized content and advertising.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>Opt-Out or Stop</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info how-it-works">
+				<p>This policy applies to the text messages sent by Lender to our customers while and after they use our product. If you wish to stop receiving marketing text messages from us, reply to any text message we have sent you and in the reply text simply type STOP. If you wish to stop receiving all text messages from us, including those with information about payment due dates or missed payments, type STOP ALL in the reply text you send us. Your stop request will become effective within one day. You may also stop text messages by calling us or emailing us using the contact information below.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>Help or Support</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info how-it-works">
+				<p>If at any time you need our contact information or information on how to stop text messages, reply to any text message we have sent you and in the reply text simply type HELP. You may also visit our contact page at https://www.patria.com/contact or call us at 855-451-5771. Upon receiving your text message, we will send you a text message with this information. It is our policy to send no more than 20 messages per month. In general, the messages we send provide you with information about your account. Some of the text message we send may include links to websites. To access these websites, you will need a web browser and Internet access.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_7">
+	<div class="section_7_items">
+		<h2>Need To Contact Us?</h2>
+		<a href="/contact" class="button button-apply">Go Here</a>
+	</div>
+</section>
+{% endblock %}

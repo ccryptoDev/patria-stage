@@ -1,0 +1,143 @@
+<style>
+
+    .truthInLending-wrapper {
+        font-size: 14px;
+        margin: 24px 0;
+        width: 100%;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: inherit;
+        border-spacing: 10px;
+    }
+
+    .table td,
+    .table th {
+        border: none;
+        padding: 0;
+    }
+
+    .table td {
+        position: relative;
+        width: 25%;
+        padding-top: 25%;
+    }
+
+    .table tr td:nth-child(1) .table-cubes-item,
+    .table tr td:nth-child(2) .table-cubes-item {
+        background: #ccc;
+        border: 2px solid;
+    }
+
+    .table-cubes {
+        position: absolute;
+        top: 20px;
+        left: 0;
+    }
+
+    .table-cubes-item {
+        padding: 10px;
+        border: 1px solid #000;
+        word-break: break-word;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .table-cubes-item-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        position: relative;
+    }
+
+    .table-cubes-item-heading {
+        text-align: left;
+        font-weight: 700;
+    }
+
+    .table-cubes-item-description {
+        position: absolute;
+        padding-top: 30%;
+        text-align: left;
+    }
+
+    .table-cubes-item-unit {
+        text-align: center;
+        width: 100%;
+    }
+</style>
+
+<div class="truthInLending-wrapper">
+    <div class="table-container">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="table-cubes-item">
+                            <div class="table-cubes-item-content">
+                                <div class="table-cubes-item-heading">
+                                ANNUAL PERCENTAGE RATE
+                                 </div>
+                                <div class="table-cubes-item-description">
+                                    The cost of your credit as a yearly rate.
+                                </div>
+                                <div class="table-cubes-item-unit">{{offer.apr}}%</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="table-cubes-item">
+                            <div class="table-cubes-item-content">
+                                <div class="table-cubes-item-heading">
+                      FINANCE CHARGE
+                    </div>
+                                <div class="table-cubes-item-description">
+                      The dollar amount the credit will cost you.
+                    </div>
+                                <div class="table-cubes-item-unit">${{offer.loanCost}}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="table-cubes-item">
+                            <div class="table-cubes-item-content">
+                                <div class="table-cubes-item-heading">
+                      Amount Financed
+                    </div>
+                                <div class="table-cubes-item-description">
+                      The amount of credit provided to you or on your behalf.
+                    </div>
+                                <div class="table-cubes-item-unit">$2,000</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div
+                  class="table-cubes-item"
+                  style="border-right: 1px solid"
+                >
+                            <div class="table-cubes-item-content">
+                                <div class="table-cubes-item-heading">
+                      Total of Payments
+                    </div>
+                                <div class="table-cubes-item-description">
+                      The amount you will have paid after you have made all
+                      payments as scheduled.
+                    </div>
+                                <div class="table-cubes-item-unit">${{offer.totalPaid}}</div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

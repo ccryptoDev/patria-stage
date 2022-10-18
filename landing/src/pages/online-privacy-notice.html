@@ -1,0 +1,26 @@
+<div>
+  <section class="privacy-notice-section-banner banner">
+    <div class="container layout">
+      <h2>
+        Online Pricacy Notice
+      </h2>
+    </div>
+  </section>
+
+  <section class="privacy-notice-section-description">
+    <div class="container">
+      <iframe
+        src="privacy-notice.html"
+        id="document-iframe"
+        frameborder="0"
+      ></iframe>
+    </div>
+  </section>
+  <script>
+    const iframe = document.getElementById("document-iframe");
+    iframe.onload = function() {
+      iframe.style.height =
+        iframe.contentWindow.document.body.scrollHeight + "px";
+    };
+  </script>
+</div>

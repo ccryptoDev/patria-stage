@@ -1,0 +1,35 @@
+.terms-section {
+  &-description {
+    min-height: 100vh;
+    padding: 6rem 0;
+    & .container {
+      max-width: 1040px;
+    }
+    &-list {
+      & > li {
+        display: flex;
+        flex-direction: column;
+        row-gap: 2.4rem;
+        &:not(:first-child) {
+          margin-top: 4.8rem;
+        }
+
+        & h5 {
+          color: var(--color-blue-1);
+          font-size: 2rem;
+        }
+
+        & > ul {
+          display: flex;
+          flex-direction: column;
+          row-gap: 1.2rem;
+        }
+
+        & .minimin-requirements-list {
+          margin-left: 2rem;
+          list-style: disc;
+        }
+      }
+    }
+  }
+}

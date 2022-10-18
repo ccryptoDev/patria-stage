@@ -1,0 +1,462 @@
+{% extends "frontend/layoutv3/layout.nunjucks" %}
+{% block body %}
+<div class="background-shortform" id="application">
+    <style>
+        #step1_form .stateDiv:before, .birthmonthDiv:before, .birthdayDiv:before, .birthyearDiv:before  {
+            content: '';
+            width: 14px;
+            height: 13px;
+            background: url('../../../images/img/frontend/chevron-down.png') no-repeat;
+            background-size: 100%;
+            position: absolute;
+            right: 20px;
+            top: 21px;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .selectBox:focus {
+            border-color: 1px solid #eacc49 !important;
+        }
+        #step1_form label.error{
+            position: absolute;
+        }
+        #step1_form #creditpullconfirm-error{
+            position: relative;
+            left: 11vw;
+            right: auto;
+        }
+
+        .applicant-bank-info .input-group-addon{
+            background-color: #cccccc;
+            color: #999999;
+            border: none;
+        }
+        .applicant-bank-info .inFocus{
+            border: 1px solid #3f576c !important;
+        }
+        .applicant-bank-info .input-group{
+            width: 100%;
+        }
+        .applicant-bank-info .input-group input{
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+        #step1_form textarea:focus, input:focus{
+            border: 1px solid #3f576c !important;
+        }
+
+        @media only screen and (max-width:767px){
+            .zipDiv{
+                margin-top: 20px;
+                padding-left: 0;
+            }
+            .stateDiv{
+                padding-right: 0;
+            }
+
+        }
+        [type="date"]::-webkit-calendar-picker-indicator {
+            display: none;
+        }
+
+        option {
+            color: black;
+        }
+
+    </style>
+
+    <input type="hidden" id="reapplyerror" value="{{ reapplyerror }}">
+    <input type="hidden" id="dupusererror" value="{{ dupusererror }}">
+    <input type="hidden" id="sid" name="sid"  />
+    <input type="hidden" id="isTwilioEnabled" name="isTwilioEnabled" value="{{ isTwilioEnabled }}"/>
+    <input type="hidden" id="twilioContinue" name="twilioContinue" value="{{ gotoTwilio }}"/> <!-- TODO: Delete? Redundant with isTwilioEnabled? -->
+
+    <div class="container">
+        <div class="inner-content">
+            <div class="heading">
+                <div class="logoMiddle">
+                    <img src="/images/imgv3/logo.png" style="width: 45%; height: auto" class="img-reponsive" />
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 personalInfoInner los-content">
+
+                <div class="whitebox infoForm"> <!-- Valided locally, see JS at the bottom for all fields validation -->
+                    <form class="formclass signupForm" id="employment_and_reference_form" method="POST" action="/employmentandreferenceinfo" data-validation="btnDisable" autocomplete="off">
+
+                        <!-- Employment -->
+                        <div class="employment-info">
+                            <input type="hidden" id="practicemanagement" name="practicemanagement" value="{{ practicemanagement.id }}">
+
+                            <div class="col-xs-12">
+                                <h4>Employment Information</h4>
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6">
+                                <div class="float-label">
+                                    <i class="fa fa-chevron-down"></i>
+                                    <select class="form-control form-application" id="incometype" name="incometype" style="color: #A5B9CD;" required>
+                                        <option disabled selected value>Income Type</option>
+                                        <option value="disability_income">Disability Income</option>
+                                        <option value="social_security">Social Security</option>
+                                        <option value="employed">Employed</option>
+                                        <option value="unemployed">Unemployed</option>
+                                        <option value="pension">Pension</option>
+                                        <option value="others">Others (Child Support, Welfare etc.)</option>
+                                    </select>
+                                    <flabel>INCOME TYPE</flabel>
+                                    <label id="incometype-error" for="incometype" class="error" style="display:none;"></label>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6">
+                                <div class="float-label">
+                                    <input type="text" class="form-control form-application" id="employername" name="employername" placeholder="Employer Name" required />
+                                    <flabel>EMPLOYER NAME</flabel>
+                                    <label id="employername-error" for="employername" class="error" style="display:none;"></label>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6">
+                                <div class="float-label">
+                                    <input type="text" class="form-control form-application phone" id="workphone" name="workphone" placeholder="Work Phone" data-mask="000-000-0000" maxlength="12" required />
+                                    <flabel>WORK PHONE</flabel>
+                                    <label id="workphone-error" for="workphone" class="error" style="display:none;"></label>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6">
+                                <div class="float-label">
+                                    <i class="fa fa-chevron-down"></i>
+                                    <select class="form-control form-application" id="employerstatus" name="employerstatus" style="color: #A5B9CD;" required>
+                                        <option disabled selected value>Employer Status</option>
+                                        <option value="full_time">Full Time</option>
+                                        <option value="part_time">Part Time</option>
+                                    </select>
+                                    <flabel>EMPLOYER STATUS</flabel>
+                                    <label id="employerstatus-error" for="employerstatus" class="error" style="display:none;"></label>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6">
+                                <div class="float-label">
+                                    <i class="fa fa-chevron-down"></i>
+                                    <select class="form-control form-application" id="paymentFrequency" name="paymentFrequency" style="color: #A5B9CD;" required>
+                                        <option disabled selected value>Payment Frequency</option>
+                                        <option value="B">Bi-Weekly</option>
+                                        <option value="M">Monthly</option>
+                                        <option value="S">Semi-Monthly</option>
+                                        <option value="W">Weekly</option>
+                                    </select>
+                                    <flabel>PAYMENT FREQUENCY</flabel>
+                                    <label id="paymentfrequency-error" for="paymentFrequency" class="error" style="display:none;"></label>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6">
+                                <div class="float-label">
+                                    <input type="text" id="lastPayDate" name="lastPayDate" class="form-control form-application" data-date-format="mm/dd/yyyy"
+                                           placeholder="Last Pay Date" onfocus="(this.type='date')" required>
+                                    <flabel>LAST PAY DATE</flabel>
+                                    <label id="lastPayDate-error" for="lastPayDate" class="error" style="display:none;"></label>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6">
+                                <div class="float-label">
+                                    <input type="text" id="nextPayDate" name="nextPayDate" class="form-control form-application" data-date-format="mm/dd/yyyy"
+                                           placeholder="Next Pay Date" onfocus="(this.type='date')" required>
+                                    <flabel>NEXT PAY DATE</flabel>
+                                    <label id="nextPayDate-error" for="nextPayDate" class="error" style="display:none;"></label>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6">
+                                <div class="float-label">
+                                    <input type="text" id="secondPayDate" name="secondPayDate" class="form-control form-application" data-date-format="mm/dd/yyyy"
+                                           placeholder="Second Pay Date" onfocus="(this.type='date')" >
+                                    <flabel>SECOND PAY DATE</flabel>
+                                    <label id="secondPayDate-error" for="secondPayDate" class="error" style="display:none;"></label>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6">
+                                <div class="float-label">
+                                    <i class="fa fa-chevron-down"></i>
+                                    <select class="form-control form-application" id="paymentBeforeAfterHolidayWeekend" name="paymentBeforeAfterHolidayWeekend" style="color: #A5B9CD;" required>
+                                        <option value="0" selected >Before</option>
+                                        <option value="1" >After</option>
+                                    </select>
+                                    <flabel>PAY ON HOLIDAYS & WEEKENDS</flabel>
+                                    <label id="paymentBeforeAfterHolidayWeekend-error" for="paymentBeforeAfterHolidayWeekend" class="error" style="display:none;"></label>
+                                </div>
+                            </div>
+                            <!-- Reference -->
+                            {# <div class="referencec-info">
+                                <div class="col-xs-12">
+                                    <hr class="document-divider" style="visibility: hidden;">
+                                    <h4>Reference Information</h4>
+                                </div>
+                                <!-- JS code handle this below -->
+                            </div> #}
+
+                            <!-- Button -->
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 15px">
+                                    <button type="submit" class="btn btn-raised btn-primary" id="submitShortForm" style="margin-top: 12px; margin-bottom: 18px;">Next</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- tcpadocument Modal -->
+    <div id="SMSdocument" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header bg-tcpa user-modal-header">
+                    <h4 class="modal-title" id="storyinfopopupheader"></h4>
+                    <button type="button" class="close" data-dismiss="modal" style="color:#FFF; opacity:1; font-size: 21px;">&times;</button>
+                </div>
+                <div class="modal-body bgColorWhite">
+                    {% include "document/tcpa_v1.nunjucks" %}
+                </div>
+                <div class="text-center">
+                    <button type="button" data-dismiss="modal" class="btn btn-raised btn-application">Continue</button>
+                </div>
+                <br/><br/>
+            </div>
+        </div>
+    </div>
+
+    <!-- creditpulldocument Modal -->
+    <div id="CPAdocument" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header bg-tcpa user-modal-header">
+                    <h4 class="modal-title" "color:#FFFF;"></h4>
+                    <button type="button" class="close" data-dismiss="modal" style="color:#FFF; opacity:1;">&times;</button>
+                </div>
+                <div class="modal-body bgColorWhite">
+                    {% include "document/CreditAuthorization_v1.nunjucks" %}
+                </div>
+                <div class="text-center">
+                    <button type="button" data-dismiss="modal" class="btn btn-raised btn-application">Continue</button>
+                </div>
+                <br/><br/>
+            </div>
+        </div>
+    </div>
+
+    <!-- privacypolicydocument Modal -->
+    <div id="PPdocument" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header bg-tcpa user-modal-header">
+                    <h4 class="modal-title" "color:#FFFF;"></h4>
+                    <button type="button" class="close" data-dismiss="modal" style="color:#FFF; opacity:1;">&times;</button>
+                </div>
+                <div class="modal-body bgColorWhite">
+                    {# {% include "frontend/home/privacypolicy.nunjucks" %} #}
+                    {% include "document/Privacy_Policy.nunjucks" %}
+                </div>
+                <div class="text-center">
+                    <button type="button" data-dismiss="modal" class="btn btn-raised btn-application">Continue</button>
+                </div>
+                <br/><br/>
+            </div>
+        </div>
+    </div>
+
+    <!-- 30 day denial rule -->
+    <div id="thirtyDayDenialRule" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content user-modal-content">
+                <div class="modal-header bg-tcpa user-modal-header">
+                    <a type="button" class="close" href="/">&times;</a>
+                </div>
+                <br /> <br />
+                <div class="alert alert-danger text-center">
+                    {{ reapplyerror }}
+                </div>
+                <br />
+                <div class="text-center">
+                    <button type="button" onclick="window.location.href='/'" class="btn-application">Exit</button>
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+
+    <!-- Existing User -->
+    <div id="existingUser" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content user-modal-content">
+                <div class="modal-header user-modal-header">
+                    <a type="button" class="close" onclick="logoutRedirectSignin();">&times;</a>
+                </div>
+                <br /> <br />
+                <div class="alert alert-danger text-center">
+                    {{ dupusererror }}
+                </div>
+                <br />
+                <div class="text-center">
+                    <button type="button" onclick="logoutRedirectSignin();" class="btn-application">Sign In</button>
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+
+    {% include "twilio/twilioVerificationTemplate.nunjucks" %}
+
+    <script type="text/javascript">
+        document.addEventListener( "DOMContentLoaded", function() {
+
+            // TODO: check rules accuracy for page (looks copied from application.nunjucks)
+            var validator = $("#employment_and_reference_form").validate({
+                rules: {
+                    // Employment:
+                    "incometype": { required: true },
+                    "employername": { required: true },
+                    "workphone": { required: true },
+                    "employerstatus": { required: true },
+                    "paymentFrequency":{ required: true},
+                    "lastPayDate": { required: true },
+                    "nextPayDate": { required: true },
+                    // Reference:
+                    // "referencename1": { required: true },
+                    // "referencephone1": { required: true },
+                    // "referencerelation1": { required: true },
+                    // "referencename2": { required: true },
+                    // "referencephone2": { required: true },
+                    // "referencerelation2": { required: true }
+                },
+
+                messages: {
+                    // Employment
+                    "incometype": { required: "Income Type is required." },
+                    "employername": { required: "Employer Name is required." },
+                    "workphone": { required: "Work Phone is required." },
+                    "employerstatus": { required: "Employement Status is required." },
+                  "paymentFrequency": { required: "Payment Frequency is required." },
+                    "lastPayDate": { required: "Last Pay Date is required." },
+                    "nextPayDate": { required: "Next Pay Date is required." },
+                    // References
+                    // "referencename1": { required: "First Reference Name is required." },
+                    // "referencephone1": { required: "First Reference Phone Number is required." },
+                    // "referencerelation1": { required: "First Reference Relationship is required." },
+                    // "referencename2": { required: "Second Reference Name is required." },
+                    // "referencephone2": { required: "Second Reference Phone Number is required." },
+                    // "referencerelation2": { required: "Second Reference Relationship is required." },
+                },
+
+                errorPlacement: function( err, el ) {
+                    var errId = err.attr( "id" );
+                    var errEl = $( "#" + errId );
+                    if( errEl.length === 1 ) {
+                        errEl.html( err.html() );
+                    } else {
+                        err.appendTo( el.parent() );
+                    }
+                },
+
+                unhighlight: function( el ) {
+                    var $el = $( "#" + $(el).attr( "id" ) + "-error" );
+                    if( $el.length === 1 ) {
+                        $el.html( "" );
+                    }
+                },
+
+                submitHandler: ( form ) => {
+                    showLoadingSpinner();
+                    ( $( "#tcpacreditpull:checkbox:checked" ).length > 0 ) ? console.log("tcp checked"): console.log("tcp not checked");
+                    ( $( "#creditpullconfirm:checkbox:checked" ).length > 0 ) ? console.log("pull checked"): console.log("pull not checked");
+                    /* prevent the form and checkbox from being changed by the user after the submit button has been clicked and before the screen is replaced */
+                    $("#loaderIdCreateTracking").show();
+                    form.submit();
+                }
+            });
+        });
+
+        function logoutRedirectSignin() {
+            $.ajax( { url: "/userlogout" } ).done( function() { window.location.href = "/login"; } );
+        }
+
+        function isInputFocused(id){
+            $("#" + id).focus(function(){
+                $(this).siblings().eq(0).css({
+                    "background-color": "#3f576c",
+                    "color": "white"
+                });
+            })
+            $("#" + id).focusout(function(){
+                $(this).siblings().eq(0).css({
+                    "background-color": "#cccccc",
+                    "color": "#999999"
+                });
+            })
+        }
+
+        $(document).ready(function(){
+            {# for(var i=1; i<=2; ++i) {
+                $(".referencec-info").append(`
+                <div class="form-group col-xs-12 col-sm-4">
+                    <div class="float-label">
+                        <input type="text" class="form-control form-application fl" id="referencename${i}" name="referencename${i}" placeholder="Reference Name" required/>
+                        <flabel>REFERENCE ${i} NAME</flabel>
+                        <label id="referencename${i}-error" for="referencename${i}" class="error" style="display:none;"></label>
+                    </div>
+                </div>
+            `);
+                $(".referencec-info").append(`
+                <div class="form-group col-xs-12 col-sm-4">
+                    <div class="float-label">
+                        <input type="text" class="form-control form-application phone" id="referencephone${i}" name="referencephone${i}" placeholder="Reference Phone Number" data-mask="000-000-0000" maxlength="12" required />
+                        <flabel>REFERENCE PHONE NUMBER</flabel>
+                        <label id="referencephone${i}-error" for="referencephone${i}" class="error" style="display:none;"></label>
+                    </div>
+                </div>
+            `)
+                $(".referencec-info").append(`
+                <div class="form-group col-xs-12 col-sm-4">
+                    <div class="float-label">
+                        <i class="fa fa-chevron-down"></i>
+                            <select class="form-control form-application" id="referencerelation${i}" name="referencerelation${i}" style="color: #A5B9CD;" required>
+                                <option selected disabled value>Relationship</option>
+                                <option value="spouse" >Spouse</option>
+                                <option value="sibling">Sibling</option>
+                                <option value="parent">Parent</option>
+                                <option value="co_worker">Co-worker</option>
+                                <option value="friend" >Friend</option>
+                                <option value="boyfriend">Boyfriend</option>
+                                <option value="girlfriend">Girlfriend</option>
+                                <option value="brother">Brother</option>
+                                <option value="sister">Sister</option>
+                                <option value="other">Other</option>
+                            </select>
+                        <flabel>RELATIONSHIP</flabel>
+                        <label id="referencerelation${i}-error" for="referencerelation${i}" class="error" style="display:none;"></label>
+                    </div>
+                </div>
+            `)
+            } #}
+
+            $(".phone").inputmask({
+                alias: "phone",
+                mask: "999-999-9999",
+                rightAlign: false,
+                showMaskOnHover: false,
+                showMaskOnFocus: false,
+                clearIncomplete: true
+            });
+
+            $("select").on('change', function(e) {
+                $(this).css("color", "black");
+            })
+        })
+    </script>
+    {% endblock %}

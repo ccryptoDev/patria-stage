@@ -1,0 +1,180 @@
+<div class="ref-portal-tab">
+    <h3>References</h3>
+    <div id="add-ref">
+        <form role="form" id="add-ref-form">
+            <input type="hidden" id="userid" name="userid" value="{{ references.user }}">
+            <input type="hidden" id="paymentID" name="paymentID" value="{{ paymentmanagementdata.id }}">
+            <input type="hidden" id="screentracking" name="screentracking" value="{{ paymentmanagementdata.screentracking.id }}">
+            <div class="ref1-title" style="text-decoration: underline; font-size: 18px; margin-bottom: 10px; text-align: center;">Reference 1</div>
+            <div class="row">
+                <div class="form-group">
+                    <input type="text" class="form-control form-application" id="ref1-name" name="ref1-name" placeholder="Name" value="{{ references.name1 }}" tabindex="1" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <input type="text" class="form-control form-application" id="ref1-phone" name="ref1-phone" placeholder="Mobile Number" value="{{ references.phoneNumber1 }}" data-mask="000-000-0000" tabindex="2" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <input type="text" class="form-control form-application" id="ref1-relation" name="ref1-relation" placeholder="Relation" value="{{ references.relationship1 }}" tabindex="3" required>
+                </div>
+            </div>
+            <div class="row" style="text-align: center;">
+                {% if isReferencesAdded %}
+                    <button type="button" class="btn btn-primary" id="cancelRefUpdate" style="background-color: #A94442;">Cancel</button>
+                {% endif %} 
+                <button class="btn btn-primary isDisabled" id="submit-ref">Submit References</button>
+            </div>
+        </form>
+    </div><br>
+
+    <div id="display-ref">
+        {% if isFinalize %}
+        <span class="left-item" id="ref-exclamation"><i class="fa fa-check-circle"></i></span>
+        {% endif %}
+        <div class="ref1-title" style="text-decoration: underline; font-size: 18px;">Reference 1</div>
+        
+            <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th width="20%"><strong>Name:</strong></th>
+                                <td> <div class="ref1-display"><span id="display-name1">{{ references.name1 }}</span></div></td>
+                            </tr>
+                            <tr>
+                                <th width="20%"><strong>Mobile Number:</strong></th>
+                                <td><div class="ref1-display"><span id="display-phone1">{{ references.phoneNumber1 }}</span></div></td>
+                            </tr>
+
+                            <tr>
+                                <th width="20%"><strong>Relation:</strong></th>
+                                <td><div class="ref1-display"><span id="display-relation1">{{ references.relationship1 }}</span></div></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+            </div>
+        
+        <br>
+        <div class="row" style="text-align: center;">
+            <button class="btn btn-primary" id="edit-ref">Edit References</button>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+.form-control {
+    border-radius: 8px;
+    background-color: rgb(246,246,246);
+    height: 40px;
+    margin: auto;
+    width: 20%;
+    min-width: 200px;
+} 
+
+.btn-primary.isDisabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+    text-decoration: none;
+
+.btn-primary.btn-application {
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+}
+{# .ref-portal-tab {
+    margin: 50px;
+} #}
+</style>
+{% if not isFinalize %}
+<style>
+    .ref-portal-tab {
+        margin-top: 10px;
+        padding: 15px;
+    }
+</style>
+{% endif %}
+<script type="text/javascript">
+    $( document ).ready( function(){
+		{% if isReferencesAdded %}
+			$( "#display-ref" ).show();
+			$( "#add-ref" ).hide();
+		{% else %}
+			$( "#display-ref" ).hide();
+			$( "#add-ref" ).show();
+		{% endif %}
+
+		$( "#add-ref-form" ).validate( {
+			rules: {
+				"ref1-name": { required: true },
+				"ref1-phone": { required: true, minlength: 12, maxlength: 12 },
+				"ref1-relation": { required: true }
+			},
+			messages: {
+				"ref1-name": { required: "Please enter name" },
+				"ref1-phone": { required: "Please enter mobile phone", minlength: "Please enter mobile phone", maxlength: "Please enter mobile phone" },
+				"ref1-relation": { required: "Please enter relation" }
+			},
+		} );
+		$( "#add-ref-form input, #add-ref-form select" ).on( "change keyup paste drop", function(e) {
+			if( $( "#add-ref-form" ).valid() ) {
+				$( "#submit-ref" ).removeClass( "isDisabled" );
+			} else {
+				$( "#submit-ref" ).addClass( "isDisabled" );
+			}
+		} );
+        $( "#cancelRefUpdate" ).on( "click", function( e ) {
+            cancelEditRef();
+            e.preventDefault();
+        } );
+        $( "#submit-ref" ).on( "click", function( e ) {     
+            e.preventDefault();
+            addUpdateRefFinalize();             
+        } );
+        $( "#edit-ref" ).on( "click", function( e ) {
+            e.preventDefault();
+            editRef();
+        } );
+	} );
+	function enableBtn() {
+		if( $( "#add-ref-form" ).valid() ) {
+			$( "#submit-ref" ).removeClass( "isDisabled" );
+			return;
+		}
+		$( "#submit-ref" ).addClass( "isDisabled" );
+	}
+	function addUpdateRefFinalize() {
+        var userid = $("#userid").val();
+        var paymentID = $("#paymentID").val();
+		var name1 = $("#ref1-name").val();
+		var phone1 = $("#ref1-phone").val();
+		var relation1 = $("#ref1-relation").val();
+		url = "/admin/addUpdateReferences";
+        
+        ajaxFormDataPost(url, $( "#add-ref-form" )[0], contentType="json", 'application/x-www-form-urlencoded')
+        .then( function(data) {
+            cancelEditRef();
+            $( "#references" ).html( data.refTab );
+            return;
+        }, function(err) {
+            // create message
+        } )
+	}
+	function editRef() {
+		$( "#display-ref" ).hide();
+		$( "#add-ref" ).show();
+	}
+	function cancelEditRef() {
+		$( "#display-ref" ).show();
+		$( "#add-ref" ).hide();
+	}
+	$("#ref1-phone").on( "keyup paste drop", function() {
+		$(this).val(formatUSPhoneNumber($(this).val()));
+	});
+	$("#ref2-phone").on( "keyup paste drop", function() {
+		$(this).val(formatUSPhoneNumber($(this).val()));
+	});
+</script>
+

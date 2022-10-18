@@ -1,0 +1,490 @@
+{% extends "layout/layout.nunjucks" %}
+{% block body %}
+    <section class="content-header">
+		<h1>Reports</h1>
+	</section>
+	<section class="content">
+		<div class="box">
+			<div class="box-header with-border">
+				<span class="pull-right">
+				</span>
+			</div>
+			<div class="box-body">
+				<div id="tabs">
+					<ul class="nav nav-tabs">
+						<li class="active"><a data-toggle="tab" href="#createreports" id="createreportsTab">Create</a></li>
+						<li><a data-toggle="tab" href="#reporthistory" id="reporthistoryTab">History</a></li>
+					</ul>
+					<div class="tab-content">
+						<div id="createreports" class="tab-pane fade in active" style="padding: 20px;">
+							<span style="margin-right: 10px; font-weight: 650">Report</span>
+							<span class="selectReportTypeDiv">
+								<select id="reportType" name="reportType" class="form-control form-application selectBox" style="width: fit-content; display: inline;" required tabindex="7">
+									<option value="payments">Payments</option>
+								</select>
+							</span>
+							<button id="createBtn" class="btn btn-primary" style="float: right;">Download and Save</button>
+							<a id="createAnchor" href="" target="_blank"></a>
+
+							<div style="margin-top: 10px;">
+							{% if req.session.rolename == "Admin" %}
+							<span style="margin-right: 40px; font-weight: 650">Partner</span>
+							<span class="selectPartnerDiv" style="margin-right: 40px;">
+								<select id="partner" name="partner" class="form-control form-application selectBox" style="width: fit-content; display: inline;" required tabindex="7">
+									<option value="" selected>All</option>
+									{% for partner in partners %}
+									<option value="{{ partner.id }}">{{ partner.PracticeName }}</option>
+									{% endfor %}
+								</select>
+							</span>
+							{% endif %}
+							<span class="datepicker">
+							<span style="margin-right: 10px; font-weight: 650">Start Date</span>
+							<span class="selectStartMonthDiv">
+								<select id="startmonth" name="startmonth" class="form-control form-application selectBox" style="width: fit-content; display: inline;" required tabindex="7">
+									<option value="" selected disabled>Month</option>
+									<option value="01">January</option>
+									<option value="02">February</option>
+									<option value="03">March</option>
+									<option value="04">April</option>
+									<option value="05">May</option>
+									<option value="06">June</option>
+									<option value="07">July</option>
+									<option value="08">August</option>
+									<option value="09">September</option>
+									<option value="10">October</option>
+									<option value="11">November</option>
+									<option value="12">December</option>
+								</select>
+							</span>
+
+							<span class="selectStartDayDiv">
+								<select id="startday" name="startday" class="form-control form-application selectBox" style="width: fit-content; display: inline;" required tabindex="8">
+									<option value="" selected disabled >Day</option>
+									<option value="01">1</option>
+									<option value="02">2</option>
+									<option value="03">3</option>
+									<option value="04">4</option>
+									<option value="05">5</option>
+									<option value="06">6</option>
+									<option value="07">7</option>
+									<option value="08">8</option>
+									<option value="09">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+									<option value="15">15</option>
+									<option value="16">16</option>
+									<option value="17">17</option>
+									<option value="18">18</option>
+									<option value="19">19</option>
+									<option value="20">20</option>
+									<option value="21">21</option>
+									<option value="22">22</option>
+									<option value="23">23</option>
+									<option value="24">24</option>
+									<option value="25">25</option>
+									<option value="26">26</option>
+									<option value="27">27</option>
+									<option value="28">28</option>
+									<option value="29">29</option>
+									<option value="30">30</option>
+									<option value="31">31</option>
+								</select>
+							</span>
+
+							<span class="selectStartYearDiv">
+								<select id="startyear" name="startyear" class="form-control form-application selectBox" style="width: fit-content; display: inline;" required tabindex="7">
+									<option value="" selected disabled>Year</option>
+									{% for year in yearList %}
+									<option value="{{ year }}">{{ year }}</option>
+									{% endfor %}
+								</select>
+							</span>
+							</span>
+
+							<span class="datepicker">
+							<span style="margin-left: 30px; margin-right: 10px; font-weight: 650">End Date</span>
+							<span class="selectEndMonthDiv">
+								<select id="endmonth" name="endmonth" class="form-control form-application selectBox" style="width: fit-content; display: inline;" required tabindex="7">
+									<option value="" selected disabled>Month</option>
+									<option value="01">January</option>
+									<option value="02">February</option>
+									<option value="03">March</option>
+									<option value="04">April</option>
+									<option value="05">May</option>
+									<option value="06">June</option>
+									<option value="07">July</option>
+									<option value="08">August</option>
+									<option value="09">September</option>
+									<option value="10">October</option>
+									<option value="11">November</option>
+									<option value="12">December</option>
+								</select>
+							</span>
+
+							<span class="selectEndDayDiv">
+								<select id="endday" name="endday" class="form-control form-application selectBox" style="width: fit-content; display: inline;" required tabindex="8">
+									<option value="" selected disabled >Day</option>
+									<option value="01">1</option>
+									<option value="02">2</option>
+									<option value="03">3</option>
+									<option value="04">4</option>
+									<option value="05">5</option>
+									<option value="06">6</option>
+									<option value="07">7</option>
+									<option value="08">8</option>
+									<option value="09">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+									<option value="15">15</option>
+									<option value="16">16</option>
+									<option value="17">17</option>
+									<option value="18">18</option>
+									<option value="19">19</option>
+									<option value="20">20</option>
+									<option value="21">21</option>
+									<option value="22">22</option>
+									<option value="23">23</option>
+									<option value="24">24</option>
+									<option value="25">25</option>
+									<option value="26">26</option>
+									<option value="27">27</option>
+									<option value="28">28</option>
+									<option value="29">29</option>
+									<option value="30">30</option>
+									<option value="31">31</option>
+								</select>
+							</span>
+
+							<span class="selectEndYearDiv">
+								<select id="endyear" name="endyear" class="form-control form-application selectBox" style="width: fit-content; display: inline;" required tabindex="7">
+									<option value="" selected disabled>Year</option>
+									{% for year in yearList %}
+									<option value="{{ year }}">{{ year }}</option>
+									{% endfor %}
+								</select>
+							</span>
+							</span>
+
+							</div>
+
+							<div class="filters" style="padding: 20px;">
+							</div>
+
+							{% include "admin/reports/reporttable.nunjucks" %}
+						</div>
+						<div id="reporthistory" class="tab-pane fade">
+							<style type="text/css">
+								#report_table {
+									margin-top: 10px;
+								}
+							</style>
+							<div class="past-due-data-table-container" style="margin-top: 20px;">
+								<table class="table table-striped table-bordered dataTable" id="report_history_table"  width="100%">
+									<thead>
+									<tr>
+										<th>Created</th>
+										<th>Report Name</th>
+										<th>Creator</th>
+										<th>Role</th>
+										<th>Partner</th>
+										<th></th>
+									</tr>
+									</thead>
+									<tbody>
+
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+<script>
+
+	function refreshHistory() {
+		var columnDataType = {
+			"createdAt": "datetime",
+			"reportName": "string",
+			"adminUserEmail": "string",
+			"adminRoleName": "string",
+			"adminPracticeName": "string",
+			"id": "download"
+		};
+		var tableElement = $("#report_history_table");
+		var uTable = tableElement.DataTable( {
+			initComplete: function(settings, json) {
+			},
+            searching: true,
+			processing: true,
+			serverSide: true,
+			destroy: true,
+			language: {
+				loadingRecords: "Please wait - loading..."
+			},
+			paging: true,
+			pagingType: "full_numbers",
+			ajax: {
+				url: "/admin/reports/history",
+				data: function ( d ) {
+					_.forEach(d.columns, (col) => {
+						var columnType = columnDataType[col.data];
+						col["dataType"] = columnType;
+					})
+				}
+			},
+			order: [ [ 0, 'desc' ] ],
+			lengthMenu: [ [ 10, 25, 50, 100 ], [ 10, 25, 50, 100 ] ],
+			pageLength: 25,
+			columns: [
+				{ data: "createdAt", render: renderdatecb },
+				{ data: "reportName" },
+				{ data: "adminUserEmail" },
+				{ data: "adminRoleName" },
+				{ data: "adminPracticeName" },
+				{ data: "id", render: renderdownloadcb, orderable: false }
+			]
+		} );
+		tableElement.parent().addClass( 'table-responsive' );
+    }
+
+	var renderdownloadcb = function( data, type, row, meta ) {
+		if( data ) {
+			var downloadHtml = "<a href='/admin/reports/download/" + data + "' target='_blank'><i class='fa fa-download'></i></a>";
+			return downloadHtml;
+		}
+		return "--";
+	}
+
+	var renderdatecb = function( data, type, row, meta ) {
+		if( data ) {
+			var datestr = moment( data, "MM-DD-YYYY at h:mm a" ).format("MM-DD-YYYY  h:mm a");
+			return datestr;
+		}
+		return "--";
+	}
+
+	$( document ).ready( () => {
+		refreshHistory();
+	} );
+
+	function updateDaySelect( dayInt, monthdays, dayid ) {
+		var html = [];
+		if( !dayInt ) {
+			html.push( "<option value='' selected disabled hidden>Day</option>" );
+		} else if( ( dayInt > monthdays ) ) {
+			dayInt = monthdays;
+		}
+		for( var idx = 1; idx <= monthdays; idx++ ) {
+			let value;
+			if( idx < 10 ) {
+				value = "0" + idx;
+			} else {
+				value = "" + idx;
+			}
+			if( dayInt && dayInt == idx ) {
+				html.push("<option value='", value, "' selected>", idx, "</option>" );
+			} else {
+				html.push("<option value='", value, "'>", idx, "</option>" );
+			}
+		}
+		$("#" + dayid ).html( html.join( "" ) );
+
+	}
+
+	function calcDaysInMonthGivenMonth( dayid, monthid, yearid ) {
+		var day = $( "#" + dayid ).val();
+		var dayInt;
+		if( day ) {
+			dayInt = parseInt( day );
+		}
+		var year = $( "#" + yearid ).val();
+		var monthdays;
+		if( year ) {
+			monthdays = moment( year + "-" + $( "#" + monthid ).val() , "YYYY-MM" ).daysInMonth();
+		} else {
+			monthdays = moment( "1992" + "-" + $( "#" + monthid ).val(), "YYYY-MM" ).daysInMonth();
+		}
+		updateDaySelect( dayInt, monthdays, dayid );
+	}
+
+	function calcDaysInMonthGivenYear( dayid, monthid, yearid ) {
+		var month = $( "#" + monthid ).val();
+		if( !month ) {
+			return;
+		}
+
+		var day = $( "#" + dayid ).val();
+		var dayInt;
+		if( day ) {
+			dayInt = parseInt( day );
+		}
+
+		var year = $( "#" + yearid ).val();
+		const monthdays = moment( year + "-" + month, "YYYY-MM" ).daysInMonth();
+		updateDaySelect( dayInt, monthdays, dayid )
+	}
+
+	function selectByIndex( id, idx ) {
+		$( "#" + id + " option:eq("+ idx + ")" ).prop( "selected", true );
+	}
+
+	function selectByValue( id, value ) {
+		$( "#" + id + " option[ value = '" + value + "']" ).prop( "selected", true );
+	}
+
+	function selectLastOption( id ) {
+		$( "#" + id + " option:last" ).prop( "selected", true );
+	}
+
+	function selectLastMonth() {
+		selectByIndex( "startmonth", {{ initMonth }} );
+		selectByValue( "startyear", {{ initYear }} );
+		calcDaysInMonthGivenMonth( "startday", "startmonth", "startyear" );
+		selectByIndex( "startday", 1 );
+		selectByIndex( "endmonth", {{ initMonth }} );
+		selectByValue( "endyear", {{ initYear }} );
+		calcDaysInMonthGivenMonth( "endday", "endmonth", "endyear" );
+		selectLastOption( "endday" );
+	}
+
+	function datesValid() {
+		// FIXME - make sure start date preceeds enddate
+		return "";
+	}
+
+	function getStartDate() {
+		return $( "#startyear" ).val() +
+		"-" +
+		$( "#startmonth" ).val() +
+		"-" +
+		$( "#startday" ).val();
+	}
+
+	function getEndDate() {
+		return $( "#endyear" ).val() +
+		"-" +
+		$( "#endmonth" ).val() +
+		"-" +
+		$( "#endday" ).val();
+	}
+
+	function downloadCSV() {
+		$.ajax( {
+			url: "/admin/reports/payments",
+			data: {
+				startdate: getStartDate(),
+				enddate: getEndDate(),
+				partner: $( "#partner" ).val()
+			},
+			dataType: "json",
+			type: "POST",
+			success: function( res ) {
+				if( res.status == 200 ) {
+					refreshHistory();
+					var url = "/admin/reports/download/" + res.reportid;
+					$( "#createAnchor" ).prop("href", url );
+					$( "#createAnchor" )[0].click();
+				}
+			}
+		} );
+	}
+
+	function getFilters() {
+		var filters = {};
+		switch( $( "#reportType" ).val() ) {
+			case "payments": {
+				filters.startdate = getStartDate();
+				filters.enddate = getEndDate();
+				filters.partner = $( "#partner" ).val();
+				break;
+			}
+			case "contracts": {
+
+				break;
+			}
+		}
+		return filters;
+	}
+
+	$( document ).ready( function() {
+		$("#startmonth").change( () => {
+			calcDaysInMonthGivenMonth( "startday", "startmonth", "startyear" );
+			refreshTable();
+		});
+
+		$("#startday").change( () => {
+			refreshTable();
+		});
+
+		$("#startyear").change( () => {
+			calcDaysInMonthGivenYear( "startday", "startmonth", "startyear" );
+			refreshTable();
+		});
+
+		$("#endmonth").change( () => {
+			calcDaysInMonthGivenMonth( "endday", "endmonth", "endyear" );
+			refreshTable();
+		});
+
+		$("#endday").change( () => {
+			refreshTable();
+		});
+
+		$("#endyear").change( () => {
+			calcDaysInMonthGivenYear( "endday", "endmonth", "endyear" );
+			refreshTable();
+		});
+
+		$("#partner").change( () => {
+			refreshTable();
+		});
+		selectLastMonth();
+
+		$( "#reportType" ).change( () => {
+			switch( $( "#reportType" ).val() ) {
+				case "payments": {
+					$( ".datepicker" ).show();
+					break;
+				}
+				case "contracts": {
+					$( ".datepicker" ).hide();
+					break;
+				}
+			}
+			refreshTable();
+		} );
+
+		$("#createBtn").click( () => {
+			switch( $( "#reportType" ).val() ) {
+				case "payments": {
+					var err = datesValid();
+					if( err ) {
+						$( "#errormsg" ).html( err );
+						$( "#successmsg" ).html( "" );
+					}
+					$( "#errormsg" ).html( "" );
+					downloadCSV();
+
+					break;
+				}
+				case "contracts": {
+
+					break;
+				}
+			}
+		});
+	} );
+</script>
+
+{% endblock %}
+

@@ -1,0 +1,83 @@
+<style>
+    .itimization-wrapper {
+        padding: 20px 0;
+        display: flex;
+        column-gap: 40px;
+    }
+    .itimization-wrapper p {
+        line-height: 1.5;
+        font-size: 14px;
+        margin-top: 20px;
+    }
+    .col {
+        width: 50%;
+    }
+
+    .col h3 {
+        margin: 0;
+        font-weight: bold;
+    }
+
+    .col table td {
+        width: 50%;
+    }
+
+    .col table td:last-child {
+        text-align: right;
+    }
+</style>
+<div class="itimization-wrapper new-page">
+    <div class="col">
+        <p>
+            <b>Prepayment: </b>
+          If you pay the Loan off early, you will not have to pay a penalty.
+        </p>
+        <p>
+            <b>Fixed Interest Rate: </b>
+          This is a Fixed Interest Rate transaction. Your Fixed Interest Rate is
+          {{ offer.apr }}%. Your Fixed Interest Rate will not change over the term of the
+          Loan.
+        </p>
+    </div>
+    <div class="col no-break">
+        <h3>ITEMIZATION OF AMOUNT FINANCED</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <b>Amount Given to You Directly</b>
+                    </td>
+                    <td>
+                        <b>${{offer.financedAmount}}</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Amount paid to other(s) on your behalf:</b>
+                    </td>
+                    <td>
+                        <b>$0</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Amount Financed</b>
+                        <br/>
+                (Total Amount Provided)
+              </td>
+                    <td>${{offer.financedAmount}}</td>
+                </tr>
+                <tr>
+                    <td>Prepaid finance charges (Origination Fee)</td>
+                    <td>+ $0.00</td>
+                </tr>
+                <tr>
+                    <td>Total Loan Amount</td>
+                    <td>
+                = <b>${{offer.financedAmount}}</b>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,85 @@
+<style>
+    h3 {
+        margin: 10px;
+    }
+
+    .signature-fields-wrapper {
+        width: 90%;
+        margin-right: 100px;
+    }
+    .signature-field {
+        text-align: right;
+    }
+    .signature-img {
+        max-width: 60%;
+    }
+</style>
+
+<div class="signature-page-wrapper new-page">
+    <h3 class="text-center">
+        <b>Signature Page</b>
+    </h3>
+    <p>
+        By signing below, I acknowledge that I have received and read the
+        Disclosure Statement and Loan Agreement applicable to this Loan and that
+        I accept all of the terms and conditions of the Disclosure Statement and
+        Loan Agreement. I declare that the information provided in connection
+        with my application for this Loan is true and complete to the best of my
+        knowledge and belief. I understand and agree that {{ tribe.name }} LENDING LLC.
+        may obtain a consumer credit report in connection with this application
+        and in connection with any updates, renewals or extensions of any credit
+        as a result of this application.
+      </p>
+    <p>
+        <b>
+          Agreement to pay: I agree to pay the lender or any other holder of
+          this Loan all sums disbursed under the terms of this Loan Agreement,
+          any loan origination fee, plus interest and all other fees, charges,
+          and costs that may become due. The terms and conditions set forth in
+          the Disclosure Statement and Loan Agreement constitute the entire
+          agreement between us.
+        </b>
+    </p>
+    <p>
+        CAUTION – IT IS IMPORTANT TO THOROUGHLY READ THE CONTRACT BEFORE SIGNING
+        IT.
+      </p>
+    <p>
+        NOTICES TO CUSTOMER <br/>
+        (For purposes of the following notice, the word “you” refers to the
+        Borrower not the Lender) (a) DO NOT SIGN THIS BEFORE YOU READ THE LOAN
+        AGREEMENT EVEN IF OTHERWISE ADVISED. (b) DO NOT SIGN THIS IF IT CONTAINS
+        ANY BLANK SPACES. (c) YOU ARE ENTITLED TO AN EXACT COPY OF ANY AGREEMENT
+        YOU SIGN. (d) YOU HAVE THE RIGHT AT ANY TIME TO PAY IN ADVANCE THE
+        UNPAID BALANCE UNDER THIS AGREEMENT AND YOU MAY BE ENTITLED TO A PARTIAL
+        REFUND OF THE FINANCE CHARGE TO THE EXTENT REQUIRED BY APPLICABLE LAW.
+      </p>
+    <div class="signature-fields-wrapper">
+        <div class="field">
+            <div class="label">BORROWER SIGNATURE:</div>
+            <div class="value">
+                <img class="signature-img" src="borrower-signature-path" alt="borrower signature" />
+            </div>
+        </div>
+        <div class="field">
+            <div class="label">APPLICANT SIGNATURE:</div>
+            <div class="value">
+                <img class="signature-img" src="data:image/png;base64,{{signature}}" alt="applicant signature" />
+            </div>
+        </div>
+        <div class="field">
+            <div class="label">SIGNATURE DATE:</div>
+            <div class="value">{{ dateSigned }} </div>
+        </div>
+
+        <div class="field">
+            <div class="label">PRINT FULL NAME:</div>
+            <div class="value">{{ user.firstname }} {{ user.lastname }}</div>
+        </div>
+    </div>
+
+    <p>
+        I agree to keep a copy of this Loan Agreement and a copy of the
+        Disclosure Statement for my own future reference.
+      </p>
+</div>

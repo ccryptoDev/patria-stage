@@ -1,0 +1,156 @@
+{% extends "layout/layout.nunjucks" %}
+{% block body %}
+<style>
+  #nacha_file_table i.fa-download {
+    font-size: 24px;
+    color: rgb(47,97,183);
+  }
+
+  #nacha_file_table i.downloaded {
+    color: rgb(184,6,6);
+  }
+</style>
+    <section class="content-header">
+      <h1>Nacha</h1>
+      <ol class="breadcrumb">
+        <li><a href="/admin/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">Nacha</li>
+      </ol>
+    </section>
+    <section class="content">
+      <div class="box">
+        <div class="box-header with-border">
+{#            <span class="pull-right"><a href="/admin/createprospect"><button type="button" class="btn btn-primary">Create Prospect</button></a></span>#}
+            <h3 class="box-title">Recent Nacha Files</h3>
+	     </div>
+        <div class="box-body">
+          <table class="table table-striped table-bordered  dataTable" id="nacha_file_table">
+            <thead>
+            <tr>
+                <th style="width: 10px">#</th>
+                <th>Payment Date</th>
+                <th>File Name</th>
+                <th>Status</th>
+                <th>Downloaded</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody></table>
+        </div>
+      </div>
+    </section>
+    <script>
+      $(document).ready(function() {
+        const tableElement = $( "#nacha_file_table" );
+
+        if ( $.fn.DataTable.isDataTable( tableElement ) ) {
+          tableElement.DataTable().destroy();
+          tableElement.find("tbody").empty();
+        }
+        const columnDataType = {
+          "loopId": "ignore",
+          "createdAt": "date",
+          "nachaSendStatus": [
+            {data: "isNachaError",dataType:"boolean", defaultValue: false},
+            {data: "fileUploadError", dataType:"string", defaultValue: ""}
+          ],
+        };
+        const uTable = tableElement.DataTable( {
+          initComplete: function(settings, json) {
+          },
+          processing: true,
+          serverSide: true,
+          destroy: true,
+          language: {
+            loadingRecords: "Please wait - loading..."
+          },
+          paging: true,
+          pagingType: "full_numbers",
+          ajax: {
+            url:"/admin/nacha/filelist",
+            method: "POST",
+            data: function ( d ) {
+              _.forEach(d.columns, (col) => {
+                const columnType = columnDataType[col.data];
+                col["dataType"] = columnType;
+                if(col.data === "nachaSendStatus") {
+                  col["orderByField"] = columnType[0];
+                }
+              })
+            }
+          },
+          order: [ [ 1, 'asc' ] ],
+          lengthMenu: [ [ 10, 25, 50, 100 ], [ 10, 25, 50, 100 ] ],
+          pageLength: 100,
+          columns: [
+            { data: "loopId", orderable: false, searchable: false},
+            { data: "createdAt"},
+            { data: "filePath",
+              render: function ( data, type, row, meta ) {
+                const filePath = _.get(row, "filePath", "");
+                return filePath.split( '/' ).pop();
+              }
+            },
+            { data: "downloadStatus",  render: function ( data, type, row, meta ) {
+                let downloadStatus = _.get(row, "downloadStatus", "");
+                if(!!downloadStatus) {
+                  downloadStatus = downloadStatus.toString().replace(/-/g,"");
+                }
+                console.error(downloadStatus);
+                return !!downloadStatus ? "Yes": "No";
+              }},
+            { data: "nachaSendStatus",
+              render: function ( data, type, row, meta ) {
+                let isNachaError = _.get(row, "isNachaError", "false");
+                if(!!isNachaError) {
+                  isNachaError = isNachaError.toString().toLowerCase() === "true"
+                }
+                let fileUploadError = _.get(row, "fileUploadError", "");
+                if(!!fileUploadError) {
+                  fileUploadError = fileUploadError.toString().replace(/-/g,"");
+                }
+                if(isNachaError || !!fileUploadError) {
+                  return "Failed: " + fileUploadError || "Unknown Error";
+                }else {
+                  return "Uploaded"
+                }
+              }},
+            { data: "downloadNachaFile",
+              render: function ( data, type, row, meta ) {
+                const id = _.get(row, "id", "");
+                let downloadStatus = _.get(row, "downloadStatus", "")
+                if(!!downloadStatus) {
+                  downloadStatus = downloadStatus.toString().toLowerCase().replace(/-/g,"")
+                }
+                  // const hiddenInput = $("<input></input>").attr("type", "hidden").addClass("btnDownloadNachaId").val(id);
+                  // const wrapper = $("<div></div>").addClass("nachaFileWrapper").append(hiddenInput).append($("<button></button>").addClass("btn btn-primary btnDownloadNachaFile").attr("btnDownloadFile_"+id).html("Download"));
+                  //
+                  // return wrapper[0].outerHTML;
+                if(!!id) {
+                  return renderForNachaLinkColumn(downloadStatus, id);
+                }else {
+                  return "--"
+                }
+              }},
+          ]
+        } );
+
+        $("#nacha_file_table").on("click", ".nachaFileWrapper .btnDownloadNachaFile",function(e) {
+            console.error("clicked: " + $(this).parent().find(".btnDownloadNachaId").val());
+        })
+
+        $( '#nacha_file_table input' ).off("keyup keypress input").on( 'keyup', function( e ) {
+          if(this.value.length > 3 === 0) {
+            uTable.search( this.value ).draw();
+          }
+        } );
+        tableElement.parent().addClass( 'table-responsive' );
+      });
+      function renderForNachaLinkColumn(hasDownloaded, nachaId) {
+        const iconClass = hasDownloaded === "true"?"downloaded":"";
+        return $("<a></a>").attr("href", "/admin/nacha/file/" + nachaId).attr("target","_blank").html($("<i></i>").addClass("fa fa-download " + iconClass)[0].outerHTML)[0].outerHTML;
+      }
+
+    </script>
+{% endblock %}

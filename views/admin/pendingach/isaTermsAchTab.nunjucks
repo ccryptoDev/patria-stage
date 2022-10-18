@@ -1,0 +1,700 @@
+
+<h3> Documents</h3>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <tr>
+            <th> # </th>
+            <th> Documents </th>
+            <th> PDF </th>
+        </tr>
+        <tbody>
+            {% set p = 0 %}
+            {% for pdfdocument in  pdfdocument %}
+                {% set p = p+1 %}
+                <tr>
+                    <td>{{ p }}</td>
+                    {% if pdfdocument.documentName == "tcpa" %}
+                        <td>SMS Policy</td>
+                    {% else %}
+                        <td>{{ pdfdocument.documentName }}</td>
+                    {% endif%}
+                    <td><a href="{{ pdfdocument.agreementpath }}" target="_blank">View Document</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<br />
+
+<h3>Uploaded Documents</h3> 
+{% if paymentmanagementdata.status!='DENIED' %}
+<form role="form" method="post" enctype="multipart/form-data" action="/admin/uploadDocumentProof" id="desc">
+    <input type="hidden" id="paymentID" name="paymentID" value="{{ paymentmanagementdata.id }}">
+    <input class="" type="hidden" id="userId" name="userId" value="{{ user.id }}">
+    <input type="hidden" id="categoryId" name="category" value="pendingusers">
+    <table class="table table-bordered">
+        <tbody>
+            <div id="docuCheck" style="display:none;">
+                <p>Please select</p>
+            </div>
+            <tr>
+                <th> Document Type </th>
+                <td>
+                    <select name="docutype" id="docutype" required="">
+                        <option value="" >Select Document Type</option>
+                        <option value="{{ documenttype.documenttype1 }}" >{{ documenttype.documenttype1 }}</option>
+                        <option value="{{ documenttype.documenttype2 }}" >{{ documenttype.documenttype2 }}</option>
+                        <option value="{{ documenttype.documenttype3 }}" >{{ documenttype.documenttype3 }}</option>
+                    </select>
+                </td>
+            </tr>
+            <div class="existsdoc">You have already uploaded selected doucment type!!!</div>
+            <tr id="docuNameCheck" style="display:none;">
+                    <th> Document Name </th>
+                    <td><input type="text" class="form-control" id="documentname" name="documentname" style="width:50%;" ></td>
+                </tr>
+            <tr>
+                <th>Document</th>
+                <td>
+                    <input  type="file"  id="proofdocument" name="proofdocument" required>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <button type="submit"  class="btn btn-primary" id="updocs" value="Validate" onclick="Validate();">Submit</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+{% endif %}
+
+<div class="container-fluid ">
+
+{% if achdocumentDetails.length>0 %}
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th style="width: 10px">#</th>
+                <th>Document Type</th>
+                <th>Document </th>
+                <th>Underwriter </th>
+                <th>Created Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set lg = 0 %}
+            {% for logsdata in  achdocumentDetails %}
+                {% set lg = lg+1 %}
+                <tr>
+                    <td>{{ lg }}</td>
+                    <td>{{ logsdata.docname }}</td>
+                    <td><a href="{{ logsdata.proofdocument.standardResolution }}" target="_blank">View Document</a></td>
+                    {% if logsdata.underwriter != ''%}
+                    <td>{{ logsdata.underwriter }}</td>
+                    {% else %}
+                    <td>user</td>
+                    {% endif %}
+                    <td>{{ logsdata.createdAt }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p>No document added from system</p>
+{% endif %}
+</div>
+
+
+
+<style>
+ .error{border-color:red;}
+    .success{
+            color:#3c763d;
+            font-size:14px;
+            }
+    .existsdoc {display:none; text-align:center; color:red;}
+    .checkbox input[type="radio"] {
+      opacity: 1!important;
+    }
+    .multiple-sub-headers .sub-header{
+        margin-top: 20px;
+    }
+</style>
+
+{% if (schudlesmsg) or loadPaymentSheduleTab %}
+        <script>
+			setTimeout(function(){
+				$('#paymentinfotab').click();
+			}, 500);
+        </script>
+{% endif %}
+{% if (uploaddocmsg)  %}
+<script>
+  setTimeout(function(){
+    $('#uploaddoctab').click();
+  }, 500);
+</script>
+{% endif %}
+{% if (banksuccessmsg or bankerror )  %}
+<script>
+  setTimeout(function(){
+    $('#userbankinfotab').click();
+  }, 500);
+</script>
+{% endif %}
+
+{% if (changeincomemsg)  %}
+<script>
+    setTimeout(function(){
+      $('#DTIoffertab').click();
+    }, 500);
+</script>
+{% endif %}
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#docutype").change(function() {
+        //var end = this.value;
+        if (docutype.value == "Others") {
+            $("#docuNameCheck").show();
+        }else{
+            $("#docuNameCheck").hide();
+        }
+    });
+
+});
+
+function confirmProcedure(payId) {
+    if (payId) {
+        ajaxPost("/admin/confirmProcedure/{{ paymentmanagementdata.id }}").then(function(response) {
+            $("#btnInitiateConfirmProcedure").css("display","none");
+            $("#btnUpdateProcedureDate").css("display", "none");
+            toggleModalById("confirmProcedureModal",false);
+            toggleModalById("confirmProcedureFinalizedModal", true);
+        });
+    }
+}
+function initiateConfirmProcedure() {
+    toggleModalById("confirmProcedureModal",true);
+}
+function toggleModalById(modalId, show) {
+    $("#" + modalId).modal(show? "show": "hide");
+}
+    // var for the edit payment function
+    {# var editPaymentIndex = -1;
+    var discountAmountSubmit = 0;
+    var paymentTypeSubmit = ""; #}
+    {# $( document ).ready( function () {
+        $( "#editEffectiveISAForm" ).validate( {
+            rules: {
+                'editIsaPercentage': {
+                    required: true
+                },
+                "editIsaPaymentCap": {
+                    required: true
+                },
+                "editIsaRequiredPayments": {
+                    required: true
+                },
+                "editIsaPaymentWindow": {
+                    required: true
+                },
+                "editIsaMinimumIncome": {
+                    required: true
+                }
+            },
+            messages: {
+                'editIsaPercentage': {
+                    required: 'Income Shared Percentage is required'
+                },
+                "editIsaPaymentCap": {
+                    required: "Payment Cap is required"
+                },
+                "editIsaRequiredPayments": {
+                    required: "Income Shared Percentage is required"
+                },
+                "editIsaPaymentWindow": {
+                    required: "Payment Window is required"
+                },
+                "editIsaMinimumIncome": {
+                    required: "Minimum Income is required"
+                }
+            },
+            submitHandler: function () {
+                var percent = $( "#editIsaPercentage" ).val();
+                var paymentCap = $( "#editIsaPaymentCap" ).val();
+                var requiredPayments = $( "#editIsaRequiredPayments" ).val();
+                var paymentWindow = $( "#editIsaPaymentWindow" ).val();
+                var minimumIncome = $( "#editIsaMinimumIncome" ).val();
+                var paymentId = $( "#EditIsaPaymentId" ).val();
+                $.ajax( {
+                    url: '/admin/editISATerms',
+                    data: {
+                        'percent': percent,
+                        'paymentCap': paymentCap,
+                        'requiredPayments': requiredPayments,
+                        'paymentWindow': paymentWindow,
+                        'minimumIncome': minimumIncome,
+                        'paymentId': paymentId
+                    },
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function( res ) {
+                        $( "#editEffectiveISAModal" ).modal( "hide" );
+                        if( res.status == 200 ) {
+                            window.location.reload();
+                        } else {
+                            $( "#isaEditError" ).show();
+                            setTimeout(function(){
+                                $('#isaEditError').hide();
+                            }, 5000);
+                        }
+                    }
+                } );
+                return false;
+            }
+
+
+        } );
+        $( "#editIsaMinimumIncome" ).on( "change keyup", function( e ) {
+            var $el = $( "#editIsaMinimumIncome" );
+            var val = parseFloat( $el.val().replace( /[^0-9]/g, "" ) ) || "";
+            if( val != "" ){
+            $el.val( "$" + val.toLocaleString( "en-US", { maximumFractionDigits: 0, minimumFractionDigits: 0 } ) );
+            }
+        } );
+        $( "#editIsaPaymentCap" ).on( "change keyup", function( e ) {
+            var $el = $( "#editIsaPaymentCap" );
+            var val = parseFloat( $el.val().replace( /[^0-9]/g, "" ) ) || "";
+            if( val != "" ){
+            $el.val( "$" + val.toLocaleString( "en-US", { maximumFractionDigits: 0, minimumFractionDigits: 0 } ) );
+            }
+        } );
+        $( "#editIsaPercentage" ).on( "change", function( e ) {
+            var $el = $( "#editIsaPercentage" );
+            var val = parseFloat( $el.val().replace( /[^0-9.]/g, "" ) ) || "";
+            if( val != "" ){
+            $el.val( val.toLocaleString( "en-US", { maximumFractionDigits: 3, minimumFractionDigits: 0 } ) + "%" );
+            }
+        } );
+
+        $("#btnProgramDismissReview").on("click",function(e) {
+            e.preventDefault();
+			$(".isa-dismiss-review-button-error").hide();
+            var paymentManagementId = {{ paymentmanagementdata.id | stringify }};
+			ajaxPost("/admin/dismissNeedsReview",{paymentManagementId: paymentManagementId}).then(function(updateResponse) {
+				window.location.href="/admin/showAllNeedsReviewContracts"
+			},function(errorObj) {
+				$(".isa-dismiss-review-button-error").html("There was an error while trying to dismiss this program end review.").show();
+			});
+		})
+		$("#btnConfirmProcedure").on("click",function(e) {
+			e.preventDefault();
+			$(".isa-dismiss-review-button-error").hide();
+			ajaxPost("/admin/confirmProcedure", {id: "{{ paymentmanagementdata.id }}"}).then(function(response) {
+				window.location.href="/admin/showAllNeedsReviewContracts"
+			},function(error) {
+				$(".isa-dismiss-review-button-error").html("There was a problem trying to confirm this program completion.").show();
+			});
+		})
+
+        // calculate amount when the discountAmount input in the editPayment Modal is changed
+        // populates the edit payment vars and the Confirm and Submit tab
+        $( "#discountAmount" ).on( "change keyup", function( e ) { 
+            var calcDiscountAmount = Number( $( "#discountAmount" ).val().replace(/[^0-9.]+/g, "" ) );
+            var previousAmount = Number( $( "#paymentAmount" ).val().replace(/[^0-9.]+/g, "" ) );
+            var calcNewAmount = previousAmount - calcDiscountAmount;
+            $( "#newPaymentAmount" ).val( "$" + calcNewAmount.toLocaleString( "en-US", { maximumFractionDigits: 2, minimumFractionDigits: 2 } ) );
+            if( calcDiscountAmount != 0 && calcDiscountAmount != "" ) {
+                discountAmountSubmit = calcNewAmount;
+                $( "#discountChanges" ).html( "<tr><th>previous payment</th><td>" + previousAmount + "</td></tr><tr><th>discount amount</th><td>" + calcDiscountAmount + "</td></tr><tr><th>new payment amount</th><td>" + calcNewAmount + "</td></tr>" );
+                $( "#discountSure" ).show();
+            } else {
+                discountAmountSubmit = 0;
+                $( "#discountChanges" ).html( "<tr><td>No discount will be added to this payment.</td></tr>" );
+                $( "#discountSure" ).hide();
+            }
+        })
+        // populates the edit payment vars and the Confirm and Submit tab
+        $( "#paymenttype" ).on( "change", function( e ) {
+            if( $( "#paymenttype" ).val() != "" ) {
+                paymentTypeSubmit = $( "#paymenttype" ).val();
+                $( "#manualPaymentChanges" ).html( "<tr><th>Payment Type</th><td>" + $( "#paymenttype" ).val() + "</td></tr><tr><th>Repayment Status</th><td>Paid</td></tr>" );
+                $( "#discountSure" ).show();
+                $( "#manualSure" ).show();
+            } else {
+                paymentTypeSubmit = "";
+                $( "#manualPaymentChanges" ).html( "<tr><td>No manual payments will be changed.</td></tr>" );
+                $( "#discountSure" ).hide();
+                $( "#manualSure" ).hide();
+            }            
+        })
+    } ); #}
+
+    // populates editPaymentIndex and fields for editPayment Modal then opens the modal
+    {# function editPaymentModal( paymentIndex, paymentDate, paymentAmount ) {
+        editPaymentIndex = paymentIndex;
+        $( "#paymentAmount" ).val( paymentAmount );
+        $( "#newPaymentAmount" ).val( paymentAmount );
+        $( "#titleEditPayment" ).html( "Edit Payment Number " + paymentIndex + " due on " + paymentDate );
+        $( "#editPayment" ).modal( "show" );
+    } #}
+    // change to the Confirm and submit tab and will enable or disable the finalize btn
+    {# function changeToConfirmTab() {
+        $('#tabs a[href="#confirmChanges"]').tab('show');
+        if( paymentTypeSubmit != "" || discountAmountSubmit != 0 ) {
+            $( "#finalizeEditPayment" ).prop( "disabled", false );
+        } else {
+            $( "#finalizeEditPayment" ).prop( "disabled", true );
+        }
+    } #}
+    // if user clicks away from Confirm and Submit tab disables finalize btn
+    {# function disableFinalize() {
+        $( "#finalizeEditPayment" ).prop( "disabled", true );
+    } #}
+    // ajax call to server to make the necessary database changes
+    {# function submitEditPaymentForm() {
+        var paymentId = $( "#EditPaymentId" ).val();
+        $.ajax( {
+            url: "/admin/editSinglePayment",
+            data: {
+                "index": editPaymentIndex,
+                "discountAmount": discountAmountSubmit,
+                "paymentType": paymentTypeSubmit,
+                'paymentId': paymentId
+            },
+            dataType: 'json',
+            type: 'POST',
+            success: function( res ) {
+                $( "#editPayment" ).modal( "hide" );
+                if( res.status == 200 ) {
+                    window.location.reload();
+                } else {
+                    $( "#isaEditError" ).show();
+                    setTimeout(function(){
+                        $('#isaEditError').hide();
+                    }, 5000);
+                }
+            }
+        } );
+    } #}
+</script>
+
+
+{# <div class="table-responsive">
+    <h3>Program Details</h3>
+    <div class="program-dates-section">
+        <div class="flex-box-table-col">
+            <div class="flex-box-table-row flex-box-item">
+                <div class="flex-box-item header-item">
+                    Program Start:
+                </div>
+                <div class="flex-box-item value-item">
+                    {{ paymentmanagementdata.programStart | date("MM/DD/YYYY") if paymentmanagementdata.programStart else ''  }}
+                </div>
+            </div>
+            <div class="flex-box-table-row flex-box-item">
+                <div class="flex-box-item header-item">
+                    Program End:
+                </div>
+                <div class="flex-box-item value-item">
+                    {{ paymentmanagementdata.programEnd | date("MM/DD/YYYY") if paymentmanagementdata.programEnd else ''  }}
+                </div>
+            </div>
+            {% if paymentmanagementdata.screentracking.needsReviewing and (paymentmanagementdata.screentracking.hasProgramEnded) %}
+                <div class="flex-box-table-row flex-box-item">
+                    <div class="flex-box-item header-item" style="align-self: center;">
+                        <span class="warning-message"><i class="fa fa-exclamation-triangle" style="margin-right: 5px;" aria-hidden="true"></i>
+                            Program has ended.
+                        </span>
+                    </div>
+                    <div class="flex-box-item value-item">
+                                <button type="button" class="btn btn-primary" id="confirmProgramCompletion" data-toggle="modal" data-target="#confirmProgramCompletionModal">Confirm Completion</button>
+                    </div>
+                </div>
+                <div class="error isa-dismiss-review-button-error" style="margin: 10px;display: none"></div>
+            {% endif %}
+        </div>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <th style="border: none; width: 20%"><h3>Program ISA Terms</h3></th>
+            <th style="border: none; width: 30%"></th>
+            <th style="border: none; width: 20%"><h3>Effective ISA Terms</th>
+            <th style="border: none; width: 30%"><button type="button" class="btn btn-primary" id="editEffectiveISATerms" data-toggle="modal" data-target="#editEffectiveISAModal">Edit</button></th>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Income Shared Percentage</th>
+                <td>{{schoolprogram.incomePercent}}%</td>
+                <th>Income Shared Percentage</th>
+                <td>{{paymentmanagementdata.incomePercent}}%</td>
+            </tr>
+            <tr>
+                <th>Payment Cap</th>
+                <td>{{schoolprogram.paymentCap | $format(true, 2) }}</td>
+                <th>Payment Cap</th>
+                <td>{{paymentmanagementdata.paymentCap | $format(true, 2) }}</td>
+            </tr>
+            <tr>
+                <th>Required Payments</th>
+                <td>{{schoolprogram.requiredPayments}} payments</td>
+                <th>Required Payments</th>
+                <td>{{paymentmanagementdata.requiredPayments}} payments</td>
+            </tr>
+            <tr>
+                <th>Payment Window</th>
+                <td>{{schoolprogram.paymentWindow}} months</td>
+                <th>Payment Window</th>
+                <td>{{paymentmanagementdata.paymentWindow}} months</td>
+            </tr>
+            <tr>
+                <th>Minimum Income Threshold</th>
+                <td>{{schoolprogram.minimumIncome | $format(true, 2) }}</td>
+                <th>Minimum Income Threshold</th>
+                <td>{{paymentmanagementdata.minimumIncome | $format(true, 2) }}</td>
+            </tr>
+            <tr>
+                <th colspan="4" style="border: none; width: 20%"><h3>Current Scheduled Payments</h3></th>
+            </tr>
+            <tr>
+                {% if( scheduleData.length > 0 ) %}
+                <td colspan="4">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <th>#</th>
+                        <th></th>
+                        <th>Payment Window</th>
+                        <th>Repayment Status</th>
+                        <th>Scheduled Amount</th>
+                        <th>Paid Amount</th>
+                        <th>Income Percent</th>
+                        <th>Payment Type</th>
+                    </tr>
+                    req.session.rolename = {{ req.session.rolename }}
+                    {% set editBtn = false %}
+                    {% for payment in scheduleData %}
+                        <tr{% if( payment.last ) %} style="background-color: #ccffff{% endif%}">
+                        <td class="ptable-cell">{{payment.index}}</td>
+                        <td class="ptable-cell">{% if payment.color %}<i class="fa fa-circle" style="color: {{ payment.color }};"></i>{% else %}&nbsp;{% endif %}</td>
+                        <td class="ptable-cell">{{payment.date}}</td>
+                        <td class="ptable-cell">{{payment.status}}</td>
+                        <td class="ptable-cell">{% if payment.status != "Paid" and editBtn == false and req.session.rolename == "Admin" %} {% set editBtn = true %} {{payment.amount}} <button type="button" id="edit{{ payment.index }}" class="btn btn-primary editPaymentBtn" onclick="editPaymentModal( {{ payment.index }}, '{{ payment.date }}', '{{ payment.amount }}' );">Edit</button>{% else %} {{payment.amount}} {% endif %}</td>
+                        <td class="ptable-cell">{{payment.paid}}</td>
+                        <td class="ptable-cell">{{payment.incomePercent}}</td>
+                        <td class="ptable-cell">{{payment.paymentType}}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                </td>
+                {% else %}
+                <td colspan="4">A payment schedule will be created when income has been verified.</td>
+                {% endif %}
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Edit Effective ISA Modal -->
+<div id="editEffectiveISAModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <form id="editEffectiveISAForm" name="editEffectiveISAForm">
+            <input type="hidden" id="EditIsaPaymentId" value="{{ paymentmanagementdata.id }}">
+            <div class="modal-content" style="float: left;width: 100%;">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Edit ISA Terms</h4>
+                </div>
+                <div style="padding: 8px;">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th>Income Shared Percentage</th>
+                            <td>
+                                <input type="text" class="form-control" name="editIsaPercentage" id="editIsaPercentage" value="{{ paymentmanagementdata.incomePercent }}%" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>PaymentCap</th>
+                            <td><input type="text" class="form-control" name="editIsaPaymentCap" id="editIsaPaymentCap" value="{{ paymentmanagementdata.paymentCap | $format( true, 0 ) }}"></td>
+                        </tr>
+                        <tr>
+                            <th>Required Payments</th>
+                            <td><input type="text" class="form-control" name="editIsaRequiredPayments" id="editIsaRequiredPayments" value="{{ paymentmanagementdata.requiredPayments }}"></td>
+                        </tr>
+                        <tr>
+                            <th>Payment Window</th>
+                            <td><input type="text" class="form-control" name="editIsaPaymentWindow" id="editIsaPaymentWindow" value="{{ paymentmanagementdata.paymentWindow }}" ></td>
+                        </tr>
+                        <tr>
+                            <th>Minimum Income Threshold</th>
+                            <td><input type="text" class="form-control" name="editIsaMinimumIncome" id="editIsaMinimumIncome" value="{{ paymentmanagementdata.minimumIncome | $format( true, 0 ) }}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer bg-info" style="float: left;width: 100%;">
+                    <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="editISABtn">Confirm</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Confirm Procedure Modal -->
+<div id="confirmProgramCompletionModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content" style="float: left;width: 100%;">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirm Program Completion</h4>
+            </div>
+            <div class="modal-body bgColorWhite" style="float: left;width: 100%;">
+                <p><strong>Did {{ user.fullname if user.fullname else 'this user' }} complete this program?</strong></p>
+
+                <div class="flex-box-table-col" style="width: 80%;margin: 0 auto;">
+                    <div class="flex-box-item flex-box-table-row">
+                        <div class="flex-box-item header-item" style="flex: 0 0 130px;text-align: right;">
+                            <label>Program:</label>
+                        </div>
+                        <div class="flex-box-item">
+                            <span>{{schoolprogram.name}}</span>
+                        </div>
+                    </div>
+                    <div class="flex-box-item flex-box-table-row">
+                        <div class="flex-box-item header-item" style="flex: 0 0 130px;text-align: right;">
+                            <label>Program end date:</label>
+                        </div>
+                        <div class="flex-box-item">
+                            <span>{{paymentmanagementdata.programEnd | formatDate('MM-DD-YYYY')}}</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="modal-footer bg-info" style="float: left;width: 100%;">
+                <button type="button" data-dismiss="modal" class="btn btn-primary">No</button>
+                <input type="button"  class="btn btn-primary yes-button" value="Yes"  id="btnConfirmProcedure" name="btnConfirmProcedure" onclick="confirmProcedure()"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Payment Modal -->
+<div id="editPayment" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <form id="editPaymentForm" name="editPaymentForm">
+            <input type="hidden" id="EditPaymentId" value="{{ paymentmanagementdata.id }}">
+            <div class="modal-content" style="float: left;width: 100%;">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div style="padding: 8px;">
+                    <h4 id="titleEditPayment" class="">Edit Payment</h4>
+                    <div id="tabs">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#discount" onclick="disableFinalize();">Discount</a></li>
+                            <li><a data-toggle="tab" href="#importPayment" onclick="disableFinalize();">Manual Payment</a></li>
+                            <li><a data-toggle="tab" href="#confirmChanges" onclick="changeToConfirmTab();">Confirm and Submit</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="discount" class="tab-pane fade in active">
+                                <table class="table discountTable">
+                                    <tbody>
+                                        <tr>
+                                            <th>Scheduled payment amount:</th>
+                                            <td>
+                                                <input type="text" class="form-control" name="paymentAmount" id="paymentAmount" value="" readonly>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Discount amount:</th>
+                                            <td>
+                                                <input type="text" class="form-control" name="discountAmount" id="discountAmount" value="" >
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>New payment amount:</th>
+                                            <td>
+                                                <input type="text" class="form-control" name="newPaymentAmount" id="newPaymentAmount" value="" readonly>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <button type="button" class="btn btn-primary" onclick="changeToConfirmTab();">Confirm</button></a>
+                            </div>
+                            <div id="importPayment" class="tab-pane fade">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <th>Type of payment:</th>
+                                            <td>
+                                                <select name="paymenttype" id="paymenttype" style="padding:0;">
+                                                    <option value="" selected>Select Payment Type</option>
+                                                    <option value="manual">manual payment</option>
+                                                    <option value="import">import payment</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <button type="button" class="btn btn-primary" onclick="changeToConfirmTab();">Confirm</button></a>
+                            </div>
+                            <div id="confirmChanges" class="tab-pane fade">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <table class="table confirmTables">
+                                                <thead>
+                                                    <tr id="discountChangesTitle" style="text-align: center; font-size: 16px; font-weight: 700;">
+                                                        <th>Discount Changes</th>
+                                                    </tr>  
+                                                </thead>  
+                                                <tbody id="discountChanges"> 
+                                                    <tr>
+                                                        <td>No discount changes have been made.</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </tr>
+                                        <tr>
+                                            <table class="table confirmTables">
+                                                <thead>
+                                                    <tr id="manualPaymentTitle" style="text-align: center; font-size: 16px; font-weight: 700;">
+                                                        <th>Manual Payment Changes</th>
+                                                    </tr>  
+                                                </thead>  
+                                                <tbody id="manualPaymentChanges"> 
+                                                    <tr>
+                                                        <td>No discount changes have been made.</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <p class="sureMsg" id="discountSure">Are you sure you want to finalize these changes?</p>
+                                <p class="sureMsg" id="manualSure">They cannot be undone.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-info" style="float: left;width: 100%;">
+                    <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+                    <button type="button" id="finalizeEditPayment" class="btn btn-primary" onclick="submitEditPaymentForm();" disabled>Finalize</button></a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div> #}

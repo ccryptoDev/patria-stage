@@ -1,0 +1,44 @@
+
+<th>Collections Role</th>
+<td>
+    <input type="hidden" id="txtHiddenSelectedCollectionRoleId" name="collectionRole" value=""/>
+    <select id="collectionRoleSelect" class="form-control" style="width:50%;" required autocomplete="off">
+        <option disabled value="">--Select One--</option>
+        {% for collectionRoleName, collectionRole in collectionsRoles %}
+            <option {% if ((not userdata or not userdata.collectionRole or not userdata.collectionRole.rolename) and collectionRoleName === "UNASSIGNED") or userdata.collectionRole.rolename === collectionRoleName %}selected{% endif %} value="{{collectionRole.id}}">{{collectionRole.roleDisplay}}</option>
+        {% endfor %}
+    </select>
+    <p id="error_collectionrole"></p>
+</td>
+
+<script type="text/javascript">
+    {% if collectionsRoles %}
+        $(document).ready(function() {
+            const collectionsRoles = {{ collectionsRoles | stringify }};
+            $("select.user-role-select").on("change", function() {
+                const selectedRoleName = $(this).find("option:selected").html().trim();
+                const collectionRoleSelect = $("#collectionRoleSelect");
+                if(selectedRoleName === "Admin"){
+                    let collectionAdmin = collectionsRoles["COLLECTION_MANAGER"];
+                    collectionRoleSelect.find("option").removeAttr("selected");
+                    collectionRoleSelect.find("option[value=" + collectionAdmin.id + "]").attr("selected","selected");
+                    collectionRoleSelect.val(collectionAdmin.id);
+                    collectionRoleSelect.trigger("change");
+                    collectionRoleSelect.attr("disabled",true);
+                }else {
+                    if(collectionRoleSelect.is(":disabled")) {
+                        let collectionUnassigned = collectionsRoles["UNASSIGNED"];
+                        collectionRoleSelect.find( "option" ).removeAttr( "selected" );
+                        collectionRoleSelect.find( "option[value=" + collectionUnassigned.id + "]" ).attr( "selected", "selected" );
+                        collectionRoleSelect.val( collectionUnassigned.id );
+						collectionRoleSelect.trigger("change");
+                    }
+                    collectionRoleSelect.removeAttr("disabled");
+                }
+            }).trigger("change");
+            $("#collectionRoleSelect").on("change", function() {
+            	$("#txtHiddenSelectedCollectionRoleId").val($(this).find("option:selected").val())
+            });
+        });
+    {% endif %}
+</script>

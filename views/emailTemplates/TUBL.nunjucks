@@ -1,0 +1,3 @@
+<p>Welcome to Patria Lending. We received your information from Loan Retriever. In order to proceed with your application, we will need you to answer authentication questions. Please proceed to the link below to complete the application process.
+    <a href="{{ completeApplicationLink }}">LINK<a>
+</p>

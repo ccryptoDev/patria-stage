@@ -1,0 +1,23 @@
+<script type="text/javascript" src="/vue/adminAddLoan/vueAdminAddLoan.umd.js"></script>
+<link rel="stylesheet" href="/styles/los/los.css">
+<script>
+    $(document).ready(() => {
+        console.log({{ sails.config.loanDetails.maximumRequestedLoanAmount }})
+      console.log({{ sails.config.loanDetails.minimumRequestedLoanAmount }})
+        new Vue({
+            el: '#vue-admin-add-loan',
+            data: {
+                user: {{ user | stringify }},
+                maximumRequestedLoanAmount: {{ sails.config.loanDetails.maximumRequestedLoanAmount }},
+                minimumRequestedLoanAmount:{{ sails.config.loanDetails.minimumRequestedLoanAmount }}
+            },
+            components: {
+                'vue-admin-add-loan': window["vueAdminAddLoan"]
+            }
+        })
+    })
+</script>
+
+<div id="vue-admin-add-loan">
+    <vue-admin-add-loan :user="user" :maximumrequestedloanamount="maximumRequestedLoanAmount" :minimumrequestedloanamount="minimumRequestedLoanAmount"></vue-admin-add-loan>
+</div>

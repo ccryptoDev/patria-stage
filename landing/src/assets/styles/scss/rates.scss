@@ -1,0 +1,11 @@
+.rates-section {
+  &-description {
+    padding: 6rem 0;
+
+    &-list {
+      & > li:not(:first-child) {
+        margin-top: 2.4rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,255 @@
+<style>
+    .float-select-label {
+        opacity: 1 !important;
+    }
+    #frmEditUserDetailsForm .label-error-shown-block {
+        /*position: relative !important;*/
+        text-align: left;
+        left: 0;
+        min-height: 10px;
+    }
+</style>
+<div id="editUserDetailsModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md" style="width:80%;">
+        <!-- Modal content-->
+        <div class="modal-content" style="float: left;">
+            <div class="modal-header bg-primary" >
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit User Info</h4>
+            </div>
+            <div class="modal-body bgColorWhite" style="float: left;width: 100%;" >
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 personalInfoInner los-content">
+                    <div class="whitebox infoForm">
+                        <form id="frmEditUserDetailsForm">
+                            <div class="form-group col-xs-12 col-sm-4">
+                                <div class="float-label">
+                                    <input type="text" class="form-control form-application fl" id="txtFirstNameEdit" name="firstname" value="{{ user.firstname }}" autocomplete="on" required/>
+                                    <flabel>First Name</flabel>
+                                    <div class="label-error-shown-block"><label id="txtFirstNameEdit-error" for="txtFirstNameEdit" class="error" style="display:none;"></label></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-4">
+                                <div class="float-label">
+                                    <input type="text" class="form-control form-application" id="txtMiddleNameEdit" name="middlename" value="{{ user.middlename }}" autocomplete="on" />
+                                    <flabel>Middle Name</flabel>
+                                    <div class="label-error-shown-block"><label class="error" id="txtMiddleNameEdit-error" for="txtMiddleNameEdit" style="display:none;"></label></div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group col-xs-12 col-sm-4">
+                                <div class="float-label">
+                                    <input type="text" class="form-control form-application" id="txtLastNameEdit" name="lastname" value="{{ user.lastname }}" autocomplete="on"required/>
+                                    <flabel>Last Name</flabel>
+                                    <div class="label-error-shown-block"><label id="txtLastNameEdit-error" for="txtLastNameEdit" class="error" style="display:none;"></label></div>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="float-label">
+                                            <input type="email" class="form-control form-application" id="txtEmailEdit" name="email" value="{{ user.email }}" autocomplete="on" required>
+                                            <flabel>Email<span style="color:red;margin-left:10px;font-style: italic;text-transform: none;">(Note: This will change the login username.)</span></flabel>
+                                            <div class="label-error-shown-block"><label id="txtEmailEdit-error" for="txtEmailEdit" class="error" style="display:none;"></label></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="float-label">
+                                            <input type="text" class="form-control form-application" id="txtPhoneNumberEdit" name="phoneNumber" data-mask="000-000-0000" maxlength="12" value="{{ user.phoneNumber }}" autocomplete="on" required />
+                                            <flabel>Phone Number</flabel>
+                                            <div class="label-error-shown-block"><label id="txtPhoneNumberEdit-error" for="txtPhoneNumberEdit" class="error" style="display:none;"></label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-6">
+                                                <div class="float-label">
+                                                    <input type="text" max="9999-12-31" class="dob-application form-control form-application date-range-filter" id="txtDateOfBirthEdit"
+                                                           name="dateofBirth" data-date-format="mm/dd/yyyy" value="{{ user.dateofBirth | dateMinusTz("MM/DD/YYYY")}}" autocomplete="off" required
+                                                           onfocus="(this.type='date')"/>
+                                                    <flabel>Date of Birth</flabel>
+                                                    <div class="label-error-shown-block"><label id="txtDateOfBirthEdit-error" for="txtDateOfBirthEdit" class="error" style="display:none;"></label></div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="row">
+                                        <hr/>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="float-label">
+                                                <input type="text" class="form-control form-application" id="txtStreetEdit"
+                                                       name="street" autocomplete="on" value="{{ user.street }}" required />
+                                                <flabel>Street Address</flabel>
+                                                <div class="label-error-shown-block"><label id="txtStreetEdit-error"
+                                                                                            for="txtStreetEdit"
+                                                                                            class="error"
+                                                                                            style="display:none;"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="float-label">
+                                                <input type="text" class="form-control form-application" id="txtUnitAptEdit"
+                                                       name="unitapt" value="{{ user.unitapt }}" autocomplete="on" />
+                                                <flabel>Unit / Apartment</flabel>
+                                                <div class="label-error-shown-block"><label class="error"
+                                                                                            id="txtUnitAptEdit-error"
+                                                                                            for="txtUnitAptEdit"
+                                                                                            style="display:none;"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-4">
+                                        <div class="float-label">
+                                            <input type="text" class="form-control form-application" id="txtCityEdit" name="city" autocomplete="on" value="{{ user.city }}" required />
+                                            <flabel>City</flabel>
+                                            <div class="label-error-shown-block"><label id="txtCityEdit-error" for="txtCityEdit" class="error" style="display:none;"></label></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-4">
+                                        <div class="float-label">
+                                            <i class="fa fa-chevron-down"></i>
+                                            <select name="state" id="slbStateEdit" class="form-control form-application"  required>
+                                                <option disabled value>State</option>
+                                                {% for state in states %}
+                                                    <option value="{{ state.stateCode }}" {{ 'selected' if user.state == state.stateCode else '' }}>{{ state.stateName }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <flabel class="float-select-label">State</flabel>
+                                            <div class="label-error-shown-block"><label id="slbStateEdit-error" for="slbStateEdit" class="error" style="display:none;"></label></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-4">
+                                        <div class="float-label">
+                                            <input type="text" class="form-control form-application" id="txtZipCodeEdit" name="zipCode" autocomplete="on" value="{{ user.zipCode }}" required />
+                                            <flabel>Zip Code</flabel>
+                                            <div class="label-error-shown-block"><label id="txtZipCodeEdit-error" for="txtZipCodeEdit" class="error" style="display:none;"></label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="row">
+                                <div style="margin-top: 10px;min-height: 30px;">
+                                    <label class="error" id="lblEditUserDetailsError" style="width: 100%;text-align: center;display: none;"  ></label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="modal-footer bg-info" style="float: left;width: 100%;">
+                <button type="button" id="btnSaveUserInfoEdit" class="btn btn-primary">Save</button>
+                <button type="button" id="btnCancelUserInfoEdit" class="btn btn-primary">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+      const userEditForm = $("#frmEditUserDetailsForm");
+      $("#btnSaveUserInfoEdit").on("click", function(e) {
+        e.preventDefault();
+        toggleUserInfoChangeErrors("#frmEditUserDetailsForm #lblEditUserDetailsError");
+            if(userEditForm.valid()){
+              const serializeForm = userEditForm.serializeArray();
+              const userPostData = {};
+              _.forEach( serializeForm, function( formData ) {
+                if(formData.name === "dateofBirth" && !!formData.value){
+                  userPostData[ formData.name ] = formData.value.indexOf("-") < 0? moment(formData.value, "MM/DD/YYYY").format("YYYY-MM-DD"):formData.value;
+                }else if(formData.name === "phoneNumber" && !!formData.value){
+                  userPostData[ formData.name ] = formData.value.replace(/[^0-9.]/g, "");
+                }else {
+                  userPostData[formData.name] = formData.value;
+                }
+              } );
+                ajaxPost("/user/ajaxUpdateUserTabInformation", {userInfo: userPostData,userId: "{{ user.id }}"}).then(function(results) {
+                  window.location.reload();
+                }, function(xhr) {
+                  toggleUserInfoChangeErrors("#frmEditUserDetailsForm #lblEditUserDetailsError", xhr.responseJSON && !!xhr.responseJSON.message? xhr.responseJSON.message: "There was an unknown error trying to update user info.");
+                });
+            }
+      });
+      $("#btnCancelUserInfoEdit").on("click", function(e) {
+        e.preventDefault();
+        hideUserEditModal();
+            $("#txtFirstNameEdit").val("{{ user.firstname }}");
+            $("#txtMiddleNameEdit").val("{{ user.middlename }}");
+            $("#txtLastNameEdit").val("{{ user.lastname }}");
+        $("#txtEmailEdit").val("{{ user.email }}");
+        $("#txtPhoneNumberEdit").val("{{ user.phoneNumber | phoneformat(true)}}");
+        $("#txtDateOfBirthEdit").attr( "data-date",moment("{{ user.dateofBirth }}", "YYYY-MM-DD").format("MM/DD/YYYY")).attr("type","text").val(moment("{{ user.dateofBirth}}", "YYYY-MM-DD").format( "MM/DD/YYYY")).trigger("change");
+
+        $("#txtStreetEdit").val("{{ user.street }}");
+        $("#txtUnitAptEdit").val("{{ user.unitapt }}");
+        $("#txtCityEdit").val("{{ user.city }}");
+        $("#txtZipCodeEdit").val("{{ user.zipCode }}");
+        $("#slbStateEdit option").removeAttr("selected")
+        $("#slbStateEdit").find("option[value={{ user.state }}]").prop("selected","selected");
+        userEditForm.find("label.error").css("display","none").html("");
+      });
+      userEditForm.validate({
+        rules: {
+          "firstname": { required: true },
+          "lastname": { required: true },
+          "email": { required: true },
+          "phoneNumber": { required: true, minlength: 12, maxlength: 12 },
+          "street": { required: true },
+          "city": { required: true },
+          "state": { required: true},
+          "zipCode": { required: true, minlength: 5, maxlength: 5, digits: true },
+          "dateofBirth": { required: true }
+        },
+        messages: {
+          "firstname": { required: "First name is required." },
+          "lastname": { required: "Last name is required." },
+          "email": { required: "Email is required." },
+          "phoneNumber": { required: "Phone number is required." },
+          "street": { required: "Street address is required.", minlength: "Invalid phone number.", maxlength: "Invalid phone number." },
+          "city": { required: "City is required." },
+          "state": { required: "State is required." },
+          "zipCode": { required: "Zip code is required.", minlength: "Invalid zip code.", maxlength: "Invalid zip code." },
+          "dateofBirth": { required: "Day of birth is required." }
+        },
+        errorPlacement: function( err, el ) {
+          var errId = err.attr( "id" );
+          var errEl = $( "#" + errId );
+          if( errEl.length === 1 ) {
+            errEl.html( err.html() );
+          } else {
+            err.appendTo( el.parent() );
+          }
+        },
+        unhighlight: function( el ) {
+          var $el = $( "#" + $(el).attr( "id" ) + "-error" );
+          if( $el.length === 1 ) {
+            $el.html( "" );
+          }
+        }
+      } );
+    });
+    function showUserEditModal() {
+        $("#editUserDetailsModal").modal("show");
+    }
+    function hideUserEditModal() {
+      $("#editUserDetailsModal").modal("hide");
+    }
+</script>

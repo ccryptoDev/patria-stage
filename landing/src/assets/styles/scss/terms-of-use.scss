@@ -1,0 +1,52 @@
+#terms-of-use {
+  margin-right: 20px;
+  & .terms-section-description-list {
+    & > li {
+      display: flex;
+      flex-direction: column;
+      row-gap: 24px;
+
+      & p {
+        font-size: 14px;
+      }
+      &:not(:first-child) {
+        margin-top: 48px;
+      }
+
+      & h5 {
+        color: var(--color-blue-1);
+        font-size: 18px;
+      }
+
+      & > ul,
+      & > ol {
+        display: flex;
+        flex-direction: column;
+        row-gap: 12px;
+        padding-left: 20px;
+        & li {
+          font-size: 14px;
+        }
+      }
+      & > ul {
+        list-style: disc;
+      }
+      & > ol {
+        list-style-type: lower-alpha;
+      }
+    }
+
+    & .print-button {
+      padding: 13px;
+      border: 1px solid var(--color-secondary-2);
+      border-radius: 8px;
+      background: transparent;
+    }
+
+    @media print {
+      & .print-hide {
+        display: none;
+      }
+    }
+  }
+}

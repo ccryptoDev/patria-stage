@@ -1,0 +1,38 @@
+{% if urlpath == 'borrowerlogin' %}
+	<header id="header">
+		<div class="container-fluid">
+			<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 top-nav pull-right">
+				<a href="/apply"><button class="btn btn-default PfiLogin">New Application</button></a>
+			</div>
+		</div>
+	</header>
+{% else %}
+	{% if req.session.appPracticeName and req.session.appPracticeName != '' and req.session.appPracticeName != null %}
+		<header id="header">
+			<div class="container-fluid">
+				<div class="col-xs-12 col-sm-5 col-md-6 col-lg-4 locationNameView"><a href=""><span>{{req.session.appPracticeName}} - {{req.session.appPracticeStateName}},   {{req.session.appPracticeStateCode | upper }} </span></a></div>
+				<div class="col-xs-12 col-sm-7 col-md-6 col-lg-6 top-nav pull-right">
+					{% if urlpath == 'paymentcalculator' or req.session.getStartedPage == 1 or urlpath == 'userinformation' %}
+						<a href="/login"><button class="btn btn-default PfiLogin">Login to {{LenderShortName}}</button></a>
+					{% else %}
+						<a href="/logout"><button class="btn btn-default PfiLogin">Logout of {{LenderShortName}}</button></a>
+					{% endif %}
+				</div>
+			</div>
+	    </header>
+	{% else %}
+		<header id="header">
+			<div class="container-fluid">
+				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 top-nav pull-right">
+					{% if urlpath == 'login' %}
+						<a href="/apply"><button class="btn btn-default PfiLogin">Start Application</button></a>
+					{% elif urlpath == 'employmentandreferenceinfo' or urlpath == 'offers' or urlpath == 'contract' or urlpath == 'finalize' or urlpath == 'dashboard' %}
+						<a href="/logout"><button class="btn btn-default PfiLogin">Logout of {{LenderShortName}}</button></a>
+					{% else %}
+						<a href="/login"><button class="btn btn-default PfiLogin">Login to {{LenderShortName}}</button></a>
+					{% endif %}
+				</div>
+			</div>
+		</header>
+	{% endif %}
+{% endif %}

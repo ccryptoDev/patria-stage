@@ -1,0 +1,173 @@
+
+<style>
+    .back-sign-pad{
+        border:1px solid;
+        border-radius: 7px;
+        min-height: 60px;
+        background-color: #FFF;
+    }
+</style>
+<center>
+    <div id="signature-pad" class="signature-pad" style="width:925; height:180;">
+        <div id="nosignError" style="display:none; color: red;"><strong> Please sign signature pad. </strong></div>
+        <div class="signature-pad--body">
+            <canvas width="925" height="115" style="width:925px; height:115px;" class="back-sign-pad"></canvas><br>
+        </div>
+        <br>
+        <div class="signature-pad--actions">
+            <button type="button" class="btn btn-info" data-action="" id="clearSignature">Clear</button>&nbsp;
+            <button type="button" class="btn btn-info" data-action="save-png" id="acceptSignature">Accept</button>
+            <input type="hidden" name="checkCanvasEmpty" id="checkCanvasEmpty" class="form-control input-normal" value="{{ signatureExistPromNote }}">
+            <input type="hidden" name="hiddensignatureid" id="hiddensignatureid" class="form-control input-normal" value="{{ signatureIdPromNote }}">
+            <input type="hidden" name="eftaCheckboxsp" id="eftaCheckboxsp" class="form-control input-normal" value="">
+            <input type="hidden" name="businessPurposesCheckboxsp" id="businessPurposesCheckboxsp" class="form-control input-normal" value="">
+            <input type="hidden" name="brokerParticipatedCheckboxsp" id="brokerParticipatedCheckboxsp" class="form-control input-normal" value="">
+            {% if( eftaCheckbox == "checked" ) %}
+                <input type="hidden" name="eftaCheckboxspServer" id="eftaCheckboxspServer" class="form-control input-normal" value="checked">
+            {% else %}
+                <input type="hidden" name="eftaCheckboxspServer" id="eftaCheckboxspServer" class="form-control input-normal" value="">
+            {% endif %}
+            {% if( brokerParticipatedCheckbox == "checked" ) %}
+                <input type="hidden" name="businessCheckboxspServer" id="businessCheckboxspServer" class="form-control input-normal" value="checked">
+            {% else %}
+                <input type="hidden" name="businessCheckboxspServer" id="businessCheckboxspServer" class="form-control input-normal" value="">
+            {% endif %}
+            {% if( businessPurposesCheckbox == "checked" ) %}
+                <input type="hidden" name="brokerCheckboxspServer" id="brokerCheckboxspServer" class="form-control input-normal" value="checked">
+            {% else %}
+                <input type="hidden" name="brokerCheckboxspServer" id="brokerCheckboxspServer" class="form-control input-normal" value="">
+            {% endif %}
+        </div>
+    </div>
+</center>
+
+{#
+	/*clearButton.addEventListener("click", function (event) {
+            signaturePad.clear();
+        });
+
+        savePNGButton.addEventListener("click", function (event) {
+            if (signaturePad.isEmpty()) {
+                alert("Please provide a signature first.");
+            }
+            else {
+                var dataURL = signaturePad.toDataURL();
+                //alert(dataURL);
+                console.log("dataURL", dataURL);
+                //download(dataURL, "signature.png");
+            }
+        });*/
+
+        /*function download(dataURL, filename) {
+            var blob = dataURLToBlob(dataURL);
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.style = "display: none";
+            a.href = url;
+            a.download = filename;
+
+            document.body.appendChild(a);
+            //a.click();
+
+            window.URL.revokeObjectURL(url);
+        }
+
+        // One could simply use Canvas#toBlob method instead, but it's just to show
+        // that it can be done using result of SignaturePad#toDataURL.
+        function dataURLToBlob(dataURL) {
+            // Code taken from https://github.com/ebidel/filer.js
+            var parts = dataURL.split(';base64,');
+            var contentType = parts[0].split(":")[1];
+            var raw = window.atob(parts[1]);
+            var rawLength = raw.length;
+            var uInt8Array = new Uint8Array(rawLength);
+
+            for (var i = 0; i < rawLength; ++i) {
+                uInt8Array[i] = raw.charCodeAt(i);
+            }
+
+            return new Blob([uInt8Array], { type: contentType });
+		}*/
+#}
+
+{#
+<div id="signpadDiv"  style="" class="text-center">
+	<p class="text-center"><strong>Please sign in the box below</strong></p>
+		<center><canvas id="signature-pad" class="back-sign-pad" width="700" height="100"></canvas></center><br>
+
+	<div id="save_signature_loading" class="text-center" style="display:none"><img src="/images/imgv3/ajax-loader.gif" class="img-responsive center-block" alt="Loader Image">
+    </div>
+
+	<div class="text-center">
+ 	    <button id="clear" type="button" class="btn fillBtn ActivefillBtn back-butn">Clear</button>&nbsp;
+        <button id="save" type="button" class="btn fillBtn ActivefillBtn back-butn">Accept</button>
+    </div>
+</div>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-left nopadding">
+    <div class="checkbox" id="eftcheckbox">
+        <input type="checkbox" id="eftagreement" class="singlecheck" name="ElectronicFundsConditions" value="203" onclick="removeElectronicFunds();">
+        <label for="eftagreement">
+        <a href="javascript:void(0)" onclick="openachpayment();"> <span class="greentext" style="font-size:16px;  color: #42B2FF;">Electronic Funds Transfer Authorization</span></a>
+        </label>
+    </div>
+	<div class="col-xs-12" id="eftconsentsign"></div>
+	<div class="mt1 nopadding bp-clr">By selecting this box, I have reviewed this authorization for having my contract payments made automatically and agree to its terms.</div>
+</div>
+
+<div id="signatureSuccessModal" class="modal fade financepagemodal" role="dialog">
+	<div class="modal-dialog modal-md">
+		<div class="modal-content">
+			<div class="text-center">
+			  <button type="button" class="close" data-dismiss="modal">&times;</button>
+	 		  <span class="stlbluetxt"><h3 class="greentext">Success</h3></span>
+			</div>
+			<div class="modal-body whitetext">
+				<p>Signature has been saved successfully</p>
+			</div>
+			<div class="btn-Main">
+			  <button type="button" class="btn btn-default blueBtn" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="drawmodal" class="modal fade financepagemodal" role="dialog">
+	<div class="modal-dialog modal-md">
+		<div class="modal-content">
+			<div class="text-center">
+			  <button type="button" class="close" data-dismiss="modal">&times;</button>
+	 		  <span class="stlbluetxt"><h3 class="modal-title mTB-1 error mt2" id="storyinfopopupheader">Warning!</h3></span>
+			</div>
+			<div class="modal-body whitetext">
+				<p id="signatureError">Please draw signature</p>
+			</div>
+			<div class="btn-Main">
+			  <button type="button" class="btn btn-default blueBtn" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+    .back-sign-pad{
+        border:1px solid;
+        border-radius: 7px;
+        min-height: 60px;
+    }
+    .img-responsive,
+    .thumbnail > img,
+    .thumbnail a > img,
+    .carousel-inner > .item > img,
+    .carousel-inner > .item > a > img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }
+    .center-block {
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+    }
+</style>
+#}

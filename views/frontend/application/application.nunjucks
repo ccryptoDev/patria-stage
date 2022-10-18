@@ -1,0 +1,903 @@
+{% extends "frontend/layoutv3/layout.nunjucks" %}
+{% block body %}
+    <div class="background-shortform" id="application">
+        <style>
+            #step1_form .stateDiv:before, .birthmonthDiv:before, .birthdayDiv:before, .birthyearDiv:before  {
+                content: '';
+                width: 14px;
+                height: 13px;
+                background: url('../../../images/img/frontend/chevron-down.png') no-repeat;
+                background-size: 100%;
+                position: absolute;
+                right: 20px;
+                top: 21px;
+                z-index: 0;
+                pointer-events: none;
+            }
+            .selectBox:focus {
+                border-color: 1px solid #eacc49 !important;
+            }
+            #step1_form label.error{
+                position: absolute;
+            }
+            #step1_form #creditpullconfirm-error{
+                position: relative;
+                left: 11vw;
+                right: auto;
+            }
+
+            .applicant-bank-info .input-group-addon{
+                background-color: #cccccc;
+                color: #999999;
+                border: none;
+            }
+            .applicant-bank-info .inFocus{
+                border: 1px solid #3f576c !important;
+            }
+            .applicant-bank-info .input-group{
+                width: 100%;
+            }
+            .applicant-bank-info .input-group input{
+                border-top-right-radius: 8px;
+                border-bottom-right-radius: 8px;
+            }
+            #step1_form textarea:focus, input:focus{
+                border: 1px solid #3f576c !important;
+            }
+
+            @media only screen and (max-width:767px){
+                .zipDiv{
+                    margin-top: 20px;
+                    padding-left: 0;
+                }
+                .stateDiv{
+                    padding-right: 0;
+                }
+
+            }
+            [type="date"]::-webkit-calendar-picker-indicator {
+                display: none;
+            }
+
+            option {
+                color: black;
+            }
+
+        </style>
+
+        <input type="hidden" id="reapplyerror" value="{{ reapplyerror }}">
+        <input type="hidden" id="dupusererror" value="">
+        <input type="hidden" id="sid" name="sid"  />
+        <input type="hidden" id="isTwilioEnabled" name="isTwilioEnabled" value="{{ isTwilioEnabled }}"/>
+        <input type="hidden" id="twilioContinue" name="twilioContinue" value="{{ gotoTwilio }}"/>
+        <input type="hidden" id="uid" name="uid" value="{{ userId }}" />
+        <input type="hidden" id="screenId" name="screenId" value="{{ screenId }}"  />
+    <!--revert me-->
+        <div class="container">
+            <div class="inner-content">
+                <div class="heading">
+                    <div class="logoMiddle">
+                        <img src="/images/imgv3/logo.png" style="width: 45%; height: auto" class="img-reponsive" />
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 personalInfoInner los-content">
+
+                    <div class="whitebox infoForm"> <!-- Valided locally, see JS at the bottom for all fields validation -->
+                        <form class="formclass signupForm" id="step1_form" autocomplete="on" method="POST" action="/createapplication">
+                            <!-- method="POST" action="/createapplication" -->
+                            <div class="applicant-personal-info">
+                                <input type="hidden" id="practicemanagement" name="practicemanagement" value="{{ practicemanagement.id }}">
+
+                                <div class="col-xs-12">
+                                    <h4>Personal Information</h4>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-4">
+                                    <div class="float-label">
+                                        <input type="text" class="form-control form-application fl" id="firstname" name="firstname" placeholder="First Name" value="{{ firstname }}" autocomplete="on" required/>
+                                        <flabel>First Name</flabel>
+                                        <label id="firstname-error" for="firstname" class="error" style="display:none;"></label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-4">
+                                    <div class="float-label">
+                                        <input type="text" class="form-control form-application" id="middlename" name="middlename" placeholder="Middle Name (optional)" value="{{ middlename }}" autocomplete="on" />
+                                        <flabel>Middle Name</flabel>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group col-xs-12 col-sm-4">
+                                    <div class="float-label">
+                                        <input type="text" class="form-control form-application" id="lastname" name="lastname" placeholder="Last Name" value="{{ lastname }}" autocomplete="on" required/>
+                                        <flabel>Last Name</flabel>
+                                        <label id="lastname-error" for="lastname" class="error" style="display:none;"></label>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <div class="float-label">
+                                        <input type="email" class="form-control form-application" id="email" name="email" placeholder="Email Address" value="{{ email }}" autocomplete="off" required>
+                                        <flabel>Email</flabel>
+                                        <label id="email-error" for="email" class="error" style="display:none;"></label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <div class="float-label">
+                                        <input type="text" class="form-control form-application" id="phone" name="phone" placeholder="Mobile Phone" data-mask="000-000-0000" maxlength="12" value="{{ phone }}" autocomplete="on" required />
+                                        <flabel>Mobile Phone</flabel>
+                                        <label id="phone-error" for="phone" class="error" style="display:none;"></label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <div class="float-label">
+                                        <input type="text" class="form-control form-application" id="street" name="street" placeholder="Street Address" autocomplete="on" value="{{ street }}" required />
+                                        <flabel>Street Address</flabel>
+                                        <label id="street-error" for="street" class="error" style="display:none;"></label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <div class="float-label">
+                                        <input type="text" class="form-control form-application" id="unitapt" placeholder="Unit / Apartment (optional)" name="unitapt" value="{{ unitapt }}" autocomplete="on"/>
+                                        <flabel>Unit / Apartment</flabel>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <div class="float-label">
+                                        <input type="text" class="form-control form-application" id="city" name="city" placeholder="City" autocomplete="on" value="{{ city }}" required />
+                                        <flabel>City</flabel>
+                                        <label id="city-error" for="city" class="error" style="display:none;"></label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-7">
+                                            <div class="float-label">
+                                                <i class="fa fa-chevron-down"></i>
+                                                <select name="state" id="state" class="form-control form-application" style="color: #A5B9CD;" required>
+                                                    <option selected disabled value>State</option>
+                                                    {% for state in states %}
+                                                    <option value="{{ state.stateCode }}" {{ 'selected' if( user.state == state.stateCode ) }}>{{ state.stateName }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <flabel>State</flabel>
+                                                <label id="state-error" for="state" class="error" style="display:none;"></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-5">
+                                            <div class="float-label">
+                                                <input type="text" class="form-control form-application" id="zipcode" name="zipcode" placeholder="Zip Code" autocomplete="on" value="{{ zipCode }}" required />
+                                                <flabel>Zip Code</flabel>
+                                                <label id="zipcode-error" for="zipcode" class="error" style="display:none;"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <div class="float-label">
+                                        <span class="fa fa-fw field-icon toggle-password fa-eye eyespan" toggle="#social" onclick="maskSSN(this)"></span>
+                                        <input type="hidden" id="ssn-val" name="ssn_number" value="{{ ssn_number }}" />
+                                        <input type="text" class="form-control form-application" id="social" name="ssn" maxlength="11" placeholder="Social Security Number" autocomplete="new-password" value="{{ ssn_number }}" required />
+                                        <flabel>Social Security Number</flabel>
+                                        <label id="ssn-error" for="ssn" class="error" style="display:none;"></label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <div class="float-label">
+                                        <input type="text" max="9999-12-31" class="dob-application form-control form-application date-range-filter"
+                                               name="dob" data-date-format="mm/dd/yyyy" placeholder="Date of Birth" value="{{ dateofBirth }}" autocomplete="off" required
+                                               onfocus="(this.type='date')"/>
+                                        <flabel>Date of Birth</flabel>
+                                        <label id="dateofBirth-error" for="dateofBirth" class="error" style="display:none;"></label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <div class="float-label">
+                                        <input type="text" class="form-control form-application" id="stateidnumber" name="stateidnumber" placeholder="State ID Number" autocomplete="on" value="{{ stateIdNumber }}" required />
+                                        <flabel>State ID Number</flabel>
+                                        <label id="stateidnumber-error" for="stateidnumber" class="error" style="display:none;"></label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <div class="float-label">
+                                        <i class="fa fa-chevron-down"></i>
+                                        <select class="form-control form-application" id="idstate" name="idstate" style="color: #A5B9CD;" required/>
+                                            <option selected disabled value>ID State</option>
+                                            {% for state in states %}
+                                            <option value="{{ state.stateCode }}" {{ 'selected' if( user.state == state.stateCode ) }}>{{ state.stateName }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <flabel>ID State</flabel>
+                                        <label id="idstate-error" for="idstate" class="error" style="display:none;"></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="applicant-bank-info">
+                                <div class="col-xs-12">
+                                    <hr class="document-divider">
+                                    <h4>Financial Information</h4>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <div class="float-label">
+                                        <input type="text" class="form-control form-application" id="bankname" name="bankname" placeholder="Bank Name (optional)" autocomplete="on" value="{{ bank }}" />
+                                        <flabel>Bank Name</flabel>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <div class="float-label">
+                                        <input type="text" class="form-control form-application" id="routingno" name="routingno" placeholder="Routing Number" autocomplete="on" value="{{ routingNumber }}" required/>
+                                        <flabel>Routing Number</flabel>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <div class="float-label">
+                                        <input type="text" class="form-control form-application" id="bankaccno" name="bankaccno" placeholder="Account Number" autocomplete="on" value="{{ account }}" required/>
+                                        <flabel>Account Number</flabel>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="input-group float-label">
+                                                <span class="input-group-addon">$</span>
+                                                <input type="text" class="form-control form-application currencyInput" id="requestedLoanAmount" name="requestedLoanAmount" placeholder="Requested Loan Amount" autocomplete="on"
+                                                       value="{{ requestedLoanAmount }}" required onfocus="isInputFocused(this.id)"/>
+                                                <flabel>Requested Loan Amount</flabel>
+                                            </div>
+                                            <label id="requestedLoanAmount-error" for="requestedLoanAmount" class="error" style="display:none;"></label>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="input-group float-label monthlyIncome-div">
+                                                <span class="input-group-addon">$</span>
+                                                <input type="text" class="form-control form-application currencyInput" id="monthlyIncome" name="monthlyIncome" placeholder="Monthly Income (e.g. $1000)" autocomplete="on"
+                                                       value="{{ monthlyIncome }}" required onfocus="isInputFocused(this.id)"/>
+                                                <flabel>Monthly Income</flabel>
+                                            </div>
+                                            <label id="monthlyIncome-error" for="monthlyIncome" class="error" style="display:none;"></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-12">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="float-label">
+                                                <i class="fa fa-chevron-down"></i>
+                                                <select class="form-control form-application" id="paymentmethod" name="paymentmethod" style="color: #A5B9CD;" required />
+                                                    <option selected disabled value>Payment Method</option>
+                                                    <option value="Direct Deposit"> Direct Deposit </option> <option value="Paper Check"> Paper Check </option>
+                                                </select>
+                                                <flabel>Payment Method</flabel>
+                                                <label id="paymentmethod-error" for="paymentmethod" class="error" style="display:none;"></label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="applicant-bank-info">
+                                <div class="col-xs-12">
+                                    <hr class="document-divider">
+                                    <h4>Account Creation</h4>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <div class="float-label">
+                                        <input type="password" class="form-control form-application" id="password" name="password" placeholder="Create Password" value="{{ password }}" required>
+                                        <flabel>Password</flabel>
+                                        <label id="password-error" for="password" class="error" style="display:none;"></label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <div class="float-label">
+                                        <input type="password" class="form-control form-application" id="confirmpassword" name="confirmpassword" placeholder="Password Confirm" value="{{ confirmPassword }}" required>
+                                        <flabel>Password Confirm</flabel>
+                                        <label id="confirmpassword-error" for="confirmpassword" class="error" style="display:none;"></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Consents -->
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 consents text-left" style="margin-top:30px;margin-left:20px;">
+                                    <div style="z-index:0; font-size:16px;">
+                                        <input type="checkbox" name="creditpullconfirm" id="creditpullconfirm" checked />
+                                        <label for="creditpullconfirm" style="font-weight:normal;cursor:pointer;">
+                                            {% if( req.session.realm == "backend" ) %}
+                                                <span>The customer has consented to the</span>
+                                            {% else %}
+                                                <span>I have read, understand, and consent to the</span>
+                                            {% endif %}
+                                            <a href="javascript:void(0)"  onclick="openShortformSMS();"><strong>SMS Policy</strong></a>
+                                        </label>
+                                        <br/>
+                                        <label id="creditpullconfirm-error" for="creditpullconfirm" class="error" style="display:none;"></label>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 15px">
+                                    <button type="button" class="btn btn-raised btn-primary" id="submitShortForm" style="margin-top: 12px; margin-bottom: 18px;" >Next</button>
+                                </div>
+                                {% if applicationerror %}
+                                    <div class="alert text-center" style="color:red;">
+                                        {{ applicationerror }}
+                                    </div>
+                                {% else %}
+                                    <div class="alert text-center error-message" style="color:red;display: none;">
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- tcpadocument Modal -->
+    <div id="SMSdocument" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header bg-tcpa user-modal-header">
+                    <h4 class="modal-title" id="storyinfopopupheader"></h4>
+                    <button type="button" class="close" data-dismiss="modal" style="color:#FFF; opacity:1; font-size: 21px;">&times;</button>
+                </div>
+                <div class="modal-body bgColorWhite">
+                    {% include "document/tcpa_v1.nunjucks" %}
+                </div>
+                <div class="text-center">
+                    <button type="button" data-dismiss="modal" class="btn btn-raised btn-application">Continue</button>
+                </div>
+                <br/><br/>
+            </div>
+        </div>
+    </div>
+    <!-- creditpulldocument Modal -->
+    <div id="CPAdocument" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header bg-tcpa user-modal-header">
+                    <h4 class="modal-title" "color:#FFFF;"></h4>
+                    <button type="button" class="close" data-dismiss="modal" style="color:#FFF; opacity:1;">&times;</button>
+                </div>
+                <div class="modal-body bgColorWhite">
+                    {% include "document/CreditAuthorization_v1.nunjucks" %}
+                </div>
+                <div class="text-center">
+                    <button type="button" data-dismiss="modal" class="btn btn-raised btn-application">Continue</button>
+                </div>
+                <br/><br/>
+            </div>
+        </div>
+    </div>
+    <!-- privacypolicydocument Modal -->
+    <div id="PPdocument" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header bg-tcpa user-modal-header">
+                    <h4 class="modal-title" "color:#FFFF;"></h4>
+                    <button type="button" class="close" data-dismiss="modal" style="color:#FFF; opacity:1;">&times;</button>
+                </div>
+                <div class="modal-body bgColorWhite">
+                    {# {% include "frontend/home/privacypolicy.nunjucks" %} #}
+                    {% include "document/Privacy_Policy.nunjucks" %}
+                </div>
+                <div class="text-center">
+                    <button type="button" data-dismiss="modal" class="btn btn-raised btn-application">Continue</button>
+                </div>
+                <br/><br/>
+            </div>
+        </div>
+    </div>
+
+    <!-- 30 day denial rule -->
+    <div id="thirtyDayDenialRule" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content user-modal-content">
+                <div class="modal-header bg-tcpa user-modal-header">
+                    <a type="button" class="close" href="/">&times;</a>
+                </div>
+                <br /> <br />
+                <div class="alert alert-danger text-center">
+                    {{ reapplyerror }}
+                </div>
+                <br />
+                <div class="text-center">
+                    <button type="button" onclick="window.location.href='/'" class="btn-application">Exit</button>
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+    <!-- Existing User -->
+    <div id="existingUser" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content user-modal-content">
+                <div class="modal-header user-modal-header">
+                    <a type="button" class="close" onclick="logoutRedirectSignin();">&times;</a>
+                </div>
+                <br /> <br />
+                <div class="alert alert-danger text-center">
+                    {{ dupusererror }}
+                </div>
+                <br />
+                <div class="text-center">
+                    <button type="button" onclick="logoutRedirectSignin();" class="btn-application">Sign In</button>
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+
+    {% include "twilio/twilioVerificationTemplate.nunjucks" %}
+
+    <script type="text/javascript">
+        {# $(document).ready(function() {
+        alert($("#dupusererror").val());
+    }) #}
+
+        function openShortformSMS(){
+            $('#SMSdocument').modal('show');
+        }
+        function openShortformCPA(){
+            $('#CPAdocument').modal('show');
+        }
+        function openShortformPP(){
+            $('#PPdocument').modal('show');
+        }
+
+        function validateABARouting( aba ) {
+            if( typeof aba === "number" ) {
+                aba = aba.toString();
+            }
+            var n = 0;
+            for( var i = 0; i < aba.length; i += 3 ) {
+                n += ( parseInt( aba.charAt( i ), 10 ) * 3 ) + ( parseInt( aba.charAt( i + 1 ), 10 ) * 7 ) + ( parseInt( aba.charAt( i + 2 ), 10 ) );
+            }
+            // If the resulting sum is an even multiple of ten (but not zero), the aba routing number is good.
+            return ( n != 0 && n % 10 == 0 );
+        }
+
+        var ssn_value;
+        var $ssn;
+        var $ssnVal;
+        $(document).ready(function() {
+
+            $("#verifyPhoneConfirmedModal #btnContinue").on("click", function(e) {
+                $("#btnContinue").prop("disabled", false);console.error("Twilio verification passed");
+                showLoadingSpinner();
+                $("#step1_form").submit();
+            });
+            if( $( "#reapplyerror" ).val() != "" ) {
+                console.log( "input error", $( "#reapplyerror" ).val() );
+                $('#thirtyDayDenialRule').modal( {backdrop: 'static', keyboard: false} );
+            }
+            console.error( $( "#dupusererror" ).val() );
+            if( $( "#dupusererror" ).val() != "" ) {
+                console.log( "input dup ssn error", $( "#dupusererror" ).val() );
+                $('#existingUser').modal("show" );
+            }
+
+            $.validator.addMethod("haveFullBirthday", function(value, element) {
+                if(!value) {
+                    return false;
+                }
+
+                var birthmonth = $("#birthmonth").val();
+                if( ! birthmonth ) {
+                    return false;
+                }
+
+                var birthday = $("#birthday").val();
+                if( ! birthday ) {
+                    return false;
+                }
+
+                return true;
+            });
+
+
+            $.validator.addMethod("candidateIsEighteen", function(value, element) {
+                var birthday = moment( value + "-" + $("#birthmonth").val() + "-" + $("#birthday").val(), "YYYY-MM-DD" );
+                var age = moment().diff( birthday, "years" );
+                if( age < 18 ) {
+                    return false;
+                }
+                return true;
+            });
+
+            $.validator.addMethod("validRouting", function(value, element) {
+                if(value){
+                    return validateABARouting(value);
+                } else{
+                    return true;
+                }
+            });
+            $.validator.addMethod("validAccount", function(value, element) {
+                if(value){
+                    if((value.length) < 5 || (value.length) > 15){
+                        return false;
+                    } else{
+                        return true;
+                    }
+                } else{
+                    return true;
+                }
+            });
+            // Validation method for US currency
+            $.validator.addMethod("currency", function (value, element) {
+                return this.optional(element) || /^\$(\d{1,3}(\,\d{3})*|(\d+))(\.\d{2})?$/.test(value);
+            }, "Please specify a valid amount");
+           $.validator.addMethod("isAllowedState", function(value, element) {
+                const allowedStates = [
+                   'AK', 'Alaska',
+                   'AL', 'Alabama',
+                   'DE', 'Delaware',
+                   'FL', 'Florida',
+                   'HI', 'Hawaii',
+                   'IA', 'Iowa',
+                   'IL', 'Illinois',
+                   'IN', 'Indiana',
+                   'KY', 'Kentucky',
+                   'LA', 'Louisiana',
+                   'MI', 'Michigan',
+                   'MO', 'Missouri',
+                   'MS', 'Mississippi',
+                   'ND', 'North Dakota',
+                   'NE', 'Nebraska',
+                   'NM', 'New Mexico',
+                   'NV', 'Nevada',
+                   'OK', 'Oklahoma',
+                   'RI', 'Rhode Island',
+                   'SD', 'South Dakota',
+                   'TN', 'Tennessee',
+                   'TX', 'Texas',
+                   'UT', 'Utah',
+                ];
+                return allowedStates.includes(value)
+            })
+            var validator = $("#step1_form").validate({
+                rules: {
+                    "firstname": { required: true },
+                    "lastname": { required: true },
+                    "email": { required: true },
+                    "phone": { required: true, minlength: 12, maxlength: 12 },
+                    "street": { required: true },
+                    "city": { required: true },
+                    "state": { required: true, isAllowedState: true },
+                    "stateidnumber": { required: true },
+                    "idstate": { required: true },
+                    "zipcode": { required: true, minlength: 5, maxlength: 5, digits: true },
+                    "ssn": { required: true, minlength: 11, maxlength: 11 },
+                    "dob": { required: true },
+                    "birthmonth": { required: true, digits: true },
+                    "birthday": { required: true, digits: true },
+                    "birthyear": { required: true, digits: true, haveFullBirthday: true, candidateIsEighteen: true },
+                    "email": { required: true },
+                    "creditpullconfirm": { required: true },
+                    "bankaccno": { required: true, digits: true, validAccount: true },
+                    "routingno": { required: true, digits: true, validRouting: true },
+                    "paymentmethod": { required: true },
+                    "paymentFrequency": { required: true },
+                    "requestedLoanAmount": { required: true, max: {{ sails.config.loanDetails.maximumRequestedLoanAmount }}, min: {{ sails.config.loanDetails.minimumRequestedLoanAmount }}},
+                    "monthlyIncome": { required: true },
+                    password: {
+                        required: true,
+                        pwdcheck: true,
+                        minlength: 8
+                    },
+                    confirmpassword: {
+                        required: true,
+                        equalTo: "#password"
+                    }
+                    //REMOVED VALIDATION on the below fields as jQuery validate plugin conflicts with jQuery.inputmask plugin on currency
+                    //"requestedLoanAmount": { min: 0 },
+                    //"monthlyIncome": { min: 0 }
+                },
+                messages: {
+                    "firstname": { required: "First name is required." },
+                    "lastname": { required: "Last name is required." },
+                    "phone": { required: "Phone number is required." },
+                    "street": { required: "Street address is required.", minlength: "Invalid phone number.", maxlength: "Invalid phone number." },
+                    "city": { required: "City is required." },
+                    "state": { required: "State is required." , isAllowedState: 'We do not offer our services in your selected state.'},
+                    "stateidnumber": { required: "State ID number required." },
+                    "idstate": { required: "ID state is required." },
+                    "zipcode": { required: "Zip code is required.", minlength: "Invalid zip code.", maxlength: "Invalid zip code." },
+                    "ssn": { required: "Social security number is required.", minlength: "Invalid social security number.", maxlength: "Invalid social security number." },
+                    "dob": { required: "Day of birth is required." },
+                    "birthmonth": { required: "Birth month is required." },
+                    "birthday": { required: "Birth day is required." },
+                    "birthyear": { required: "Birth year is required.", haveFullBirthday: "A full birthday is required.", candidateIsEighteen: "You must be 18 years of age to apply." },
+                    "email": { required: "Email is required." },
+                    "creditpullconfirm": { required:  "You must consent to the agreements." },
+                    "bankaccno": { required: "Bank account number required.", validAccount: "Value is not a valid account number."},
+                    "routingno": { required: "Routing number required.", validRouting: "Value is not a valid routing number."},
+                    "paymentmethod": { required: "Payment method required." },
+                    "paymentFrequency": { required: "Payment frequency required." },
+                    "requestedLoanAmount": { required: "Loan Amount required." },
+                    "monthlyIncome": { required: "Monthly Income required." },
+                    password: {
+                        required: "Please create a password.",
+                        pwdcheck: "Password must contain at least 8 characters, one letter, one number and one special character.",
+                        minlength: "Password must contain at least 8 characters."
+                    },
+                    confirmpassword: {
+                        required: "Please confirm your password.",
+                        equalTo: "Please enter the same value."
+                    }
+                    //"requestedLoanAmount": { min: "Please enter a loan amount larger than $0" },
+                    //"monthlyIncome": { min: "Monthly income must be larger than $0" }
+                },
+                errorPlacement: function( err, el ) {
+                    var errId = err.attr( "id" );
+                    var errEl = $( "#" + errId );
+                    if( errEl.length === 1 ) {
+                        errEl.html( err.html() );
+                    } else {
+                        err.appendTo( el.parent() );
+                    }
+                },
+                unhighlight: function( el ) {
+                    var $el = $( "#" + $(el).attr( "id" ) + "-error" );
+                    if( $el.length === 1 ) {
+                        $el.html( "" );
+                    }
+                }
+            } );
+
+            $ssn = $( "#social" );
+            $ssn_num = document.getElementById("social");
+            $ssn.isMasked = true;
+            $ssnVal = $( "#ssn-val" );
+            ssn_Mask.init();
+
+            function updateDaySelect( dayInt, monthdays ) {
+                var html = [];
+                if( !dayInt || ( dayInt > monthdays ) ) {
+                    html.push( "<option value='' selected disabled hidden>Day</option>" );
+                }
+                for( var idx = 1; idx <= monthdays; idx++ ) {
+                    let value;
+                    if( idx < 10 ) {
+                        value = "0" + idx;
+                    } else {
+                        value = "" + idx;
+                    }
+                    if( dayInt && dayInt == idx ) {
+                        html.push("<option value='", value, "' selected>", idx, "</option>" );
+                    } else {
+                        html.push("<option value='", value, "'>", idx, "</option>" );
+                    }
+                }
+                $("#birthday").html( html.join( "" ) );
+
+            }
+
+            $("#birthmonth").change( ( monthidx ) => {
+                var day = $("#birthday").val();
+                var dayInt;
+                if( day ) {
+                    dayInt = parseInt( day );
+                }
+                var year = $("#birthyear").val();
+                var monthdays;
+                if( year ) {
+                    monthdays = moment( year + "-" + $("#birthmonth").val() , "YYYY-MM" ).daysInMonth();
+                } else {
+                    monthdays = moment( "1992" + "-" + $("#birthmonth").val(), "YYYY-MM" ).daysInMonth();
+                }
+                updateDaySelect( dayInt, monthdays );
+            });
+
+            $("#birthyear").change( ( monthidx ) => {
+                var month = $("#birthmonth").val();
+                if( !month ) {
+                    return;
+                }
+
+                var day = $("#birthday").val();
+                var dayInt;
+                if( day ) {
+                    dayInt = parseInt( day );
+                }
+
+                var year = $("#birthyear").val();
+                const monthdays = moment( year + "-" + month, "YYYY-MM" ).daysInMonth();
+                updateDaySelect( dayInt, monthdays )
+            });
+
+            $('#submitShortForm').click( function() {
+                let isValid = $('#step1_form').valid();
+                console.log('isValid: ' + isValid);
+                if (isValid) {
+                    if($('#isTwilioEnabled').val().toLowerCase()==='true') {
+                        let number = $("#phone").val();
+                        io.socket.post('/twilio/startverification', {phoneNumber: number}, function (res) {
+                        }); // shows modal when called
+                    }else {
+                        showLoadingSpinner();
+                        $("#step1_form").submit();
+                    }
+                } // otherwise, do nothing
+            });
+        });
+
+        function maskSSN( el ) {
+            $( el ).toggleClass( "fa-eye fa-eye-slash" );
+            $ssn.isMasked = ! $ssn.isMasked;
+            $ssn.val( ssn_Mask.transformDisplay( $ssnVal.val() ) );
+            $ssn_num.value = ssn_Mask.transformDisplay( $ssnVal.val() );
+        }
+
+        var ssn_Mask = {
+            init: function () {
+                this.bind();
+            },
+            bind: function () {
+                $ssn.on( "keyup paste drop", this.syncInput );
+            },
+            transformDisplay: function (val) {
+                // Strip all non numbers
+                var displayVal = val.replace(/[^0-9|\\*]/g, '');
+                displayVal = displayVal.substr(0, 9);
+                // Inject dashes
+                if (displayVal.length >= 4) {
+                    displayVal = displayVal.slice(0, 3) + '-' + displayVal.slice(3);
+                }
+                if (displayVal.length >= 7) {
+                    displayVal = displayVal.slice(0, 6) + '-' + displayVal.slice(6);
+                }
+                // Replace all numbers with astericks
+                if( $ssn.isMasked ) {
+                    displayVal = displayVal.replace(/[0-9]/g, '*');
+                }
+                return displayVal;
+            },
+            transformValue: function( val ) {
+                if (typeof ssn_value !== 'string') {
+                    ssn_value = "";
+                }
+                if( ! val ) {
+                    ssn_value = "";
+                    return;
+                }
+                var cleanVal = val.replace(/[^0-9|\\*]/g, '');
+                cleanVal = cleanVal.substr(0, 9);
+                for (i = 0, l = cleanVal.length; i < l; i++) {
+                    if (/[0-9]/g.exec(cleanVal[i])) {
+                        if( ssn_value.length === 0 || ssn_value.length === i){
+                            ssn_value += cleanVal[i];
+                        }else {
+                            ssn_value = ssn_value.substr(0,i) + cleanVal.charAt(i) + ssn_value.substr(i+1)
+                        }
+                    }
+                }
+                ssn_value = ssn_value.substr(0, cleanVal.length);
+            },
+            syncInput: function(e) {
+                var $input = $(this);
+                var val = $(this).val();
+                var displayVal = ssn_Mask.transformDisplay(val);
+                ssn_Mask.transformValue(val);
+                this.setSelectionRange(val.length, val.length);
+                $input.val(displayVal);
+                $ssnVal.val(ssn_value);
+            }
+        };
+
+        function logoutRedirectSignin() {
+            $.ajax( { url: "/userlogout" } ).done( function() { window.location.href = "/login"; } );
+        }
+
+        function isInputFocused(id){
+            $("#" + id).focus(function(){
+                $(this).siblings().eq(0).css({
+                    "background-color": "#3f576c",
+                    "color": "white"
+                });
+            })
+            $("#" + id).focusout(function(){
+                $(this).siblings().eq(0).css({
+                    "background-color": "#cccccc",
+                    "color": "#999999"
+                });
+            })
+        }
+
+        $(document).ready(function(){
+            $("#monthlyIncome").inputmask({
+                alias: "decimal",
+                digits: 2,
+                rightAlign: false,
+                prefix: "",
+                showMaskOnHover: false,
+                showMaskOnFocus: false,
+                numericInput: true,
+                //clearIncomplete: true
+            });
+
+            $("#requestedLoanAmount").inputmask({
+                alias: "decimal",
+                digits: 2,
+                rightAlign: false,
+                prefix: "",
+                showMaskOnHover: false,
+                showMaskOnFocus: false,
+                numericInput: true,
+                //clearIncomplete: true
+            });
+            $("#phone").inputmask({
+                alias: "phone",
+                mask: "999-999-9999",
+                rightAlign: false,
+                showMaskOnHover: false,
+                showMaskOnFocus: false,
+                clearIncomplete: true
+            });
+            $("#routingno").inputmask({
+                alias: "routing no",
+                mask: "999999999",
+                rightAlign: false,
+                showMaskOnHover: false,
+            });
+            $("#zipcode").inputmask({
+                alias: "zipcode",
+                mask: "99999",
+                rightAlign: false,
+                showMaskOnHover: false,
+                showMaskOnFocus: false
+            });
+
+            $("#monthlyIncome").on("keyup paste drop",
+                function (event) {
+                    if (Number($("#monthlyIncome").val()) > 0) {
+                        $("#submitShortForm").prop("disabled", false);
+                        $(".monthlyIncome-div").qtip('hide');
+                    } else {
+                        $("#submitShortForm").prop("disabled", true);
+                        $(".monthlyIncome-div").qtip({
+                            show: '',
+                            hide: '',
+                            position: {
+                                my: 'bottom left',
+                                at: 'top left'
+                            },
+                            content: {
+                                prerender: true, // important
+                                text: 'Please enter a monthly income larger than $0'
+                            }
+                        }).qtip('show');
+
+                    }
+                }
+            );
+
+        $("select").on('change', function(e) {
+                $(this).css("color", "black");
+            })
+        });
+    </script>
+{% endblock %}

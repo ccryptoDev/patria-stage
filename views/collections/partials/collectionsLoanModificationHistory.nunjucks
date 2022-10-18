@@ -1,0 +1,283 @@
+{% if paymentmanagementdata.isInLoanModification and loanModificationHistory and loanModificationHistory.length > 0 %}
+    <h3>Loan Modification History</h3>
+    <br/>
+    <div class="loan-modification-history-payment-schedule-tab-section">
+        <div class="tab-content faq-cat-content">
+            {% for loanModifiedPayment in loanModificationHistory %}
+                <div class="tab-pane active in fade" id="faq-cat-{{loop.index}}" >
+                    <div class="panel-group" id="loanModifyHistory-cat-{{loop.index}}">
+                        <div class="panel panel-default panel-faq">
+                            <div class="panel-heading">
+                                <a data-toggle="collapse" data-parent="#loanModifyHistory-cat-1" href="#loanModifyHistory{{loop.index}}">
+                                    <h4 class="panel-title">
+                                        {{ loanModifiedPayment.loanReference }} - {% if loanModifiedPayment.isOriginalCreatedLoan %}Original Loan created on{% else %}Modified Revision # {{ loanModifiedPayment.loanModificationRevision }}{% endif %} created on {{ loanModifiedPayment.lastLoanModificationCreatedDate | date("MMMM D, YYYY [at] h:mm a") }}
+                                        <span class="pull-right"><i class="glyphicon glyphicon-plus"></i></span>
+                                    </h4>
+                                </a>
+                            </div>
+                            <div id="loanModifyHistory{{loop.index}}" class="panel-collapse collapse loan-modify-history-accordion">
+                                <div class="panel-body">
+                                    <div class="payment-schedule-loan-modification-history-content table-responsive">
+                                        <table class="table table-bordered">
+                                            <tbody>
+                                            <tr>
+                                                    {% if loanModifiedPayment.isOriginalCreatedLoan %}
+                                                        <th>Modified Revision</th>
+                                                        <td>
+                                                                <strong>Original</strong>
+                                                        </td>
+                                                    {% else %}
+                                                        <th>Modified Revision #</th>
+                                                        <td>
+                                                                {{ loanModifiedPayment.loanModificationRevision}}
+                                                        </td>
+                                                    {% endif %}
+
+                                            </tr>
+                                            <tr>
+                                                <th>Loan Reference</th>
+                                                <td>
+                                                    {{ loanModifiedPayment.loanReference }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Loan Start Date</th>
+                                                <td>
+                                                    {{ loanModifiedPayment.loanSetdate | date('MMMM D, YYYY') }}
+                                                </td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <th>Loan Amount</th>
+                                                <td>
+                                                    {% if loanModifiedPayment.isOriginalCreatedLoan %}
+                                                    {{ loanModifiedPayment.requestedLoanAmount | $format(true,2) }}
+                                                    {% else %}
+                                                    {{ loanModifiedPayment.payOffAmount | $format(true,2) }}
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <th>Remaining Balance</th>
+                                                <td>
+                                                    {{ loanModifiedPayment.finalpayoffAmount | $format(true,2) }}
+                                                </td>
+                                            </tr>
+
+
+                                            {% if not loanModifiedPayment.isOriginalCreatedLoan %}
+                                            <tr>
+                                                <th>Principal Amount</th>
+                                                <td>
+                                                    {% if loanModifiedPayment.modifiedBeginningPrincipal %}
+                                                    {{ loanModifiedPayment.modifiedBeginningPrincipal | $format(true,2)}}
+                                                    {% else %}
+                                                    --
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Interest Amount</th>
+                                                <td>
+                                                    {% if loanModifiedPayment.modifiedInterestAmount or loanModifiedPayment.modifiedInterestAmount == 0 %}
+                                                    {{ loanModifiedPayment.modifiedInterestAmount | $format(true,2)}}&nbsp;&nbsp;{% if loanModifiedPayment.excludeInterest %}(Excluded){% endif %}
+                                                    {% else %}
+                                                    --
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Loan Modified Date</th>
+                                                <td>
+                                                    {% if loanModifiedPayment.lastLoanModificationCreatedDate  %}
+                                                    {{ loanModifiedPayment.lastLoanModificationCreatedDate | date('MMMM D, YYYY')}}
+                                                    {% else %}
+                                                        --
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Loan Modified By</th>
+                                                <td>
+                                                    {% if loanModifiedPayment.lastLoanModificationCreatedBy and loanModifiedPayment.lastLoanModificationCreatedBy.email  %}
+                                                        {{ loanModifiedPayment.lastLoanModificationCreatedBy.email }}
+                                                    {% else %}
+                                                        --
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Loan Modified Entered Comment</th>
+                                                <td>
+                                                    {% if loanModifiedPayment.loanModificationComment  %}
+                                                        {{ loanModifiedPayment.loanModificationComment  }}
+                                                    {% else %}
+                                                        --
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            {% endif %}
+                                            <tr>
+                                                <th>Accrued Interest</th>
+                                                <td>
+                                                    {% if loanModifiedPayment.accruedInterest or loanModifiedPayment.accruedInterest == 0 %}
+                                                    {{ loanModifiedPayment.accruedInterest | $format(true,2)}}&nbsp;&nbsp;{% if loanModifiedPayment.forgiveAccruedInterest %}(Forgiven){% endif %}
+                                                    {% else %}
+                                                    --
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <th>Estimated APR</th>
+                                                <td>
+                                                    {% if ledger.estimatedApr %}
+                                                    {{ (ledger.estimatedApr * 100) | $format(false,2)}}%
+                                                    {% else %}
+                                                    --
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Loan Term</th>
+                                                <td>
+                                                    {% if loanModifiedPayment.loanTerm %}
+                                                    {{loanModifiedPayment.loanTerm}}
+                                                    {% else %}
+                                                        --
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Payment Frequency</th>
+                                                <td>
+                                                    {% if loanModifiedPayment.paymentFrequency %}
+                                                        {{loanModifiedPayment.paymentFrequency}}
+                                                    {% else %}
+                                                        --
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Loan Status</th>
+                                                <td>
+                                                    {% if loanModifiedPayment.status %}
+                                                        {{loanModifiedPayment.status}}{% if loanModifiedPayment.isInLoanModification and not loanModifiedPayment.isOriginalCreatedLoan%}<span>&nbsp;&nbsp;-&nbsp;&nbsp;</span><span style="font-weight: bold;color:#f39c12;"><i class='fa fa-exclamation-triangle' aria-hidden='true' style="margin-right: 5px;" ></i>Loan Modified</span>{% endif %}
+                                                    {% else %}
+                                                        --
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <th>Set Payment On Holiday</th>
+                                                <td>
+                                                    {% if loanModifiedPayment.isAfterHoliday === 1 %}
+                                                        after
+                                                    {% elseif loanModifiedPayment.isAfterHoliday === 0  %}
+                                                        before
+                                                    {% else %}
+                                                        --
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Next Payment Schedule Date</th>
+                                                <td>
+                                                    {{ loanModifiedPayment.nextPaymentSchedule | date('MMMM D, YYYY')}}
+                                                </td>
+                                            </tr>
+                                            {% if loanModifiedPayment.paymentSchedule and loanModifiedPayment.paymentSchedule.length > 0%}
+                                            <tr>
+                                                <th>Estimated Total Fee Amount</th>
+                                                <td>
+                                                    {{ loanModifiedPayment.totalPaymentsFeeChargeAmount | $format(true,2) }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Estimated Total Principal Amount</th>
+                                                <td>
+                                                    {{ loanModifiedPayment.totalPaymentsPrincipalAmount | $format(true,2) }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Estimated Total Amount</th>
+                                                <td>
+                                                    {{ loanModifiedPayment.totalPaymentsFinancedAmount | $format(true,2) }}
+                                                </td>
+                                            </tr>
+                                            {% endif %}
+                                            </tbody>
+                                        </table>
+
+                                        <div class="loan-modification-history-payment-schedule-table">
+                                            <h3>Payment Schedule</h3>
+                                            <br/>
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th style="width: 10px">SNO</th>
+                                                        <th>Unpaid Principal Balance (USD)</th>
+                                                        <th>Principal (USD)</th>
+                                                        <th>Interest (USD)</th>
+                                                        <th>Interest Due (USD)</th>
+                                                        <th>Cumulative Paid Principal (USD)</th>
+                                                        <th>Cumulative Paid Interest (USD)</th>
+                                                        <th>Schedule Amount (USD)</th>
+                                                        <th>Days In Cycle</th>
+                                                        <th>Rate per Cycle</th>
+                                                        <th>Cumulative Paid Total(USD)</th>
+                                                        <th>Schedule Date</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% set lp = 0 %}
+                                                    {% for paymentScheduledata in  loanModifiedPayment.paymentSchedule %}
+                                                    {% set lp = lp+1 %}
+                                                    <tr>
+                                                        <td>{{ lp }}</td>
+                                                        <td>{{ paymentScheduledata.startBalanceAmount | $format(true,2)}}</td>
+                                                        <td>{{ paymentScheduledata.principalAmount | $format(true,2)}}</td>
+                                                        <td>{{ paymentScheduledata.interestAmount | $format(true,2)}}</td>
+                                                        <td>{{ paymentScheduledata.interestDue | $format(true,2)}}</td>
+                                                        <td>{{ paymentScheduledata.cumulativePrincipalPaid | $format(true,2)}}</td>
+                                                        <td>{{ paymentScheduledata.cumulativeInterestPaid | $format(true,2)}}</td>
+                                                        <td>{{ paymentScheduledata.amount | $format(true,2)}}</td>
+                                                        <td>{{ paymentScheduledata.daysInCycle}}</td>
+                                                        <td>{{ paymentScheduledata.interestRate }}</td>
+                                                        <td>{{ paymentScheduledata.cumulativeTotalPaid | $format(true,2)}}</td>
+                                                        <td>{{ paymentScheduledata.date | date('MMMM D, YYYY')}}</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+<script type="text/javascript">
+    $(document).ready(function() {
+		$('.loan-modification-history-payment-schedule-tab-section .loan-modify-history-accordion').on('show.bs.collapse', function() {
+			const id = $(this).attr('id');
+			$('a[href="#' + id + '"]').closest('.panel-heading').addClass('active-faq');
+			$('a[href="#' + id + '"] .panel-title span').html('<i class="glyphicon glyphicon-minus"></i>');
+		});
+		$('.loan-modification-history-payment-schedule-tab-section .loan-modify-history-accordion').on('hide.bs.collapse', function() {
+			const id = $(this).attr('id');
+			$('a[href="#' + id + '"]').closest('.panel-heading').removeClass('active-faq');
+			$('a[href="#' + id + '"] .panel-title span').html('<i class="glyphicon glyphicon-plus"></i>');
+		});
+    })
+</script>
+{% endif %}

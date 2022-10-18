@@ -1,0 +1,59 @@
+.faq-section {
+  &-banner {
+    &-form {
+      display: flex;
+      justify-content: space-between;
+
+      & .input-wrapper {
+        position: relative;
+        max-width: 47rem;
+        display: flex;
+        align-items: center;
+        & .form-input {
+          width: 100%;
+          padding-left: 40px;
+        }
+
+        & .search-icon {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          left: 15px;
+        }
+      }
+    }
+  }
+
+  &-description {
+    padding: 6rem 0;
+    & .container {
+      max-width: 1040px;
+    }
+    &-list {
+      & > li {
+        display: flex;
+        flex-direction: column;
+        row-gap: 2.4rem;
+        &:not(:first-child) {
+          margin-top: 4.8rem;
+        }
+
+        & h5 {
+          color: var(--color-blue-1);
+          font-size: 2rem;
+        }
+
+        & > ul {
+          display: flex;
+          flex-direction: column;
+          row-gap: 1.2rem;
+        }
+
+        & .minimin-requirements-list {
+          margin-left: 2rem;
+          list-style: disc;
+        }
+      }
+    }
+  }
+}

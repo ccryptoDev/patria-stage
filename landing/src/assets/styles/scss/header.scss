@@ -1,0 +1,144 @@
+.header {
+  position: relative;
+  & .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-height);
+    z-index: 999;
+  }
+  #burder-menu-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  nav {
+    margin-top: 10px;
+  }
+}
+
+nav {
+  & ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    column-gap: 2rem;
+
+    & li {
+      font-size: 12px;
+      font-weight: 700;
+      transition: all 0.2s;
+      & a,
+      & a:visited {
+        &.selected {
+          color: var(--color-blue-1);
+        }
+        text-decoration: none;
+        line-height: 1.5;
+        color: var(--color-main-2);
+        text-transform: uppercase;
+      }
+    }
+  }
+}
+
+.menu {
+  position: absolute;
+  width: 100%;
+  height: 0;
+  min-height: 0;
+  background: #fff;
+  overflow: hidden;
+  transition: all 0.3s;
+  z-index: 1000;
+
+  &.show {
+    min-height: 135px;
+  }
+
+  .layout {
+    border-top: 1px solid var(--color-secondary-2);
+    padding: 24px 20px 8px;
+    display: flex;
+    justify-content: space-between;
+
+    nav ul {
+      display: flex;
+      flex-wrap: wrap;
+      width: 200px;
+      justify-content: end;
+      row-gap: 36px;
+      column-gap: 24px;
+      padding: 12px;
+
+      & .menu-item-sm {
+        display: none;
+      }
+    }
+  }
+
+  &-start-app-card {
+    background: var(--color-bg-3);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 12px;
+    border-radius: 8px;
+    max-width: 730px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+.menu-backdrop {
+  background: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: var(--header-height);
+  bottom: 0;
+  width: 100%;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 888;
+
+  &.show {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .header nav {
+    ul li:not(:last-child) {
+      display: none;
+    }
+  }
+
+  .menu .layout {
+    flex-direction: column;
+  }
+  .menu .layout nav ul .menu-item-sm {
+    display: block;
+  }
+
+  .menu.show {
+    height: 230px;
+  }
+
+  .menu .layout nav ul {
+    width: 100%;
+    order: 1;
+    justify-content: start;
+  }
+
+  .menu-start-app-card {
+    order: 2;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .menu.show {
+    height: 300px;
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "cross-env NODE_ENV=production webpack --mode production",
+    "start": "concurrently \"cross-env webpack serve\" \"node-sass src/assets/styles/scss/main.scss src/assets/styles/css/style.css -w\"",
+    "compile": "node-sass src/assets/styles/scss/main.scss src/assets/styles/css/style.css -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "7.2.0",
+    "@babel/plugin-transform-regenerator": "^7.18.0",
+    "@babel/preset-env": "^7.16.11",
+    "babel-loader": "^8.2.3",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "concurrently": "^7.2.1",
+    "cross-env": "^7.0.3",
+    "css-loader": "^6.7.1",
+    "css-minimizer-webpack-plugin": "^4.0.0",
+    "html-loader": "^3.1.0",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.6.0",
+    "sass": "^1.49.9",
+    "sass-loader": "^12.6.0",
+    "style-loader": "^3.3.1",
+    "svg-inline-loader": "^0.8.2",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4"
+  },
+  "dependencies": {
+    "axios": "^0.26.1",
+    "babel-polyfill": "^6.26.0",
+    "node-sass": "^7.0.1"
+  }
+}

@@ -1,0 +1,36 @@
+{% extends "frontend/homev3/newHome.nunjucks" %}
+{% block body %}
+
+<div class="contact-title">
+	<div class="contact-title-container">
+		<h3>Contact Us</h3>
+		<div class="page-track-container">
+			<ul class="page-track">
+				<li>You are here: </li>
+				<li class="home"><a href="/"> Home </a></li>
+				<li class="active"><a href="/contact"> Contact Us</a></li>
+		</div>
+	</div>
+</div>
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>How Can We Help You?</h2>
+	</div>
+</section>
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>If you have any questions, please visit our <a href="/faq">FAQ Page.</a><br> If your questions are not answered, give us a call at 855-767-7033 or send us an email at <a href="mailto:Info@Patria.com">Info@Patria.com</a><br>Please include your full name, phone number, and what you need help with. Please allow us up to 10 business days to fulfill your request.<br><br>Please note that all requests are manually processed. Our business hours are Monday through Friday, 8 am to 4:30 pm Central Time.<br>Fax: 866-908-8392</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_7">
+	<div class="section_7_items">
+		<h2>Get started today:</h2>
+		<a href="/apply" class="button button-apply">Apply Online</a>
+	</div>
+</section>
+{% endblock %}

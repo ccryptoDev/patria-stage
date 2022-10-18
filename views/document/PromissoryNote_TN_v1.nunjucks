@@ -1,0 +1,711 @@
+
+{% if(type == 'pdf' or type == 'shorterpdf') %}
+
+<style>
+     table{
+		border-collapse: collapse;
+		font-size:14px;
+		 border-spacing: 0;
+	  }
+	  tr, td{border: 1px solid #000;}
+
+	  table tr td:table {
+		  border: none;
+		}
+	.text-center{text-align: center;}
+	p{font-size: 12px;}
+	#stampimgPdf{
+		width: 100px;
+  		height: auto;
+  		min-height: 20px;
+  		vertical-align: super;
+	}
+	.buyercontent{
+		height: 20px;
+		vertical-align: bottom;
+	}
+	.buyercontentdiv{
+		border-bottom: 1px dashed !important;
+		margin: 2px 10px;
+	}
+</style>
+
+<div class="table-responsive">
+
+	<h2 class="docTextWhite text-center">Retail Installment Contract1</h2>
+	<h4 class="docTextWhite text-center">Consumer Credit Transaction</h4>
+
+  <table class="table table-bordered docTextWhite" style="width:99%">
+	<tbody>
+		<tr>
+			<td class="divolicy-txt1" width="50%" valign="top">
+			   <table  style="width:100%; border:none;" border="0" class="tablebordered">
+				   <tr style="border:none;">
+						<td width="50%"  style="border:none;">Seller : </td>
+						<td style="border:none;" width="50%">
+							<strong>{{practiceData.PracticeName}}</strong>
+						</td>
+					</tr>
+					<tr style="border:none;">
+						<td width="50%" style="border:none;">Address : </td>
+						<td width="50%" style="border:none;">
+							{{practiceData.StreetAddress}} <br>
+							{{practiceData.LocationName}} <br>
+					        {{practiceData.City}}, {{practiceData.StateCode}}, {{practiceData.ZipCode}}
+						</td>
+					</tr>
+					  <tr style="border:none;">
+					    <td width="50%"  style="border:none;">Phone Number : </td>
+						<td style="border:none;" width="50%">
+						   {% if practiceData.PhoneNo %}
+							  {{practiceData.PhoneNo}}
+						   {% else %}
+						     --
+						   {% endif %}
+					    </td>
+					</tr>
+				</table>
+			</td>
+			<td class="divolicy-txt1" valign="top">
+			   <table  style="width:100%; border:none;" border="0" class="tablebordered">
+				   <tr style="border:none;">
+						<td width="50%" style="border:none;">Contract Date : </td>
+						<td style="border:none;" width="50%">{{todaydate}}</td>
+					</tr>
+					<tr style="border:none;">
+						<td width="50%" style="border:none;">Address : </td>
+						<td width="50%" style="border:none;">&nbsp; </td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td class="divolicy-txt1" valign="top">
+			    <table  style="width:100%; border:none;" border="0" class="tablebordered">
+				   <tr style="border:none;">
+						<td width="50%" style="border:none;">Buyer 1 : </td>
+						<td style="border: none;">
+							<strong>{{userData.firstname}} {{userData.lastname}}</strong><br>
+							<div style="color:#8093a5; margin-top:-10px;">___________________</div>
+						</td>
+					</tr>
+					<tr style="border:none;">
+						<td width="50%" style="border:none;">Address : </td>
+						<td style="border:none;">
+							{{userData.street}} <br>
+							{{userData.city}}, {{userData.state}} {{userData.zipCode}}
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td class="divolicy-txt1" valign="top">
+			    <table  style="width:100%; border:none;" border="0" class="tablebordered">
+				   <tr style="border:none;">
+						<td width="50%"style="border:none;">Buyer 2 : </td>
+						<td style="color:#28d2a1; border: none;"><div style="color:#8093a5; margin-top:-10px;">___________________</div></td>
+					</tr>
+					<tr style="border:none;">
+						<td width="50%" style="border:none;">Address : </td>
+						<td style="border:none;"><div style="color:#8093a5; margin-top:-10px;">___________________</div> </td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr><td colspan="4">Description of Services Purchased: Medical Services</td></tr>
+	</table>
+	<br><br>
+
+	<table style="width: 99%;" class="table table-bordered docTextWhite">
+		<tbody>
+			<tr class="text-center"><td colspan="5">FEDERAL TRUTH IN LENDING DISCLOSURE STATEMENT</td></tr>
+			<tr>
+				<td style="position:relative;" width="19%" valign="top">
+					<strong>ANNUAL PERCENTAGE RATE </strong>
+					<p>The cost of your credit as a yearly rate.</p>
+					<p style="position:absolute; bottom:0px;"><strong>{{offerData.APR}} %</strong></p>
+				</td>
+				<td style=" position:relative;" width="20%" valign="top">
+					<strong>FINANCE CHARGE </strong>
+					<p>The dollar amount the credit will cost you.</p>
+					<p style="position:absolute; bottom:0px;"><strong>${{creditcost}} </strong></p>
+				</td>
+				<td style="position:relative;" width="20%" valign="top">
+					<strong>Amount Financed</strong>
+					<p>The amount of credit provided to you or on your behalf.</p>
+					<p style="position:absolute; bottom:0px; "><strong>${{financedAmount}} </strong></p>
+				</td>
+				<td style="position:relative;" width="20%" valign="top">
+					<strong>Total of Payments </strong>
+					<p>The amount you will have paid after you have made all payments as scheduled.</p>
+					<p style="position:absolute; bottom:0px;"><strong>${{checktotalLoanAmount}} </strong></p>
+				</td>
+				<td width="20%" valign="top">
+					<strong>Total Sale Price</strong>
+					<p>The total cost of your purchase on credit, including your down payment of</p>
+					<p style="color:#000;">$ ----------- is</p>
+					<p style="color:#000;">$ -----------.</p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<h4 class="docTextWhite">Your Payment Schedule will be:</h4>
+
+	<br>
+	<table style="width: 99%;" class="table table-bordered docTextWhite">
+		<thead>
+			<tr>
+				<th>Number of Payments:</th>
+				<th>Amount of Payments:</th>
+				<th>When Payments Are Due:</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><strong>{{loanTerm}} </strong>payments</td>
+				<td><strong>$ {{scheduleLoanAmount}} </strong></td>
+				<td><strong>monthly, beginning 30 days after the Services Date</strong> </td>
+			</tr>
+		</tbody>
+	</table>
+	<br>
+	<p><strong>Late Charge:</strong> If any part of any payment is more than 10 days late, you agree to pay a late charge in the amount of $25.00.
+	<p><strong>Prepayment:</strong> You may prepay all or any part of your debt under this Contract at any time without penalty.</p>
+	<p>See the <a href="">Terms and Conditions</a> section of this Contract for additional information about nonpayment, default, any required repayment in full before the scheduled date, and prepayment refunds and penalties.</p>
+
+
+	<table style="width: 99%;border: 1px solid #000;text-align:left;" class="docTextWhite">
+		<tbody>
+			<tr style="border: 1px solid #000;">
+				<td class="text-center" colspan="2"><h5>ITEMIZATION OF AMOUNT FINANCED</h5></td>
+			</tr>
+			<tr style="border: none;">
+				<td style="border: none;"><p>Price of Services ($_____) + Taxes ($_____) (Cash Price)</p></td>
+				<td style="border: none;"><p>$-----------(1)</p></td>
+			</tr>
+			<tr style="border: none;">
+				<td style="border: none;"><p>Buyer’s Cash Down Payment</td>
+				<td style="border: none;"><p>$-----------(2)</p></td>
+			</tr>
+			<tr style="border: none;">
+				<td style="border: none;"><p>Amount Financed/Unpaid Principal Balance of Cash Price (line 1 minus line 2)</td>
+				<td style="border: none;"><p>$-----------(3)</p></td>
+			</tr>
+			<!-- <tr style="border: none;">
+				<td style="border: none;"><p>Amount Paid to Public Officers (Official Fees)</td>
+				<td style="border: none;"><p>$-----------(2)</p></td>
+			</tr>
+			<tr style="border: none;">
+				<td style="border: none;"><p>Amount of Any Insurance Premiums</td>
+				<td style="border: none;"><p>$-----------(3)</p></td>
+			</tr> -->
+			<!-- <tr style="border: none;">
+				<td style="border: none;"><p>Subtotal (Cash Price + Official Fees + Insurance Premiums)</td>
+				<td style="border: none;"><p>$-----------(4)</p></td>
+			</tr>
+			<tr style="border: none;">
+				<td style="border: none;"><p>Buyer’s Cash Down Payment</td>
+				<td style="border: none;"><p>$-----------(5)</p></td>
+			</tr>
+			<tr style="border: none;">
+				<td style="border: none;"><p>Administrative Charge/Prepaid Finance Charge</td>
+				<td style="border: none;"><p>$-----------(6)</p></td>
+			</tr>
+			<tr style="border: none;">
+				<td style="border: none;"><p>Amount Financed/Unpaid Balance of Cash Price (line 4 minus line 5)</td>
+				<td style="border: none;"><p>$-----------(7)</p></td>
+			</tr> -->
+		</tbody>
+	</table>
+	<br>
+
+	{% if(type == 'pdf') %}
+
+
+		<h5 class="text-center docTextWhite">TERMS AND CONDITIONS</h5>
+
+		<p><strong>AGREEMENT:</strong>  In this Contract the words “you” and “your” refer to each Buyer named above. The words “Seller,” “we,” “us,” and “our” refer to the Seller (the creditor) named above, or any other party to which this Contract is assigned. This Contract provides for the financing over time of your purchase of the services described above. The “Total Sale Price” shown above is the total amount you will pay for your purchase on a credit basis. The amount you would pay if you purchased the services for cash is shown above as the “Cash Price.” The “Services Date” will occur on the date that the purchased services have been performed.  For convenience, this Contract uses the term “interest” (sometimes called a time charge or time price differential) to mean the periodic rate finance charge that accrues during the term of this Contract. By signing this Contract you agree to purchase the services on credit and you agree to pay the Total Sale Price according to the terms provided in this Contract.</p>
+
+		<p><strong>PROMISE TO PAY:</strong>  You promise to pay to Seller at its address shown above the Cash Down Payment and the Amount Financed, plus interest on the unpaid portion of the Amount Financed at a contract rate equal to the Annual Percentage Rate on the unpaid portion of the Amount Financed, according to the Payment Schedule shown above and the terms of this Contract, until all sums due under this Contract are paid in full. Interest will begin to accrue under this Contract on the Services Date. Generally, payments will be applied first to any fees that are due, then to accumulated interest charges, and then to the unpaid portion of the Amount Financed. Payments may be applied differently if required by applicable law. If this Contract is signed by multiple Buyers, each of you is individually and jointly responsible for all the agreements in this Contract.</p>
+
+		<p><strong>SIMPLE INTEREST CONTRACT:</strong> This is a simple interest Contract. Because the Finance Charge, Total of Payments, and the Amount of Payments as shown in the Payment Schedule under the Federal Truth in Lending Disclosure Statement, above, assume all payments will be made on time and in the amounts required by this Contract, the amounts disclosed may differ from the amount you ultimately must pay if your payments are not received on their exact due dates. For example, making your payment before its scheduled due date will reduce the amount of interest owed for that month and increase the portion of your payment applied to the Amount Financed. This will result in your final payment being smaller, while late payments will increase the amount of interest owed during the month and increase your final payment. Your final payment may also be different from the amount shown in the Payment Schedule if the Seller figured the payment schedule assuming equal monthly payment periods and other factors as are permitted under the Federal Truth in Lending Act. Your promise to pay requires you to pay the final payment on the date due even if it is different from the amount shown above.</p>
+
+		<p><strong>SPECIAL FINANCING:</strong>  The Payment Schedule in the Federal Truth in Lending Disclosure Statement discloses the number, amounts and scheduled due dates of your required Contract payments. If, at your option, you elect to make Contract payments by a date one hundred eighty (180) days after the Services Date (the “Special Financing Period”) that are at least equal to the Amount Financed shown in the Federal Truth in Lending Disclosure Statement, we will waive all of the interest that accrues during the Special Financing Period and treat your Contract as paid in full.   If your Contract payments are not equal to the Amount Financed by the end of the Special Financing Period, you must continue making your scheduled monthly payments for the remaining term of this Contract until the total amount owed under the Contract is paid in full. Interest will accrue on the unpaid portion of the Amount Financed during the Special Financing Period. However, such interest will be waived if you pay the Amount Financed in full prior to the expiration of the Special Financing Period. If you do not pay the Amount Financed in full prior to the expiration of the Special Financing Period, you will be required to pay all interest that accrues on the unpaid portion of the Amount Financed that is outstanding during and after the Special Financing Period. The Finance Charge, Total of Payments, Amount of Payments and Payment Schedule under the Federal Truth in Lending Disclosure Statement are based upon the contract rate of interest and are calculated based on the regularly scheduled Contract payments that are required during the full term of this Contract. The payments required by the Payment Schedule in the Federal Truth in Lending Disclosure Statement are not sufficient to pay the Amount Financed in full by the end of the Special Financing Period. To take advantage of the Special Financing option, you should ensure that the total of all Contract payments made during the Special Financing Period are sufficient to pay the Amount Financed in full before expiration of the Special Financing Period.</p>
+
+		<p><strong>MILITARY ANNUAL PERCENTAGE RATE STATEMENT:</strong> Federal law provides important protections to members of the Armed Forces and their dependents relating to extensions of consumer credit. In general, the cost of consumer credit to a member of the Armed Forces and his or her dependent may not exceed an annual percentage rate of 36 percent. This rate must include, as applicable to the credit transaction or account: the costs associated with credit insurance premiums; fees for ancillary products sold in connection with the credit transaction; any application fee charged (other than certain application fees for specified credit transactions or accounts); and any participation fee charged (other than certain participation fees for a credit card account).</p>
+		<p> <strong>RULES FOR INTERPRETING THIS AGREEMENT:</strong> Paragraph headings are for convenient reference only and are not to be interpreted as a complete summary of each paragraph. The word “Buyer” may mean one or more persons who are purchasing services from the Seller and financing the purchase by this Contract. The word “Seller” includes any person or entity to whom this Contract may be sold or assigned. If you are a member of the active military, or a spouse or dependent of a member of the active military, and your Contract is subject to the provisions of the Military Lending Act, 10 U.S.C. § 987 and its implementing regulations, 32 C.F.R. § 232.1, et seq., nothing contained in this Contract is intended to waive your rights or protections under that law.</p>
+
+		<p> <strong>CONSENT FOR COMMUNICATIONS:</strong> By signing below and providing your telephone number(s) and email address(es) to us at any time, you expressly authorize Seller and Seller’s affiliates, agents, and service providers to use any available written, electronic, or verbal means of contacting you for any purpose related to the servicing and collection of your Contract and our provision of the Services (each, a “Communication”). You agree this authorization for Communications includes, but is not limited to, our use of manual calling methods, prerecorded or artificial voice messages, text messages, e-mail messages, and/or automatic telephone dialing systems. You agree that we and our affiliates, agents, and service providers, may contact you for these Communications using any e-mail address or telephone number you provide to us now or in the future, including a number for a cellular telephone or other wireless device, regardless of whether you incur charges as a result. We will not charge you for making a Communication, but your service provider may. To cancel consent for our use of automatic telephone dialing systems and prerecorded or artificial voice messages, write to us at our address or call us at our telephone number shown above. You understand and agree that we and our affiliates, agents, and service providers may always communicate with you in any manner permitted by law that does not require your prior consent.</p>
+
+		<p><strong>POSTPONEMENT OF PAYMENT DUE DATES:</strong> If any Buyer requests permission to delay making one or more payments, Seller may postpone one or more scheduled payment due dates. Interest, however, will continue to accrue at the contract rate on any such postponed payments.  A deferral or extension fee may be charged to the extent permitted by applicable law.</p>
+
+        <p><strong>LATE CHARGE:</strong> You agree to pay a late charge in the amount of $25 if any part of any payment is more than 10 days late. You will pay this late charge only once per delinquent payment regardless of how long the installment remains unpaid.
+
+		<p><strong>DISHONORED PAYMENT FEE:</strong> If your payment is returned or rejected, you agree to pay us, if permitted by applicable law, a fee of $30.00 after we give you any notice and wait any period that may be required by applicable law.</p>
+
+		<p><strong>PREPAYMENT OF AMOUNT OWED:</strong> You may prepay all or any part of the amounts due under this Contract without penalty at any time. If you prepay, a portion of your payment will be credited first to any fees that are due, then to accumulated interest charges, and then to the unpaid portion of the Amount Financed. If you make a partial prepayment, there will be no changes in the due dates of your monthly payments.</p>
+		<p><strong>DEFAULT:</strong> Subject to any limitations imposed by applicable law, you will be in default if you (i) fail to make any payment when due; (ii) fail to comply with your agreements in this Contract; (iii) make any materially false or misleading statement in connection with obtaining this Contract; (iv) file or have filed against you any proceeding under the U.S. Bankruptcy Code; or (v) if  any event occurs that, in our reasonable judgment, significantly impairs the prospect of your payment or performance of this Contract.  If you are in default, we may, at our option and subject to any restrictions and/or notice requirements imposed by the applicable state law, declare all unpaid sums immediately due and payable.</p>
+		<p><strong>GOVERNING LAW:</strong> The terms of this Contract shall be governed by Tennessee law and by federal law.</p>
+		<p><strong>ASSIGNMENT OF CONTRACT:</strong> You agree that we may, at our option, assign this Contract and your payment obligations under this Contract to anyone we choose. We cannot assign our obligations to perform services financed under this Contract. You agree that the assignee will have all of our rights and remedies under this Contract and that you will pay to the assignee all that is still owed under this Contract, at the times and in the amounts provided in the Contract.</p>
+		<p><strong>OTHER CONTRACT TERMS: </strong> We do not intend to charge or collect, and you do not agree to pay, any finance charge that is more than the maximum amount permitted for this sale by applicable law. If you pay a finance charge or fee that is more than allowed by applicable law, we will apply it first to reduce the principal balance and, when the principal has been paid in full, refund it to you. You agree to notify us in writing at our address provided above within thirty (30) days after any change in your address. If we elect to delay or not enforce any of our rights under this Contract on any occasion, you agree that we have not waived our right to enforce these and other rights against you on any future occasion.</p>
+		<p><strong>CREDIT REPORT AND CREDIT REPORTING:</strong> You understand and agree that, for purposes of evaluating, reviewing, servicing, or collecting this Contract, we may: (a) obtain and use credit information and other information about you provided by third parties and consumer reporting agencies; and (b) provide information about you and the status of this Contract to third parties and consumer reporting agencies. We will, upon request, inform you whether we obtained a consumer report about you and, if we did, inform you of the name and address of the reporting agency that provided the consumer report. We may report information about your Contract to credit bureaus. Late payments, missed payments, or other defaults on your Contract may be reflected in your credit report.</p>
+
+		<p><strong>COLLECTION AND ENFORCEMENT:</strong> If this Contract is in default and referred to a collection agency or an outside attorney to collect the outstanding debt, you will pay the costs of collection, including reasonable attorneys’ fees, to the extent permitted by applicable law.</p>
+
+		<p><strong>ENTIRE AGREEMENT:</strong> This Contract constitutes the entire agreement and understanding between you and us with respect to the credit transaction described herein, and supersedes any and all prior agreements and understandings, oral or written, with respect to such transaction.</p>
+
+		<p><strong>SEVERABILITY:</strong> If any term of this Contract is found under the law to be invalid or unenforceable, then such term shall be of no force and effect and shall be severed and the remainder of this Contract shall continue in full force and effect. </p>
+
+		<p><strong>ELECTRONIC SIGNATURE:</strong> If you consented to sign this Contract electronically, you agree that you are signing this Contract in electronic form just as if you had physically signed and delivered a paper document and provided it to us. You are signing this Contract with the present intention of adopting and accepting the method of authentication we selected to show your acceptance of and agreement to the terms of the Contract, just as if you affixed your physical signature to this Contract. You agree that any true and complete physical reproduction of the electronically signed Contract, such as a printed copy, shall be treated the same as or as the legal equivalent of a duplicate of the original electronic agreement.</p>
+
+		<p style="border: 1px solid rgb(255, 255, 255);padding: 1%;"><strong>NOTICE TO THE BUYER: DO NOT SIGN THIS CONTRACT BEFORE YOU READ IT OR IF IT CONTAINS ANY BLANK SPACES. YOU ARE ENTITLED TO COMPLETELY FILLED-IN COPY OF THE CONTRACT YOU SIGN.  KEEP IT TO PROTECT YOUR LEGAL RIGHTS. YOU MAY PREPAY THE UNPAID BALANCE AT ANY TIME WITHOUT PENALTY.</strong></p>
+
+		<p><strong>NOTICE TO MARRIED APPLICANTS: If you are married, you may apply for a separate account.</strong></p>
+
+		<p><strong>By signing below, you agree to the terms contained in this Contract and acknowledge that you received a completed copy of the Contract and any attachments to it on the Contract Date listed above.</strong></p>
+
+		<table style="width: 99%;border: none;" class="docTextWhite text-center">
+			<tbody>
+				<tr style="border: none;">
+					<td style="border: none;">
+						<div class="buyercontentdiv" class="buyercontent">
+							<strong>{{userData.firstname}} {{userData.lastname}}</strong>
+						</div>
+					</td>
+					<td style="border: none;" id="stampdiv">
+						<div class="buyercontentdiv">
+							{% if agreementsignpath!='' %}
+						  		<img  src="{{ agreementsignpath }}" id="stampimgPdf">
+						  	{% else %}
+						  		<div id="stampimgPdf"> </div>
+						  	{% endif %}
+						</div>
+					</td>
+					<td style="border: none; color:#000000;" class="buyercontent">
+						<div class="buyercontentdiv">
+							{{todaydate}}
+						</div>
+					</td>
+				</tr>
+				<tr style="border: none;">
+					<td style="border: none;">Buyer 1</td>
+					<td style="border: none;">Buyer 1 Signature</td>
+					<td style="border: none;">Date</td>
+				</tr>
+				<tr style="border: none;">
+					<td style="border: none; color:#000000;" class="buyercontent" ><div class="buyercontentdiv"></div></td>
+					<td style="border: none; color:#000000;" class="buyercontent" ><div class="buyercontentdiv"></div></td>
+					<td style="border: none; color:#000000;" class="buyercontent" ><div class="buyercontentdiv"></div></td>
+				</tr>
+				<tr style="border: none;">
+					<td style="border: none;">Buyer 2</td>
+					<td style="border: none;">Buyer 2 Signature</td>
+					<td style="border: none;">Date</td>
+				</tr>
+				<!-- <tr style="border: none;">
+					<td style="border: none;"> <strong>{{userData.firstname}} {{userData.lastname}}</strong> <br><div style="color:#000; margin-top:-10px;">---------------------------</div></td>
+					<td style="border: none; color:#000000;">---------------------------</td>
+					<td style="border: none;">{{todaydate}} <br><div style="color:#000000; margin-top:-10px;">---------------------------</div></td>
+				</tr>
+				<tr style="border: none;">
+					<td style="border: none;">Seller</td>
+					<td style="border: none;">Authorized Signature</td>
+					<td style="border: none;">Date</td>
+				</tr> -->
+			</tbody>
+		</table>
+
+		<p style="border: 1px solid rgb(255, 255, 255);padding: 1%;"><strong>NOTICE: ANY HOLDER OF THIS CONSUMER CREDIT CONTRACT IS SUBJECT TO ALL CLAIMS AND DEFENSES WHICH THE DEBTOR COULD ASSERT AGAINST THE SELLER OF GOODS OR SERVICES OBTAINED PURSUANT HERETO OR WITH THE PROCEEDS HEREOF. RECOVERY HEREUNDER BY THE DEBTOR SHALL NOT EXCEED AMOUNTS PAID BY THE DEBTOR HEREUNDER.	</strong></p>
+	{% endif %}
+		<p style="padding:0px; margin:0px;">Borrower Name: {{userData.firstname}} {{userData.lastname}}</p>
+		<!--<p style="padding:0px; margin:0px;">(SIGNED ELECTRONICALLY)</p>-->
+		<p style="padding:0px; margin:0px;">Ip: {{ip}}</p>
+		<p style="padding:0px; margin:0px;">Date: {{todaydate}}</p>
+		</div>
+
+
+{% else %}
+<style>
+.promissory .table-bordered{border:solid 1px #fff !important;}
+.checkbox label a{color: #0cd4b7;text-decoration: blink;}
+.modal-content{background-color: #223345;}
+.modal-dialog{margin-top: 6%;width: 800px;}
+.modal-content .close{opacity: 1; color: rgb(221, 221, 221); margin: 1%;}
+.modal-body {background-color: #1A2A39; border:0.1rem solid #9cb8d2;border-radius: 10px;margin: 2.6%;/*height: 400px;overflow-y: scroll;*/}
+.modal-body p {  color: #F2FEFF; font-size:13px;line-height: 20px;padding: 8px 0px;}
+.policy-with1{width:20%;height:auto;float:left;}
+.policy-with2{width:80%height:auto;}
+.policy-bg1{background-color:#000;color:#fff;border:1px solid #000;}
+.policy-bg2{background-color:#9ca4ab;color:#fff;border:1px solid #ddd;}
+.policy-txt1{color:#9ca4ab;}
+.policy-header{border-bottom: 2px solid #000;color: #000;padding-top: 20px;}
+.modal-body ul{list-style-type: circle; margin:2%;}
+.modal-body strong{font-weight:500;}
+.modal-body  p{ color:#8093a5;}
+.docTextWhite{color: #8093a5}
+.checkbox a i {  font-size: 11px;margin-left: -2px;}
+.promissory .promissory-table-responsive .responsive-title {
+	display: none;
+}
+@media only screen and (max-width: 767px) {
+	.promissory .promissory-table-responsive th {
+		display: none;
+	}
+	.promissory .promissory-table-responsive td {
+		width: 100%;
+		display: block;
+		white-space: normal !important;
+	}
+	.promissory .promissory-table-responsive .promissory-table-responsive-hide {
+		display: none;
+	}
+	.promissory .promissory-table-responsive .divolicy-txt1 {
+		border-left: 1px solid #E5ECF4 !important;
+		border-right: 1px solid #E5ECF4 !important;
+	}
+	.promissory .promissory-table-responsive .responsive-title {
+		display: inline-block;
+	}
+	.promissory .promissory-table-responsive td .promissory-table-responsive-offerdata {
+		position: relative !important;
+	}
+	.promissory .promissory-table-responsive td .promissory-table-responsive-inline-block {
+		display: inline-block;
+	}
+	.promissory .promissory-table-responsive-payment-schedule {
+		margin: 20px 0 0;
+	}
+}
+</style>
+
+
+
+<div class="table-responsive" style="border: 0;">
+
+	<h2 class="docTextWhite text-center">Retail Installment Contract</h2>
+	<h4 class="docTextWhite text-center">Consumer Credit Transaction</h4>
+
+  <table class="table table-bordered docTextWhite promissory-table-responsive" style="width:99%">
+	<tbody>
+		<tr>
+			<td class="divolicy-txt1" width="50%" valign="top">
+			   <table  style="width:100%; border:none;" border="0" class="tablebordered">
+				   <tr>
+						<td width="50%">Seller : </td>
+						<td width="50%" style="color:#28d2a1;">
+							<strong>{{practiceData.PracticeName}}</strong>
+					    </td>
+					</tr>
+					<tr>
+						<td width="50%">Address : </td>
+						<td width="50%">
+							<strong>
+							{{practiceData.StreetAddress}} <br>
+							{{practiceData.LocationName}} <br>
+							{{practiceData.City}}, {{practiceData.StateCode}}, {{practiceData.ZipCode}}
+							</strong>
+						</td>
+					</tr>
+					 <tr>
+						<td width="50%">Phone Number : </td>
+						<td width="50%" style="color:#28d2a1;">
+						   {% if practiceData.PhoneNo %}
+							<strong>{{practiceData.PhoneNo}}</strong>
+						   {% else %}
+						     --
+						   {% endif %}
+					    </td>
+					</tr>
+				</table>
+			</td>
+			<td class="divolicy-txt1" valign="top">
+			   <table  style="width:100%; border:none;" border="0" class="tablebordered">
+				   <tr>
+						<td width="50%">Contract Date : </td>
+						<td width="50%" style="color:#28d2a1;">{{todaydate}}</td>
+					</tr>
+					<tr>
+						<td width="50%">Address : </td>
+						<td width="50%">&nbsp; </td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td class="divolicy-txt1" valign="top">
+			    <table  style="width:100%; border:none;" border="0" class="tablebordered">
+				   <tr>
+						<td width="50%">Buyer 1 : </td>
+						<td style="color:#28d2a1;"><strong>{{userData.firstname}} {{userData.lastname}}</strong><br><div style="color:#8093a5; margin-top:-10px;">___________________</div></td>
+					</tr>
+					<tr>
+						<td width="50%">Address : </td>
+						<td>
+							<strong>
+							{{userData.street}} <br>
+							{{userData.city}} <br>
+						    {{userData.state}}, {{userData.zipCode}}
+							</strong>
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td class="divolicy-txt1" valign="top">
+			    <table  style="width:100%; border:none;" border="0" class="tablebordered">
+				   <tr>
+						<td width="50%">Buyer 2 : </td>
+						<td style="color:#28d2a1;"><div style="color:#8093a5; margin-top:-10px;">___________________</div></td>
+					</tr>
+					<tr>
+						<td width="50%">Address : </td>
+						<td><div style="color:#8093a5; margin-top:-10px;">___________________</div> </td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr><td colspan="4">Description of Services Purchased: Medical Services</td></tr>
+	</table>
+
+
+
+	<table style="width: 99%;border: 4px solid #fff;" class="table table-bordered docTextWhite promissory-table-responsive">
+		<tbody>
+			<tr class="text-center"><td colspan="5">FEDERAL TRUTH IN LENDING DISCLOSURE STATEMENT</td></tr>
+			<tr>
+				<td style="position:relative;" width="20%" valign="top">
+					<strong>ANNUAL PERCENTAGE RATE </strong>
+					<p>The cost of your credit as a yearly rate.</p>
+					<p class="promissory-table-responsive-offerdata" style="position:absolute; bottom:0px;font-weight: bold; color:#28d2a1;">{{offerData.APR}} %</p>
+				</td>
+				<td style=" position:relative;" width="20%" valign="top">
+					<strong>FINANCE CHARGE </strong>
+					<p>The dollar amount the credit will cost you.</p>
+					<p class="promissory-table-responsive-offerdata" style="position:absolute; bottom:0px; font-weight: bold; color:#28d2a1;">$ {{creditcost}} </p>
+				</td>
+				<td style="position:relative;" width="20%" valign="top">
+					<strong>Amount Financed</strong>
+					<p>The amount of credit provided to you or on your behalf.</p>
+					<p class="promissory-table-responsive-offerdata" style="position:absolute; bottom:0px; font-weight: bold; color:#28d2a1;">$ {{financedAmount}} </p>
+				</td>
+				<td style="position:relative;" width="20%" valign="top">
+					<strong>Total of Payments </strong>
+					<p>The amount you will have paid after you have made all payments as scheduled.</p>
+					<p class="promissory-table-responsive-offerdata" style="position:absolute; bottom:0px; font-weight: bold; color:#28d2a1;">$ {{checktotalLoanAmount}} </p>
+				</td>
+				<td width="20%" valign="top">
+					<strong>Total Sale Price</strong>
+					<p class="promissory-table-responsive-inline-block">The total cost of your purchase on credit, including your down payment of</p>
+					<p class="promissory-table-responsive-inline-block">$ __________ is</p>
+					<p class="promissory-table-responsive-inline-block">$ __________.</p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<h4 class="docTextWhite promissory-table-responsive-payment-schedule">Your Payment Schedule will be:</h4>
+
+	<br>
+	<table style="width: 99%;" class="table table-bordered docTextWhite promissory-table-responsive">
+		<thead>
+			<tr>
+				<th>Number of Payments:</th>
+				<th>Amount of Payments:</th>
+				<th>When Payments Are Due:</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					<span class="responsive-title" style="font-weight: 700;">Number of Payments:</span>
+					<span style="color:#28d2a1;">{{loanTerm}} payments</span>
+				</td>
+				<td>
+					<span class="responsive-title" style="font-weight: 700;">Amount of Payments:</span>
+					<span style="color:#28d2a1;">$ {{scheduleLoanAmount}}</span>
+				</td>
+				<td>
+					<span class="responsive-title" style="font-weight: 700;">When Payments Are Due:</span>
+					<strong>monthly, beginning 30 days after the Services Date</strong>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<br>
+	<p><strong>Late Charge: </strong> If any part of any payment is more than 10 days late, you agree to pay a late charge in the amount of $25.00.</p>
+	<p><strong>Prepayment:</strong> You may prepay all or any part of your debt under this Contract at any time without penalty.</p>
+	<p>See the <a href="">Terms and Conditions</a> section of this Contract for additional information about nonpayment, default, any required repayment in full before the scheduled date, and prepayment refunds and penalties.</p>
+
+
+	<table style="width: 99%;border: 1px solid #fff;text-align:left;" class="docTextWhite">
+		<tbody>
+			<tr style="border: 1px solid #fff;">
+				<td class="text-center" colspan="2"><h3>ITEMIZATION OF AMOUNT FINANCED</h3></td>
+			</tr>
+			<tr style="border: none;">
+				<td style="border: none;"><p>Price of Services ($_____) + Taxes ($_____) (Cash Price)</p></td>
+				<td style="border: none;"><p>$-----------(1)</p></td>
+			</tr>
+			<tr style="border: none;">
+				<td style="border: none;"><p>Buyer’s Cash Down Payment</td>
+				<td style="border: none;"><p>$-----------(2)</p></td>
+			</tr>
+			<tr style="border: none;">
+				<td style="border: none;"><p>Amount Financed/Unpaid Principal Balance of Cash Price (line 1 minus line 2)</td>
+				<td style="border: none;"><p>$-----------(3)</p></td>
+			</tr>
+			<!-- <tr>
+				<td><p>Price of Services ($_____) + Taxes ($_____) (Cash Price)</p></td>
+				<td><p>$________(1)</p></td>
+			</tr>
+			<tr>
+				<td><p>Amount Paid to Public Officers (Official Fees)</td>
+				<td><p>$________(2)</p></td>
+			</tr>
+			<tr>
+				<td><p>Amount of Any Insurance Premiums</td>
+				<td><p>$________(3)</p></td>
+			</tr>
+			<tr>
+				<td><p>Subtotal (Cash Price + Official Fees + Insurance Premiums)</td>
+				<td><p>$________(4)</p></td>
+			</tr>
+			<tr>
+				<td><p>Buyer’s Cash Down Payment</td>
+				<td><p>$________(5)</p></td>
+			</tr>
+			<tr>
+				<td><p>Administrative Charge/Prepaid Finance Charge</td>
+				<td><p>$________(6)</p></td>
+			</tr>
+			<tr>
+				<td><p>Amount Financed/Unpaid Balance of Cash Price (line 4 minus line 5)</td>
+				<td><p>$________(7)</p></td>
+			</tr> -->
+		</tbody>
+	</table>
+	<br>
+<style>
+.details-show{
+  cursor: pointer;
+	font-size: 12px;
+}
+.details-show + input{
+  display: none;
+}
+.details-show + input + .promissory-note-terms-conditions-details{
+  display:none;
+}
+.details-show + input:checked + .promissory-note-terms-conditions-details{
+  display:block;
+}
+</style>
+
+	<div class="promissory-note-terms-conditions">
+		<h4 class="docTextWhite" style="display: inline-block; margin-left: 0; margin-bottom: 0;">TERMS AND CONDITIONS</h4>
+		<label class="details-show" for="promissory-note-terms-conditions-details-view">View Details</label>
+		<input id="promissory-note-terms-conditions-details-view" type="checkbox">
+
+		<div class="promissory-note-terms-conditions-details">
+				<p><strong>AGREEMENT:</strong>  In this Contract the words “you” and “your” refer to each Buyer named above. The words “Seller,““we,” “us,” and “our” refer to the Seller (the creditor) named above, or any other party to which this Contract is assigned. This Contract provides for the financing over time of your purchase of the services described above. The “Total Sale Price” shown above is the total amount you will pay for your purchase on a credit basis. The amount you would pay if you purchased the services for cash is shown above as the “Cash Price.” The “Services Date” will occur on the date that the purchased services have been performed. For convenience, this Contract uses the term “interest” (sometimes called a time charge or time price differential) to mean the periodic rate finance charge that accrues during the term of this Contract. By signing this Contract you agree to purchase the services on credit and you agree to pay the Total Sale Price according to the terms provided in this Contract.</p>
+				<p><strong>PROMISE TO PAY:</strong>  You promise to pay to Seller at its address shown above the Cash Down Payment and the Amount Financed, plus interest on the unpaid portion of the Amount Financed at a contract rate equal to the Annual Percentage Rate on the unpaid portion of the Amount Financed, according to the Payment Schedule shown above and the terms of this Contract, until all sums due under this Contract are paid in full. Interest will begin to accrue under this Contract on the Services Date. Generally, payments will be applied first to any fees that are due, then to accumulated interest charges, and then to the unpaid portion of the Amount Financed. Payments may be applied differently if required by applicable law. If this Contract is signed by multiple Buyers, each of you is individually and jointly responsible for all the agreements in this Contract.</p>
+
+			<p><strong>SIMPLE INTEREST CONTRACT:</strong> This is a simple interest Contract. Because the Finance Charge, Total of Payments, and the Amount of Payments as shown in the Payment Schedule under the Federal Truth in Lending Disclosure Statement, above, assume all payments will be made on time and in the amounts required by this Contract, the amounts disclosed may differ from the amount you ultimately must pay if your payments are not received on their exact due dates. For example, making your payment before its scheduled due date will reduce the amount of interest owed for that month and increase the portion of your payment applied to the Amount Financed. This will result in your final payment being smaller, while late payments will increase the amount of interest owed during the month and increase your final payment. Your final payment may also be different from the amount shown in the Payment Schedule if the Seller figured the payment schedule assuming equal monthly payment periods and other factors as are permitted under the Federal Truth in Lending Act. Your promise to pay requires you to pay the final payment on the date due even if it is different from the amount shown above.</p>
+
+			<p><strong>SPECIAL FINANCING:</strong>  The Payment Schedule in the Federal Truth in Lending Disclosure Statement discloses the number, amounts and scheduled due dates of your required Contract payments. If, at your option, you elect to make Contract payments by a date one hundred eighty (180) days after the Services Date (the “Special Financing Period”) that are at least equal to the Amount Financed shown in the Federal Truth in Lending Disclosure Statement, we will waive all of the interest that accrues during the Special Financing Period and treat your Contract as paid in full.   If your Contract payments are not equal to the Amount Financed by the end of the Special Financing Period, you must continue making your scheduled monthly payments for the remaining term of this Contract until the total amount owed under the Contract is paid in full. Interest will accrue on the unpaid portion of the Amount Financed during the Special Financing Period. However, such interest will be waived if you pay the Amount Financed in full prior to the expiration of the Special Financing Period. If you do not pay the Amount Financed in full prior to the expiration of the Special Financing Period, you will be required to pay all interest that accrues on the unpaid portion of the Amount Financed that is outstanding during and after the Special Financing Period. The Finance Charge, Total of Payments, Amount of Payments and Payment Schedule under the Federal Truth in Lending Disclosure Statement are based upon the contract rate of interest and are calculated based on the regularly scheduled Contract payments that are required during the full term of this Contract. The payments required by the Payment Schedule in the Federal Truth in Lending Disclosure Statement are not sufficient to pay the Amount Financed in full by the end of the Special Financing Period. To take advantage of the Special Financing option, you should ensure that the total of all Contract payments made during the Special Financing Period are sufficient to pay the Amount Financed in full before expiration of the Special Financing Period.</p>
+
+			<p><strong>MILITARY ANNUAL PERCENTAGE RATE STATEMENT:</strong> Federal law provides important protections to members of the Armed Forces and their dependents relating to extensions of consumer credit. In general, the cost of consumer credit to a member of the Armed Forces and his or her dependent may not exceed an annual percentage rate of 36 percent. This rate must include, as applicable to the credit transaction or account: the costs associated with credit insurance premiums; fees for ancillary products sold in connection with the credit transaction; any application fee charged (other than certain application fees for specified credit transactions or accounts); and any participation fee charged (other than certain participation fees for a credit card account).</p>
+			<p> <strong>RULES FOR INTERPRETING THIS AGREEMENT:</strong> Paragraph headings are for convenient reference only and are not to be interpreted as a complete summary of each paragraph. The word “Buyer” may mean one or more persons who are purchasing services from the Seller and financing the purchase by this Contract. The word “Seller” includes any person or entity to whom this Contract may be sold or assigned. If you are a member of the active military, or a spouse or dependent of a member of the active military, and your Contract is subject to the provisions of the Military Lending Act, 10 U.S.C. § 987 and its implementing regulations, 32 C.F.R. § 232.1, et seq., nothing contained in this Contract is intended to waive your rights or protections under that law.</p>
+			<p> <strong>CONSENT FOR COMMUNICATIONS:</strong> By signing below and providing your telephone number(s) and email address(es) to us at any time, you expressly authorize Seller and Seller’s affiliates, agents, and service providers to use any available written, electronic, or verbal means of contacting you for any purpose related to the servicing and collection of your Contract and our provision of the Services (each, a “Communication”). You agree this authorization for Communications includes, but is not limited to, our use of manual calling methods, prerecorded or artificial voice messages, text messages, e-mail messages, and/or automatic telephone dialing systems. You agree that we and our affiliates, agents, and service providers, may contact you for these Communications using any e-mail address or telephone number you provide to us now or in the future, including a number for a cellular telephone or other wireless device, regardless of whether you incur charges as a result. We will not charge you for making a Communication, but your service provider may. To cancel consent for our use of automatic telephone dialing systems and prerecorded or artificial voice messages, write to us at our address or call us at our telephone number shown above. You understand and agree that we and our affiliates, agents, and service providers may always communicate with you in any manner permitted by law that does not require your prior consent.</p>
+			<p><strong>POSTPONEMENT OF PAYMENT DUE DATES:</strong> If any Buyer requests permission to delay making one or more payments, Seller may postpone one or more scheduled payment due dates. Interest, however, will continue to accrue at the contract rate on any such postponed payments.  A deferral or extension fee may be charged to the extent permitted by applicable law.</p>
+			<p><strong>LATE CHARGE:</strong>  You agree to pay a late charge in the amount of $25 if any part of any payment is more than 10 days late. You will pay this late charge only once per delinquent payment regardless of how long the installment remains unpaid.</p>
+			<p><strong>DISHONORED PAYMENT FEE:</strong> If your payment is returned or rejected, you agree to pay us, if permitted by applicable law, a fee of $30.00 after we give you any notice and wait any period that may be required by applicable law.</p>
+			<p><strong>PREPAYMENT OF AMOUNT OWED:</strong> You may prepay all or any part of the amounts due under this Contract without penalty at any time. If you prepay, a portion of your payment will be credited first to any fees that are due, then to accumulated interest charges, and then to the unpaid portion of the Amount Financed. If you make a partial prepayment, there will be no changes in the due dates of your monthly payments.</p>
+			<p><strong>DEFAULT:</strong> Subject to any limitations imposed by applicable law, you will be in default if you (i) fail to make any payment when due; (ii) fail to comply with your agreements in this Contract; (iii) make any materially false or misleading statement in connection with obtaining this Contract; (iv) file or have filed against you any proceeding under the U.S. Bankruptcy Code; or (v) if  any event occurs that, in our reasonable judgment, significantly impairs the prospect of your payment or performance of this Contract.  If you are in default, we may, at our option and subject to any restrictions and/or notice requirements imposed by the applicable state law, declare all unpaid sums immediately due and payable.</p>
+			<p><strong>GOVERNING LAW:</strong> The terms of this Contract shall be governed by Tennessee law and by federal law.</p>
+			<p><strong>ASSIGNMENT OF CONTRACT:</strong> You agree that we may, at our option, assign this Contract and your payment obligations under this Contract to anyone we choose. We cannot assign our obligations to perform services financed under this Contract. You agree that the assignee will have all of our rights and remedies under this Contract and that you will pay to the assignee all that is still owed under this Contract, at the times and in the amounts provided in the Contract.</p>
+			<p><strong>OTHER CONTRACT TERMS: </strong> We do not intend to charge or collect, and you do not agree to pay, any finance charge that is more than the maximum amount permitted for this sale by applicable law. If you pay a finance charge or fee that is more than allowed by applicable law, we will apply it first to reduce the principal balance and, when the principal has been paid in full, refund it to you. You agree to notify us in writing at our address provided above within thirty (30) days after any change in your address. If we elect to delay or not enforce any of our rights under this Contract on any occasion, you agree that we have not waived our right to enforce these and other rights against you on any future occasion.</p>
+			<p><strong>CREDIT REPORT AND CREDIT REPORTING:</strong> You understand and agree that, for purposes of evaluating, reviewing, servicing, or collecting this Contract, we may: (a) obtain and use credit information and other information about you provided by third parties and consumer reporting agencies; and (b) provide information about you and the status of this Contract to third parties and consumer reporting agencies. We will, upon request, inform you whether we obtained a consumer report about you and, if we did, inform you of the name and address of the reporting agency that provided the consumer report. We may report information about your Contract to credit bureaus. Late payments, missed payments, or other defaults on your Contract may be reflected in your credit report.</p>
+
+			<p><strong>COLLECTION AND ENFORCEMENT:</strong> If this Contract is in default and referred to a collection agency or an outside attorney to collect the outstanding debt, you will pay the costs of collection, including reasonable attorneys’ fees, to the extent permitted by applicable law.</p>
+
+			<p><strong>ENTIRE AGREEMENT:</strong> This Contract constitutes the entire agreement and understanding between you and us with respect to the credit transaction described herein, and supersedes any and all prior agreements and understandings, oral or written, with respect to such transaction.</p>
+
+			<p><strong>SEVERABILITY:</strong> If any term of this Contract is found under the law to be invalid or unenforceable, then such term shall be of no force and effect and shall be severed and the remainder of this Contract shall continue in full force and effect. </p>
+
+			<p><strong>ELECTRONIC SIGNATURE:</strong> If you consented to sign this Contract electronically, you agree that you are signing this Contract in electronic form just as if you had physically signed and delivered a paper document and provided it to us. You are signing this Contract with the present intention of adopting and accepting the method of authentication we selected to show your acceptance of and agreement to the terms of the Contract, just as if you affixed your physical signature to this Contract. You agree that any true and complete physical reproduction of the electronically signed Contract, such as a printed copy, shall be treated the same as or as the legal equivalent of a duplicate of the original electronic agreement.</p>
+		</div>
+	</div>
+
+<p style="border: 1px solid rgb(255, 255, 255);"><strong>NOTICE TO THE BUYER: DO NOT SIGN THIS CONTRACT BEFORE YOU READ IT OR IF IT CONTAINS ANY BLANK SPACES. YOU ARE ENTITLED TO COMPLETELY FILLED-IN COPY OF THE CONTRACT YOU SIGN.  KEEP IT TO PROTECT YOUR LEGAL RIGHTS. YOU MAY PREPAY THE UNPAID BALANCE AT ANY TIME WITHOUT PENALTY.</strong></p>
+
+<p><strong>By signing below, you agree to the terms contained in this Contract and acknowledge that you received a completed copy of the Contract and any attachments to it on the Contract Date listed above.</strong></p>
+
+<table style="width: 100%" class="docTextWhite text-center promissory-table-responsive">
+	<tbody>
+		<tr>
+			<td>
+				<strong style="color:#28d2a1;">{{userData.firstname}} {{userData.lastname}}</strong><br>
+				<div style="color:#8093a5; margin-top:5px;border-bottom: 1px solid;"></div>
+				<div class="responsive-title">Buyer 1</div>
+			</td>
+			<td class="back-img">
+				<div id="stamp">
+					{% if signatureExist == 1%}
+					<img class="img-responsive center-block" src="{{agreementsignpath}}" id="stampimg" style="margin: 0 0 8px;">
+					{% else %}
+					<div style="border-bottom: 1px solid;margin-top:5px;"></div>
+					{% endif %}
+		    </div>
+				<div class="responsive-title">Buyer 1 Signature</div>
+			</td>
+			<td>
+				{{todaydate}}<br>
+				<div style="color:#8093a5; margin-top:5px;border-bottom: 1px solid;"></div>
+				<div class="responsive-title">Date</div>
+			</td>
+		</tr>
+		<tr class="promissory-table-responsive-hide">
+			<td>Buyer 1</td>
+			<td>Buyer 1 Signature</td>
+			<td>Date</td>
+		</tr>
+		<tr>
+			<td>
+				<div style="border-bottom: 1px solid;margin-top:5px;"></div>
+				<div class="responsive-title">Buyer 2</div>
+			</td>
+			<td>
+				<div style="border-bottom: 1px solid;margin-top:5px;"></div>
+				<div class="responsive-title">Buyer 2 Signature</div>
+			</td>
+			<td>
+				<div style="border-bottom: 1px solid;margin-top:5px;"></div>
+				<div class="responsive-title">Date</div>
+			</td>
+		</tr>
+		<tr class="promissory-table-responsive-hide">
+			<td>Buyer 2</td>
+			<td>Buyer 2 Signature</td>
+			<td>Date</td>
+		</tr>
+		<!-- <tr>
+			<td style="color:#28d2a1;">{{userData.firstname}} {{userData.lastname}} <br><div style="color:#8093a5; margin-top:5px;border-bottom: 1px solid;"></div></td>
+			<td><div style="border-bottom: 1px solid;margin-top:5px;"></div></td>
+			<td>{{todaydate}} <br><div style="color:#8093a5; margin-top:5px;border-bottom: 1px solid;"></div></td>
+		</tr>
+		<tr>
+			<td>Seller</td>
+			<td>Authorized Signature</td>
+			<td>Date</td>
+		</tr> -->
+	</tbody>
+</table>
+
+<p style="border: 1px solid rgb(255, 255, 255);padding: 1%;"><strong>NOTICE: ANY HOLDER OF THIS CONSUMER CREDIT CONTRACT IS SUBJECT TO ALL CLAIMS AND DEFENSES WHICH THE DEBTOR COULD ASSERT AGAINST THE SELLER OF GOODS OR SERVICES OBTAINED PURSUANT HERETO OR WITH THE PROCEEDS HEREOF. RECOVERY HEREUNDER BY THE DEBTOR SHALL NOT EXCEED AMOUNTS PAID BY THE DEBTOR HEREUNDER.</strong></p>
+
+<p style="padding:0px; margin:0px 1%;">Borrower Name:
+{{userData.firstname}} {{userData.lastname}}</p>
+<!--<p style="padding:0px; margin:0px;">(SIGNED ELECTRONICALLY)</p>-->
+<p style="padding:0px; margin:0px 1%;">Ip: {{ip}}</p>
+<p style="padding:0px; margin:0px 1%;">Date: {{todaydate}}</p>
+</div>
+ {% include "frontend/home/eftauthorization.nunjucks" %}
+{% endif %}

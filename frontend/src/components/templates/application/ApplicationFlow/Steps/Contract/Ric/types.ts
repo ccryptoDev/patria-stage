@@ -1,0 +1,26 @@
+export type IRic = {
+  amountFinanced: number;
+  amountOfPayments: number;
+  amountToAccount: number;
+  amountToOthers: number;
+  annualPercent: number;
+  applicationReference: string;
+  city: string;
+  directAmount: number;
+  effectiveDate: string;
+  firstName: string;
+  initials: string;
+  lastName: string;
+  loanAgreementDate: string;
+  numberOfPayments: number;
+  providerEmail: string;
+  providerName: string;
+  providerNumber: string;
+  sId: string;
+  state: string;
+  todayDate: string;
+  totalAmount: number;
+  totalOfPayments: number;
+  userLastName: string;
+  userNames: string;
+};

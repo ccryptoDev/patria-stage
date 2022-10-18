@@ -1,0 +1,249 @@
+.loans-section {
+  &-applying {
+    background-color: var(--color-blue-1);
+    padding: 6rem 0;
+
+    & h3 {
+      text-align: center;
+      color: #fff;
+      font-size: 2.4rem;
+    }
+
+    &-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-column-gap: 2.4rem;
+      margin-top: 4.8rem;
+      & li {
+        display: flex;
+        flex-direction: column;
+        row-gap: 12px;
+        text-align: center;
+        align-items: center;
+        padding: 2.4rem;
+        & img {
+          width: 3.3rem;
+          height: 4rem;
+        }
+
+        & p {
+          color: var(--color-blue-3);
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  &-benefits {
+    position: relative;
+    &-wrapper {
+      display: flex;
+    }
+    &-left-bg {
+      background: var(--color-bg-2);
+      position: absolute;
+      width: 50%;
+      top: 0;
+      bottom: 0;
+      z-index: -1;
+    }
+    &-conditions {
+      width: 50%;
+      padding: 6rem;
+      padding-left: 0;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      row-gap: 4.8rem;
+      &-item {
+        display: flex;
+        column-gap: 2.4rem;
+        font-weight: 600;
+        font-size: 1.8rem;
+        align-items: start;
+
+        &-heading {
+          padding: 10px 0;
+          line-height: 1.5;
+          font-size: 1.8rem;
+          text-transform: uppercase;
+        }
+
+        &-content {
+          display: flex;
+          flex-direction: column;
+          row-gap: 2.4rem;
+
+          & p {
+            color: var(--color-secondary-1);
+            font-weight: 600;
+          }
+        }
+
+        &-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--color-secondary-2);
+          border-radius: 8px;
+          padding: 11px;
+        }
+      }
+    }
+
+    &-save {
+      padding: 6rem;
+      padding-right: 0;
+      display: flex;
+      flex-direction: column;
+      row-gap: 4.8rem;
+
+      &-item {
+        display: flex;
+        align-items: center;
+        column-gap: 2.4rem;
+
+        & h3 {
+          font-size: 2.4rem;
+        }
+
+        &-icon {
+          width: 44px;
+          height: 44px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-sizing: border-box;
+          border: 1px solid var(--color-secondary-2);
+          border-radius: 8px;
+          color: var(--color-secondary-1);
+          font-weight: 600;
+          line-height: 1;
+        }
+      }
+    }
+  }
+
+  &-payments {
+    padding: 6rem 0;
+
+    &-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 4.8rem;
+    }
+
+    &-header,
+    & .notification {
+      grid-column: 1/-1;
+    }
+
+    &-card {
+      &-header h4 {
+        color: var(--color-blue-1);
+      }
+      &-content {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        justify-content: space-around;
+
+        & li {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          row-gap: 16px;
+          font-weight: 600;
+
+          & img {
+            display: block;
+          }
+        }
+        font-size: 1.4rem;
+      }
+    }
+
+    &-header {
+      & h3,
+      &-subheading {
+        text-align: center;
+      }
+
+      & h3 {
+      }
+      &-subheading {
+        color: var(--color-secondary-1);
+        font-size: 1.8rem;
+        font-weight: 600;
+        line-height: 2;
+      }
+    }
+  }
+
+  &-clarification {
+    background: var(--color-bg-2);
+    padding: 6rem 0;
+
+    &-heading {
+      text-align: center;
+      margin-bottom: 4.8rem;
+      font-size: 2rem;
+    }
+
+    &-note {
+      padding: 2.4rem;
+      background: #fff;
+      border-radius: 1.4rem;
+      border: 1px solid var(--color-secondary-1);
+      display: flex;
+      flex-direction: column;
+      row-gap: 2.4rem;
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .loans-section-banner .layout {
+    margin: 0;
+  }
+
+  .loans-section-benefits-save,
+  .loans-section-benefits-conditions {
+    padding: 4rem;
+    width: auto;
+  }
+
+  .loans-section-benefits-left-bg {
+    height: 420px;
+    width: 100%;
+  }
+
+  .loans-section-benefits-wrapper {
+    flex-direction: column;
+  }
+
+  .loans-section-applying-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .loans-section-payments-layout {
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .loans-section-applying-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .loans-section-benefits-save,
+  .loans-section-benefits-conditions {
+    padding: 10px 0;
+  }
+
+  .loans-section-payments-card-content {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}

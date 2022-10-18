@@ -1,0 +1,180 @@
+{% extends "frontend/layoutv3/layout.nunjucks" %}
+{% block body %}
+    <div class="background-shortform" id="application">
+        <style>
+            #step1_form .stateDiv:before,
+            .birthdayDiv:before,
+            .birthmonthDiv:before,
+            .birthyearDiv:before {
+                content: '';
+                width: 14px;
+                height: 13px;
+                background: url("../../../images/img/frontend/chevron-down.png") no-repeat;
+                background-size: 100%;
+                position: absolute;
+                right: 20px;
+                top: 21px;
+                z-index: 0;
+                pointer-events: none;
+            }
+
+            .selectBox:focus {
+                border-color: 1px solid #eacc49 !important;
+            }
+
+            #step1_form label.error {
+                position: absolute;
+            }
+
+            #step1_form #creditpullconfirm-error {
+                position: relative;
+                left: 11vw;
+                right: auto;
+            }
+
+            .applicant-bank-info .input-group-addon {
+                background-color: #cccccc;
+                color: #999999;
+                border: none;
+            }
+
+            .applicant-bank-info .inFocus {
+                border: 1px solid #3f576c !important;
+            }
+
+            .applicant-bank-info .input-group {
+                width: 100%;
+            }
+
+            .applicant-bank-info .input-group input {
+                border-top-right-radius: 8px;
+                border-bottom-right-radius: 8px;
+            }
+
+            #step1_form textarea:focus,
+            input:focus {
+                border: 1px solid #3f576c !important;
+            }
+
+            @media only screen and (max-width:767px) {
+                .zipDiv {
+                    margin-top: 20px;
+                    padding-left: 0;
+                }
+
+                .stateDiv {
+                    padding-right: 0;
+                }
+
+            }
+
+            [type="date"]::-webkit-calendar-picker-indicator {
+                display: none;
+            }
+
+            option {
+                color: black;
+            }
+        </style>
+        <form id="offers_form" action="/postOffers" data-validation="btnDisable" autocomplete="off">
+        <input type="hidden" id="uid" name="uid" value="{{ userData.id }}" />
+        <input type="hidden" id="screenId" name="screenId" value="{{ screentrackingData.id }}" />
+        <input type="hidden" id="offerid" name="offerid" value="{{ screentrackingData.offers[0].id }}" />
+        </form>
+        <div class="container">
+            <div class="inner-content">
+                <div class="heading">
+                    <div class="logoMiddle">
+                        <img src="/images/imgv3/logo.png" style="width: 45%; height: auto" class="img-reponsive" />
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 personalInfoInner los-content">
+                    <div class="whitebox infoForm">
+                        <h1 class="fe-head-congrats text-center">Congratulations!</h1>
+                        <hr style="width: 40%;">
+                        <h2 class="fe-head-name text-center">{{ userData.firstname }}</h2>
+                        <div class="fe-preapproved text-center">
+                            <p>You've been <strong>pre-approved</strong> for up to</p>
+                        </div>
+                        <div class="fe-approved-upto text-center">
+                            <p>${{ screentrackingData.requestedLoanAmount }}</p>
+                        </div>
+                        <hr>
+                        <div class="fe-selectoffer text-center">Select your offer.</div>
+
+                        <div id='offers_container'>
+                            <div id="offerdiv" class="flex-wrap flex-j-space-evenly">
+
+                                {% if screentrackingData.offers.length > 0 %}
+                                {% set idx = 0 %}
+                                {% for offer in screentrackingData.offers %}
+                                {% set idx = idx + 1 %}
+                                <div class="offerBox_container" data-offer-id="{{ offer.id }}">
+                                    <div class="offerBox-overlay"></div>
+                                    <div class="offerBox">
+                                        <div class="flex-column flex-align-center">
+                                            <div class="col-lg-12">
+                                                <p class="monthlyPaymet_lable text-center">Estimated Payment</p>
+                                                <p class="monthlyPaymet_text text-center">{{ offer.regularPayment | $format }}</p>
+                                            </div>
+                                            <div class="selected-offer flex-j-center flex-align-center">
+                                                <div class="selected-offer-status">
+                                                    <div class="selected-offer-content selected-offer-border-bottom-active flex-j-center flex-align-center"
+                                                        style="display: none">
+                                                        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 52 52">
+                                                            <circle class="checkmark__circle" cx="26" cy="26" r="25"
+                                                                fill="none" />
+                                                            <path class="checkmark__check" fill="none"
+                                                                d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
+                                                        <p>Currently Selected Offer</p>
+                                                    </div>
+                                                    <div
+                                                        class="nonselected-offer-content flex-j-center flex-align-center">
+                                                        <hr>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="offerDetails flex-column flex-align-center"
+                                                style="width: 100%;">
+                                                <div class="offerSection flex-j-space-between">
+                                                    <p class="offerBox_lable">Loan Offer</p>
+                                                    <p class="offerBox_text">
+                                                        ${{ screentrackingData.requestedLoanAmount }}</p>
+                                                </div>
+                                                <div class="offerSection flex-j-space-between">
+                                                    <p class="offerBox_lable">Term:</p>
+                                                    <p class="offerBox_text">{{ offer.term }} Payments</p>
+                                                </div>
+                                                <div class="offerSection flex-j-space-between">
+                                                    <p class="offerBox_lable">APR:</p>
+                                                    <p class="offerBox_text">{{ offer.interestRate }}%</p>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-lg-12 offerBox_footer">
+                                                <button type="button" class="btn btn-primary selectOfferBtn"
+                                                    onclick="offerSelection(this)">Select Offer</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+
+                            </div>
+                        </div>
+                        <div class="opt-in-services-customize text-center offerBox_footer" >
+                            <button type="button" class="btn btn-primary" id="btnSubmitSelectedCustomOffer" style="margin-left: 10px;" onclick="submitOffers()">CONTINUE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% include "twilio/twilioVerificationTemplate.nunjucks" %}
+
+        <script type="text/javascript"></script>
+    {% endblock %}

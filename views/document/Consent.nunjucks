@@ -1,0 +1,484 @@
+{% block body %}
+<div class="background-shortform" id="application">
+    <style>
+
+
+h2 {
+		font-size: 160%;
+		text-align: center;
+	}
+    .table {
+        border-collapse: collapse;
+    }
+	.table-bordered > thead > tr > th, .table-bordered > tbody > tr > td {
+		border:1px solid #dddddd;
+		padding: 8px;
+    	line-height: 1.42857143;
+	}
+    .centered {
+        margin: 0 auto;
+        width: 80%;
+    }
+    .darked {
+        background-color: #E7E7E7;
+    }
+    .indent {
+        margin-left:7%;
+        margin-right:7%;
+    }
+
+    // For TRUTH-IN-LENDING DISCLOSURE:
+        .font-verdana {
+            font-family: Verdana, Arial, sans-serif;
+        }
+        .disclosure-boxes {
+            width: 25%;
+            border: 1px solid black !important;
+
+        }
+        #truth-in-lending-disclosure {
+            width: 100%;
+            border-width: 1px;
+            border-collapse: separate;
+            border-spacing: 2px;
+            border-color: black !important;
+        }
+        .disclosure-box-instruction {
+            color: #525659;
+        }
+        .flex {
+            height: 100%;
+            display: -webkit-box
+            display: flex;
+            flex-direction: column;
+            -webkit-box-pack: space-between;
+            justify-content: space-between;
+        }
+        .words-gray {
+            color: #545454;
+        }
+        .large-font {
+            font-size: 1.1em;
+        }
+        .box-bottom {
+            border: 1px solid black !important;
+            padding: 1px 3px !important;
+            font-family: 'Times New Romen';
+        }
+        #beneath-table-box {
+            position: relative;
+            top: -14px;
+        }
+        h5 {
+            margin-top: 0;
+        }
+
+        .signature-pad {
+            left: 0;
+            top: 0;
+            width:400px !important;
+            height:200px !important;
+            max-height: 200px !important;
+            border: 1px solid black;
+        }
+        h6 {
+            font-size: inherit;
+        }
+        .btn{
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            touch-action: manipulation;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-image: none;
+            border: 1px solid black;
+            border-radius: 4px
+        }
+        .container {
+            width:100%;
+            padding-right:
+            15px;
+            padding-left:15px;
+            margin-right:auto;
+            margin-left:auto
+        }
+        @media (min-width:576px) {
+            .container{
+                max-width:540px
+            }
+        }
+        @media (min-width:768px){
+            .container{
+                max-width:720px
+            }
+        }
+        @media (min-width:992px) {
+            .container{
+                max-width:960px
+            }
+        }
+        @media (min-width:1200px) {
+            container{
+                max-width:1140px
+            }
+        }
+        #step1_form #creditpullconfirm-error{
+            position: relative;
+            left: 11vw;
+            right: auto;
+        }
+
+    .truthInLendingTableHeader {
+        border: 2px solid #ddd;
+        }
+
+    .truthInLendingTableHeader tbody tr td {
+        border: none;
+    }
+
+        .truthInLendingTableHeader thead tr th{
+        padding: 2px;
+        height: 100px;
+        border-bottom: none;
+        }
+
+        .truthInLendingTableHeader thead tr th div{
+        border: 2px solid #ddd;
+        padding: 5px;
+        height: 100%;
+        }
+
+        .application-list{
+            padding: 10px 30px;
+            border: 2px solid #ddd;
+            margin-top: 10px;
+        }
+
+
+        .application-list .list-item{
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            line-height: 35px;
+        }
+        .v2_disclosure-box {
+            display:flex;
+            flex-direction:column;
+            align-items: center;
+        }
+    </style>
+    <div class="" style="height: auto !important; text-align: left; font-size: 16pt !important; width: 100%">
+        <br>
+        <div class="container">
+            <div class="row justify-content-center">
+                <img src="{{baseUrl}}/images/imgv3/patria/Patria_logo2.png" class="img-reponsive" style="width: 30%; height: auto"/>
+            </div>
+        </div>
+        <br>
+        <div class="justify-content-left">
+            <p class="font-weight-bold" style="font-size: 200%;">Application:</p>
+            <ul class="application-list">
+                <li class="list-item"><strong>Name:</strong> {{user.firstname}} {{user.middlename}} {{user.lastname}}</li>
+                <li class="list-item"><strong> Home Phone:</strong> {{user.homePhone}} </li>
+                <li class="list-item"><strong> Mobile Phone:</strong> {{user.phoneNumber}}</li>
+                <li class="list-item"><strong> Email Address:</strong> {{user.email}}</li>
+                <li class="list-item"> <strong>City:</strong>{{user.city}}&nbsp;<strong>State:</strong>{{user.state}}&nbsp;<strong>Street:</strong>{{ user.street }}&nbsp;<strong>Zip:</strong> {{user.zipCode}}</li>
+                <li class="list-item"> <strong>DOB:</strong> {{user.dateofBirth}} &nbsp;<strong>SSN:</strong> {{user.ssn_number}}</li>
+                <li class="list-item"> <strong>Drivers License:</strong> {{user.idState}}, {{ user.stateIdNumber }}</li>
+            </ul>
+        </div>
+        <br>
+        <div class="justify-content-left">
+            <p class="font-weight-bold" style="font-size: 200%;">Employment Information:</p>
+             <ul class="application-list">
+                <li class="list-item"><strong>Company:</strong> {{ employment.employerName}}</li>
+                <li class="list-item"><strong> Position:</strong>  {{ employment.Position}} </li>
+                <li class="list-item"><strong> Work Phone:</strong> {{ employment.employerPhone}}</li>
+                <li class="list-item"><strong> Payroll Frequency:</strong>  {{ employment.payFrequency }}</li>
+                <li class="list-item"><strong> Monthly Amount:</strong> ${{ bank.incomeamount }}</li>
+                <li class="list-item"><strong> Banking Account Type:</strong> {{ bank.accountType}}</li>
+                <li class="list-item"><strong> Total Per Pay Period:</strong>  {{ employment.PayrollInformation.TotalPerPaycheck}}</li>
+                 <li class="list-item"><strong> Military:</strong>  {% if user.isMilitary %} Yes {% else %} No {% endif %}</li>
+            </ul>
+
+        </div>
+        <br>
+        <h6>Application #: {{ loan.applicationReference }} <br> Date of Application: {{ loanSetdate | dateMinusTz("MM/DD/YYYY") }}</h6>
+        <hr>
+        <br>
+        <h3><strong>CONSUMER LOAN NOTE AND ARBITRATION AGREEMENT</strong></h3>
+        <div class="justify-content-left">
+            <ul class="list-group">
+                <li class="list-group-item">Lender: Patria, LLC </li>
+                <li class="list-group-item">Mailing Address: 100 Schoolhouse Canyon RoadSanta Ysabel, CA 90070 </li>
+                <li class="list-group-item">Email Address: customerservice@patria.com</li>
+            </ul>
+        </div>
+        <div class="justify-content-left">
+            <ul class="list-group">
+                <li class="list-group-item">Consumer: {{ user.firstname }} {{ user.lastname }}</li>
+                <li class="list-group-item">Borrower's Bank: {{ bank.accountName }} </li>
+                <li class="list-group-item">Bank Account Number: {{ bank.accountNumber }}</li>
+            </ul>
+        </div>
+        <h6><strong>DISCLOSURE OF CREDIT TERMS: The disclosures below are provided to you so that you may compare the cost of this loan to other consumer loan products you might obtain elsewhere.</strong></h6>
+        <br>
+        <hr>
+
+        <h3><strong>TRUTH IN LENDING DISCLOSURE</strong></h3>
+        <br>
+        <table id="truth-in-lending-disclosure" class="table" bordercolor="#000">
+            <tbody>
+                <tr style="text-align: center">
+                    <td class="darked disclosure-boxes"  style="padding: 8px 16px !important">
+                        <h5 class="font-verdana words-gray"><strong><u>ANNUAL<br>PERCENTAGE<br>RATE<br></u></strong></h5>
+                        <p class="font-verdana disclosure-box-instruction">The cost of your credit as a yearly rate.</p>
+                        <u>{{loan.interestapplied}}</u>%
+                    </td>
+                    <td class = "darked disclosure-boxes" >
+                        <h5 class="font-verdana words-gray"><strong><u>FINANCE<br>CHARGE</u></strong></h5>
+                        <p class="font-verdana disclosure-box-instruction">The dollar amount the credit will cost you.</p>
+                        <u>{{loan.totalPaymentsFeeChargedAmount | $format}}</u>
+                    </td>
+                    <td class="disclosure-boxes" >
+                        <h5 class="font-verdana words-gray">Amount<br>Financed</h5>
+                        <p class="font-verdana disclosure-box-instruction">The amount of credit provided to You or on Your behalf.</p>
+                        <u>{{loan.requestedLoanAmount | $format }}</u>
+                    </td>
+                    <td class="disclosure-boxes" >
+                                <br/>
+                                <h5 class="font-verdana words-gray">Total of Payments Made<span style="visibility: hidden">_</span></h5>
+                                <div>
+                                    <u>{{totalPaymentsPaidAmount | $format}}</u>
+                                </div>
+                                <br/>
+                            <h5 class="font-verdana words-gray">Total of Payments<span style="visibility: hidden">_</span></h5>
+                             <p class="font-verdana disclosure-box-instruction">The amount You will have paid after making all payments as scheduled.</p>
+                            <div>
+                                <u>{{totalPaymentAmount | $format}}</u>
+                            </div>
+                        <div style="visibility: hidden">Empty Placeholder</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="border-style: hidden">
+                        <strong class="large-font">Your Payment Schedule will be{% if paymentFrequencyDisplay %} ({{ paymentFrequencyDisplay  }}){% endif %}:</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong class="words-gray">Payment</strong></td>
+                    <td ><strong class="words-gray">Amount of Payments</strong></td>
+                    <td ><strong class="words-gray">Status</strong></td>
+                    <td><strong class="words-gray">When Payments Are Due</strong></td>
+                </tr>
+                {% set scheduleIndex = 0 %}
+                {% for paymentDate in paymentSchedule %}
+                    {% if not paymentDate.scheduleItemIsPaidInThePast %}
+                        {% set scheduleIndex = scheduleIndex +1 %}
+                        <tr >
+                            <td>
+                                {{ scheduleIndex}}
+                            </td>
+                            <td>
+                                {{ paymentDate.amount | $format }}
+                            </td>
+                            <td>
+                                {{ paymentDate.statusForDisplay if paymentDate.statusForDisplay else ""  }}
+                            </td>
+                            <td>
+                                {{ paymentDate.date | dateMinusTz("MM/DD/YYYY") }}
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                <tr>
+                    <td colspan="4" class="policy-txt1">
+                    <p style="margin-bottom: 0">
+                    <strong class="large-font">Late Charge:</strong>  <span class="words-gray"> If a payment is 7 days or more late, you may be charged a late payment fee of $25. </span><br>
+                    <strong class="large-font">Prepayment:</strong>  <span class="words-gray"> If you pay off early, you will not have to pay a penalty. </span><br>
+                    <span class="words-gray"> See this Loan Agreement for any additional information about nonpayment, default, any required repayment in full before the scheduled date and any prepayment penalties. </span>
+                    </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="box-bottom">All numerical disclosures except the Late Charge are estimates</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br>
+        <p>
+            <strong>PREPAYMENT:</strong> If you repay this Loan early, you will not have to pay a penalty and you will not be entitled to a refund of any portion of the finance charges already paid. See Agreement below for additional information about non­payment, default and any required repayment in full before the scheduled date. <br>
+            Your Payment Schedule will be: <br></p>
+
+        <p>
+            <br>
+            <strong>SECURITY:</strong>  If you have chosen the ACH Debit Authorization option, your ACH authorization is security for the loan. Otherwise, this Loan is unsecured.<br>
+            <strong>RETURNED PAYMENT FEE:</strong> If any payment provided to us is returned for nonpayment, you will be charged a fee of $30 <br>
+            <strong>ITEMIZATION OF AMOUNT FINANCED:</strong> {{  loan.requestedLoanAmount | $format }} <br>
+            <strong>AMOUNT GIVEN TO YOU DIRECTLY:</strong> {{ loan.requestedLoanAmount | $format }} <br>
+            <strong>LOAN PROCEEDS PAID ON YOUR ACCOUNT</strong>: $0
+        </p>
+        <br>
+        <hr>
+        <br>
+        <h3><strong>CONSUMER LOAN NOTE AND ARBITRATION AGREEMENT</strong></h3>
+        <br>
+        <p>
+            <strong>Note Date: {{ loanSetdate | dateMinusTz("MM/DD/YYYY")}}<br></strong>
+            In this Consumer Loan and Arbitration Agreement (the “Agreement”), “you” and “your” refer to the Consumer identified above. “We,” “our,” “us” and
+            “Lender” refer to Patria, LLC. “Loan” means this consumer installment loan;
+            <br></br>
+            <strong>PAYMENTS.</strong> Lender and its agents are authorized at any time following non­payment when due of any portion of the indebtedness represented by this Agreement to initiate a charge to any of my depository accounts at any institution, by ACH or otherwise, for the principal and accrued interest then due on this Agreement. You may revoke the authorization to affect an ACH debit entry at any time, but you may not revoke the authorization to prepare and submit drafts on our behalf until such time as the loan is paid in full. Any such revocation must be in writing in a manner which affords Lender and your financial institution a reasonable opportunity to act on it prior to any payment towards your loan and delivered to Lender at the address set forth above.
+            You may choose to make different payment arrangements if you do not wish to use EFT or ACH transactions; if so, you must make arrangements with us by 3:00 PM Pacific Time, three business days prior to the Payment Due Date, so an ACH debit entry is not initiated. Electronic check is the available alternate method of payment. You must contact us, toll­free, at 1­855­734­9320 to make those arrangements. You may pay each payment owing under this Agreement by electronic check or debit card. If you choose to pay by debit card, you must provide personal debit card information, including account number and expiration date, to use for credit transactions. If you have chosen to receive your loan proceeds via debit card, please contact us, toll­free at
+            1­855­734­9320 to make those arrangements.
+            <br></br>
+            <strong>Loan Proceeds.</strong> Lender makes loan proceeds available on the business day following the date of this transaction without additional charge. If, at your election made before 12:00 p.m. Pacific Time on a business day, you request that the loan proceeds be made available on the same day by wire transfer or by a third party same day deposit service, we will charge you a same day transfer funding fee of up to $20. This fee will be deducted from the loan proceeds.
+            <br></br>
+            <strong>NO CONTINGENCY.</strong> You agree that we cannot make and have not made the Loan contingent upon your obtaining any other product or service from us or anyone else.
+            <br></br>
+            <strong>PAYMENT APPLICATION.</strong>  We will apply your payments first to any fees due to us, then to earned but unpaid interest, and then to principal amounts outstanding.
+            <br></br>
+            <strong>WHEN YOU BEGIN PAYING INTEREST:</strong> You begin to pay us interest on the Loan on the next business day following the date of this Agreement (the “Disbursement Date”). Unavoidable delays as a result of bank holidays, the processing schedule of your individual bank, the untimely receipt of pay stubs, if such pay stubs are required, inadvertent processing errors, “acts of God”, and/or “acts of terror” may extend the time for disbursement. You will be charged interest on the unpaid amount of the Loan each day from the Disbursement Date until the Loan is paid in full. In calculating your payments, we have assumed you will make each payment on the day and in the amount due. If any payment is received after the Payment Due Date, you must pay any additional interest that accrues after such date. If any installment payment is made in an amount greater than that due on or before the applicable Payment Due Date (a partial prepayment), all subsequent payments will be reduced and your loan will be subject to a revised payment schedule. Contact
+            us at 1­855-767-7033 for more information about your revised payment schedule if you make a partial prepayment. There are no grace periods that apply to this Loan in connection with the Payment Due Dates set forth above. If you have elected to repay this Loan via ACH debits to your Bank Account and any payment is due on a day on which your bank is not open, then such payment shall be due on the day prior to the date on which your bank is not open
+            <br></br>
+            <strong>RETURNED PAYMENT FEE</strong> If any payment made by you on this Loan is not honored or cannot be processed for any reason, including not enough money in your Bank Account, you agree to pay us a fee of $30.00. You authorize us and our agents to make a one­time withdrawal from your Bank Account to collect this fee, if you have elected to repay this loan via ACH debits to your Bank Account. Your financial institution may also impose a fee if your Bank Account does not have sufficient funds to cover any debit processed for payment from such Bank Account.
+            <br></br>
+            <strong>AUTHORIZATION</strong> You represent that all bank account and other credit information provided by you is correct. You agree not to close the bank account from which you have authorized payment to be debited unless your payment authorization is terminated as provided in this Agreement. If your check, bank draft, EFT or ACH transaction is returned for insufficient funds, we will charge you, and you will pay, an additional $30 each time a payment is returned. You authorize us or any collection agency which we designate to collect all amounts owing hereunder, including without limitation all collection agency fees, through the use of one or more checks, bank drafts, EFT or ACH transactions. You understand and agree that this right does not constitute a security interest. You may make different payment arrangements with us at the time you enter into this Agreement if you do not wish to consent to pre­ authorized EFT or ACH transactions. At this time you acknowledge that you have been advised that your consent to pre­authorized electronic funds transfers as a means of repayment is not a condition of our extension of this Loan. You authorize us to obtain and verify the information provided to us in connection with your Loan application, including from a consumer reporting agency or othe sources.
+            <br></br>
+            <strong>WIRELESS POLICY</strong> By providing your cell phone number, you have provided us with consent to send you text messages in conjunctions with the services you have requested. Your cellular provider’s message and data rates may apply to our confirmation message and all subsequent messages. You understand the text messages we send may be seen by anyone with access to your phone. Accordingly, you should take steps to safeguard your phone and your text messages if you want them to remain private.
+            Please notify us immediately if you change mobile numbers or plan to provide your phone to another person. If we modify this Text Message Policy, we will notify you by sending you a text message with a link to the new policy. We may terminate our text message program at any time.
+            If you have any questions about this policy, would like us to mail you a paper copy of this policy or are having problems receiving or stopping our text messages, please contact us using the following information: Patria, LLC, 100 Schoolhouse Canyon Road, Santa Ysabel, CA 92070.
+            You agree and consent to be contacted by Lender, our agents, employees, affiliates, loan servicing companies, and third­party collectors through the use of email, telephone calls, facsimiles and/or SMS text messages to your cellular, pager, facsimile, home or work numbers, as well as any other telephone number you have provided in conjunction with this loan, including the use of automatic telephone dialing systems, autodialers, or an artificial or prerecorded voice for the purposes of providing service to you for this Loan and service and offers for related products and services. You consent to Lender’s use of your personal information to provide the services you have requested, including services that display customized content and advertising.
+            <br></br>
+            <strong>Opt­out or STOP</strong>
+            </br>
+            This policy applies to the text messages sent by Lender to our customers while and after they use our product. If you wish to stop receiving marketing text messages from us, reply to any text message we have sent you and in the reply text simply type STOP. If you wish to stop receiving all text messages from us, including those with information about payment due dates or missed payments, type STOP ALL in the reply text you send us. Your stop request will become effective within one day. You may also stop text messages by calling us or emailing us using the contact information below.
+            <br></br>
+            <strong>Help or Support</strong>
+            </br>
+            If at any time you need our contact information or information on how to stop text messages, reply to any text message we have sent you and in the reply text simply type HELP. You may also visit our contact page at  https://www.patria.com/contact or call us at 855-767-7033. Upon receiving your text message, we will send you a text message with this information. It is our policy to send no more than 20 messages per month. In general, the messages we send provide you with information about your account. Some of the text message we send may include links to websites. To access these websites, you will need a web browser and Internet access.
+            <br></br>
+            <strong>REGULATION E DISCLOSURE.</strong>
+            <br>
+            The purpose of this disclosure is to set forth the terms governing electronic fund transfer services offered by us to you on accounts established primarily for personal, family, or household purposes for transactions which are governed by Regulation E and to make certain disclosures relative to these services which are required by law. The terms set forth in this disclosure are in addition to those set forth in this Consumer Loan Note and Arbitration Agreement
+            <br><br>
+            <strong>Fees for Electronic Transfers.</strong> The amounts of the various fees mentioned in this section which are charged by us are set forth in this Consumer Loan
+            Note and Arbitration Agreement. You agree and consent to be contacted by Lender, our agents, employees, affiliates, loan servicing companies, and third­party collectors through the use of email, telephone calls, facsimiles and/or SMS text messages to your cellular, pager, facsimile, home or work numbers, as well as any other telephone number you have provided in conjunction with this loan, including the use of automatic telephone dialing systems, autodialers, or an artificial or prerecorded voice for the purposes of providing service to you for this Loan and service and offers for related products and services. You consent to Lender’s use of your personal information to provide the services you have requested, including services that display customized content and advertising.
+            <br><br>
+            <strong>Case of Errors or Questions About your Electronic Transfers.</strong> Telephone or write us at the telephone number or address shown below as soon as you can if you think you were incorrectly charged or if you need more information about a transfer.
+            <br><br>
+            Patria, LLC<br>
+            100 Schoolhouse Canyon Road<br>
+            Santa Ysabel, CA 92070<br>
+            1­855­734­9320<br>
+            <br>
+            Customer Service Hours are: 8:00 a.m. – 3:00 p.m. (Pacific Time) Monday through Friday (excluding Holidays). For purposes of this disclosure, our business days are Monday through Friday. Holidays are not included.
+            We must hear from you no later than 60 days after we sent the first error on which the problem appeared. Tell us your name and account number. Describe the error or explain as clearly as you can why you believe it is an error or why you need more information. Tell us the dollar amount of the suspected error.
+            <br> <br>
+            <strong>Your Right with Respect to Preauthorized Payments.</strong> You have told us in advance to make regular payments out of your account. You can stop any of these payments. Here’s how: Call us at the telephone number referred to above or write us at the address indicated above in time for us to receive your request three (3) business days or more before the payment is scheduled to be made. If you call, we may also require you to put your request in writing and get it to us within 14 days after you call. We reserve the right to charge you a fee of $30 for each stop payment order you give.
+            <br> <br>
+            <strong>Privacy of Your Information.</strong> The privacy of your information is very important to us. We will treat your information as described in our Privacy Policy, which you can find by going to https://www.patria.com/privacy­policy. You can also contact us at the phone number or address above to request a paper copy.
+            <br> <br>
+            <strong>COLLECTION COSTS.</strong> If you do not repay what you owe and we send the matter to an attorney for collection, then you agree to pay reasonable attorneys’ fees, plus court costs and disbursements, regardless of whether an action is commenced and, if so, whether in the trial court, appellate court, bankruptcy court, or otherwise
+            <br> <br>
+            <strong>VERIFICATION.</strong> You authorize us to verify the information you provided to us in connection with your Loan application. You give us consent to obtain information about you from a consumer reporting agency or other sources at any time you have repayment obligations under this Loan. We reserve the right to withhold funding of this Loan, at any time prior to disbursement, to allow us to verify the information you have provided to us.
+            <br> <br>
+            <strong>CREDIT REPORTING. </strong>We may report your performance under this Agreement, including late payments, missed payments, or defaults to credit reporting agencies.
+            <br> <br>
+            <strong>RECISSION.</strong> You have the right to rescind the amount borrowed under this Agreement without incurring any fee if the amount borrowed, in full, is returned to us on or before the close of business on the business day following the day on which such sum was delivered to you.
+            <br> <br>
+            <strong>DEFAULT.</strong> You will be in Default with respect to this Agreement if: (a) you provide false or misleading information about yourself, your business or employment, or your financial condition prior to entering into this Agreement, (b) if you fail to make a payment by the due date or if your payment is returned to us for any reason, or (c) if you file bankruptcy or become a debtor under the Federal Bankruptcy Laws. Should we deem your loan in default, we may, at our option, do one or more of the following: (a) require you to immediately pay us everything you owe us; (b) withdraw money from your
+            bank account that was not available when we tried to withdraw it at an earlier time, if you have not terminated or opted out of an ACH authorization; and (c) pursue all legally available means to collect what you owe us. In the event we declare all amounts owed under this Agreement immediately due because you did not pay us, then you further authorize us and our agents to withdraw money from your bank account in the full amount due under this Agreement, if you have not terminated or opted out of an ACH authorization.
+            <br> <br>
+            <strong>ARBITRATION AGREEMENT AND WAIVER OF JURY TRIAL.</strong> Arbitration is a process in which persons with a dispute: (i) waive their rights to file a lawsuit and proceed in court and to have a jury trial to resolve their disputes; and (ii) agree, instead, to submit their disputes to a neutral third person (an “arbitrator”) for a decision. Each party to the dispute has an opportunity to present some evidence to the arbitrator. Pre­arbitration discovery may be limited. Arbitration proceedings are private and less formal than court trials. The arbitrator will issue a final and binding decision resolving the dispute, which may be enforced as a court judgment.
+            <strong>YOU ACKNOWLEDGE AND AGREE AS FOLLOWS:</strong>
+            <br>
+            1. For purposes of this Agreement, the words “dispute” and “disputes” are given the broadest possible meaning and include, without limitation (i) all claims, disputes, or controversies arising from or relating directly or indirectly to the signing of this Agreement, the validity and scope of this Agreement and any claim or attempt to set aside the Agreement, (ii) all federal or state law claims, disputes or controversies, arising from or relating directly or indirectly to this Agreement, the information you gave us before entering into the Agreement, including the Customer Application, and/or any past agreement or agreements between you and us; (iii) all counterclaims, cross­claims and third­party claims; (iv) all common law claims based upon
+            contract, tort, fraud, or other intentional torts; (v) all claims based upon a violation of any state or federal constitution, statute or regulation; (vi) all claims asserted by us against you, including claims for money damages to collect any sum we claim you owe us; (vii) all claims asserted by you individually
+            against us and/or any of our employees, agents, directors, officers, shareholders, governors, managers, members, parent company or affiliated entities (hereinafter collectively referred to as “related third parties”), including claims for money damages and/or equitable or injunctive relief; (viii) all claims asserted on your behalf by another person; (ix) all claims asserted by you as a private attorney general, as a representative and member of a class of persons, or in any other representative capacity, against us and/or related third parties (hereinafter referred to as “Representative Claims”); and/or (x) all claims arising from or relating directly or indirectly to the disclosure by us or related third parties of any non­public personal information about you.<br><br><br><br>
+            2. By entering into this Agreement: (i) YOU ARE WAIVING YOUR RIGHT TO HAVE A TRIAL BY JURY TO RESOLVE ANY DISPUTE ALLEGED AGAINST US OR RELATED THIRD PARTIES; (ii) YOU ARE WAIVING YOUR RIGHT TO HAVE A COURT, OTHER THAN A SMALL CLAIMS TRIBUNAL, RESOLVE ANY DISPUTE ALLEGED AGAINST US OR RELATED THIRD PARTIES; and (iii)YOU ARE WAIVING YOUR RIGHT TO SERVE AS A REPRESENTATIVE, A PRIVATE ATTORNEY GENERAL, OR IN ANY OTHER REPRESENTATIVE CAPACITY, AND/OR TO PARTICIPATE AS A MEMBER OF A CLASS OF CLAIMANTS, IN ANY LAWSUIT FILED AGAINST US AND/OR RELATED THIRD PARTIES. <br><br>
+            3. Except as provided in Paragraph 8 below, all disputes, including any Representative Claims against us and/or related third parties, shall be resolved by binding arbitration only on an individual basis with you. THEREFORE, THE ARBITRATOR SHALL NOT CONDUCT CLASS ARBITRATION; THAT IS, THE ARBITRATOR SHALL NOT ALLOW YOU TO SERVE AS A REPRESENTATIVE, AS A PRIVATE ATTORNEY GENERAL, OR IN ANY OTHER REPRESENTATIVE CAPACITY FOR OTHERS IN THE ARBITRATION<br><br>
+            4. Any party to a dispute, including related third parties, may send the other party written notice by certified or registered mail, return receipt requested, of their intent to arbitrate and setting forth the subject of the dispute along with the relief requested, even if a lawsuit has been filed. Regardless of who demands arbitration, you shall have the right to select any of the following arbitration organizations to administer the arbitration: the American Arbitration Association (1­800­778­7879, http://www.adr.org), or JAMS (1­800­352­5267, http://www.jamsadr.com). However, the parties may agree to select a local arbitrator who is an attorney, retired judge, or arbitrator registered and in good standing with an arbitration association and arbitrate pursuant to
+            such arbitrator’s rules. The party receiving notice of arbitration will respond in writing by certified or registered mail, return receipt requested, within twenty (20) days. If you demand arbitration, you must inform us in your demand of the arbitration organization you have selected or whether you desire to select a local arbitrator. If related third parties or we demand arbitration, you must notify us within twenty (20) days in writing by certified mail return receipt requested of your decision to select an arbitration organization or your desire to select a local arbitrator. If you fail to notify us, then we have the right to select an arbitration organization. The parties to such dispute will be governed by the laws of the Iipay Nation of Santa Ysabel and such rules and procedures used by the applicable arbitration organization applicable to consumer disputes, to the extent those rules and procedures do not contradict the express terms of this Arbitration Provision or the law of the Iipay Nation of Santa Ysabel, including the limitations on the arbitrator below. You may obtain a copy of the rules and procedures by contacting the arbitration organization listed above. <br><br>
+            5. You have the sole and unfettered right to reject arbitration as a means of resolving disputes at any time within ten (10) days following your signature on this Agreement. That is, if, after signing this arbitration provision, you choose to not to be bound by it, then you can reject arbitration by giving notice of rejection of arbitration by certified or registered mail, return receipt requested, to Lender at its address for notices specified in this Agreement, postmarked within seven days following your signature hereon. Your written notice must include your name, address, account number or social security number, the date of this Agreement, and a statement that you wish to opt out of this Arbitration Provision submitted by you in this transaction. You cannot reject arbitration after the tenth day following the date of your signature on this Agreement<br><br>
+            6. If you demand arbitration, then at your request we will advance your portion of the expenses associated with the arbitration, including the filing, administrative, hearing and arbitrator’s fees (“Arbitration Fees”). If related third parties or we demand arbitration, then at your written request we will advance your portion of the Arbitration Fees. Throughout the arbitration, each party shall bear his or her own attorneys’ fees and expenses, such as witness and expert witness fees. The arbitrator shall apply applicable substantive law consistent with the FAA and applicable statutes of limitation, and shall honor claims of privilege recognized at law. The arbitration hearing will be conducted in the county of your residence, or within 30 miles from such county, or in such other place as shall be ordered by the arbitrator, provided, however, that if such binding arbitration occur somewhere other than on Tribal land shall in no way be construed as a waiver of sovereign immunity or allow for the application of any other law other than the laws of the Iipsay Nation of Santa Ysabel. The arbitrator may decide with or without any hearing, any motion that is substantially similar to a motion to dismiss for failure to
+            state a claim or a motion for summary judgment. In conducting the arbitration, the arbitrator shall not apply any federal or state rules of civil procedure or evidence. At the timely request of any party, the arbitrator shall provide a written explanation for the award. The arbitrator’s award may be filed with any court having jurisdiction. If allowed by statute or applicable law, the arbitrator may award you statutory damages and/or your reasonable attorneys’ fees and expenses. Regardless of whether the arbitrator renders a decision or an award in your favor resolving the dispute, you will not be responsible for reimbursing us for your portion of the Arbitration Fees. <br><br>
+            7. All parties, including related third parties, shall retain the right to seek adjudication in a small claims tribunal for disputes within the scope of such tribunal’s jurisdiction. Any dispute that cannot be adjudicated within the jurisdiction of a small claims tribunal shall be resolved by binding arbitration. Any appeal of a judgment from a small claims tribunal shall be resolved by binding arbitration. <br><br>
+            8. This arbitration clause is made pursuant to a transaction involving commerce and shall be governed by the United States Federal Arbitration Act (“FAA”). If a final non­appealable judgment of a court having jurisdiction over this transaction finds for any reason that the FAA does not apply to this transaction, then our agreement to arbitrate shall be governed by the laws of the Iipay Nation of Santa Ysabel. <br><br>
+            9. This Agreement is binding upon and benefits both parties’ respective heirs, successors and assigns. The arbitration and class action waiver provisions of this Agreement continue in full force and effect, even if your obligations have been paid or discharged through bankruptcy. The arbitration and class action waiver provisions survive any termination, amendment, expiration or performance of any transaction between you and us and continues in full force and effect unless you and we otherwise agree in writing. <br><br>
+            <strong>Notices.</strong> Except as otherwise provided in the Agreement, you specifically agree that all notices required to be sent to you are effective when mailed or delivered to your last known mail or e­mail address as identified in our records. You agree that we may send or provide by electronic communication any notice required under applicable law(s), communication, disclosure amendment or replacement to the Agreement. All notices to us should be forwarded to Patria, LLC at the following postal mailing address: 100 Schoolhouse Canyon Road, Santa Ysabel, CA 92070; email address: customerservice@patria.com or faxed to 1­866­908-8392.
+            <br> <br>
+            <strong>Your Electronic Signature.</strong> By electronically signing this Agreement below, you certify that the information given in connection with this Agreement is true and correct. You authorize us to verify the information given in connection with this Agreement, and you give us consent to obtain information about
+            ou from a consumer reporting agency or other sources. You acknowledge, represent and warrant that: (a) you have read, understand, and agree to all of the terms and conditions of this Agreement, including the Arbitration Agreement and the waivers contained in the Arbitration Agreement of any rights to
+            a jury trial and any rights to participate in class proceedings, (b) this Agreement contains all of the terms of the agreement between you and us and that no representations or promises other than those contained in this Agreement have been made, (c) you specifically authorize withdrawals and deposits to and from your Bank Account as described in this Agreement, if you have elected to repay this loan via ACH debits to your Bank Account (as set forth below), (d) you are not a debtor under any proceeding in Bankruptcy and have no intention to file a petition for relief under any chapter of the United States Bankruptcy Code, (e) this Agreement was filled in before you signed it, (f) you have received a copy of our privacy policy, and (g) you have the ability to print or retain a completed copy of this Agreement. You further acknowledge that we may withhold funding of your Loan until we ensure all the information you gave us on your application is true and we decide whether you meet our requirements to receive the Loan.
+            <br> <br>
+            <strong>Governing Law.</strong> This Agreement is made and accepted in the sovereign territory of the Iipay Nation of Santa Ysabel, and shall be governed by applicable tribal law, including but not limited to the Tribal Financial Services Regulatory Act of the Iipay Nation of Santa Ysabel. You hereby agree that this governing law provision applies no matter where you reside at the time you request your loan from Patria, LLC. Patria, LLC is regulated by Iipay
+            Nation of Santa Ysabel Tribal Financial Services Regulatory Commission. You may contact the Commission by mail at 100 Schoolhouse Canyon Road, Santa Ysabel, CA 92070.<br><br>
+
+
+            <strong>Provisions Severable.</strong> Each provision of this Agreement is distinct and severable. If any provision is found invalid or unenforceable, in whole or in part, the determination will only affect that provision and will not affect the validity or enforceability of the remaining provisions of the Agreement.
+            <br><br>
+
+            <strong>Third Party Beneficiaries.</strong> The parties do not intend the benefits of this Agreement to inure to any third party, and nothing contained herein shall be construed as creating any right, claim or cause of action in favor of any such third party
+            <br><br>
+
+            <strong>Assignment.</strong> You may not assign the Agreement to any other party. We may assign the Agreement or delegate any or all of our rights and duties under the Agreement to any third party without notifying you. No delay or omission by us in exercising any rights or remedies hereunder shall impair or waive such right or remedy.
+            <br><br>
+
+            <strong>Remedies.</strong> No delay or omission by us in exercising any rights or remedies under the Agreement shall impair such right or remedy or be construed as a waiver of any such right or remedy. Any single or partial exercise of a right or remedy shall not preclude further exercise of any other right or remedy. No waiver shall be valid unless signed in writing by us.
+
+            <br><br>
+            <strong>Entire Agreement.</strong> This Agreement constitutes the entire agreement between us and supersedes all prior agreements, understandings, statements or proposals, and representations, whether written or oral. This Agreement, including the provisions of this Section, may not be modified except by written amendment signed by both parties.
+{#            {%if paymentSchedule.length == 12%}#}
+{#             <br><br><br><br><br><br><br><br><br><br><br><br>#}
+{#            {%elif paymentSchedule.length == 12%}#}
+{#                <br><br><br><br><br><br><br><br><br><br><br><br>#}
+{#            {%elif paymentSchedule.length == 16%}#}
+{#                <br><br><br><br><br><br><br><br>#}
+{#            {%elif paymentSchedule.length == 16%}#}
+{#                <br><br><br><br>#}
+{#            {%endif%}#}
+{#            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>#}
+            <br><br>
+            <strong>BY SIGNING BELOW, YOU AGREE THAT YOU HAVE CAREFULLY READ AND UNDERSTOOD ALL THE TERMS OF THIS AGREEMENT, INCLUDING WITHOUT LIMITATION THE AGREEMENT TO ARBITRATE ALL DISPUTES AND NOT TO PARTICIPATE IN CLASS ACTION, AND YOU ACCEPT ALL OF THESE TERMS.</strong>
+            <br><br>
+            <div>{{ signatureHTML.termSignature}}</div>
+            <br><br>
+            <div class="currentDate">
+                {{ currentDate | dateMinusTz("MM/DD/YYYY")  }}
+            </div>
+            <br><br><br><br>
+            <strong>ACH AUTHORIZATION</strong>
+            <br><br>
+            You authorize Lender to initiate ACH credit and debit entries to the bank account indicated below for all amounts owing in connection with this Agreement, including without limitation all principal amounts, finance charges, service fees, returned item fees and collection agency fees. This authorization shall remain in full force and effect until Lender has received a written notice of termination from you in such time and manner as to afford Lender a reasonable opportunity to act upon it. Your consent to this authorization is not a condition of Lender’s extension of credit to you.
+            <br><br>
+
+            <strong>Bank Name: 	{{ bank.accountName }} </strong> <br>
+            <strong>Transit ABA Number: 	{{ bank.routingNumber }} </strong> <br>
+            <strong>Deposit Account Number: {{ bank.accountNumber }}</strong> <br><br>
+
+        </p>
+        <p>{{iroutp}}</p>
+        <br>
+            <div>{{ signatureHTML.achDebitSignature}}</div>
+        <br><br>
+        <div class="currentDate">
+            {{ currentDate | dateMinusTz("MM/DD/YYYY")  }}
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

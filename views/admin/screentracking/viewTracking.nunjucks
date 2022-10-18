@@ -1,0 +1,494 @@
+{% extends "layout/layout.nunjucks" %}
+{% block body %}
+<section class="content-header">
+	<!-- spinner start -->
+	<div class="row" id="loaderid" style="display:none;">
+		<div class="" align="center" style="text-align:center;position:fixed;top:0;left:0;right:0;bottom:0;z-index:100;background:rgba(0,0,0,0.7);">
+			<div style="height:100%;width:100%;background:url('/images/img/ajaxloader.gif') no-repeat center;margin-top:-233px;"></div>
+		</div>
+	</div>
+	<!-- spinner end -->
+	<h1>View Incomplete Application</h1>
+	<ol class="breadcrumb">
+		<li><a href="/admin/dashboard"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+		<li><a href="/admin/incompleteApplication"><i class="fa fa fa-building"></i>Incomplete Application</a></li>
+		<li class="active">View Incomplete</li>
+	</ol>
+</section>
+<section class="content">
+	<div class="box">
+		<!-- back button -->
+		<div class="box-header with-border">
+			<span class="pull-right">
+				<a href={{backviewType}}><button type="button" class="btn btn-primary">Back</button></a>
+			</span>
+		</div>
+		<div class="box-body">
+			<!-- messages from server -->
+			<div>
+				{% if (successval)  %}
+					<div class="alert alert-success">
+						<a href="#" class="close" data-dismiss="alert">&times;</a>
+						{{successval}}
+					</div>
+					<br>
+				{% endif %}
+				{% if (errorval)  %}
+					<div class="alert alert-danger">
+						<a href="#" class="close" data-dismiss="alert">&times;</a>
+						{{errorval}}
+					</div>
+					<br>
+				{% endif %}
+				{% if (successmsg)  %}
+					<div class="alert alert-success">
+						<a href="#" class="close" data-dismiss="alert">&times;</a>
+						{{successmsg}}
+					</div>
+					<br>
+				{% endif %}
+			</div>
+			<!-- Tabs -->
+			<div id="tabs">
+				<input type="hidden" id="paymentID" name="paymentID" value="{{ paymentManagementId }}">
+				<input type="hidden" id="incompleteScreenId" name="incompleteScreenId" value="{{ screentracking.id }}">
+
+				<!-- Tab List -->
+				<ul class="nav nav-tabs">
+					<li class="active"><a data-toggle="tab" href="#userinfo">User Information</a></li>
+{#					<li><a data-toggle="tab" href="#transunioninfo">Trans Union Information</a></li>#}
+					<li><a data-toggle="tab" href="#userbankinfo" id="userbankinfotab">Bank Accounts</a></li>
+					<li><a data-toggle="tab" href="#employmentinfo" id="employmentinfotab">Employment</a></li>
+					{# <li><a data-toggle="tab" href="#references" id="referencestab">References</a></li> #}
+					{# <li><a data-toggle="tab" href="#payment" id="paymenttab">Payment Schedule</a></li> #}
+					<li><a data-toggle="tab" href="#uploaddocuments" id="uploaddoctab">Uploaded Document</a></li>
+{#					<li><a data-toggle="tab" href="#DTIoffer" id="DTIoffertab">Counter Offer</a></li>#}
+					<li><a data-toggle="tab" href="#incompletecommentsection" >Comments</a></li>
+					<li><a data-toggle="tab" href="#loagactivitysection" >Log</a></li>
+				</ul>
+
+				<!-- Tab Content -->
+				<div class="tab-content">
+
+					<!-- User Information Tab -->
+					<div id="userinfo" class="tab-pane fade in active">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							{% include "admin/screentracking/incompletetabs/userInfoTab.nunjucks" %}
+						</div>
+					</div>
+
+{#					<!-- Trans Union Information Tab -->#}
+{#					<div id="transunioninfo" class="tab-pane fade">#}
+{#						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> #}
+{#							{% include "admin/user/transunion.nunjucks"%} #}
+{#						</div>#}
+{#					</div>#}
+
+					<!-- User Bank Info -->
+					<div id="userbankinfo" class="tab-pane fade">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							{% include "admin/userbank/accounts.nunjucks" %}
+						</div>
+					</div>
+
+					<!-- User Employment Info -->
+					<div id="employmentinfo" class="tab-pane fade">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							{% include "admin/screentracking/incompletetabs/employmentTab.nunjucks" %}
+						</div>
+					</div>
+
+					<!-- User References Info -->
+					{# <div id="references" class="tab-pane fade">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							{% include "admin/screentracking/incompletetabs/referenceTab.nunjucks" %}
+						</div>
+					</div> #}
+
+					{# <!-- Payment Schedule -->
+					<div id="payment" class="tab-pane fade">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							{% include "frontend/borrowerportal/paymentscheduletabDetails" %}
+						</div>
+					</div> #}
+
+					<!--upload documents start here-->
+					<div id="uploaddocuments" class="tab-pane fade">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							{% include "admin/screentracking/incompletetabs/documentTab.nunjucks" %}
+						</div>
+					</div>
+
+{#					<!-- Counter Offer Tab Start -->#}
+{#					<div id="DTIoffer" class="tab-pane fade">#}
+{#						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">#}
+{#							{% include "admin/screentracking/changeLoanAmount.nunjucks" %}            #}
+{#						</div>#}
+{#					</div>#}
+
+					<!-- Comments Tab -->
+					<div id="incompletecommentsection" class="tab-pane fade">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							{% include "admin/screentracking/incompletetabs/commentTab.nunjucks" %}
+						</div>
+					</div>
+
+				<div id="loagactivitysection" class="tab-pane fade">
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h3>Log Activity Details</h3>
+                <br/>
+                 <div class="panel panel-default">
+                    <div class="panel-heading">Log Activity Details</div>
+                    <div class="panel-body">
+
+                      <div class="container-fluid ">
+                         <table class="table table-striped table-bordered dataTable" id="achlogactivity_table">
+                          <thead>
+                          <tr>
+                            <th style="width: 10px">#</th>
+                            <th>Log Reference</th>
+                            <th>Module Name</th>
+                            <th>Message</th>
+                            <th>Created Date</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+
+                           {% set lg = 0 %}
+                            {% for logdata in  logDetails %}
+                              {% set lg = lg+1 %}
+                              <tr>
+                                <td>{{ lg }}</td>
+                                <td>{{ logdata.logreference }}</td>
+                                <td>{{ logdata.modulename }}</td>
+                                <td>{{ logdata.logmessage }}</td>
+                                <td>{{ logdata.createdAt }}</td>
+                              </tr>
+                            {% endfor %}
+                             {% for communicationLogData in  communicationDetails %}
+                           {% set lg = lg+1 %}
+                              <tr>
+                                <td>{{ lg }}</td>
+                                <td>--</td>
+                                <td>{{ communicationLogData.subject }}</td>
+                                <td>{{ communicationLogData.logdata }}</td>
+                                <td>{{ communicationLogData.createdAt }}</td>
+                              </tr>
+                            {% endfor %}
+                          </tbody>
+                         </table>
+                       </div>
+                    </div>
+                 </div>
+               </div>
+            </div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- moveToArchive Modal -->
+	<div id="movetoarchiveModal" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-md">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header bg-primary">
+					<button type="button" class="close" data-dismiss="modal"><i class="fa fa-times-circle" aria-hidden="true"></i></button>
+					<h4 class="modal-title">Archive Confirmation</h4>
+				</div>
+				<div class="modal-body bgColorWhite">
+					<p><strong>Are you sure want to archive the application?</strong></p>
+				</div>
+				<div class="modal-footer bg-info">
+					<button type="button" data-dismiss="modal" class="btn btn-primary" id="repullconfirm" onclick="movetoarchive();">Confirm</button>
+					<span id="repull_loading" style="display:none;margin-left:5px;"><img src="/images/img/loading.gif"></span>
+					<button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- moveToUnArchive Modal -->
+	<div id="movetoUnarchiveModal" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-md">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header bg-primary">
+					<button type="button" class="close" data-dismiss="modal"><i class="fa fa-times-circle" aria-hidden="true"></i></button>
+					<h4 class="modal-title">Unarchive Confirmation</h4>
+				</div>
+				<div class="modal-body bgColorWhite">
+					<p><strong>Are you sure want to unarchive the application?</strong></p>
+				</div>
+				<div class="modal-footer bg-info">
+					<button type="button" data-dismiss="modal" class="btn btn-primary" id="repullconfirm" onclick="movetoUnarchive();">Confirm</button>
+					<button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Deny Modal -->
+	<div id="incompleteDenyModal" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-md">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header bg-primary">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Deny Confirmation</h4>
+				</div>
+				<form role="form" method="POST" enctype="multipart/form-data" action="">
+					<div class="modal-body bgColorWhite">
+						<p><strong>Are you sure want to deny this loan?</strong></p>
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th width="30%"> Eligible to reapply </th>
+									<td>
+										<div class="checkbox checkbox-primary checkbox-inline">
+											<input type="radio" id="inlineRadio1"  autocomplete="off" name="incompleteEligiblereapply" value="1"  >
+											<label for="inlineRadio1" > Yes </label>
+										</div>
+										<div class="checkbox checkbox-primary checkbox-inline">
+											<input type="radio" id="inlineRadio2" autocomplete="off" name="incompleteEligiblereapply"  value="0" checked="checked" >
+											<label for="inlineRadio2" > No </label>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>Decline</th>
+									<td>
+										<select class="form-control" id="incompleteDecline" name="incompleteDecline" required>
+											<option value='Canceled - No longer interested'>Canceled - No longer interested</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>Decline Reason</th>
+									<td>
+										<textarea class="form-control" id="incompleteDeclinereason" name="incompleteDeclinereason" required>Canceled - No longer interested</textarea>
+										<strong><span id="incompleteDeclineerromessage" class="error"></span></strong>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="modal-footer bg-info">
+						<button type="button" class="btn btn-primary" id="incompleteconfirm" onclick="incompleteDenyconfirm();">Confirm</button>
+						<span id="confirm_loading" style="display:none;margin-left:5px;"><img src="/images/img/loading.gif"></span>
+						<button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<!-- Resolve Needs Review -->
+        <div id="needsReviewResolve" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-md" style="margin-top: 15%">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" style="text-align: left"><strong>Resolve Needs Review</strong></h4>
+                    </div>
+                    <div class="modal-body" style="text-align: center; padding: 50px 15px">
+                        <p style="font-size: 1.2em"><strong>Are you sure you want to resolve this item?</strong></p>
+                    </div>
+                    <div class="modal-footer bg-info">
+                        <button type="button" class="btn btn-primary" onclick="showNeedsReviewSetting();" style="float: left">Remind me Later</button>
+                        <button type="button" id="btnResolveComment" class="btn btn-primary" onclick="resolveNeedReview()">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Need Review Remind me Later -->
+        <div id="needsReviewRemindLater" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-md" style="margin-top: 15%">
+            <form id="frmReviewLater" novalidate="novalidate">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" style="text-align: left"><strong>Defer Needs Review Item</strong></h4>
+                    </div>
+                    <div class="modal-body" style="text-align: center; padding: 30px 15px">
+                        <p style="font-size: 1.2em"><strong>Choose when you want to be reminded:</strong></p>
+                        <p>This item will reappear in the Needs Review queue.</p>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input type="date" max="9999-12-31" class="form-control valid" name="needsReviewLaterDate" id="needsReviewLaterDate" placeholder="Click to select date" aria-required="true" aria-invalid="false">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer bg-info">
+                        <button type="button" id="btnRemindLater" class="btn btn-primary" onclick="remindLaterNeedsReview()">Save</button>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+
+	{% include "admin/userbank/modals.nunjucks" %}
+</section>
+<script>
+{# reminder  #}
+
+function resolveHandler(id){
+$("#needsReviewResolve").attr('data-id', id)
+$("#needsReviewResolve").modal('show')
+}
+
+
+ function remindLaterNeedsReview() {
+            const reviewLaterDate = $("#needsReviewLaterDate").val();
+            const commentID = $("#needsReviewResolve").attr('data-id');
+            if($("#frmReviewLater").valid()) {
+                const laterTime = moment(new Date(reviewLaterDate).toISOString()).format('MM-DD-YYYY')
+                $('#btnRemindLater').attr("disabled", true);
+                $.ajax({
+                    url: "/admin/ajaxLaterComments",
+                    data: {
+                        'commentID':  commentID,
+                        'laterTime': reviewLaterDate
+                    },
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function(res) {
+                        if(res.status == 200) {
+                            $("#commentsRow" + window.rowToResolve).remove();
+                            var btn = $("#commentResolveBtn" + window.rowToResolve);
+                            btn.text("Remind Later");
+                            btn.attr("disabled", true);
+                            btn.css({ 'background-color': '#A8A8A8' });
+                            $("#needsReviewRemindLater").modal("hide");
+                            $('#btnRemindLater').attr("disabled", false);
+				                    fetchScreentrackingCommentsList($('#userId').val());
+                        }
+                        else {
+                            alert("Error, Please try again!");
+                        }
+                    }
+                })
+            }
+        }
+
+
+function showNeedsReviewSetting() {
+            $("#needsReviewResolve").modal("hide");
+            setTimeout(function() {
+                $("#needsReviewRemindLater").modal("show");
+            }, 200);
+        }
+
+        function resolveNeedReview() {
+            const commentID = $("#needsReviewResolve").attr('data-id');
+            $('#btnResolveComment').attr("disabled", true);
+            $.ajax({
+                url: '/admin/resolveAchComments',
+                data: {
+                    'commentID': commentID,
+                },
+                dataType: 'json',
+                type: 'POST',
+                success: function(res) {
+                    if(res.status==200) {
+                        $("#commentsRow" + window.rowToResolve).remove();
+                        var btn = $("#commentResolveBtn" + window.rowToResolve);
+                        btn.text("Resolved");
+                        btn.attr("disabled", true);
+                        btn.css({ 'background-color': '#A8A8A8' });
+                        $("#needsReviewResolve").modal("hide");
+                        $('#btnResolveComment').attr("disabled", false);
+                        fetchScreentrackingCommentsList($('#userId').val());
+                    }
+                    else {
+                        alert("Error: resolve comment failed. Please try again!");
+                        return false;
+                    }
+                }
+            });
+        }
+
+</script>
+<script>
+	function Validate() {
+		var docutype = document.getElementById("docutype");
+		if (docutype.value == "Others") {
+			$("#documentname").show();
+
+			if(document.getElementById("documentname").value == ""){
+				$('#documentname').addClass('error');
+				$("#updocs").attr("disabled", false);
+				return false;
+			}else{
+
+				if(document.getElementById("proofdocument").value == "") {
+					$('#documentname').removeClass('error');
+					$("#updocs").attr("disabled", false);
+				}
+				else {
+					$('#desc').submit();
+					$('#documentname').removeClass('error');
+					$("#updocs").attr("disabled", true);
+				}
+			}
+		}else{
+
+			if(document.getElementById("proofdocument").value == "") {
+				$("#updocs").attr("disabled", false);
+			}
+			else {
+				$('#desc').submit();
+				$("#docuNameCheck").hide();
+				$("#updocs").attr("disabled", true);
+			}
+		}
+	}
+</script>
+	{% if bankAccountInfoTab  %}
+		<script>
+			setTimeout(function(){
+				$('#userbankinfotab').click();
+			}, 500);
+		</script>
+	{% endif %}
+{% if (banksuccessmsg or bankerror )  %}
+	<script>
+	setTimeout(function(){
+		$('#userbankinfotab').click();
+	}, 1000);
+
+
+	</script>
+{% endif %}
+{% if (uploaddocmsg)  %}
+	<script>
+	setTimeout(function(){
+		$('#uploaddoctab').click();
+	}, 1000);
+	</script>
+{% endif %}
+{% if (changeincomemsg)  %}
+	<script>
+	setTimeout(function(){
+		$('#DTIoffertab').click();
+	}, 1000);
+	</script>
+{% endif %}
+<style>
+    .error{ border-color: red; }
+	.success {
+		color: #3c763d;
+		font-size: 14px;
+	+}
+	.existsdoc { display: none; text-align: center; color: red; }
+	.checkbox input[ type = "radio" ] {
+      	opacity: 1!important;
+    }
+</style>
+
+{% endblock %}

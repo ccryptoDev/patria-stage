@@ -1,0 +1,4 @@
+<p>
+Dear Applicant, Welcome to Patria Lending. We received your information from Loan Retriever. Good news!  You have been conditionally approved for your loan. Please visit the application portal at the link below to select your term and enter your bank account information. Should you have any questions, please contact our office at customercare@Patrialending.com.                                                                                                      Thank you, Customer Care
+    <a href="{{ completeApplicationLink }}">LINK<a>
+</p>

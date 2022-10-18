@@ -1,0 +1,61 @@
+<div id="makepayment-content-confirm" class="modal-content hide" style="display:none;">
+    <div class="modal-body bgColorWhite text-center">
+        <h3 style="margin:0 0 10px 0;padding-bottom:4px;color:#FA2225;font-family:Lato,Roboto,sans-serif;font-size:24px;font-weight:500;line-height:29px;">Confirm Payment</h3>
+        <br/>
+        <div>
+            <p style="font-family:Lato,Roboto,sans-serif;font-weight:700;font-size:15px;">PREVIEW OF REMAINING PAYMENT SCHEDULE</p>
+        </div>
+        <div id="makepayment-confirm-preview" class="text-left">
+            <div class="table-scroll table-fill" style="max-height:409px;">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr class="modal-table-head tr-modal">
+                        <th class="th-modal" width="20%">DATE</th>
+                        <th class="th-modal" width="18%">BALANCE</th>
+                        <th class="th-modal" width="18%">PAYMENT</th>
+                        <th class="th-modal" width="18%">INTEREST</th>
+                        <th class="th-modal" width="18%">PRINCIPAL</th>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered" style="margin:0;font-family:Lato,Roboto,sans-serif;font-weight:500;">
+                    <tbody>
+                    {% set today = moment().startOf( "day" ).toDate() %}
+                    {% set i = 0 %}
+                    {% for row in previewPaymentSchedule %}
+                        {% set scheduleDate = moment( row.date ).startOf( "day" ).toDate() %}
+{#                        {% if( scheduleDate > today or (moment( scheduleDate ).isSame( today, "day" ) and (row.initiator == "makepayment" or totalPastDueAmount <= 0)))  %}#}
+                        {% if ((scheduleDate > today or moment( scheduleDate ).isSame( today, "day" )) and not row.dontShowPaidForDisplay) or (newScheduleItemIndex === loop.index0 and (row.initiator == "makepayment" or row.isAmendPayment)) %}
+{#                            <tr class="tr-modal {{ 'highlight' if( (row.initiator == 'makepayment' or row.isAmendPayment) and ( moment( scheduleDate ).isSame( today, 'day' ) or moment( scheduleDate ).isAfter( today ) ) ) }} {{ "replaced-item" if row.status === "REPLACED" else "" }}">#}
+                            <tr class="tr-modal {{ 'highlight' if newScheduleItemIndex === loop.index0 }}">
+                                <td class="td-modal" width="20%">{{ moment( row.date ).format( "MMM. D, YYYY" ) }}</td>
+                                {% if ((row.initiator === "makepayment" or row.isAmendPayment) and newScheduleItemIndex === loop.index0) %}
+                                    <td class="td-modal" width="18%">Payment</td>
+                                {% else %}
+                                    <td class="td-modal" width="18%">{{ row.startBalanceAmount | $format }}</td>
+                                {% endif %}
+
+                                <td class="td-modal" width="18%">{{ row.amount | $format }}</td>
+                                <td class="td-modal" width="18%">{{ row.interestAmount | $format }}</td>
+                                <td class="td-modal" width="18%">{{ row.principalAmount | $format }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br/>
+        {#				<div style="font-size:16px;">#}
+        {#					Saving <strong>{{ preview.interestSavings | $format }}</strong> (fix me) in interest.#}
+        {#				</div>#}
+        {#				<br/>#}
+    </div>
+    <div class="modal-footer bg-info">
+        <button type="button" id="makepayment-confirm-cancel" class="btn btn-secondary">Back</button>
+        <button type="button" id="makepayment-confirm-submit" class="btn btn-primary btn-confirm" style="position:relative;height:40px;">
+            {{ 'Schedule Payment' if( moment( paymentDate ).startOf( "day" ).toDate() > moment().startOf( "day" ).toDate() ) else 'Submit Payment' }}
+            <i id="makepayment-confirm-submit-spin" class="fa fa-spinner fa-spin hide"></i>
+        </button>
+    </div>
+</div>

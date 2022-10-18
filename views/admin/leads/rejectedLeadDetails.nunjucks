@@ -1,0 +1,105 @@
+{% extends "layout/layout.nunjucks" %}
+{% block body %}
+<section class="content-header">
+  <!-- spinner start -->
+  <div class="row" id="loaderid" style="display:none;">
+    <div class="" align="center" style="text-align:center;position:fixed;top:0;left:0;right:0;bottom:0;z-index:100;background:rgba(0,0,0,0.7);">
+      <!-- pre id="plaidresponse"><img src="/images/img/ajaxloader.gif"></pre -->
+      <div style="height:100%;width:100%;background:url('/images/img/ajaxloader.gif') no-repeat center;margin-top:-233px;"></div>
+    </div>
+  </div>
+  <!-- spinner end -->
+  <h1>View Leads</h1>
+  <ol class="breadcrumb">
+    <li><a href="/admin/rejectedLeads"><i class="fa fa fa-building"></i>Declined Leads</a></li>
+    <li class="active">View Declined Lead Details</li>
+  </ol>
+</section>
+<section class="content">
+  <div class="box">
+    <div class="box-header with-border">
+      <span class="pull-right">
+		<a href="/admin/rejectedLeads">
+      		<button type="button" class="btn btn-primary">Back</button>
+      	</a>
+	  </span>
+    </div>
+
+    <div class="box-body">
+		<div id="alerts-box"></div>
+		{% if (successval)  %}
+			<div class="alert alert-success">
+				<a href="#" class="close" data-dismiss="alert">&times;</a>
+				{{successval}}
+			</div>
+			<br>
+	   {% endif %}
+	    {% if (errorval)  %}
+             <div class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+              {{errorval}}
+             </div>
+             <br>
+        {% endif %}
+        {% if (successmsg)  %}
+             <div class="alert alert-success">
+                 <a href="#" class="close" data-dismiss="alert">&times;</a>
+              {{successmsg}}
+            </div>
+            <br>
+         {% endif %}
+      <div id="tabs">
+	     <input type="hidden" id="paymentID" name="paymentID" value="{{ paymentManagementId }}">
+	     <input type="hidden" id="incompleteScreenId" name="incompleteScreenId" value="{{ screentracking.id }}">
+
+        <ul class="nav nav-tabs">
+          {% if req.user.rolename =='System Admin' or req.user.rolename =='Regional Admin' or req.user.rolename =='District Admin' %}
+			{% if sails.config.creditBureau.vendor == "EquifaxInsight" %}
+			<li class="active"><a data-toggle="tab" href="#equifaxinfo"><i class="fa fa-id-card-o" aria-hidden="true"></i>Credit Information</a></li>
+			{% elif sails.config.creditBureau.vendor == "TransUnion" %}
+			<li><a data-toggle="tab" href="#transunioninfo"><i class="fa fa-id-card-o" aria-hidden="true"></i>Credit Information</a></li>
+			{% endif %}
+          {% endif %}
+          {#<li class="active"><a data-toggle="tab" href="#userinfo"><i class="fa fa-user-circle-o" aria-hidden="true"></i>User Information</a></li>#}
+        </ul>
+
+
+        <div class="tab-content">
+
+
+
+			<!-- Underwriting Tab Start -->
+			{% if sails.config.creditBureau.vendor == "EquifaxInsight" %}
+			<div id="equifaxinfo" class="tab-pane fade in active">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					{% include "admin/user/equifax.nunjucks"%}
+				</div>
+			</div>
+			{% elif sails.config.creditBureau.vendor == "TransUnion" %}
+			<div id="transunioninfo" class="tab-pane fade in active">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					{% include "admin/user/transunion.nunjucks"%}
+				</div>
+			</div>
+			{% endif %}
+			<!-- Underwriting Tab Ends Here -->
+
+			{#
+			<!-- User Info Tab Start -->
+			<div id="userinfo" class="tab-pane fade in active">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+				</div>
+			</div>
+			<!-- User Info Tab End -->
+			#}
+
+				</div> {# tab-content #}
+        	</div> {# tabs #}
+      	</div> {# box-body #}
+	</div> {# box #}
+
+
+</section>
+
+{% endblock %}

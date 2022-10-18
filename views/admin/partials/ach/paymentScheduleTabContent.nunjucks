@@ -1,0 +1,785 @@
+<h3>Payment Information{% if paymentmanagementdata.isInLoanModification %}<span>&nbsp;&nbsp;-&nbsp;&nbsp;</span><span style="font-weight: bold;color:#f39c12;"><i class='fa fa-exclamation-triangle' aria-hidden='true' style="margin-right: 5px;" ></i>Loan Modified</span>
+    {% endif %}</h3>
+{% if paymentmanagementdata.disableAutoAch == true %}
+    <p class="error">WARNING! Automatic ACH Processing has been disabled for this loan!</p>
+{% endif %}
+<br/>
+{% if paymentmanagementdata.screentracking.signChangeScheduleAuthorization %}
+    <div style="color: red; font-size:16px; font-weight: bold"><i class='fa fa-exclamation-triangle' aria-hidden='true' style="margin-right: 5px;" ></i>Re-sign of contract is needed!</div>
+{% endif %}
+<div class="table-responsive">
+ <input type="hidden" id="paymentId" name="paymentId" value="{{paymentmanagementdata.id}}">
+    <table class="table table-bordered">
+        <tbody>
+        {% if paymentmanagementdata.status === "ORIGINATION" or paymentmanagementdata.status === "PENDING" %}
+        <tr>
+            <th></th>
+            <td>
+                <button  class="btn btn-primary" id="btnEditLoanAmountAndTerm" data-toggle="modal" data-target="#editLoanDetailsModal">Edit Loan</button>
+            </td>
+        </tr>
+        {% endif %}
+        <tr>
+            <th>Loan Start Date</th>
+            <td>
+                {% if paymentmanagementdata.loanSetdate %}
+                    <strong>{{ paymentmanagementdata.loanSetdate | dateMinusTz('MMMM D, YYYY') }}</strong>
+                {% else %}
+                    --
+                {% endif %}
+            </td>
+        </tr>
+
+        <tr>
+            <th>Loan Amount</th>
+            <td>
+                {% if paymentmanagementdata.isInLoanModification %}
+                    {{ paymentmanagementdata.payOffAmount | $format(true,2) }}
+                {% else %}
+                    {{paymentmanagementdata.screentracking.requestedLoanAmount | $format(true,2)}}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Remaining Balance</th>
+            <td>
+                <span style="margin-right: 30px;">{{ paymentLedger.principalPayoff | $format(true,2) }}</span>
+                            {% if  req.session.rolename == "Admin" and (paymentmanagementdata.status === "ACTIVE" and not paymentmanagementdata.screentracking.isRejectedContract) and (not paymentmanagementdata.screentracking.moveToArchive or paymentmanagementdata.screentracking.moveToArchive === 0) and not paymentmanagementdata.screentracking.signChangeScheduleAuthorization  %}
+                                <button type="button" class="btn btn-primary" id="btnWaiveEntireLoan" >Waive Loan</button>
+                            {% endif %}
+            </td>
+        </tr>
+
+        {% if paymentmanagementdata.isInLoanModification %}
+            <tr>
+                <th>Modified Principal Amount</th>
+                <td>
+                    {% if paymentmanagementdata.modifiedBeginningPrincipal %}
+                    {{ paymentmanagementdata.modifiedBeginningPrincipal | $format(true,2)}}
+                    {% else %}
+                    --
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Modified Interest Amount</th>
+                <td>
+                    {% if paymentmanagementdata.modifiedInterestAmount or paymentmanagementdata.modifiedInterestAmount == 0 %}
+                    {{ paymentmanagementdata.modifiedInterestAmount | $format(true,2)}}&nbsp;&nbsp;{% if paymentmanagementdata.excludeInterest %}(Excluded){% endif %}
+                    {% else %}
+                    --
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Accrued Interest</th>
+                <td>
+                    {% if paymentmanagementdata.accruedInterest or paymentmanagementdata.accruedInterest == 0 %}
+                    {{ paymentmanagementdata.accruedInterest | $format(true,2)}}&nbsp;&nbsp;{% if paymentmanagementdata.forgiveAccruedInterest %}(Forgiven){% endif %}
+                    {% else %}
+                    --
+                    {% endif %}
+                </td>
+            </tr>
+                <tr>
+                    <th>Loan Modified Date</th>
+                    <td>
+                        {% if paymentmanagementdata.lastLoanModificationCreatedDate  %}
+                            {{ paymentmanagementdata.lastLoanModificationCreatedDate | date('MMMM D, YYYY')}}
+                        {% else %}
+                        --
+                        {% endif %}
+                    </td>
+                </tr>
+            <tr>
+                <th>Loan Modified By</th>
+                <td>
+                    {% if paymentmanagementdata.lastLoanModificationCreatedBy and paymentmanagementdata.lastLoanModificationCreatedBy.email  %}
+                        {{ paymentmanagementdata.lastLoanModificationCreatedBy.email }}
+                    {% else %}
+                        --
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Loan Modified Entered Comment</th>
+                <td>
+                    {% if paymentmanagementdata.loanModificationComment  %}
+                        {{ paymentmanagementdata.loanModificationComment  }}
+                    {% else %}
+                        --
+                    {% endif %}
+                </td>
+            </tr>
+            {% endif %}
+
+        <tr>
+            <th>APR:</th>
+            <td>
+                {% if paymentLedger.estimatedApr %}
+                    {{ (paymentLedger.estimatedApr * 100) | $format(false,2)}}%
+                {% else %}
+                    --
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Loan Term</th>
+            <td>
+                {{ paymentLedger.term }}
+            </td>
+        </tr>
+        <tr>
+            <th>Payment Frequency</th>
+            <td>
+                {% if periodicityTextData and paymentmanagementdata.paymentFrequency and paymentmanagementdata.paymentFrequency in periodicityTextData %}
+                    {{periodicityTextData[ paymentmanagementdata.paymentFrequency]}}
+                {% else %}
+                    --
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Loan Status</th>
+            <td>
+                {{paymentmanagementdata.status}}
+            </td>
+        </tr>
+        <tr>
+            <th>Maturity Date</th>
+            <td>
+                {% if paymentmanagementdata.loanSetdatematurityDate %}
+                    <strong>{{ paymentmanagementdata.maturityDate | dateMinusTz('MMMM D, YYYY') }}</strong>
+                {% else %}
+                    --
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Next Payment Schedule Date</th>
+            <td>
+                {% if paymentmanagementdata.nextPaymentSchedule and paymentmanagementdata.status != "DENIED" %}
+                    <strong>{{ paymentmanagementdata.nextPaymentSchedule | dateMinusTz('MMMM D, YYYY') }}</strong>
+                {% else %}
+                    --
+                {% endif %}
+            </td>
+        </tr>
+
+        <tr>
+            <th style="vertical-align: middle;">Funding Payment Type</th>
+            <td>
+                {% if paymentmanagementdata.status === "PENDING" or paymentmanagementdata.status === "ORIGINATION" %}
+                    {% include "admin/partials/ach/fundingPaymentTypeTemplate.nunjucks" %}
+                {% else %}
+                    {{  paymentmanagementdata.fundingPaymentType }}
+                {% endif %}
+            </td>
+        </tr>
+{#     {% if paymentmanagementdata.paymentSchedule and paymentmanagementdata.paymentSchedule.length > 0%}#}
+{#        <tr>#}
+{#            <th>Estimated Total Fee Amount</th>#}
+{#            <td>#}
+{#                {{ paymentmanagementdata.totalPaymentsFeeChargeAmount | $format(true,2) }}#}
+{#            </td>#}
+{#        </tr>#}
+{#         <tr>#}
+{#             <th>Estimated Total Principal Amount</th>#}
+{#             <td>#}
+{#                 {{ paymentmanagementdata.totalPaymentsPrincipalAmount | $format(true,2) }}#}
+{#             </td>#}
+{#         </tr>#}
+{#         <tr>#}
+{#             <th>Estimated Total Amount</th>#}
+{#             <td>#}
+{#                 {{ paymentmanagementdata.totalPaymentsFinancedAmount | $format(true,2) }}#}
+{#             </td>#}
+{#         </tr>#}
+{#        {% endif %}#}
+
+
+        {% if transactionStatus!='' %}
+            <tr>
+                <th>Transaction Status</th>
+                <td>
+                    {{ transactionStatus }}
+                </td>
+            </tr>
+        {% endif %}
+
+
+
+
+        </tbody>
+    </table>
+</div>
+
+{% if paymentmanagementdata.achstatus !=2 %}
+    <div class="pay-schedule-info-header-container" style="margin-top:20px;">
+        <h3>Payment Schedule Information </h3>
+        <div class="payment-schedule-actions" style="float: right;margin-top: 10px;">
+            {% if paymentLedger.principalPayoff > 0 %}
+                {% if paymentmanagementdata.status in ["ACTIVE"] and not paymentmanagementdata.screentracking.signChangeScheduleAuthorization %}
+                    {% if req.session.rolename == "Admin" %}
+                    <input type="button" class="btn btn-primary amend" value="Amend Payment" id="make-amend-payment-btn-showModal"/>
+                        {% endif %}
+                    <input type="button" class="btn btn-primary defer" value="Defer Payment" id="btnDeferPaymentSchedule"/>
+                    {% if req.session.rolename == "Admin" %}
+                    <input type="button" class="btn btn-primary waive" value="Waive Payment" id="btnWaivePaymentSchedule"/>
+                        {% endif %}
+                {% endif %}
+
+                {% if (paymentmanagementdata.status in ["ACTIVE", "PENDING", "ACTIVE", "ORIGINATION"] and req.session.rolename == "Admin") or (paymentmanagementdata.status in ["ORIGINATION"] and req.session.rolename == "Rep") %}
+                    <input type="button" class="btn btn-primary" value="Change Schedule" id="btnChangeSchedule"/>
+                {% endif %}
+
+                {% if paymentmanagementdata.status in ["ACTIVE"]  and not paymentmanagementdata.screentracking.signChangeScheduleAuthorization%}
+                    <input type="button" class="btn btn-primary" value="Make Payment" id="makepayment-btn-showModal" />
+                {% endif %}
+                {% if not paymentmanagementdata.isInBankruptcy and req.session.rolename == "Admin" %}
+                    <input type="button" class="btn btn-primary" value="Bankruptcy" id="btnMarkPaymentBankruptcy" style="margin-right: 5px;"/>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <div class="table-responsive">
+        <table class="table table-bordered pay-information-smaller-details">
+            <thead>
+            <tr>
+                <th style="width: 10px">#</th>
+                <th>Schedule Date</th>
+                <th>Payment Type</th>
+                <th>Payment Amount</th>
+                <th>Going to Interest</th>
+                <th>Going to Principal</th>
+                <th>Start Principal Balance</th>
+                <th>End Principal Balance</th>
+                <th>Status</th>
+                <th>Period Interest</th>
+                <th>Applied Interest</th>
+                <th>Applied Principal</th>
+                <th>Applied Remaining Interest</th>
+                <th>Remaining Interest</th>
+            </tr>
+            </thead>
+            <tbody id="paymentScheduleTable">
+            {% set p = 0 %}
+            {% for paymentSchedule in  paymentmanagementdata.paymentSchedule %}
+                {% if not paymentSchedule.dontShowPaidForDisplay %}
+{#                    paymentSchedule.status != "DEFERRED" and paymentSchedule.status != "WAIVED" and not paymentSchedule.isAmendPayment and paymentSchedule.initiator === "automatic" %}#}
+                    {% set p = p+1 %}
+                    <tr class="{% if paymentSchedule.isBalloonPayment%}pay-schedule-is-balloon{% endif %}{% if paymentSchedule.status === "Replaced" %} pay-schedule-item-replaced{% endif %}{% if paymentSchedule.firstPaymentActionEligible %} is-eligible-for-action{% endif %}">
+                        <td class="count-replaced">
+                            <div class="hiddenActualScheduleIndex" style="display: none">
+                                {{loop.index0}}
+                            </div>
+                            {{ p }}
+                        </td>
+                        <td class="schedule-item-date">{{ paymentSchedule.date | dateMinusTz("MMM DD, YYYY")}} </td>
+                        <td>{% if paymentSchedule.initiator != 'makepayment' and not paymentSchedule.isAmendPayment %}Scheduled Payment{% elif paymentSchedule.isAmendPayment %}Amend Payment{% else %}Manual Payment{% endif %}</td>
+                        <td class="schedule-item-amount">{{ paymentSchedule.amount }} </td>
+                        <td>{{ paymentSchedule.interestAmount | $format(false,2) }}</td>
+                        <td>{{ paymentSchedule.principalAmount | $format(false,2) }}</td>
+                        <td>{{ paymentSchedule.startBalanceAmount | $format(false,2) }}</td>
+                        <td>{{ paymentSchedule.endBalanceAfterPayment | $format(false,2) }}</td>
+                        <td>{% if paymentSchedule.status == 'CLOSED' %} Revoked {% else %} {{ paymentSchedule.statusForDisplay }} {% endif %}  </td>
+                        <td>{{ paymentSchedule.chargedAccruedInterest | $format(false,2) }}</td>
+                        <td>{{ paymentSchedule.appliedAccruedInterest | $format(false,2) }}</td>
+                        <td>{{ paymentSchedule.appliedScheduledPrincipal | $format(false,2) }}</td>
+                        <td>{{ paymentSchedule.appliedRemainingInterest | $format(false,2) }}</td>
+                        <td>{{ paymentSchedule.remainingInterest | $format(false,2) }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <br/>
+
+    {% include "admin/partials/ach/paymentSchedulePaymentTransactions.nunjucks" %}
+
+    {% include "collections/partials/collectionsLoanModificationHistory.nunjucks" %}
+{% endif %}
+
+<div id="changePaymentScheduleModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <form role="form" id="frChangePaymentSchedule" method="POST">
+            <input class="" type="hidden" id="paymentSchedulePayID" name="paymentSchedulePayID" value="{{ paymentmanagementdata.id }}">
+            <!-- Modal content-->
+            <div class="modal-content" style="float: left;">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">
+                            Change Schedule
+                    </h4>
+                </div>
+                <div class="modal-body bgColorWhite" style="float: left;width: 100%;">
+                    {% include "admin/partials/ach/paymentScheduleCalendarModal.nunjucks" %}
+                </div>
+                <br>
+                <div class="modal-footer bg-info" style="float: left;width: 100%;">
+                    <input type="button"  class="btn btn-primary btnPaymentScheduleChange" value="Confirm" id="btnConfirmPaymentScheduleChange" >
+                    <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="paymentActionModal" tabindex="-1" role="dialog" aria-labelledby="paymentActionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content" style="float: left;">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Schedule Payment Action</h4>
+            </div>
+            <div class="modal-body bgColorWhite" style="float: left;width: 100%;">
+                <input type="hidden" class="paymentScheduleIndex" name="paymentScheduleIndex" value="">
+                <input type="hidden" class="paymentActionUrl" name="paymentActionUrl" value="">
+                <div class="waive-content" style="display: none;">
+                    <div style="font-size: 16px;font-weight: bold;margin-bottom: 10px;">Are you sure you want to waive this this payment?</div>
+                    <div style="margin-bottom: 10px;"><i>Note: This will remove the payment. It will be marked as if it was paid with a waive status.</i></div>
+                </div>
+                <div class="defer-content" style="display: none;">
+                    <div style="font-size: 16px;font-weight: bold;margin-bottom: 10px;">Are you sure you want to defer this this payment?</div>
+                    <div style="margin-bottom: 10px;"><i>Note: This will remove the payment and then add it to the last schedule payment.</i></div>
+                </div>
+                <div class="not-eligible-text" style="display: none;">
+                    <div style="font-size: 16px;font-weight: bold;margin-bottom: 10px;">There is no eligible schedule payments for this action.</div>
+                </div>
+                <div class="not-eligible-content" style="font-size: 16px">
+                    First eligible payment:
+                </div>
+                <div class="flex-box-table-col schedule-item-data not-eligible-content" style="margin: 0 auto;width: 50%;">
+                    <div class="flex-box-item flex-box-table-row">
+                        <div class="flex-box-item header-item">
+                            <span>Date:</span>
+                        </div>
+                        <div class="flex-box-item value-item">
+                            <span class="payment-item-date"></span>
+                        </div>
+                    </div>
+                    <div class="flex-box-item flex-box-table-row">
+                        <div class="flex-box-item header-item">
+                            <span>Amount:</span>
+                        </div>
+                        <div class="flex-box-item value-item">
+                            <span class="payment-item-amount"></span>
+                        </div>
+                    </div>
+                </div>
+                <label class="error" id="paymentActionModalError" style="display: none"></label>
+            </div>
+            <div class="modal-footer bg-info" style="float: left;width: 100%;">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btnPaymentActionConfirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="waiveEntireLoanModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        {#        <form role="form" id="frChangePaymenSchedule" method="POST" action="">#}
+        <input class="" type="hidden" id="paymentId" name="paymentId" value="{{ paymentmanagementdata.id }}">
+        <!-- Modal content-->
+        <div class="modal-content" style="float: left;">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">
+                   Waive Loan
+                </h4>
+            </div>
+            <div class="modal-body bgColorWhite" style="float: left;width: 100%;">
+                <div>
+                    <div style="font-size: 16px;font-weight: bold;margin-bottom: 10px;color:#f39c12;"><i class='fa fa-exclamation-triangle' aria-hidden='true' style="margin-right: 5px;" ></i>You are about to waive this loan.</div>
+                    <div style="font-size: 16px;font-weight: bold;margin-bottom: 10px;">The remaining payments will be marked as waive and the loan will move to completed. Are you sure you want to waive?</div>
+                </div>
+                <div style="font-size: 16px">
+                    Being Waived:
+                </div>
+                <div class="flex-box-table-col schedule-item-data not-eligible-content" style="margin: 0 auto;width: 70%;">
+                    <div class="flex-box-item flex-box-table-row">
+                        <div class="flex-box-item header-item">
+                            <span>Amount:</span>
+                        </div>
+{#                        ledger.totalInterestLeftToPay = accruedFutureInterestLeft;#}
+{#                        ledger.totalPrincipalLeftToPay = futurePrincipalLeft;#}
+                        <div class="flex-box-item value-item">
+                            <span>{{ paymentLedger.totalLeftToPay | $format }}</span>
+                        </div>
+                    </div>
+                    <div class="flex-box-item flex-box-table-row">
+                        <div class="flex-box-item header-item">
+                            <span>Interest:</span>
+                        </div>
+                        <div class="flex-box-item value-item">
+                            <span>{{ paymentLedger.totalInterestLeftToPay | $format }}</span>
+                        </div>
+                    </div>
+                    <div class="flex-box-item flex-box-table-row">
+                        <div class="flex-box-item header-item">
+                            <span>Principal:</span>
+                        </div>
+                        <div class="flex-box-item value-item">
+                            <span>{{ paymentLedger.totalPrincipalLeftToPay | $format }}</span>
+                        </div>
+                    </div>
+                </div>
+                <label class="error" id="waiveEntireLoanModalError" style="display: none;margin-top: 20px;"></label>
+            </div>
+            <br>
+            <div class="modal-footer bg-info" style="float: left;width: 100%;">
+                <input type="button"  class="btn btn-primary" value="Confirm" id="btnConfirmWaiveEntireLoan" >
+                <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+            </div>
+        </div>
+        {#        </form>#}
+    </div>
+</div>
+<div id="editLoanDetailsModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Loan Amount or Term</h4>
+            </div>
+            <div class="modal-body bgColorWhite">
+                <form id="frmEditLoanModalForm">
+                   <div class="flex-box-table-col">
+                       <div class="flex-box-table-row">
+                           <div class="flex-box-item header-item">
+                               Loan Amount:
+                           </div>
+                           <div class="flex-box-item value-item">
+                                <input type="text" id="txtNewLoanAmount" name="txtNewLoanAmount" value="{{ paymentmanagementdata.screentracking.requestedLoanAmount }}"/>
+{#                                <label id="txtNewLoanAmount-error" class="error" style="display: none;"></label>#}
+                           </div>
+                       </div>
+                   </div>
+                    <div class="flex-box-table-col">
+                        <div class="flex-box-table-row">
+                            <div class="flex-box-item header-item">
+                                Term:
+                            </div>
+                            <div class="flex-box-item value-item">
+                                <input type="text" id="txtNewLoanTerm" name="txtNewLoanTerm" value="{{ paymentmanagementdata.screentracking.offerdata[0].term }}"/>
+                                {#                                <label id="txtNewLoanAmount-error" class="error" style="display: none;"></label>#}
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div style="margin-top: 10px;">
+                    <label class="error" id="lblEditLoanDetailsError" style="display: none"></label>
+                </div>
+            </div>
+
+            <div class="modal-footer bg-info">
+                <button type="button" id="btnSubmitLoanEditDetails" class="btn btn-primary">Modify</button>
+                <button type="button" id="btnCancelLoanEditDetails" class="btn btn-primary">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<style type="text/css">
+    .bodyModalDeleteSchedule {
+        text-align: center;
+    }
+    .pay-information-smaller-details .pay-schedule-item-replaced td {
+        text-decoration: line-through;
+    }
+    .pay-information-smaller-details .pay-schedule-is-balloon td {
+        color: blue;
+    }
+    .floating-button {
+        float: right;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+    .pay-schedule-info-header-container h3 {
+        display: inline-block;
+    }
+    .pay-schedule-info-header-container {
+
+    }
+
+    @media (max-width: 520px) {
+        .floating-button {
+            float: unset;
+        }
+        .pay-schedule-info-header-container h3 {
+            display: block;
+        }
+    }
+
+    .transformCase {
+        text-transform: lowercase;
+    }
+    .transformCase::first-letter {
+        text-transform: capitalize;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function() {
+      $("#btnCancelLoanEditDetails").on("click", function(e) {
+        e.preventDefault();
+        $("#editLoanDetailsModal").modal("hide");
+        $("#frmEditLoanModalForm #txtNewLoanAmount").removeClass("error").val("{{ paymentmanagementdata.screentracking.requestedLoanAmount }}");
+        $("#frmEditLoanModalForm label.error").css("display", "none");
+      });
+      $("#btnSubmitLoanEditDetails").on("click", function(e) {
+            e.preventDefault();
+        togglePaymentScheduleChangeErrors("#editLoanDetailsModal #lblEditLoanDetailsError");
+            if($("#frmEditLoanModalForm").valid()) {
+                ajaxPost("/payment/ajaxChangeLoanDetails",{paymentId: "{{ paymentmanagementdata.id }}", term: $("#txtNewLoanTerm").val(), requestedLoanAmount: $("#txtNewLoanAmount").val()}).then(function(results) {
+                    window.location.reload();
+                }, function(xhr) {
+                  togglePaymentScheduleChangeErrors("#editLoanDetailsModal #lblEditLoanDetailsError", xhr.responseJSON && !!xhr.responseJSON.message? xhr.responseJSON.message: "There was an unknown error trying to edit loan details.");
+                });
+            }
+      });
+      $.validator.addMethod("isValidFloatNumber", function(value, element) {
+        if(!value) {
+          return false;
+        }
+        try{
+          return !isNaN(Number(value));
+        }catch(exc) {
+          return false;
+        }
+      });
+      $.validator.addMethod("isValidIntegerNumber", function(value, element) {
+        if(!value) {
+          return false;
+        }
+        try{
+          if(!isNaN(Number(value))){
+            return !value.startsWith("0") &&  value === value.replace( /[^0-9]/g, "") && parseInt(value) > 0
+          }
+            return false;
+        }catch(exc) {
+          return false;
+        }
+      });
+        const validLoanAmountNumberMessage = "Loan Amount must be a valid number between {{ sails.config.loanDetails.minimumRequestedLoanAmount | $format }} and {{ sails.config.loanDetails.maximumRequestedLoanAmount | $format }}.";
+        const validTermNumberMessage = "Term must be a valid number greater than 0";
+      $("#frmEditLoanModalForm").validate({
+        rules: {
+          "txtNewLoanAmount": { required: true,
+            max: {{ sails.config.loanDetails.maximumRequestedLoanAmount }},
+            min: {{ sails.config.loanDetails.minimumRequestedLoanAmount }},
+            isValidFloatNumber:true},
+          "txtNewLoanTerm": { required: true, isValidIntegerNumber:true},
+        },
+        messages: {
+          "txtNewLoanAmount": {
+            required: "Loan Amount is required.",
+            isValidFloatNumber: validLoanAmountNumberMessage,
+            max: validLoanAmountNumberMessage,
+            min:validLoanAmountNumberMessage,
+          },
+          "txtNewLoanTerm": {
+            required: "Term is required.",
+            isValidIntegerNumber: validTermNumberMessage
+          }
+        },
+        errorPlacement: function( err, el ) {
+          var errId = err.attr( "id" );
+          var errEl = $( "#" + errId );
+          if( errEl.length === 1 ) {
+            errEl.html( err.html() );
+          } else {
+            err.appendTo( el.parent() );
+          }
+        },
+        unhighlight: function( el ) {
+          var $el = $( "#" + $(el).attr( "id" ) + "-error" );
+          $(el).removeClass("error");
+          if( $el.length === 1 ) {
+            $el.html( "" );
+          }
+        }
+    });
+    	$("#btnChangeSchedule").on("click", function(e) {
+    		e.preventDefault();
+
+    		//determine origin date
+
+            const pmStatus = "{{ paymentmanagementdata.status }}"
+            if(["ORIGINATION", "PENDING"].indexOf(pmStatus) >= 0) {
+                const selectedPaymentType = $("#frmEditFundingPaymentType input.rdbMethodOfFunding:checked").val();
+                const determineStartObj = determineOriginDateToChange(selectedPaymentType);
+                setupCalendarModal("frChangePaymentSchedule",determineStartObj.originateDate,determineStartObj.firstPaymentDateToUse);
+            }
+
+            $("#changePaymentScheduleModal").modal("show");
+        });
+        $("#btnConfirmPaymentScheduleChange").on("click", function(e) {
+            e.preventDefault();
+                e.preventDefault();
+                const newOriginateDate = $("#frChangePaymentSchedule #hiddenOriginateDate").val();
+                savePaymentScheduleChanges("#frChangePaymentSchedule", newOriginateDate);
+        });
+
+    	$("#btnMarkPaymentBankruptcy").on("click", function(e) {
+            e.preventDefault();
+            toggleBankruptcyModal(true);
+        });
+
+        $("#btnPaymentActionConfirm").on("click", function(e) {
+            e.preventDefault();
+            togglePaymentScheduleChangeErrors("#paymentActionModalError");
+                sendPaymentAction()
+        });
+
+        $("#btnAmendPaymentSchedule, #btnDeferPaymentSchedule, #btnWaivePaymentSchedule").on("click", function(e) {
+            e.preventDefault();
+            togglePaymentScheduleChangeErrors("#paymentActionModalError");
+            let actionType = null;
+            if($(this).hasClass("amend")) {
+                actionType = "amend";
+            }else if($(this).hasClass("waive")) {
+                actionType = "waive";
+            }else {
+                actionType = "defer"
+            }
+
+            togglePaymentActionModalChanges(actionType);
+            const data = getSelectedScheduleItem();
+            if(data) {
+                updateModalData("#paymentActionModal", data);
+            }else {
+                togglePaymentActionModalChanges(null);
+            }
+            $("#paymentActionModal").modal("show");
+        });
+        $("#btnWaiveEntireLoan").on("click", function(e) {
+            e.preventDefault();
+            $("#waiveEntireLoanModal").modal("show");
+        });
+        $("#btnConfirmWaiveEntireLoan").on("click", function(e) {
+            e.preventDefault();
+            togglePaymentScheduleChangeErrors("#waiveEntireLoanModalError");
+            const paymentId = "{{ paymentmanagementdata.id if paymentmanagementdata and paymentmanagementdata.id else "" }}";
+            if(!paymentId) {
+                togglePaymentScheduleChangeErrors("#waiveEntireLoanModalError", "The loan id was not found. It is needed to waive.");
+            }else {
+                ajaxPost("/payment/waiveEntireLoan", {paymentId: paymentId}).then(function(successResults) {
+                    if(successResults) {
+                        window.location.reload();
+                    }
+                }, function(xhr) {
+                    togglePaymentScheduleChangeErrors("#waiveEntireLoanModalError", xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : "There was an unknown error trying to waive this loan.");
+                })
+            }
+        });
+        // cleanUpCalendarModal("#frmFundLoanApproval");
+
+        setupCalendarModal("frChangePaymentSchedule");
+    });
+
+    function sendPaymentAction() {
+        const sendData = getSendData();
+        if(!sendData) {
+            togglePaymentScheduleChangeErrors("#paymentActionModalError", "Error: Unable to locate the schedule payment or loan to send.");
+        }else {
+            ajaxPost(sendData.paymentActionUrl, sendData).then(function(successResults) {
+                if(successResults) {
+                    window.location.reload();
+                }
+            }, function(xhr) {
+                togglePaymentScheduleChangeErrors("#paymentActionModalError", xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : "There was an unknown error sending this payment action.");
+            })
+        }
+    }
+    function togglePaymentActionModalChanges(actionType) {
+        const actionModal = $("#paymentActionModal");
+        switch (actionType) {
+            case "waive":
+                actionModal.find(".waive-content").css("display", "block");
+                actionModal.find(".defer-content").css("display", "none");
+                actionModal.find(".not-eligible-text").css("display", "none");
+                actionModal.find(".not-eligible-content").css("display", "block");
+                actionModal.find(".schedule-item-data").css("display", "block");
+                actionModal.find(".paymentActionUrl").val("/payment/waivePaymentItem");
+                actionModal.find("#btnPaymentActionConfirm").css("display", "inline-block");
+                break;
+                case "defer":
+                    actionModal.find(".waive-content").css("display", "none");
+                    actionModal.find(".defer-content").css("display", "block");
+                    actionModal.find(".not-eligible-text").css("display", "none");
+                    actionModal.find(".not-eligible-content").css("display", "block");
+                    actionModal.find(".schedule-item-data").css("display", "block");
+                    actionModal.find(".paymentActionUrl").val("/payment/deferPaymentItem");
+                    actionModal.find("#btnPaymentActionConfirm").css("display", "inline-block");
+                    break;
+                    case "amend":
+                        actionModal.find(".paymentActionUrl").val("/payment/amendPaymentItem");
+                        actionModal.find(".waive-content").css("display", "none");
+                        actionModal.find(".defer-content").css("display", "none");
+                        actionModal.find(".not-eligible-text").css("display", "none");
+                        actionModal.find(".not-eligible-content").css("display", "block");
+                        actionModal.find(".schedule-item-data").css("display", "none");
+                        actionModal.find("#btnPaymentActionConfirm").css("display", "inline-block");
+                        break;
+                default:
+                    actionModal.find(".waive-content").css("display", "none");
+                    actionModal.find(".defer-content").css("display", "none");
+                    actionModal.find(".not-eligible-text").css("display", "block");
+                    actionModal.find(".not-eligible-content").css("display", "none");
+                    actionModal.find(".schedule-item-data").css("display", "none");
+                    actionModal.find("#btnPaymentActionConfirm").css("display", "none");
+
+                    break;
+                    //not-eligible-text
+        }
+    }
+    function getSendData() {
+        const actionModal = $("#paymentActionModal");
+
+        const selectedScheduleIndex = actionModal.find(".paymentScheduleIndex").val();
+        const paymentId = "{{ paymentmanagementdata.id if paymentmanagementdata and paymentmanagementdata.id else "" }}";
+        const paymentActionUrl = actionModal.find(".paymentActionUrl").val();
+        if(!!selectedScheduleIndex && parseInt(selectedScheduleIndex) >= 0 && !!paymentId && paymentActionUrl) {
+            return {paymentId:paymentId, scheduleItemIndex: parseInt(selectedScheduleIndex), paymentActionUrl:paymentActionUrl};
+        }
+        return null;
+    }
+    function togglePaymentScheduleChangeErrors(selector, message) {
+        if(!!selector) {
+            if(!message){
+                $(selector).html("").css("display", "none");
+            }else {
+                $(selector).html(message).css("display", "block");
+            }
+        }
+    }
+    function getSelectedScheduleItem() {
+        const row = $("#paymentScheduleTable .is-eligible-for-action");
+        if(row.length > 0) {
+            let index = row.find(".count-replaced .hiddenActualScheduleIndex").html().trim()
+            if(!!index) {
+                index = parseInt(index);
+            }
+            let amount = row.find(".schedule-item-amount").html().trim().replace(/[^0-9.]/,"");
+            if(!!amount) {
+                amount = parseFloat(amount);
+            }
+            const date =  moment(row.find(".schedule-item-date").html().trim(), "MMM DD, YYYY").startOf("day").toDate()
+            return {index: index, amount: amount, date: date};
+        }
+        return null;
+    }
+    function updateModalData(modalSelector, data) {
+        if(!!modalSelector && data && data.index >= 0 && !!data.amount && !!data.date) {
+            $(`${modalSelector} .payment-item-date`).html(moment(data.date).startOf("day").format("MMM DD, YYYY"));
+            $(`${modalSelector} .payment-item-amount`).html(data.amount);
+            $(`${modalSelector} .paymentScheduleIndex`).val(data.index);
+            return true;
+        }
+        return false;
+    }
+</script>

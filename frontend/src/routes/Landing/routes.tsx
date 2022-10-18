@@ -1,0 +1,48 @@
+export const APPLICATION_BASE_ROUTE = "/";
+
+export const pageName = {
+  APPLY: "apply",
+  CONTACT: "contact",
+  ABOUT: "about",
+  LOANS: "loans",
+  RATES: "rates",
+  RESOURCES: "resources",
+  FAQ: "faq",
+  PRIVACY: "privacy",
+  TERMS_OF_USE: "terms-of-use",
+  PRIVACY_NOTICE: "privacy-notice",
+  ONLINE_PRIVACY_NOTICE: "online-privacy-notice",
+  ORDINANCE: "ordinance",
+  LICENSE: "license",
+};
+
+const {
+  CONTACT,
+  ABOUT,
+  LOANS,
+  RATES,
+  RESOURCES,
+  FAQ,
+  PRIVACY,
+  TERMS_OF_USE,
+  PRIVACY_NOTICE,
+  ONLINE_PRIVACY_NOTICE,
+  ORDINANCE,
+  LICENSE,
+} = pageName;
+
+export const routes = {
+  APPLY: `${APPLICATION_BASE_ROUTE}`,
+  CONTACT: `${APPLICATION_BASE_ROUTE}${CONTACT}`,
+  ABOUT: `${APPLICATION_BASE_ROUTE}${ABOUT}`,
+  LOANS: `${APPLICATION_BASE_ROUTE}${LOANS}`,
+  RATES: `${APPLICATION_BASE_ROUTE}${RATES}`,
+  RESOURCES: `${APPLICATION_BASE_ROUTE}${RESOURCES}`,
+  FAQ: `${APPLICATION_BASE_ROUTE}${FAQ}`,
+  PRIVACY: `${APPLICATION_BASE_ROUTE}${PRIVACY}`,
+  TERMS_OF_USE: `/${TERMS_OF_USE}`,
+  PRIVACY_NOTICE: `/${PRIVACY_NOTICE}`,
+  ONLINE_PRIVACY_NOTICE: `/${ONLINE_PRIVACY_NOTICE}`,
+  ORDINANCE: `/${ORDINANCE}`,
+  LICENSE: `/${LICENSE}`,
+};

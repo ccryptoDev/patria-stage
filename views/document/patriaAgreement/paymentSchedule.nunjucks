@@ -1,0 +1,106 @@
+<style>
+    .paymentSchedule-wrapper {
+        width: 100%;
+        border-bottom: 1px solid #ccc;
+    }
+
+    h4 {
+        margin: 0;
+        font-weight: bold;
+        line-height: 1.5;
+        text-transform: upperCase;
+    }
+    .payment-schedule-table {
+        min-width: 600px;
+    }
+
+    .payment-schedule-table td,
+    .payment-schedule-table th {
+        text-align: center;
+    }
+
+    .payment-schedule-table tr td:first-child {
+        width: 200px;
+    }
+
+    .payment-schedule-table tr td:nth-child(2) {
+        width: 30%;
+    }
+
+    .notes-wrapper {
+        margin: 24px 0;
+        display: flex;
+        column-gap: 40px;
+    }
+
+    .notes-wrapper .note-col {
+        width: 50%;
+    }
+
+    .notes-wrapper p:not(:last-child) {
+        margin-bottom: 10px;
+    }
+
+    .notes-wrapper p :first-child {
+        margin-bottom: 24px;
+    }
+
+    .notes-wrapper p :not(:first-child) {
+        max-width: 700px;
+    }
+
+    .notes-wrapper p span {
+        font-weight: 600;
+        color: #222222;
+    }
+</style>
+<div class="paymentSchedule-wrapper">
+    <h3>Your Payment Schedule will be:</h3>
+        <table className="payment-schedule-table">
+            <thead>
+                <tr>
+                    <th>
+                        <b>Number of Payments</b>
+                    </th>
+                    <th>
+                        <b>Amount of Payments</b>
+                    </th>
+                    <th>
+                        <b>When Payments Are Due</b>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in payments %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>${{ payment.amount }}</td>
+                        <td>{{ payment.date }}</td>
+                    </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    <div className="notes-wrapper">
+        <div className="note-col">
+            <p>
+                <span>Prepayment: </span>
+            If you pay the Loan off early, you will not have to pay a penalty.
+          </p>
+            <p>
+                <span>Fixed Interest Rate: </span>
+            This is a Fixed Interest Rate transaction. Your Fixed Interest Rate
+            is {{ offer.apr }}%. Your Fixed Interest Rate will not change over the term of
+            the Loan.
+          </p>
+        </div>
+        <div className="note-col">
+            <p>
+                <span> Estimates: </span>
+            All numerical calculations are estimates.See your Loan agreement for
+            any additional information about nonpayment, default, any required
+            payment in full before the scheduled date and prepayment refunds and
+            penalties.
+          </p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,168 @@
+<style>
+    .float-select-label {
+        opacity: 1 !important;
+    }
+    #frmEditBankAccountDetailsForm .label-error-shown-block {
+        /*position: relative !important;*/
+        text-align: left;
+        left: 0;
+        min-height: 20px;
+    }
+</style>
+<div id="editBankAccountDetailsModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md" style="width:30%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header bg-primary" >
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Employment Info</h4>
+            </div>
+            <div class="modal-body bgColorWhite" style="float: left;width: 100%;" >
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 personalInfoInner los-content">
+                    <div class="whitebox infoForm">
+                        <form role="form" id="frmEditBankAccountDetailsForm" name="frmEditBankAccountDetailsForm">
+                            <input type="hidden" id="txtEditBankAccountUserBankId" value=""/>
+                            <div class="row">
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class=" manual-bank-name">
+                                        <div class="bank-name-div form-input-titles" style="text-align: left">Bank Name</div>
+                                        <input type="text" class="form-control form-application bank-name-input" id="txtEditBankName" name="accountName" value="" required />
+                                        <div class="label-error-shown-block"><label id="txtEditBankName-error" for="txtEditBankName" class="error" style="display:none;"></label></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                    <div class="manual-bank-routing">
+                                        <div class="bank-routing-div form-input-titles" style="text-align: left">Routing Number</div>
+                                        <input type="text" class="form-control form-application routing-input"  id="txtEditBankRoutingNumber" name="routingNumber" value="" required />
+                                        <div class="label-error-shown-block"><label id="txtEditBankRoutingNumber-error" for="txtEditBankRoutingNumber" class="error" style="display:none;"></label></div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                    <div class="form-group manual-account-number">
+                                        <div class="account-number-div form-input-titles" style="text-align: left">Account Number</div>
+                                        <input type="text" class="form-control form-application account-number-input" id="txtEditBankAccountNumber" name="accountNumber" value="" required />
+                                        <div class="label-error-shown-block"><label id="txtEditBankAccountNumber-error" for="txtEditBankAccountNumber" class="error" style="display:none;"></label></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="row">
+                                    <div style="margin-top: 10px;min-height: 30px;">
+                                        <label class="error" id="lblEditBankAccountDetailsError" style="width: 100%;text-align: center;display: none;"  ></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="modal-footer bg-info" style="float: left;width: 100%;">
+                <button type="button" id="btnSaveBankAccountInfoEdit" class="btn btn-primary">Save</button>
+                <button type="button" id="btnCancelBankAccountInfoEdit" class="btn btn-primary">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+  $(document).ready(function() {
+    const bankAccountEditForm = $("#frmEditBankAccountDetailsForm");
+    $("#btnSaveBankAccountInfoEdit").on("click", function(e) {
+      e.preventDefault();
+      toggleBankAccountChangeErrors("#frmEditBankAccountDetailsForm #lblEditBankAccountDetailsError");
+      const userBankAccountId = $("#txtEditBankAccountUserBankId").val();
+      if(!userBankAccountId) {
+        toggleBankAccountChangeErrors("#frmEditBankAccountDetailsForm #lblEditBankAccountDetailsError", "Unable to edit this bank account info. Missing user's account id.");
+      }
+      if(bankAccountEditForm.valid() && !!userBankAccountId){
+        const serializeForm = bankAccountEditForm.serializeArray();
+        const userBankPostData = {};
+        _.forEach( serializeForm, function( formData ) {
+          userBankPostData[formData.name] = formData.value;
+        } );
+        ajaxPost("/user/ajaxUpdateBankAccountInformation", {userBankAccountId: userBankAccountId, userBankData: userBankPostData}).then(function(results) {
+          window.location.reload();
+        }, function(xhr) {
+          console.error(xhr.responseJSON);
+          toggleBankAccountChangeErrors("#frmEditBankAccountDetailsForm #lblEditBankAccountDetailsError", xhr.responseJSON && !!xhr.responseJSON.message? xhr.responseJSON.message: "There was an unknown error trying to update user bank info.");
+        });
+      }
+    });
+    $("#btnCancelBankAccountInfoEdit").on("click", function(e) {
+      e.preventDefault();
+      hideBankAccountModal();
+      $("#txtEditBankName").val("");
+      $("#txtEditBankRoutingNumber").val("");
+      $("#txtEditBankAccountNumber").val("");
+      $("#txtEditBankAccountUserBankId").val("");
+      bankAccountEditForm.find("label.error").css("display","none").html("");
+    });
+    $.validator.addMethod( "abarouting", function( value, element ) { return this.optional( element ) || validateABARouting( value ); }, "Invalid ABA Routing Number." );
+    bankAccountEditForm.validate( {
+      rules: {
+        "accountName": { required: true },
+        "routingNumber": { required: true, digits: true, minlength: 9, maxlength: 9, abarouting: true },
+        "accountNumber": { required: true, digits: true, minlength: 6, maxlength: 17 },
+      },
+      messages: {
+        "accountName": { required: "Please enter the name of your bank." },
+        "routingNumber": { required: "Please enter your bank routing number.", digits: "Please enter a valid routing number.", minlength: "Routing number is too short.", maxlength: "Routing number is too long." },
+        "accountNumber": { required: "Please enter your bank account number.", digits: "Please enter a valid account number.", minlength: "Account number is too short.", maxlength: "Account number is too long."},
+      },
+      errorPlacement: function( err, el ) {
+        var errId = err.attr( "id" );
+        var errEl = $( "#" + errId );
+        if( errEl.length === 1 ) {
+          errEl.html( err.html() );
+        } else {
+          err.appendTo( el.parent() );
+        }
+      },
+      unhighlight: function( el ) {
+        var $el = $( "#" + $(el).attr( "id" ) + "-error" );
+        if( $el.length === 1 ) {
+          $el.html( "" );
+        }
+      },
+    } );
+    bankAccountEditForm.validate({
+      rules: {
+        "typeOfIncome": { required: true },
+        "employerName": { required: true },
+        "employerStatus": { required: true },
+        "employerPhone": { required: true, minlength: 12, maxlength: 12 },
+        "payFrequency": { required: true },
+        "monthlyIncome": { required: true, isValidFloatNumber:true},
+      },
+      messages: {
+        "typeOfIncome": { required: "Income Type is required." },
+        "employerName": { required: "Employer Name is required." },
+        "employerStatus": { required: "Employer status is required." },
+        "employerPhone": { required: "Employer Phone number is required.", minlength: "Invalid employer phone number.", maxlength: "Invalid employer phone number." },
+        "payFrequency": { required: "Pay Frequency is required.",},
+        "monthlyIncome": { required: "Monthly Income is required.",   isValidFloatNumber:"Monthly Income must be a valid number"},
+      },
+
+    } );
+  });
+function populateEditBankModalData(accountDetail) {
+
+}
+  function initializeAndShowBankAccountModal(accountDetail) {
+    if(accountDetail && accountDetail.accounts && accountDetail.accounts.length > 0 && accountDetail.accounts[0].numbers) {
+      const account = accountDetail.accounts[0].numbers;
+
+      $("#txtEditBankName").val(accountDetail.institutionName);
+      $("#txtEditBankRoutingNumber").val(account.routing);
+      $("#txtEditBankAccountNumber").val(account.account);
+      $("#txtEditBankAccountUserBankId").val(accountDetail.id);
+    }
+    $("#editBankAccountDetailsModal").modal("show");
+  }
+  function hideBankAccountModal() {
+    $("#editBankAccountDetailsModal").modal("hide");
+  }
+</script>

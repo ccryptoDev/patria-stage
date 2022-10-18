@@ -1,0 +1,114 @@
+<style type="text/css">
+
+</style>
+
+<div class="collections-loan-modify-negotiation-preview" style="position: relative;height: 100%;">
+    <div class="collection-loan-modify-negotiation-spinner" align="center" style="display:none; text-align:center;position:absolute;top:0;left:0;right:0;bottom:0;z-index:100;background:rgba(0,0,0,0.7);">
+        <div style="height:100%;width:100%;background:url('/images/img/ajaxloader.gif') no-repeat center;"></div>
+    </div>
+    <h4 style="margin-bottom: 20px;">Negotiation Preview</h4>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th style="width: 10px">SNO</th>
+                <th>Beginning Principal Balance</th>
+                <th>Principal</th>
+                <th>Interest</th>
+                <th>Schedule Amount</th>
+                <th>Schedule Date<span class="loan-modify-negotiation-preview-schedule-date-display" style="font-weight: normal;font-style: italic">&nbsp;&nbsp;(Assuming start date is today)</span></th>
+            </tr>
+            </thead>
+            <tbody id="tbLoanModificationNegotiationPreview">
+               <tr class="loan-modification-no-negotiation-schedule"><td colspan="7" style="font-size: 18px;" >There is no preview results.</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<script>
+
+	function displayNegotiationPaymentPreview(newPaymentScheduleObj) {
+
+		const tbody = $("#tbLoanModificationNegotiationPreview");
+		_.forEach(newPaymentScheduleObj,function(paymentSchedule, index) {
+			const row = $("<tr/>");
+			row.append($("<td/>").html(index+1));
+			row.append($("<td/>").html(parseCurrency(paymentSchedule.startBalanceAmount)));
+			row.append($("<td/>").html(parseCurrency(paymentSchedule.principalAmount)));
+			row.append($("<td/>").html(parseCurrency(paymentSchedule.interestAmount)));
+			// row.append($("<td/>").html(parseCurrency(paymentSchedule.interestDue)));
+			row.append($("<td/>").html(parseCurrency(paymentSchedule.amount)));
+			row.append($("<td/>").html(formatDate(paymentSchedule.date)));
+			tbody.append(row);
+		});
+	}
+
+	function toggleNegotiationPaymentPreview(newPaymentScheduleObj,isHide){
+		$(".collections-loan-modify-negotiation-preview #tbLoanModificationNegotiationPreview tr").not(".loan-modification-no-negotiation-schedule").empty();
+		$(".collections-loan-modify-negotiation-preview .loan-modify-negotiation-preview-schedule-date-display").css("display", "none");
+		if(isHide){
+			$("#btnLoanModificationSave").css("display","none");
+			$(".collections-loan-modify-negotiation-preview .loan-modification-no-negotiation-schedule").css("display","table-row");
+        }else {
+			$(".collections-loan-modify-negotiation-preview .loan-modification-no-negotiation-schedule").css("display","none");
+			let changedFirstPaymentDate = $("#frmModifyLoan #txtSelectedFirstPaymentDate").val();
+			if(!changedFirstPaymentDate){
+				$(".collections-loan-modify-negotiation-preview .loan-modify-negotiation-preview-schedule-date-display").css("display", "inline");
+			}else {
+					$("#btnLoanModificationSave").css("display","inline-block");
+            }
+			displayNegotiationPaymentPreview(newPaymentScheduleObj)
+        }
+    }
+
+	function createNegotiationPaymentPreview() {
+		toggleServerError("loan-modification-preview-server-error");
+		const loanModifyForm = $("#frmModifyLoan");
+		loanModifyForm.find("#txtSelectedFirstPaymentDate").removeClass("error");
+		loanModifyForm.find(".txtSelectedFirstPaymentDate-custom-error").css("display", "none");
+		let changedFirstPaymentDate = loanModifyForm.find("#txtSelectedFirstPaymentDate").val();
+
+		if($("#frmModifyLoan input[type=text],#frmModifyLoan input[type=number],#frmModifyLoan input[type=checkbox],#frmModifyLoan select").not($("#txtSelectedFirstPaymentDate")).valid() ) {
+			showInlineSpinner();
+
+			if(!changedFirstPaymentDate){
+				changedFirstPaymentDate = moment().startOf("day").format("MMMM D, YYYY");
+            }
+			const newFrequency = loanModifyForm.find(".sbPayFrequency").val();
+			const bankHolidayDirection = loanModifyForm.find(" .sbBankHoliday").val();
+			const payID = {{ paymentmanagementdata.id | stringify if paymentmanagementdata and paymentmanagementdata.id else '' | stringify}};
+
+			let requestObj = {firstPaymentDate: changedFirstPaymentDate,paymentId: payID,bankHolidayDirection:bankHolidayDirection,payFrequency: newFrequency,totalFinancedAmount:0 };
+			const mergedObj = {};
+			_.forEach(loanModifyForm.serializeArray(), function(serializeObj) {
+				mergedObj[serializeObj.name] = serializeObj.value.replace(/[\$\s,]/g, "");
+			});
+			requestObj = _.assign({},requestObj,mergedObj);
+			// console.error(JSON.stringify(requestObj));
+			toggleNegotiationPaymentPreview(true);
+			ajaxPostNoSpinner("/admin/ajaxGetNewPaymentSchedulePreview",requestObj).then(function(responseObj) {
+				if(responseObj && responseObj.paymentSchedule && responseObj.paymentSchedule.length > 0) {
+					toggleNegotiationPaymentPreview( responseObj.paymentSchedule, false );
+				}
+				hideInlineSpinner();
+			},function(xhr) {
+				const errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : "There was an unknown error that occurred.";
+				console.error("An error had occurred: " + errorMessage);
+				toggleServerError("loan-modification-preview-server-error", errorMessage)
+				hideInlineSpinner();
+			});
+		}else if(!changedFirstPaymentDate){
+			loanModifyForm.find(".txtSelectedFirstPaymentDate").addClass("error");
+			loanModifyForm.find(".txtSelectedFirstPaymentDate-custom-error").html("Please select a start date on the calendar above.").css("display", "block");
+		}
+	}
+
+	function showInlineSpinner() {
+        $(".collections-loan-modify-negotiation-preview .collection-loan-modify-negotiation-spinner").css("display", "block");
+    }
+    function hideInlineSpinner() {
+		$(".collections-loan-modify-negotiation-preview .collection-loan-modify-negotiation-spinner").css("display", "none");
+    }
+
+</script>

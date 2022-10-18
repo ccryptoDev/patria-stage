@@ -1,0 +1,315 @@
+    <div class="flex-box-table-col uploaded-document-display-table">
+        <div class="flex-box-item flex-box-table-row upload-doc-placement">
+            <div class="flex-box-item header-item">
+                <span>#</span>
+            </div>
+            <div class="flex-box-item header-item">
+                <span>Document Type</span>
+            </div>
+            <div class="flex-box-item header-item">
+                <span>Document</span>
+            </div>
+            <div class="flex-box-item header-item">
+                <span>Created Date</span>
+            </div>
+        </div>
+        {% if employmentHistoryObj and employmentHistoryObj.documents and employmentHistoryObj.documents.length > 0 %}
+            {% for uploadedDoc in employmentHistoryObj.documents %}
+                <div class="flex-box-item flex-box-table-row uploaded-document-row actual-upload {{ uploadedDoc.docType }}">
+                    <div class="flex-box-item">
+                        <span>{{ loop.index }}</span>
+                    </div>
+                    <div class="flex-box-item">
+                        <span>{{ uploadedDoc.docname }}</span>
+                    </div>
+                    <div class="flex-box-item header-item">
+                        <span><a href="{{ uploadedDoc.documentUrl }}" target="_blank">View Document</a></span>
+                    </div>
+                    <div class="flex-box-item header-item">
+                        <span>{{ uploadedDoc.createdAt | formatDate }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="flex-box-item flex-box-table-row uploaded-document-row-none  actual-upload">
+                <div class="flex-box-item">
+                    <span>No documents have been uploaded.</span>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    {% set documenttype = employmentDocumentTypes %}
+{#    {% include "frontend/borrowerportal/userDocumentUploads.nunjucks" %}#}
+    {% if not isForEmploymentHistoryDisplay %}
+    <div class="field-section dashboard-grid upload-input-container">
+        <div class="file-upload-section" style="margin-left: 0;">
+            <form role="form" method="POST" enctype="multipart/form-data" action="/uploadUserRequiredDocs" id="employment-upload-form" class="file-upload-form">
+                <input class="" type="hidden" name="userId" value="{{ userId }}">
+                <input type="hidden" name="paymentmanagement" value="{{ paymentmanagementdata.id }}"/>
+                <input type="hidden" id="employmentHistoryDocuments" name="achDocuments" value=""/>
+                <input type="hidden" id="currentEmploymentHistoryId" name="currentEmploymentHistoryId" value="{{ employmentHistoryObj.id if employmentHistoryObj and employmentHistoryObj.id else '' }}"/>
+                <input type="hidden" name="screentracking" value="{{ paymentmanagementdata.screentracking.id }}"/>
+                <div class="document-upload-header"><h3 style="font-size: 17px;padding: 8px 0;">Upload Document</h3></div>
+                <div class="user-upload-section">
+                    <div class="upload-input-section flex-box-table-col">
+                        <div class="upload-input flex-box-table-row">
+                            <div class="flex-box-item header-item">
+                                <span>Document Type:</span>
+                            </div>
+                            <div class="flex-box-item upload-input-value">
+                                <select name="docutype" class="employmentDocuTypeSelect form-control form-application" style="padding:0;" required>
+                                    <option value="" selected>Choose a Document Type</option>
+                                    {% if employmentDocumentTypes %}
+                                        {% for docType, docName in employmentDocumentTypes %}
+                                            <option value="{{ docName }}">{{ docName}}</option>
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                                <div class="employment-other-text-area" style="display: none;">
+                                    <div class="header-item">
+                                        <span>Describe this other type:</span>
+                                    </div>
+                                    <textarea rows="2" id="txtEmployeeOtherDescription" name="otherUploadDescription" disabled required style="width: 100%;padding: 10px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="upload-input flex-box-table-row">
+                            <div class="flex-box-item header-item">
+                                <span>Document:</span>
+                            </div>
+                            <div class="flex-box-item upload-input-value">
+                                <input type="file" id="employmentProofdocument" name="proofdocument" required/>
+                            </div>
+                        </div>
+                        <div class="upload-input flex-box-table-row">
+                            <div class="flex-box-item upload-input-button">
+                                <input type="button" class="btn btn-primary" id="btnEmploymentUploadSelectedDocument" name="btnUploadSelectedDocument" value="Upload Document" />
+                                <div class="error require-employment" style="display: none;">* You you need to add and employer above before you can upload.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+{#    For cloning#}
+    <div class="flex-box-item flex-box-table-row uploaded-document-row hiddenEmploymentDisplayDocForCloning" style="display: none">
+        <div class="flex-box-item">
+            <span class="employment-index"></span>
+        </div>
+        <div class="flex-box-item">
+            <span class="doc-file-name"></span>
+        </div>
+        <div class="flex-box-item header-item">
+            <span><a href="" class="doc-file-url" target="_blank">View Document</a></span>
+        </div>
+        <div class="flex-box-item header-item">
+            <span class="doc-created-at"></span>
+        </div>
+    </div>
+    <div class="flex-box-item hidden-employment-no-upload" style="display: none">
+        <span>No documents have been uploaded.</span>
+    </div>
+<style type="text/css">
+    /* employment document upload */
+    .employment-backoffice-tab-partial .employment-document-upload-content .uploaded-document-display-table .flex-box-table-row .flex-box-item {
+        border: 0;
+    }
+    .employment-backoffice-tab-partial .employment-document-upload-panel .employment-document-upload-content {
+        margin-left: 15px;
+    }
+    /* end employment document upload */
+
+    .employment-backoffice-tab-partial .employment-document-upload-panel .document-upload-header h3 {
+        font-size: 18px;
+        color: #333;
+        margin: 0;
+    }
+    .employment-backoffice-tab-partial .employment-document-upload-panel .user-upload-section, .upload-input-section select, .employment-backoffice-tab-partial .employment-document-upload-panel .user-upload-section .upload-input-section input[type=file] {
+        font-size: 14px;
+        color: #333;
+        font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif !important;
+    }
+    .employment-backoffice-tab-partial .employment-document-upload-panel .user-upload-section .flex-box-table-row .flex-box-item.header-item {
+        font-weight: bold;
+    }
+    .employment-backoffice-tab-partial .uploaded-document-display-table .flex-box-table-row .flex-box-item {
+        border: 0;
+    }
+    .employment-document-upload-panel .file-upload-section .upload-input-button {
+        justify-content: center;
+    }
+    .employment-document-upload-panel .file-upload-section .upload-input-button .error.require-employment {
+        width: 100%;
+        text-align: center;
+        margin: 15px 0;
+    }
+    .employment-document-upload-panel .file-upload-section .flex-box-table-row .flex-box-item.header-item {
+        flex: 0 0 25%;
+    }
+    .employment-document-upload-panel .file-upload-section .upload-input-section .flex-box-table-row .flex-box-item {
+      border-top: 1px solid #333;
+        border-right: 1px solid #333;
+    }
+    .employment-document-upload-panel .file-upload-section .upload-input-section .flex-box-table-row:last-child .flex-box-item {
+        border-right: 0;
+        border-bottom: 0;
+    }
+    .employment-document-upload-panel .file-upload-section .upload-input-section .flex-box-table-row .flex-box-item.header-item {
+        border-left: 1px solid #333;;
+    }
+    .employment-document-upload-panel .upload-input-container {
+        width: 80%;
+        margin: 20px auto 0 auto;
+    }
+
+    .employment-document-upload-panel .uploaded-document-row-none {
+        text-align: center;
+        font-weight: bold;
+    }
+    .upload-file-error label.error {
+        margin-left: 10px;
+        display: block;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    /*.employment-document-upload-panel select{*/
+    /*    padding: 10px;*/
+    /*    border: 1px solid #808080;*/
+    /*    border-radius: 5px;*/
+    /*    color: #3F576C;*/
+    /*}*/
+    #employmentProofdocument {
+        padding: 15px 0;
+        width: 100%;
+    }
+
+</style>
+    {% if not isForEmploymentHistoryDisplay %}
+    <script type="text/javascript">
+		var currentEmploymentHistoryObj = {{ employmentHistoryObj | stringify if employmentHistoryObj else "" | stringify }};
+		$(document).ready(function() {
+			if(!!currentEmploymentHistoryObj && currentEmploymentHistoryObj.documents && currentEmploymentHistoryObj.documents.length > 0){
+				updateEmploymentHistoryDocumentIds(currentEmploymentHistoryObj.documents);
+			}
+			$("#employment-upload-form").validate({
+				ignore: [],
+				rules: {
+					"docutype": { required: true },
+					"proofdocument": { required: true, extension: "jpeg|JPEG|jpg|JPG|PNG|png|pdf|PDF|doc|DOC|docx|DOCX"},
+					"otherUploadDescription": { required: true },
+				},
+				messages: {
+					"docutype": { required: "You must select a document type." },
+					"proofdocument": { required: "His no file selected to upload.",
+						extension: "Unable to upload this file. The allowed file types are jpeg, jpg, png, pdf, doc, and docx."
+					},
+					"otherUploadDescription": { required: "You must enter a description for 'Other' document type." }
+				},
+				errorPlacement: function(error, element) {
+					error.insertAfter(element);
+				}
+			});
+
+			$(".employmentDocuTypeSelect, #employmentProofdocument").on("change", function(e) {
+				$(this).valid();
+				if($(this).is(".employmentDocuTypeSelect")){
+					var docTypeValue = $(this).val();
+					if(!!docTypeValue && docTypeValue === {{ employmentDocumentType.doctype7 | stringify if employmentDocumentType and employmentDocumentType.doctype7 else "" | stringify}}) {
+						$("#txtEmployeeOtherDescription").removeAttr("disabled");
+						$(".employment-other-text-area").show();
+					}else{
+						$("#txtEmployeeOtherDescription").attr("disabled","disabled");
+						$(".employment-other-text-area").hide();
+					}
+				}
+			});
+
+			$("#btnEmploymentUploadSelectedDocument").on("click", function(e) {
+				e.preventDefault();
+				saveEmploymentUploadedFile()
+			});
+
+			$(".tabs_wrapper ul li").on("click", function() {
+				$("#txtEmployeeOtherDescription").attr("disabled","disabled");
+				$("#txtEmployeeOtherDescription").val("");
+				$(".employment-other-text-area").hide();
+				$(".employmentDocuTypeSelect").val("");
+				$("#employmentProofdocument").val("");
+				$(".employmentDocuTypeSelect option").removeAttr("selected");
+				$(".employmentDocuTypeSelect option:disabled").attr("selected", "selected");
+
+			});
+		});
+		{#function resetEmploymentDocuments(documents) {#}
+		{#	if(documents && documents.length > 0){#}
+		{#		// $(".employment-user-uploaded-docs").empty();#}
+        {#        //hiddenEmploymentDisplayDocForCloning#}
+		{#		$(".uploaded-document-display-table .actual-upload").remove();#}
+		{#		_.forEach(documents, function(document, i) {#}
+		{#			var employmentDocTypes = {{ employmentDocumentType | stringify if employmentDocumentType else "" | stringify}}#}
+		{#			if(employmentDocTypes && Object.keys(employmentDocTypes).indexOf(document.docType) >= 0) {#}
+		{#				var newDocSection = addNewEmploymentDocument(document.docname, document.documentUrl, document.createdAt, i+1);#}
+		{#				newDocSection.addClass(document.docType);#}
+		{#				$(".uploaded-document-display-table").append( newDocSection );#}
+		{#				updateEmploymentHistoryDocumentId(document.id || document._id);#}
+		{#			}#}
+		{#		});#}
+		{#	}#}
+		{#}#}
+		{#function addNewEmploymentDocument(  fileName, url, createdAt, index = 1 ) {#}
+		{#	var hiddenEmploymentDisplayDocForCloning = $( ".hiddenEmploymentDisplayDocForCloning" );#}
+		{#	var newDocSection = hiddenEmploymentDisplayDocForCloning.clone();#}
+		{#	newDocSection.removeClass("hiddenEmploymentDisplayDocForCloning").remove("style");#}
+		{#	newDocSection.find( ".doc-file-name" ).html( fileName );#}
+		{#	newDocSection.find("a.doc-file-url").attr("href", url);#}
+		{#	newDocSection.find( ".employment-index" ).html( index );#}
+		{#	newDocSection.find(".doc-created-at").html(moment(createdAt).format("MM-DD-YYYY hh:mm:ss"));#}
+
+		{#	return newDocSection;#}
+		{#}#}
+		function updateEmploymentHistoryDocumentIds(documents){
+
+			if(documents && documents.length > 0) {
+				_.forEach(documents,function(doc) {
+					updateEmploymentHistoryDocumentId(doc.id || doc._id);
+				});
+			}
+		}
+		function updateEmploymentHistoryDocumentId(documentId) {
+			if(!!documentId) {
+				var employmentHistoryDocuments = $( "#employmentHistoryDocuments" ).val();
+				if(!!employmentHistoryDocuments) {
+					employmentHistoryDocuments = JSON.parse( employmentHistoryDocuments );
+				} else {
+					employmentHistoryDocuments = []
+				}
+				if(employmentHistoryDocuments.indexOf(documentId) < 0) {
+					employmentHistoryDocuments.push( documentId );
+					$( "#employmentHistoryDocuments" ).val( JSON.stringify( employmentHistoryDocuments ) );
+				}
+			}
+		}
+		function saveEmploymentUploadedFile(  ) {
+			var uploadForm = $( "#employment-upload-form" );
+
+			if(!currentEmploymentHistoryObj){
+				$(".upload-input-button .require-employment").show();
+            }else {
+				$(".upload-input-button .require-employment").hide();
+				if(uploadForm.valid()) {
+					showLoadingSpinner();
+					ajaxFormDataPost("/uploadUserRequiredDocs",  uploadForm[0]).then(function(data) {
+							window.location.reload();
+						hideLoadingSpinner();
+					}, function(error) {
+						hideLoadingSpinner();
+					});
+				}
+            }
+		}
+
+    </script>
+{% endif %}

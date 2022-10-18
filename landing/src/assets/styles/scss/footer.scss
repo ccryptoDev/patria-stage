@@ -1,0 +1,127 @@
+footer {
+  position: relative;
+  background-color: var(--color-main-1);
+  padding: 2.4rem 0;
+  height: var(--footer-height);
+  box-sizing: border-box;
+
+  .footer-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  & .account img,
+  & .policies-socials,
+  & .news-heading {
+    margin-bottom: 2.4rem;
+    height: 35px;
+    display: flex;
+    align-items: center;
+  }
+
+  & .account-list,
+  & .policies-list {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+    & li {
+      & a,
+      & button {
+        font-family: Spartan;
+        text-decoration: none;
+        background: transparent;
+        border: none;
+        outline: none;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--color-secondary-1);
+        padding: 0;
+      }
+    }
+  }
+
+  & .policies {
+    &-socials {
+      display: flex;
+      align-items: center;
+      column-gap: 1rem;
+    }
+
+    &-list li {
+      text-align: center;
+    }
+  }
+
+  & .news {
+    &-heading {
+      text-transform: uppercase;
+      color: var(--color-secondary-1);
+      font-weight: 600;
+      font-size: 1.8rem;
+    }
+  }
+
+  & .email-input-wrapper {
+    position: relative;
+
+    & input {
+      padding-right: 32px;
+    }
+
+    & button {
+      position: absolute;
+      background: transparent;
+      border: none;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      padding: 0;
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  footer {
+    height: auto;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  footer {
+    height: auto;
+
+    .policies-socials {
+      align-items: flex-end;
+      & li {
+        display: flex;
+        align-items: flex-end;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  footer {
+    .footer-container {
+      max-width: 400px;
+    }
+    .news {
+      width: 100%;
+    }
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .footer-container {
+    flex-direction: column;
+
+    .policies-list {
+      & li {
+        text-align: left;
+      }
+    }
+  }
+}

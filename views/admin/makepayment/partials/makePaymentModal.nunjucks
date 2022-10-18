@@ -1,0 +1,723 @@
+<style>
+
+.no-gutter > [class*="col-"] { padding-right:0; padding-left:0; }
+#makepayment-accountId-ctrl {
+	border: 1px solid #ccc;
+	overflow: hidden;
+	height: 40px;
+	position: relative;
+	display: block;
+	border-radius: 20px;
+}
+#makepayment-accountId-ctrl:after {
+	content: "\f0dc";
+	font-family: FontAwesome;
+	color: #5A7DA1;
+	padding: 0 25px 0 10px;
+	line-height: 40px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	background: #F0F4F8;
+	z-index: 1;
+	text-align: center;
+	width: 30px;
+	height: 100%;
+	pointer-events: none;
+	box-sizing: border-box;
+}
+#makepayment-accountId {
+	width: 100%;
+	height: 40px;
+	padding: 5px;
+	padding-left: 20px;
+	border: 0;
+	font-size: 16px;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+.btn-check-radio {
+	height:40px;
+	border:1px solid #5A7DA1;
+	border-radius:20px;
+	cursor: pointer;
+	color: white;
+	background-color: #2f61b7;
+
+}
+.btn-check-radio:hover {
+	{# background-color:rgba(47, 97, 183, 0.9); #}
+	background-color: #3873d8;
+	box-shadow: -1px -1px 5px 0px rgba(0,0,0,0.50) inset;
+}
+.btn-check-radio:active {
+	background-color: rgb(56,115,216,0.9);
+	box-shadow: -2px -2px 5px 0px rgba(0,0,0,0.40) inset;
+
+;
+}
+.btn-check-radio > .txt {
+	float: left;
+	width: 110px;
+	padding-left: 20px;
+	text-align: left;
+	color: white;f
+	font-family:'Avenir Next',Roboto,Lato,sans-serif;
+	font-size:16px;
+	font-weight:500;
+	line-height: 38px;
+}
+.btn-check-radio > .ico {
+	display: none;
+	float: right;
+}
+.btn-check-radio.active > .ico {
+	display: block;
+	height: 32px;
+	width: 32px;
+	border: 2px solid #ffffff;
+	border-radius: 16px;
+	margin-top: 3px;
+	margin-right: 4px;
+	background-color: #00a250;
+}
+.btn-check-radio > .ico > i {
+	font-size: 19px;
+    position: relative;
+    top: 5px;
+    left: 6px;
+	color: white;
+}
+.btn-check-radio.active > .ico > i {
+	color: #ffffff;
+}
+
+#makepayment-form-submit,
+#makepayment-confirm-submit {
+	background-color: #2f61b7;
+	height: 40px;
+	position: relative;
+
+}
+#makepayment-form-submit:hover,
+#makepayment-confirm-submit:hover {
+	background-color: #2f61b7;
+	box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18), 0 4px 15px 0 rgba(0,0,0,0.15);
+	border: none;
+}
+#makepayment-form-submit-spin,
+#makepayment-confirm-submit-spin {
+	width: 20px;
+    height: 20px;
+    line-height: 20px;
+    position: absolute;
+    top: 9px;
+    right: 6px;
+    display: none;
+    font-size: 20px;
+}
+
+
+#makepayment-content-confirm .modal-body{
+	padding: 15px 40px 0 40px;
+}
+#makepayment-confirm-preview{
+	overflow:hidden;
+	margin-top: 20px;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+#makepayment-confirm-preview .table-bordered{
+	border: none;
+	{# border: 1px solid #dadada; #}
+}
+
+#makepayment-confirm-preview .table > thead > tr > th,
+#makepayment-confirm-preview .table > tbody > tr > th {
+	border-right: 1px solid #9ea7af;
+}
+#makepayment-confirm-preview .table > thead > tr > th:last-child,
+#makepayment-confirm-preview .table > tbody > tr > th:last-child {
+	border-right: none;
+}
+
+#makepayment-confirm-preview .table > tbody > tr > td {
+	border-right: 1px solid #dadada;
+}
+
+#makepayment-confirm-preview .table > thead > tr > td{
+	border: none;
+}
+#makepayment-confirm-preview .table > tbody > tr > td{
+	border-right: 1px solid #dadada;
+	{# border: none; #}
+}
+#makepayment-confirm-preview .table > thead > tr:first-child,
+#makepayment-confirm-preview .table > tbody > tr:first-child {
+	border-top: none;
+}
+#makepayment-confirm-preview .table > thead > tr:last-child,
+#makepayment-confirm-preview .table > tbody > tr:last-child {
+	border-bottom: none;
+}
+#makepayment-confirm-preview .table > thead > tr > td:last-child,
+#makepayment-confirm-preview .table > tbody > tr > td:last-child{
+	border-right: none;
+}
+
+#makepayment-confirm-preview .table:last-child > tbody > tr:last-child > td:first-child{
+	border-bottom-left-radius: 7px !important;
+	overflow:hidden;
+}
+
+#makepayment-confirm-preview .table:last-child > tbody > tr:last-child > td:last-child {
+	border-bottom-right-radius: 7px !important;
+	overflow:hidden;
+}
+#makepayment-confirm-preview table tr.highlight, #makepayment-confirm-preview table tr.highlight td {
+	background-color: #ffe291 !important;
+	color: black !important;
+}
+#makepayment-breakdown div.row {
+	margin-bottom: 23px;
+}
+
+#makepayment-breakdown table.table th,
+#makepayment-breakdown table.table td {
+	border: 1px solid #9ea7af;
+	border-radius: 7px;
+}
+.makepayment-fb-jc-sp {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+}
+#makepayment-breakdown .mp-check-box {
+	cursor: pointer;
+}
+#makepayment-breakdown .mp-check-box > label {
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 20px;
+	cursor: pointer;
+}
+#makepayment-breakdown .mp-check-box > i {
+	position: relative;
+	top: 3px;
+	left: 0;
+	font-size: 19px;
+	padding-left: 3px;
+	width: 18px;
+	height: 18px;
+	line-height: 18px;
+}
+#makepayment-breakdown .mp-check-box.disabled,
+#makepayment-breakdown .mp-check-box.disabled > label {
+	color: rgba(0, 0, 0, 0.4);
+	cursor: not-allowed;
+}
+#makepayment-confirm-preview tr.replaced-item > td {
+	text-decoration: line-through;
+}
+</style>
+{#{% set achCutoff = moment( ).startOf( "day" ).hour( achCutOffHour ).toDate() %}#}
+{#{% if( moment( ).toDate() > achCutoff ) %}#}
+{#	{% set startDate = moment(  ).startOf( "day" ).add( 1, "days" ).toDate() %}#}
+{#{% else %}#}
+{#	{% set startDate = moment(  ).startOf( "day" ).toDate() %}#}
+{#{% endif %}#}
+{% set startDate = moment( paymentDate ).startOf( "day" ).toDate() %}
+
+<div id="makePaymentModal" class="modal fade pfi-modal" role="dialog" data-backdrop="static" data-keyboard="false">
+	{% include "admin/makepayment/partials/makePaymentDialog.nunjucks" %}
+</div>
+<input type="hidden" id="paymentIsAmend" value="true"/>
+<script>
+var makePaymentModal;
+$( function() {
+	$(document).ready(function() {
+		makePaymentModal = new MakePaymentModal();
+	});
+} );
+function MakePaymentModal() {
+	console.log( moment().format( "HH:mm:ss.SSS" ), "MakePaymentModal::constructor" );
+	var self = this;
+	this.state = {amendData: null,isAmendPayment: false, useDebitCard: false,isAmendPayoff:false, isPrincipalOnlyPayment: false, isRegularPayment: true, isPayoffPayment: false, firstPastDueRound: false, isPastDuePayment: false, includeAccruedInterest: true,  forgiveLateAccruedInterest: false, excludeFees: false, includeUnpaidInterest: true, includeUnpaidPrincipal: true };
+	// this.startDate = moment.tz()
+	this.regularPayment = 0.0;
+	this.payoffPayment = 0.0;
+	this.pastDuePayment = 0.0;
+
+	this.pastDueForgivenInterestPayment = 0.0;
+	this.notForgivenInterestDue = 0.0;
+	this.renderInProgress = false;
+	this.deferredEvents = [];
+	//this.ajaxRenderDialog();
+	this.renderDebounce = _.debounce( this.ajaxRenderDialog, 500 );
+
+	$( "#makepayment-btn-showModal, #btnMakePaymentCollections" ).off().on( "click", function(e) {
+		$("#paymentIsAmend").val("false");
+		makePaymentModal.showModal(makePaymentModal)
+	});
+	$( "#make-amend-payment-btn-showModal" ).off().on( "click", function(e) {
+		$("#paymentIsAmend").val("true");
+
+		makePaymentModal.showModal(makePaymentModal);
+	});
+	// $( "#makepayment-btn-showModal, #btnMakePaymentCollections" ).off().on( "click", $.proxy(this.showModal, this));
+}
+MakePaymentModal.prototype.init = function() {
+	var self = this;
+	const holidays = "{{ holidays }}".split(",").map(function(item) {
+		return moment(item, "YYYY-MM-DD").format("MM/DD/YYYY");
+	});
+	$( "#makepayment-paymentDate" ).bootstrapDP( { autoclose: true,
+		endDate: new Date({{ moment( paymentDate).add(2, "months").toDate().toISOString() | stringify }}),
+		startDate: "{{ moment( paymentDate).format( 'MM/DD/YYYY' ) }}",
+		startView: "days",
+		daysOfWeekDisabled: [0,6],
+		// datesDisabled:holidays,
+		beforeShowDay: function(date){
+			if(holidays.indexOf(moment(date).startOf("day").format("MM/DD/YYYY")) >=0) {
+				console.error("No show: " + moment(date).startOf("day").format("MM/DD/YYYY"))
+				return false;
+			}
+			else{
+				return true;
+			}
+		}
+	} );
+	{#$( "#makepayment-paymentDate" ).bootstrapDP( { autoclose: true, endDate: new Date({{ moment( paymentDate).add(2, "months").toDate().toISOString() | stringify }}), startDate: "{{ momenttz.tz( startDate, 'America/New_York' ).format( 'MM/DD/YYYY' ) }}", startView: "days" } );#}
+
+	$( "#makepayment-manualPaymentDate" ).bootstrapDP( { autoclose: true, endDate: new Date({{ moment( paymentDate).add(2, "months").toDate().toISOString() | stringify }}), startDate: "{{ moment( paymentDate).format( 'MM/DD/YYYY' ) }}",
+		startView: "days",
+		daysOfWeekDisabled: [0,6],
+		// datesDisabled:holidays,
+		beforeShowDay: function(date){
+			if(holidays.indexOf(moment(date).startOf("day").format("MM/DD/YYYY")) >=0) {
+				return false;
+			}
+			else{
+				return true;
+			}
+		}
+	} );
+	$( "#makepayment-amount" ).inputmask( { alias: "currency", rightAlign: false, prefix: "$" } );
+	$( "#makepayment-form" ).on( "submit", $.proxy( this.confirmPayment, this ) );
+	$( "#makepayment-form-submit" ).off().on( "click", $.proxy(	this.formSubmit, this ) );
+	$( "#makepayment-confirm-submit" ).off().on( "click", $.proxy(	this.confirmSubmit, this ) );
+	$( "#makepayment-paymentDate" ).on( "change", $.proxy( this.onEvent, this ) );
+	$( "#makepayment-manualPaymentDate" ).on( "change", $.proxy( this.onEvent, this ) );
+	//
+	if(!this.state.isAmendPayoff && this.state.isPastDuePayment && !this.state.firstPastDueRound) {
+		$( "#makepayment-amount" ).val( this.pastDuePayment );
+	}
+	$( "#makepayment-amount" ).on( "change", function( event ) {
+		self.state.firstPastDueRound = $( "#makepayment-amount" ).val() !== self.pastDuePayment;
+		self.onEvent( event );
+	} );
+	$( "#chkMakePaymentPrincipalOnlyPayment" ).on( "change", function( event ) {
+		event.preventDefault();
+		const isChkPrincipalOnlyPayment = $( "#chkMakePaymentPrincipalOnlyPayment" ).is(":checked");
+			if(isChkPrincipalOnlyPayment) {
+				self.state.isPrincipalOnlyPayment = true;
+			}else {
+				self.state.isPrincipalOnlyPayment = false;
+				self.state.isRegularPayment = true;
+				self.state.isPastDuePayment = false;
+				$("#makepayment-amount").val(self.regularPayment);
+				$(".makePaymentPrincipalOnlyPaymentDisclaimer").css("display","none")
+			}
+			 self.onEvent( event );
+	} );
+
+	$("#chkMakePaymentDebitCardTransaction").on( "change", function( event ) {
+		event.preventDefault();
+		const isUseDebitCardChecked = $( "#chkMakePaymentDebitCardTransaction" ).is(":checked");
+		if(isUseDebitCardChecked) {
+			self.state.useDebitCard = true;
+			$( "#makepayment-paymentDate" ).attr( "value", {{ moment().format( "MM/DD/YYYY" ) | stringify }} );
+			$( "#makepayment-paymentDate" ).val( {{ moment().format( "MM/DD/YYYY" ) | stringify }}  );
+
+			$( "#makepayment-manualPaymentDate" ).attr( "value", {{ moment().format( "MM/DD/YYYY" ) | stringify }} );
+			$( "#makepayment-manualPaymentDate" ).val( {{ moment().format( "MM/DD/YYYY" ) | stringify }}  );
+
+			$(".makePaymentDialogBankAccountSection").css("display","none");
+		}else {
+			self.state.useDebitCard = false;
+			{#$( "#makepayment-paymentDate" ).attr( "value", {{ moment(startDate).format( "MM/DD/YYYY" ) | stringify }} );#}
+			{#$( "#makepayment-paymentDate" ).val( {{ moment(startDate).format( "MM/DD/YYYY" ) | stringify }}  );#}
+
+			{#$( "#makepayment-manualPaymentDate" ).attr( "value", {{ moment(startDate).format( "MM/DD/YYYY" ) | stringify }} );#}
+			{#$( "#makepayment-manualPaymentDate" ).val( {{ moment(startDate).format( "MM/DD/YYYY" ) | stringify }}  );#}
+
+			$(".makePaymentDialogBankAccountSection").css("display","block");
+		}
+		self.onEvent( event );
+	} );
+	$("#chkMakePaymentAmendPayOff").on( "change", function( event ) {
+		event.preventDefault();
+		const isAmendPayOffChecked = $( "#chkMakePaymentAmendPayOff" ).is(":checked");
+		if(isAmendPayOffChecked) {
+			self.state.isAmendPayoff = true;
+			$( "#makepayment-amount" ).val( self.payoffPayment );
+		}else {
+			self.state.isAmendPayoff = false;
+			$( "#makepayment-amount" ).val( self.regularPayment );
+		}
+		self.onEvent( event );
+	} );
+
+	$( "#makepayment-form-cancel" ).on( "click", $.proxy( this.reset, this ) );
+	$( "#makepayment-confirm-cancel" ).on( "click", function( event ) {
+		event.stopPropagation();
+		event.preventDefault();
+		$( "#makepayment-content-confirm" ).removeClass( "show" ).addClass( "hide" );
+		$( "#makepayment-content-form" ).removeClass( "hide" ).addClass( "show" );
+		return false;
+	} );
+	$( "#makepayment-btn-regular" ).on( "click", $.proxy( this.selectRegular, this ) );
+	$( "#makepayment-btn-payoff" ).on( "click", $.proxy( this.selectPayoff, this ) );
+	$( "#makepayment-btn-past-due" ).on( "click", $.proxy( this.selectPastDue, this ) );
+	ajaxLoader.load( { container: document.getElementById( "makePaymentLoader" ) } );
+};
+MakePaymentModal.prototype.queueEvent = function( event, callback ) {
+	if( this.renderInProgress ) {
+		this.deferredEvents.push( { event: event, callback: callback } );
+		return;
+	}
+	callback( event );
+};
+MakePaymentModal.prototype.dequeueEvents = function() {
+	var deferredEvents = this.deferredEvents.splice( 0 );
+	this.deferredEvents = [];
+	_.forEach( deferredEvents, function( deferred ) {
+		if( typeof deferred.callback == "function" ) {
+			deferred.callback( deferred.event );
+		}
+	} );
+};
+MakePaymentModal.prototype.onEvent = function( event ) {
+	console.log( moment().format( "HH:mm:ss.SSS" ), "MakePaymentModal.onEvent;", event );
+	var self = this;
+	this.renderInProgress = true;
+	$( "#makepayment-form-submit" ).addClass( "disabled" );
+	// $( "#makepayment-ajaxloader" ).removeClass( "hide" ).addClass( "show" );
+	$( "#makepayment-form-submit-spin" ).removeClass( "hide" ).addClass( "show" );
+	this.updateState();
+	this.renderDebounce( event );
+};
+MakePaymentModal.prototype.formSubmit = function( event ) {
+	console.log( moment().format( "HH:mm:ss.sss" ), "MakePaymentModal.formSubmit;", event );
+	event.stopPropagation();
+	event.preventDefault();
+	this.queueEvent( event, function( event ) {
+		console.log( moment().format( "HH:mm:ss.sss" ), "MakePaymentModal.formSubmit[dequeue];", event );
+		$( "#makepayment-content-form" ).removeClass( "show" ).addClass( "hide" );
+		$( "#makepayment-content-confirm" ).removeClass( "hide" ).addClass( "show" );
+	} );
+};
+MakePaymentModal.prototype.confirmSubmit = function( event ) {
+	showLoadingSpinner();
+	console.log( moment().format( "HH:mm:ss.sss" ), "MakePaymentModal.confirmSubmit;", event );
+	var self = this;
+	event.stopPropagation();
+	event.preventDefault();
+	$( "#makepayment-confirm-submit" ).attr( "disabled", "disabled" );
+	$( "#makepayment-confirm-submit" ).addClass( "disabled" );
+	$( "#makepayment-confirm-submit-spin" ).removeClass( "hide" ).addClass( "show" );
+	this.queueEvent( event, function( event ) {
+		console.log( moment().format( "HH:mm:ss.sss" ), "MakePaymentModal.confirmSubmit[dequeue];", event );
+		this.renderInProgress = true;
+		var serializeForm = $( "#makepayment-form" ).serializeArray();
+		var postData = {};
+		_.forEach( serializeForm, function( formData ) {
+			postData[ formData.name ] = formData.value;
+		} );
+		const excludeFormFees = _.get(postData, "excludeFees",null);
+		const includeLateAccruedInterest = _.get(postData, "includeLateAccruedInterest", null);
+		const isAmendPayment = $("#paymentIsAmend").val().trim() === "true";
+		self.state.isAmendPayment = isAmendPayment;
+		if(isAmendPayment) {
+			const amendData = getSelectedScheduleItem();
+			if(amendData && amendData.index >= 0) {
+				self.state.amendData = amendData;
+			}
+		}
+		self.state.excludeFees = !!excludeFormFees && excludeFormFees.toLowerCase() === "true";
+		self.state.forgiveLateAccruedInterest = !!includeLateAccruedInterest && includeLateAccruedInterest.toLowerCase() === "true";
+		postData.dialogState = self.state;
+		return new Promise( function( resolve, reject ) {
+			$.ajax( {
+				method: "POST",
+				url: "/admin/makepayment/submitPayment",
+				cache: false,
+				dataType: "json",
+				headers: { "Content-Type": "application/json" },
+				processData: false,
+				data: JSON.stringify( postData ),
+				success: function( data ) {
+					console.log( "success:", data );
+					console.log( moment().format( "HH:mm:ss.SSS" ), "MakePaymentModal.confirmSubmit[resolve];" );
+					resolve();
+					window.location.href = window.location.href;
+				},
+				complete: function() {
+					self.renderInProgress = false;
+					$( "#makepayment-confirm-submit-spin" ).removeClass( "show" ).addClass( "hide" );
+					self.dequeueEvents();
+					$( "#makepayment-confirm-submit" ).prop( "disabled", false ).removeAttr( "disabled" ).removeClass( "disabled" );
+					self.updateState();
+					hideLoadingSpinner();
+				},
+				error: function( jqXHR, textStatus, errorThrown ) {
+					console.error( "error:", jqXHR, textStatus, errorThrown );
+					return reject( errorThrown );
+				}
+			} );
+		} );
+	} );
+};
+MakePaymentModal.prototype.reset = function( event ) {
+	console.log( moment().format( "HH:mm:ss.SSS" ), "MakePaymentModal.reset;" );
+	$( "#makepayment-form" )[ 0 ].reset();
+	this.state.isRegularPayment = true;
+	this.state.isPastDuePayment = false;
+	this.state.isPayoffPayment = false;
+	this.state.isPrincipalOnlyPayment = false;
+	this.state.useDebitCard = false;
+	this.state.isAmendPayoff = false;
+	this.state.forgiveLateAccruedInterest = false;
+	this.state.excludeFees = false;
+	this.state.firstPastDueRound = false;
+	$( "#makepayment-paymentDate" ).attr( "value", {{ moment(startDate).format( "MM/DD/YYYY" ) | stringify }} );
+	$( "#makepayment-paymentDate" ).val( {{ moment(startDate).format( "MM/DD/YYYY" ) | stringify }}  );
+
+	$( "#makepayment-manualPaymentDate" ).attr( "value", {{ moment(startDate).format( "MM/DD/YYYY" ) | stringify }} );
+	$( "#makepayment-manualPaymentDate" ).val( {{ moment(startDate).format( "MM/DD/YYYY" ) | stringify }}  );
+
+	$( "#makepayment-amount" ).val( this.regularPayment );
+	$( "#makepayment-form-submit" ).removeAttr( "disabled" );
+	$( "#makepayment-form-submit" ).removeClass( "disabled" );
+	$( "#makepayment-confirm-submit" ).removeAttr( "disabled" );
+	$( "#makepayment-confirm-submit" ).removeClass( "disabled" );
+	$( "#chkMakePaymentForgiveLateAccrued" ).removeAttr("checked");
+	this.updateState( event );
+	this.updateState();
+};
+MakePaymentModal.prototype.updateState = function() {
+	var curVal = $( "#makepayment-amount" ).val();
+	this.state.isRegularPayment = ( curVal == this.regularPayment );
+	this.state.isPayoffPayment = ( curVal == this.payoffPayment);
+	this.state.isPastDuePayment= ( curVal == this.pastDuePayment || (this.state.isPastDuePayment && !this.state.firstPastDueRound) );
+	const isPrincipalOnlyChecked = $("#chkMakePaymentPrincipalOnlyPayment").is(":checked");
+
+	$( ".btn-check-radio" ).removeClass( "active" );
+	if( this.state.isRegularPayment ) {
+		$( "#makepayment-btn-regular" ).addClass( "active" );
+	}
+	if( this.state.isPayoffPayment ) {
+		// this.state.excludeFees = false;
+		$( "#makepayment-btn-payoff" ).addClass( "active" );
+		if(isPrincipalOnlyChecked) {
+			$("#chkMakePaymentPrincipalOnlyPayment").removeAttr("checked");//.trigger("change");
+		}
+		$(".makePaymentPrincipalOnlyPaymentDisclaimer").css("display","none")
+		$("#chkMakePaymentPrincipalOnlyPayment").prop("disabled", true);
+	} else {
+		$("#chkMakePaymentPrincipalOnlyPayment").removeAttr("disabled");
+		if(this.state.isPrincipalOnlyPayment) {
+			if(!isPrincipalOnlyChecked) {
+				$("#chkMakePaymentPrincipalOnlyPayment").prop("checked", true);
+				// $("#chkMakePaymentPrincipalOnlyPayment").trigger("change");
+			}
+			$(".makePaymentPrincipalOnlyPaymentDisclaimer").css("display","block")
+		}else {
+			if(isPrincipalOnlyChecked) {
+				$("#chkMakePaymentPrincipalOnlyPayment").removeAttr("checked");//.trigger("change");
+			}
+			$(".makePaymentPrincipalOnlyPaymentDisclaimer").css("display","none")
+		}
+	}
+	const isUseDebitCardChecked = $( "#chkMakePaymentDebitCardTransaction" ).is(":checked");
+	if(this.state.useDebitCard) {
+		// if(!isUseDebitCardChecked) {
+			$( "#chkMakePaymentDebitCardTransaction" ).prop("checked", true);
+			$(".makePaymentDialogBankAccountSection").css("display","true");
+		// }
+	}else {
+		// if(isUseDebitCardChecked) {
+			$( "#chkMakePaymentDebitCardTransaction" ).removeAttr("checked");
+			$(".makePaymentDialogBankAccountSection").css("display","block");
+		// }
+	}
+	if( this.state.isPastDuePayment ) {
+		$( "#makepayment-btn-past-due" ).addClass( "active" );
+	}
+	if(this.state.isAmendPayoff) {
+		$( "#chkMakePaymentAmendPayOff" ).prop("checked", true);
+		// $( "#makepayment-amount" ).val( self.payoffPayment );
+	}else {
+		$( "#chkMakePaymentAmendPayOff" ).removeAttr("checked");
+	}
+
+};
+MakePaymentModal.prototype.ajaxRenderDialog = function() {
+	showLoadingSpinner();
+	toggleServerError(".makepayment-amount-error");
+	console.log( moment().format( "HH:mm:ss.SSS" ), "MakePaymentModal.ajaxRenderDialog;" );
+	var self = this;
+	$( "#makepayment-submit" ).addClass( "disabled" );
+	this.renderInProgress = true;
+	this.updateState();
+	var serializeForm = $( "#makepayment-form" ).serializeArray();
+	var postData = {};
+	_.forEach( serializeForm, function( formData ) {
+		postData[ formData.name ] = formData.value;
+	} );
+	const isAmendPayment = $("#paymentIsAmend").val().trim() === "true";
+	this.state.isAmendPayment = isAmendPayment;
+	if(isAmendPayment) {
+		const amendData = getSelectedScheduleItem();
+		if(amendData && amendData.index >= 0) {
+			this.state.amendData = amendData;
+		}
+	}
+	const excludeFormFees = _.get(postData, "excludeFees",null);
+	const includeLateAccruedInterest = _.get(postData, "includeLateAccruedInterest", null);
+
+	this.state.excludeFees = !!excludeFormFees && excludeFormFees.toLowerCase() === "true";
+	this.state.forgiveLateAccruedInterest = !!includeLateAccruedInterest && includeLateAccruedInterest.toLowerCase() === "true";
+	postData.dialogState = this.state;
+	return new Promise( function( resolve, reject ) {
+		$.ajax( {
+			method: "POST",
+			url: "/admin/makepayment/renderDialog",
+			cache: false,
+			dataType: "json",
+			headers: { "Content-Type": "application/json" },
+			processData: false,
+			data: JSON.stringify( postData ),
+			success: function( data ) {
+				console.log( "success:", data );
+				self.regularPayment = data.regularPayment;
+				self.payoffPayment = data.payoff;
+				self.pastDuePayment = data.pastDuePayment;
+				self.pastDueForgivenInterestPayment = data.forgivenInterestDue;
+				self.notForgivenInterestDue = data.notForgivenInterestDue;
+				Object.assign( self.state, data.dialogState );
+				$( "#makePaymentModal" ).html( data.dialog );
+				self.init();
+				self.updateState();
+				console.log( moment().format( "HH:mm:ss.SSS" ), "MakePaymentModal.ajaxRenderDialog[resolve]; " + self.pastDuePayment);
+				if(data.errorCode === 502) {
+					toggleMakePaymentServerError(".makepayment-amount-error", data.error);
+				}
+					return resolve();
+			},
+			complete: function() {
+				self.renderInProgress = false;
+				$( "#makepayment-form-submit" ).removeClass( "disabled" );
+				$( "#makepayment-form-submit-spin" ).removeClass( "show" ).addClass( "hide" );
+				self.dequeueEvents();
+				self.updateState();
+				hideLoadingSpinner();
+			},
+			error: function( jqXHR, textStatus, errorThrown ) {
+				console.error( "error:", jqXHR, textStatus, errorThrown );
+				return reject( errorThrown );
+			}
+		} );
+	} );
+};
+MakePaymentModal.prototype.showModal = function( event ) {
+	console.log( moment().format( "HH:mm:ss.SSS" ), "MakePaymentModal.showModal;" );
+	this.ajaxRenderDialog( event )
+	.then( function() {
+
+		$( "#makePaymentModal" ).modal( "show" );
+	} );
+}
+MakePaymentModal.prototype.selectRegular = function( event ) {
+	this.state.isRegularPayment = true;
+	this.state.isPayoffPayment = false;
+	this.state.isPastDuePayment = false;
+	$( "#makepayment-amount" ).val( this.regularPayment );
+	this.updateState( event );
+	// ajaxMakePaymentDebounce( event );
+	this.onEvent( event );
+};
+MakePaymentModal.prototype.selectPayoff = function( event ) {
+	this.state.isRegularPayment = false;
+	this.state.isPayoffPayment = true;
+	this.state.isPastDuePayment = false;
+	$( "#makepayment-amount" ).val( this.payoffPayment );
+	this.updateState( event );
+	// ajaxMakePaymentDebounce( event );
+	this.onEvent( event );
+};
+MakePaymentModal.prototype.selectPastDue = function( event ) {
+	this.state.isRegularPayment = false;
+	this.state.isPayoffPayment = false;
+	this.state.isPastDuePayment = true;
+
+	$("#makepayment-amount").val(this.pastDuePayment).trigger("change");
+	this.updateState( event );
+	// ajaxMakePaymentDebounce( event );
+	this.onEvent( event );
+};
+
+function makePaymentToggleBox( event ) {
+	var $el = $( this );
+	var $input = $( "input", this );
+	if( $input.attr( "value" ) == "0" ) {
+		$input.attr( "value", "1" );
+		$( "i", this ).removeClass( "fa-square-o" ).addClass( "fa-check-square-o" );
+	} else {
+		$input.attr( "value", "0" );
+		$( "i", this ).removeClass( "fa-check-square-o" ).addClass( "fa-square-o" );
+	}
+	// wait 80ms to trigger event to give user visual feedback of checkbox toggle
+	// setTimeout( function() { makePaymentEvent( event ); }, 80 );
+}
+
+function didMakePayment( event ) {
+	showLoadingSpinner();
+	console.log( "didMakePayment();" );
+	$( "#makepayment-submit" ).prop( "disabled", true );
+	// $( "#makepayment-ajaxloader" ).removeClass( "hide" ).addClass( "show" );
+	$.ajax( {
+		method: "POST",
+		url: "/admin/makepayment/postPayment",
+		cache: false,
+		dataType: "json",
+		processData: true,
+		data: $( "#makepayment-form" ).serializeArray(),
+		success: function( data ) {
+			console.log( "success:", data );
+			$( "#makePaymentModal" ).modal( "hide" );
+			window.location.href = window.location.href;
+		},
+		complete: function() {
+			$( "#makepayment-submit" ).prop( "disabled", false );
+			$( "#makepayment-ajaxloader" ).removeClass( "show" ).addClass( "hide" );
+			hideLoadingSpinner();
+		},
+		error: function( jqXHR, textStatus, errorThrown ) {
+			console.error( "error:", jqXHR, textStatus, errorThrown );
+		}
+	} );
+}
+function toggleMakePaymentServerError(selector, message = null) {
+	const selectedElement = $(selector);
+	if(!!message) {
+		selectedElement.html( message ).css( "display", "block" );
+		selectedElement.parent().find("input").addClass("error");
+		$("#makepayment-form-submit").prop("disabled", true);
+	}else {
+		selectedElement.html( "" ).css( "display", "none" );
+		selectedElement.parent().find("input").removeClass("error");
+		$("#makepayment-form-submit").removeAttr("disabled");
+	}
+}
+</script>

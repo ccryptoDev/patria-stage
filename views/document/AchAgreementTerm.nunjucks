@@ -1,0 +1,155 @@
+<style>
+   span {
+   font-size: 14px;
+   line-height: 16px;
+   font-weight: 400;
+   font-weight: normal;
+   color: rgb(34, 34, 34);
+   }
+   h2 {
+   font-weight: 700;
+   position: relative;
+   font-size: 32px;
+   line-height: 35px;
+   color: rgb(34, 34, 34);
+   }
+   p {
+   margin-bottom: 24px;
+   line-height: 16px;
+   text-align: left;
+   }
+   p span {
+   font-weight: 600;
+   }
+   .ach-note {
+   margin: 24px 0;
+   font-weight: bold;
+   }
+   .bank-info {
+   list-style: none;
+   }
+   .bank-info li :not(:last-child) {
+   margin-bottom: 12px;
+   }
+   .bank-info li p {
+   font-weight: 600;
+   }
+   .fields-wrapper {
+   font-size: 14px;
+   font-weight: 600;
+   text-align: left;
+   line-height: 1.5;
+   margin-bottom: 24px;
+   display: flex;
+   column-gap: 16px;
+   }
+   .fields-wrapper .field-wrapper-borrower {
+   width: 60%;
+   }
+   .fields-wrapper .field-wrapper {
+   display: flex;
+   column-gap: 16px;
+   flex-grow: 1;
+   }
+   .fields-wrapper .field-wrapper .field {
+   flex-grow: 1;
+   border-bottom: 1px solid var(--color-grey-light);
+   height: 30px;
+   position: relative;
+   text-align: center;
+   }
+   .fields-wrapper .field-wrapper .label {
+   font-weight: 600;
+   }
+   .fields-wrapper .field-wrapper .field, .fields-wrapper .field-wrapper .label {
+   padding-bottom: 12px;
+   }
+   .fields-wrapper .field-wrapper:first-child {
+   width: 60%;
+   }
+   .fields-wrapper .field-wrapper:first-child .label {
+   min-width: 100px;
+   }
+   .fields-wrapper .field-wrapper .signature-img {
+   position: absolute;
+   bottom: -14px;
+   left: 50%;
+   transform: translateX(-50%);
+   width: 90%;
+   min-width: 130px;
+   max-width: 300px;
+   }
+   .buttons-wrapper button {
+   width: 100%;
+   }
+   @media screen and (max-width: 767px) {
+   .fields-wrapper {
+   flex-wrap: wrap;
+   column-gap: 0;
+   row-gap: 24px;
+   }
+   .fields-wrapper .field-wrapper {
+   width: 100%;
+   align-items: flex-end;
+   }
+   .fields-wrapper .field-wrapper .field, .fields-wrapper .field-wrapper .label {
+   padding-bottom: 12px;
+   }
+   .fields-wrapper .field-wrapper .signature-img {
+   bottom: 0;
+   }
+   }
+   @media screen and (max-width: 560px) {
+   .field-wrapper .label {
+   max-width: 100px;
+   }
+   }
+</style>
+<h2 class="ach-note">ACH AUTHORIZATION</h2>
+<p>
+   You authorize Lender to initiate ACH credit and debit entires to the
+   bank account indicated below for all amounts owing in connection with
+   this Agreement, including without limitation all principal amounts,
+   finance charges, service fees, returned item fees and collection agency
+   fees. This authorization shall remain in full force and effect until
+   Lender has received a written notice of termination from you in such
+   time and manner as to afford Lender a reasonable opportunity to act upon
+   it. Your consent to this authorization is not a condition of Lender’s
+   extension of credit to you.
+</p>
+<ul class="bank-info">
+   <li>
+      <p>Bank name: Chase</p>
+   </li>
+   <li>
+      <p>Transit ABA Number: 101901833</p>
+   </li>
+   <li>
+      <p>Deposit Account Number: 1001001234</p>
+   </li>
+</ul>
+<div class="signaturePlace">
+   <div class="fields-wrapper">
+      <div class="field-wrapper-borrower field-wrapper">
+         <div class="label">Borrower&apos;s signature:</div>
+         <div class="field">
+         </div>
+      </div>
+      <div class="closure-date field-wrapper">
+         <div class="label">Date:</div>
+         <div class="field">{{dateSigned}}</div>
+      </div>
+   </div>
+   <div class="fields-wrapper">
+      <div class="field-wrapper-borrower field-wrapper">
+         <div class="label">Applicant&apos;s signature:</div>
+         <div class="field">
+            <img class="signature-img" src="data:image/png;base64,{{signature}}" alt="signature" />
+         </div>
+         <div class="closure-date field-wrapper">
+            <div class="label">Date:</div>
+            <div class="field">{{dateSigned}}</div>
+         </div>
+      </div>
+   </div>
+</div>

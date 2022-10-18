@@ -1,0 +1,316 @@
+{% extends "layout/layout.nunjucks" %}
+{% block body %}
+  <section class="content-header">
+    <h1>
+      Create Application
+      <small>preview of User</small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="/admin/dashboard"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+      <li><a href="/admin/adminuserlist"><i class="fa fa fa-building"></i>Admin User List</a></li>
+      <li class="active">Add User</li>
+    </ol>
+  </section>
+
+  <section class="content">
+	  <div class="row" id="loaderIdCreateAppCustomerService" style="display:none;">
+		  <div class="" align="center" style="text-align:center;position:fixed;top:0;left:0;right:0;bottom:0;z-index:100;background:rgba(0,0,0,0.7);">
+			  <div style="height:100%;width:100%;background:url('/images/img/ajaxloader.gif') no-repeat center;margin-top:-233px;"></div>
+		  </div>
+	  </div>
+    <div class="box">
+      <div class="box-header with-border">
+	  	{% if (error)  %}
+         <div class="alert alert-danger">
+          {{error}}
+         </div>
+        {% endif %}
+		{% if (error1)  %}
+         <div class="alert alert-danger">
+          {{error1}}
+         </div>
+        {% endif %}
+        <h3 class="box-title">User Information Form </h3>
+      </div>
+      <div class="box-body">
+
+	  	<form name="addNewUserByCustomerServiceForm" id="addNewUserByCustomerService" role="form" method="POST" enctype="multipart/form-data" action="/admin/addNewUserByCustomerService">
+			<input type="hidden" id="sid" name="sid"  />
+			<input type="hidden" id="isTwilioEnabled" name="isTwilioEnabled" value="{{ isTwilioEnabled }}"/>
+			<input type="hidden" id="isPhoneVerified" name="isPhoneVerified"/>
+		  <div class="row">
+
+			<div class="col-md-6  col-sm-12 col-lg-6" >
+				<div class="formdiv" >
+					<!-- <div class="form-group ">
+						<label for="inputTitle">Title: *</label>
+						<br>
+						 <select name="name_title" id="inputTitle" placeholder="" required="" style="width:100%; padding:5px;">
+						   <option value="Mr">Mr</option>
+						   <option value="Mis">Mis</option>
+						 </select>
+					</div> -->
+					<div class="form-group">
+						<label for="inputFirstName">First Name: *</label>
+						<input type="text" class="form-control" id="inputFirstName" placeholder="" value="" name="firstname" required>
+					</div>
+					<div class="form-group">
+						<label for="inputMiddleName">Middle Name:</label>
+						<input type="text" class="form-control" id="inputMiddleName" placeholder="" name="middlename">
+					</div>
+					<div class="form-group">
+						<label for="inputLastName">Last Name: *</label>
+						<input type="text" class="form-control" id="inputLastName" placeholder="" name="lastname" value="" required>
+					</div>
+					<div class="form-group">
+						<label for="inputEmail">Email: *</label>
+						<input type="email" class="form-control" id="inputEmail" placeholder="" name="email" value="" required>
+					</div>
+					<div class="form-group">
+						<label for="inputSocial">Social security number: </label>
+						<input type="text" class="form-control" id="inputSocial" placeholder="" name="ssn_number" >
+					</div>
+					<div class="form-group">
+						<label for="datepicker">Date Of Birth: *</label>
+				        <input type="text" class="form-control date-range-filter" id="datepicker" data-date-format="mm/dd/yyyy" placeholder="" name="dob" autocomplete="off">
+					</div>
+
+					<div class="form-group">
+						<label for="last_name">Practice name: *</label>
+
+								<select class="form-control form-rounded" id="practicemanagement" name="practicemanagement" required >
+								<option selected="true" disabled="disabled">Select practice</option>
+	 							{% for hosp in hospRes %}
+	 							     {% if req.session.adminpracticeID %}
+	 							     	 {% if hosp.id==req.session.adminpracticeID %}
+	 							     	  <option value="{{hosp.id}}" {% if practiceid==hosp.id %} selected  {% endif %}>{{hosp.PracticeName}}</option>
+	 							     	 {% endif %}
+	 							     {% else %}
+	 							     <option value="{{hosp.id}}" {% if practiceid==hosp.id %} selected  {% endif %}>{{hosp.PracticeName}}</option>
+						 			 {% endif %}
+
+								{% endfor %}
+								</select>
+					 </div>
+		  <div class="form-group">
+			  <label for="inputIncomeamount">Monthly Income: *</label>
+			  <input type="text" class="form-control" id="inputIncomeamount" name="incomeamount" autocomplete="off" onkeyup="this.value=this.value.replace(/[^\d]/,'')" />
+		  </div>
+				</div>
+			</div>
+			<div class="col-md-6  col-sm-12 col-lg-6" >
+
+				<div class="form-group">
+						<label for="inputStreet">Street: *</label>
+						<input type="text" class="form-control" id="inputStreet" placeholder="" name="street_name" required>
+				</div>
+
+				<div class="form-group" >
+					<div class="form-group">
+						<label for="inputUnit">Unit/Apartment: </label>
+						<input type="text" class="form-control" id="inputUnit" placeholder="" name="unitApp">
+					</div>
+					<div class="form-group">
+						<label for="inputCity">City: *</label>
+						<input type="text" class="form-control" id="inputCity" placeholder="" name="city" required>
+					</div>
+					<div class="form-group">
+						<label for="inputState">State: *</label><br>
+						 <select name="state" id="inputState" placeholder="" required=""  class="form-control form-rounded" style="width:100%;padding:5px;">
+						 	{% for stateDetails in stateData %}
+							   <option value="{{stateDetails.stateCode}}">{{stateDetails.stateName}}</option>
+							{% endfor %}
+						 </select>
+					</div>
+					<div class="form-group">
+						<label for="inputZip">Zip: *</label>
+						<input type="text" class="form-control" id="inputZip" placeholder="" name="zip_code" required>
+					</div>
+					<div class="form-group">
+						<label for="phone">Telephone: *</label>
+						<input type="text" class="form-control" id="phone" placeholder="" name="phone" maxlength="12" required>
+					</div>
+		  <div class="form-group">
+			  <label for="inputResidenceType">Type of Residence: *</label><br>
+			  <select class="form-control form-rounded" name="residenceType" id="inputResidenceType" required>
+				  <option value="" selected disabled hidden></option>
+				  <option value="own">Own</option>
+				  <option value="rent">Rent</option>
+				  <option value="other">Other</option>
+			  </select>
+		  </div>
+		  <div class="form-group">
+			  <label for="inputHousingExpense">Housing Expense: *</label>
+			  <input type="text" class="form-control" id="inputHousingExpense" name="housingExpense"  value="" autocomplete="off" onkeyup="this.value=this.value.replace(/[^\d]/,'')" required/>
+		  </div>
+				  </div>
+			   </div>
+
+			</div>
+
+			<div class="row">
+				<div class="col-md-12  col-sm-12 col-lg-12" >
+					<input type="hidden" id="acceptConsentHidden" name="acceptConsentHidden" value="" required/>
+				   <div class="checkbox">
+						<label class="ConsentError"> <input type="checkbox" name="acceptconsent1" id="Electronic" value="120" class="Consent"> Consent for Use <a href="javascript:void(0);" style="text-decoration:underline;" onclick="opendocument();">Electronic Records and Signatures</a> </label>
+					</div>
+					 <div class="checkbox">
+						<label class="ConsentError"> <input type="checkbox" name="acceptconsent2" id="CreditAuthorization" value="121" class="Consent">Consent for <a href="javascript:void(0);" style="text-decoration:underline;" onclick="creditpulldocument();">Loan Agreement and Disclosures</a> </label>
+					</div>
+
+					 <div class="checkbox">
+						<label class="ConsentError"> <input type="checkbox" name="acceptconsent3" id="Non-Telemarketing"  value="122" class="Consent">Consent for <a href="javascript:void(0);" style="text-decoration:underline;" onclick="openSmsPolicyModal()">Disbursement and Payment Choice</a></label>
+					</div>
+
+					<div class="checkbox">
+						<label class="ConsentError"> <input type="checkbox" name="acceptconsent4" id="PrivacyPolicy"  value="123" class="Consent"> Privacy <a href="javascript:void(0);" style="text-decoration:underline;" onclick="$('#Privacy').modal('show');">Policy</a> </label>
+					</div>
+
+
+
+					 <!-- <div class="checkbox">
+						<label class="ConsentError"> <input type="checkbox" name="acceptconsent5" id="SoftCreditDisclosure"  value="124" class="Consent"> Pre-Qualification Soft Credit Disclosure</label>
+					</div> -->
+
+					<div id="ConsentErrorres" class="error"></div>
+				</div>
+
+				<div class="col-md-12  col-sm-12 col-lg-12 text-center" >
+					<div class="error-message error" style="display: none;"></div>
+				   <div class="form-group">
+						<button type="button" class="btn btn-primary" onclick="checkIfVerificationNeeded(null, true)">Submit</button>
+					</div>
+				</div>
+			</div>
+
+		</form>
+      </div>
+    </div>
+
+  </section>
+
+
+   	<div id="tcpadocument" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header bg-primary">
+              <button type="button" class="close" data-dismiss="modal" style="color:#FFF; opacity:1;">&times;</button>
+              <h4 class="modal-title" id="storyinfopopupheader">Electronic Records and Signatures</h4>
+            </div>
+            <div class="modal-body bgColorWhite">
+              {# {% include "document/Loan_Agreement_and_Disclosures.nunjucks" %} #}
+			  {% include "document/Electronic_Records_and_Signatures.nunjucks" %}
+            </div>
+            <div class="modal-footer bg-info">
+              <button type="button" data-dismiss="modal" onclick="checkdocstatus();" class="btn btn-primary">Continue</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+	  <div id="creditpulldocument" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header bg-primary">
+              <button type="button" class="close" data-dismiss="modal" style="color:#FFF; opacity:1;">&times;</button>
+              <h4 class="modal-title">Loan Agreement and Disclosures </h4>
+            </div>
+            <div class="modal-body bgColorWhite">
+              {# {% include "document/Authorization_to_Obtain_Credit_Report.nunjucks" %} #}
+			  {% include "document/Loan_Agreement_and_Disclosures.nunjucks" %}
+            </div>
+            <div class="modal-footer bg-info">
+              <button type="button" data-dismiss="modal" onclick="checkdocstatus();" class="btn btn-primary">Continue</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+	   <div id="NonTelemarketingCalls" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header bg-primary">
+              <button type="button" class="close" data-dismiss="modal" style="color:#FFF; opacity:1;">&times;</button>
+              <h4 class="modal-title">Disbursement and Payment Choice </h4>
+            </div>
+            <div class="modal-body bgColorWhite">
+              {# {% include "document/pompeii/tcpa_v1.nunjucks" %} #}
+			  {% include "document/Disbursement_and_Payment_Choice_Authorization.nunjucks" %}
+            </div>
+            <div class="modal-footer bg-info">
+              <button type="button" data-dismiss="modal" onclick="checkdocstatus();" class="btn btn-primary">Continue</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="Privacy" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header bg-primary">
+              <button type="button" class="close" data-dismiss="modal" style="color:#FFF; opacity:1;">&times;</button>
+              <h4 class="modal-title"> Privacy Policy  </h4>
+            </div>
+            <div class="modal-body bgColorWhite">
+              {% include "document/Privacy_Policy.nunjucks" %}
+            </div>
+            <div class="modal-footer bg-info">
+              <button type="button" data-dismiss="modal" onclick="checkdocstatus();" class="btn btn-primary">Continue</button>
+            </div>
+          </div>
+        </div>
+      </div>
+	{% include "twilio/twilioVerificationTemplate.nunjucks" %}
+	<style type="text/css">
+		.mh-modal .btn-application {
+			background-color: #3c8dbc;
+			border-color: #367fa9;
+			color: #fff;
+			border-radius: 3px;
+			-webkit-box-shadow: none;
+			box-shadow: none;
+			/*border: 1px solid transparent;*/
+			display: inline-block;
+			padding: 6px 12px;
+			margin-bottom: 0;
+			font-size: 14px;
+			font-weight: 400;
+			line-height: 1.42857143;
+			text-align: center;
+			white-space: nowrap;
+			vertical-align: middle;
+			-ms-touch-action: manipulation;
+			touch-action: manipulation;
+			cursor: pointer;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			background-image: none;
+		}
+
+	</style>
+	<script>
+		$(document).ready(function() {
+			$("input.Consent").on("change", function() {
+				//$("#ConsentErrorres").css('display', "none");
+				checkIfConsentIsChecked();
+			})
+		});
+		checkIfConsentIsChecked();
+		function checkIfConsentIsChecked() {
+			if($("input.Consent:checked").length === $("input.Consent").length){
+				$("#acceptConsentHidden").val("1");
+				$("#ConsentErrorres").css('display', "none");
+			}else {
+				$("#acceptConsentHidden").val("");
+				$("#ConsentErrorres").css('display', "block");
+			}
+		}
+	</script>
+{% endblock %}

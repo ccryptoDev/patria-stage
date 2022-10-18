@@ -1,0 +1,86 @@
+{% extends "frontend/homev3/newHome.nunjucks" %}
+{% block body %}
+
+<div class="how-title">
+	<div class="how-title-container">
+		<h3>How It Works</h3>
+		<div class="page-track-container">
+			<ul class="page-track">
+				<li>You are here: </li>
+				<li class="home"><a href="/"> Home </a></li>
+				<li class="active"><a href="/how-it-works"> How It Works </a></li>
+		</div>
+	</div>
+</div>
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info how-it-works">
+				<h3>How Your Installment Loan Works</h3>
+				<p>Installment loan lending comprises of a set payment amount and schedule usually over a short time frame. You will have more time at hand to payback your financed loan amount. However, the option to pay back the loan earlier without any penalties charged will also be available.<br><br>The entire lending process includes the following stages.</p>
+				<ul>
+					<li><b>Application</b> - Filling out the application form consumes only a couple of minutes.</li>
+					<li><b>Approval</b> – A prompt lending decision will be issued after screening the application form.</li>
+					<li><b>Funding</b> – If decision for approval is made, you may receive cash by the upcoming working day in your bank account.</li>
+					<li><b>Repayment</b> – You are required to repay your loan within 4 to 12 months.</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>Moving Through The Lending Process</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info how-it-works">
+				<p>Once you are done filling out your application form and you have been approved to move on to the next stage, your loan documents, also known as eDocuments, will be presented to you to review and eSign. Carefully review them before signing.<br><br>After an online application, a friendly phone call is made to all our customers to give them a brief introduction of our company. Also, to make sure that every applicant has absolute knowledge and clarity concerning their approved loans. Via this phone call, we rapidly verify if we have received the accurate information and reveal their loan terms of any available option. Some customers go for a longer pay back period while others may prefer short-term loan. Either way, we strive to be certain that the applicants absolutely understand the loan terms.<br><br>No loan is completed without first speaking and having consent of the customer. We give great significance to your identity and safety. A customer has a right to revoke the loan at any point and they are not bound to accept any loan which, as per their judgment is not suitable for them.<br><br>After confirming all the information supplied by you, we will transfer the funds to your respective bank accounts. With respect to the time when your transaction has been placed, you can either receive the funds on the same or the very next working day. However, you will be offered a range of options and they will be thoroughly explained to you when you will be in contact with us. We eagerly look forward to helping and working with you.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>Repaying Your Loan</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>Our repayment method is quite fast and user friendly as well. We offer you the ability to repay your loan in full at any time you find suitable. You will be required to pay back the principal amount, along with the interest amount accrued up to the date of repayment you requested. You are required to pay back your loan as per the date mentioned in your loan agreement. However, no penalties will be charged if you chose to make prepayment. You just need to give us a call and ask for your pay off balance.<br><br>Late payment or non-payment of your loan may result in additional fees or collection activities, or both. Please review your loan agreement for further information.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>Lending Restrictions Apply</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>We do not offer lending services in every state. However, lending restrictions are applicable depending on the area from which the service has been provided. Kindly, visit About Us to check applicable States we do not lend in.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_7">
+	<div class="section_7_items">
+		<h2>Need To Contact Us?</h2>
+		<a href="/contact" class="button button-apply">Go Here</a>
+	</div>
+</section>
+{% endblock %}

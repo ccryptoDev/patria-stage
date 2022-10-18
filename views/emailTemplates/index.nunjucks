@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width initial-scale=1.0"/>
+    <meta name="x-apple-disable-message-reformatting"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+      .email-body {
+        text-align: justify;
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        max-width: 992px;
+        font-size: 14px;
+        font-family: 'League Spartan', sans-serif;
+      }
+
+      .logo-wrapper {
+        display: flex;
+        justify-content: center;
+      }
+
+      .logo-wrapper img {
+        height: 50px;
+      }
+
+      .footer-logo img {
+        height: 20px;
+      }
+
+      .note-wrapper {
+        padding: 12px;
+        border-radius: 14px;
+        border: 1px solid #eccb88;
+      }
+
+      .note-wrapper p {
+        color: #be881e;
+        margin: 0;
+        font-family: 'League Spartan', sans-serif;
+      }
+
+      table p {
+        margin: 5px 0;
+        font-family: 'League Spartan', sans-serif;
+      }
+    </style>
+    <title>Patria-Lending</title>
+  </head>
+  <body>
+    <div class="email-body">
+      <table>
+        <tr>
+          <td>
+            <div class="logo-wrapper">
+              <img src="{{baseUrl}}/images/logo-patria.png" alt="patria-lending"/>
+            </div>
+            <hr>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            {% include emailTemplate %}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            {% include "emailTemplates/compliance.nunjucks" %}
+          </td>
+        </tr>
+        {% if includesFederalDisclosure %}
+          <tr>
+            <td>
+              <div class="note-wrapper">
+                {% include "emailTemplates/federalDisclosure.nunjucks" %}
+              </div>
+            </td>
+          </tr>
+        {% endif %}
+        <tr>
+          <td>
+            <div class="footer">
+              <hr>
+              <div>Patria Lending,</div>
+              <div>8151 Highway 177,</div>
+              <div>Red Rock, OK 74651-0348</div>
+              <div class="footer-logo">
+                <img src="{{baseUrl}}/images/logo-patria.png" alt="patria-lending"/>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

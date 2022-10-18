@@ -1,0 +1,83 @@
+<h3>Uploaded Documents</h3>
+<form role="form" method="post" enctype="multipart/form-data" action="/admin/uploadDocumentProof" id="desc">
+    <input type="hidden" id="paymentID" name="paymentID" value="{{ paymentManagementId }}">
+    <input type="hidden" id="categoryId" name="category" value="incompleteusers">
+    <input type="hidden" id="screenId" name="screenId" value="{{ screentracking.id }}">
+    <input class="" type="hidden" id="userId" name="userId" value="{{ screentracking.user.id }}">
+    
+    <table class="table table-bordered">
+        <tbody>
+            <div id="docuCheck" style="display:none;">
+                <p>Please select</p>
+            </div>
+            <tr>
+                <th> Document Type </th>
+                <td>
+                    <select name="docutype" id="docutype" required="">
+                        <option value="" >Select Document Type</option>
+                        <option value="{{ documenttype.documenttype1 }}" >{{ documenttype.documenttype1 }}</option>
+                        <option value="{{ documenttype.documenttype2 }}" >{{ documenttype.documenttype2 }}</option>
+                        <option value="{{ documenttype.documenttype3 }}" >{{ documenttype.documenttype3 }}</option>
+                    </select>
+                </td>
+            </tr>
+            <div class="existsdoc">You have already uploaded selected doucment type!!!</div>
+
+            <tr id="docuNameCheck" style="display:none;">
+                <th> Document Name </th>
+                <td><input type="text" class="form-control" id="documentname" name="documentname" style="width:50%;" ></td>
+            </tr>
+            <tr>
+                <th>Document</th>
+                <td>
+                <input  type="file"  id="proofdocument" name="proofdocument" required>
+
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                <button type="submit"  class="btn btn-primary" id="updocs" value="Validate" onclick="Validate();">Submit</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+<div class="container-fluid ">
+    {% if achdocumentDetails.length>0 %}
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="width: 10px">#</th>
+                        <th>Document Type</th>
+                        <th>Document </th>
+                        <th>Underwriter </th>
+                        <th>Created Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set lg = 0 %}
+                    {% for logsdata in  achdocumentDetails %}
+                        {% set lg = lg+1 %}
+                        <tr>
+                            <td>{{ lg }}</td>
+                            <td>{{ logsdata.docname }}</td>
+                            <td>
+                                <a href="{{ logsdata.proofdocument.standardResolution }}" target="_blank">View Document</a>
+                            </td>
+                            {% if logsdata.underwriter != ''%}
+                                <td>{{ logsdata.underwriter }}</td>
+                            {% else %}
+                                <td>user</td>
+                            {% endif %}
+                            <td>{{ logsdata.createdAt }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No document added from system</p>
+    {% endif %}
+</div>

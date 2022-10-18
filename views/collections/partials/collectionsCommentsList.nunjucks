@@ -1,0 +1,127 @@
+    <style type="text/css">
+        #collectionCommentList_table {
+            margin-top: 20px;
+        }
+        .collection-comment-type-filter-label {
+            margin-right: 10px;
+        }
+    </style>
+    <div class="collection-comments-container"  style="margin-top: 40px;">
+        <h4  style="margin-bottom: 20px;">Collection Comments</h4>
+        <table class="table table-striped table-bordered dataTable" id="collectionCommentList_table" width="100%">
+            <thead>
+            <tr>
+                <th style="width: 10px">#</th>
+                <th style="width:20%">User</th>
+                <th>Comment</th>
+                <th>Created Date</th>
+                {% if not collectionCommentTypeVariable or  collectionCommentTypeVariable === "" %}
+                <th>Comment Type</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+    <div class="collection-comment-type-filter-section" style="display: none">
+        <label class="collection-comment-type-filter-label">Type:
+            <select id="collectionCommentTypeFilterSelect" class="form-control input-sm" style="width: 129px;margin-left: 3px;height: 40px;">
+                <option value=""></option>
+                <option value="CHARGEOFF">Charge Off</option>
+                <option value="MAKE_PAYMENT">Make Payment</option>
+                <option value="MODIFY_LOAN">Loan Modification</option>
+                <option value="MOVING_BACK_TO_COLLECTING">Removed from promise to pay</option>
+                <option value="PROMISE_TO_PAY">Promise To Pay</option>
+                <option value="SETTLED">Settle</option>
+
+            </select>
+        </label>
+    </div>
+    <script type="text/javascript">
+		$(document).ready(function() {
+
+			    const collectionCommentType = {{ collectionCommentTypeVariable | stringify if collectionCommentTypeVariable else '' | stringify}};
+			    const collectionCommentPaymentId = {{ paymentmanagementdata.id | stringify if paymentmanagementdata.id else '' | stringify }};
+				const tableElement = $( "#collectionCommentList_table");
+				if ( $.fn.DataTable.isDataTable( tableElement ) ) {
+					tableElement.DataTable().destroy();
+					tableElement.find("tbody").empty();
+				}
+				const collectionCommentTypeDisplay = {
+					PROMISE_TO_PAY: "Promise To Pay",
+					CHARGEOFF: "Charge Off",
+					SETTLED: "Settle",
+					MOVING_BACK_TO_COLLECTING:"Removed from promise to pay",
+					MODIFY_LOAN: "Loan Modification",
+					MAKE_PAYMENT: "Make Payment",
+					BANKRUPTCY: "Bankruptcy"
+				};
+				const columnDataType = {
+					"loopId": "ignore",
+                    "createdAt": "datetime"
+				};
+				const uTable = tableElement.DataTable( {
+					initComplete: function(settings, json) {
+                        $(".collection-comments-container .dataTables_filter").prepend($(".collection-comment-type-filter-section .collection-comment-type-filter-label").clone())
+					},
+					processing: true,
+					serverSide: true,
+					destroy: true,
+					language: {
+						loadingRecords: "Please wait - loading..."
+					},
+					paging: true,
+					pagingType: "full_numbers",
+					ajax: {
+						url: "/admin/ajaxGetCollectionComments/" + collectionCommentPaymentId + (!!collectionCommentType? "/" + collectionCommentType: ""),
+						data: function ( d ) {
+							_.forEach(d.columns, (col) => {
+								const columnType = columnDataType[col.data];
+								col["dataType"] = columnType;
+								d["commentTypeFilter"] = $("#collectionCommentTypeFilterSelect").val();
+								// if(col.data === "contactInfoHtml") {
+								// 	col["orderByField"] = columnType[2];
+								// }
+								// if(["currentlyAssignedUser","missedPayments","appAndLoanReference","mostRecentPayment"].indexOf(col.data) >=0) {
+								// 	col["orderByField"] = columnType[0];
+								// }
+								// d["dpdFilter"] = $("#pastDueFilterSelect").val();
+							})
+						}
+					},
+					order: [ [ 3, 'asc' ] ],
+					lengthMenu: [ [ 10, 25, 50, 100 ], [ 10, 25, 50, 100 ] ],
+					pageLength: 10,
+					columns: [
+						{ data: "loopId", orderable: false, searchable: false},
+						{ data: "lastModifiedBy.email"},
+						{ data: "comment"},
+						{data: "createdAt"}
+                        {% if not collectionCommentTypeVariable or  collectionCommentTypeVariable === "" %}
+                            ,{ data: "collectionsCommentType",
+                                render: function ( data, type, row, meta ) {
+                                    return collectionCommentTypeDisplay[data] || "--";
+                                }
+                            }
+                        {% endif %}
+					]
+				} );
+
+				$( '#collectionCommentList_table_filter input' ).off("keyup keypress input").on( 'keyup', function( e ) {
+					if(this.value.length > 3 === 0) {
+						uTable.search( this.value ).draw();
+					}
+				} );
+
+				tableElement.parent().addClass( 'table-responsive' );
+
+				$(".collection-comments-container").on("change","#collectionCommentTypeFilterSelect", function() {
+					    uTable.draw();
+                });
+
+		});
+
+    </script>
+

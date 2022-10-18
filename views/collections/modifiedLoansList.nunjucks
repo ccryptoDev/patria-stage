@@ -1,0 +1,224 @@
+{% extends "layout/layout.nunjucks" %}
+{% block body %}
+    <section class="content-header">
+        <h1>
+            Modified Loan Details
+            <small>preview of Modified Loan Details</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="/admin/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li class="active">Modified Loan Details</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Modified Loan Details Table</h3>
+            </div>
+            <div class="box-body">
+                {% if (approveerror)  %}
+                    <div class="alert alert-danger">
+                        {{approveerror}}
+                    </div>
+                    <br>
+                {% endif %}
+                {% if (approvesuccess)  %}
+                    <div class="alert alert-success">
+                        {{approvesuccess}}
+                    </div>
+                    <br>
+                {% endif %}
+                {% if (newLoanupdateMsg)  %}
+                    <div class="alert alert-danger">
+                        <a href="#" class="close" data-dismiss="alert">&times;</a>
+                        {{newLoanupdateMsg}}
+                    </div>
+                    <br>
+                {% endif %}
+
+                {% if (newLoanupdateSuccessMsg)  %}
+                    <div class="alert alert-success">
+                        <a href="#" class="close" data-dismiss="alert">&times;</a>
+                        {{newLoanupdateSuccessMsg}}
+                    </div>
+                    <br>
+                {% endif %}
+                <div class="container-fluid">
+                    <table class="table table-striped table-bordered  dataTable" id="modifiedLoansList_table">
+                        <thead>
+                        <tr>
+                            <th style="width: 10px">#</th>
+                            <th>App & Loan Reference</th>
+                            <th>Personal Info</th>
+                            <th>Modified Principal</th>
+                            <th>Modified Interest</th>
+                            <th>Accrued Interest</th>
+                            <th>Adjusted Payment</th>
+                            <th>Remaining Balance</th>
+                            <th>Loan Start Date</th>
+                            <th>Loan Modified Date</th>
+                            <th>Loan Modified By</th>
+                            <th>In Collections?</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- datatable column templates -->
+    <div class="contactInfoDataTableColumn" style="display: none;">
+        <div class="flex-box-table-col">
+            <div class="flex-box-table-row flex-box-item name-container">
+                <span class="userData-firstname" style="font-weight: bold"></span>&nbsp;<span class="userData-lastname" style="font-weight: bold"></span>
+            </div>
+            <div class="flex-box-table-row flex-box-item email-container">
+                <div class="flex-box-item userData-email"><span></span></div>
+            </div>
+            <div class="flex-box-table-row flex-box-item phone-container">
+                <div class="flex-box-item userData-phoneNumber"><span></span></div>
+            </div>
+        </div>
+    </div>
+    <div class="appAndLoanReferenceDisplayContainer" style="display: none;">
+        <div class="app-reference-container"></div>
+        <div class="loan-reference-container"><span></span></div>
+    </div>
+    <script type="text/javascript">
+		$(document).ready(function() {
+			const tableElement = $( "#modifiedLoansList_table" );
+			if ( $.fn.DataTable.isDataTable( tableElement ) ) {
+				tableElement.DataTable().destroy();
+				tableElement.find("tbody").empty();
+			}
+			const columnDataType = {
+				"loopId": "ignore",
+				"appAndLoanReference":[
+					{data: "screenTrackingData.applicationReference",dataType:"string"},
+					{data: "loanReference",dataType:"string"},
+				],
+				"contactInfoHtml": [
+					{data: "userData.lastname",dataType:null},
+					{data: "userData.firstname",dataType:null},
+					{data: "userData.email",dataType:null},
+					{data: "userData.phoneNumber",dataType:"phone"},
+					{data: "isInBankruptcy",dataType:null},
+				],
+				"modifiedBeginningPrincipal": "currency",
+				"customModifiedInterest": [
+					{data: "modifiedInterestAmount",dataType:"currency"},
+					{data: "excludeInterest",dataType:null},
+                ],
+				"customAccruedInterest": [
+					{data: "accruedInterest",dataType:"currency"},
+					{data: "forgiveAccruedInterest",dataType:null},
+                ],
+                "adjustedPayment": "currency",
+				"finalpayoffAmount": "currency",
+				"loanSetdate": "date",
+				"lastLoanModificationCreatedDate": "datetime",
+			};
+			const uTable = tableElement.DataTable( {
+				processing: true,
+				serverSide: true,
+				destroy: true,
+				language: {
+					loadingRecords: "Please wait - loading..."
+				},
+				paging: true,
+				pagingType: "full_numbers",
+				ajax: {
+					url:"/admin/ajaxGetModifiedLoansList",
+					data: function ( d ) {
+						_.forEach(d.columns, (col) => {
+							const columnType = columnDataType[col.data];
+							col["dataType"] = columnType;
+							if(["appAndLoanReference","customModifiedInterest","customAccruedInterest", "contactInfoHtml"].indexOf(col.data) >= 0) {
+								col["orderByField"] = columnType[0];
+							}
+						})
+					}
+				},
+				order: [ [ 9, 'asc' ] ],
+				lengthMenu: [ [ 10, 25, 50, 100 ], [ 10, 25, 50, 100 ] ],
+				pageLength: 10,
+				columns: [
+					{ data: "loopId", orderable: false, searchable: false},
+					{ data: "appAndLoanReference",
+						render: function ( data, type, row, meta ) {
+							const htmlContainer = $(".appAndLoanReferenceDisplayContainer").clone();
+							htmlContainer.find(".app-reference-container").html(renderForPaymentLinkColumn(_.get(row,"screenTrackingData.applicationReference","--"),"",row,null));
+							htmlContainer.find(".loan-reference-container span").html(row["loanReference"]);
+							return htmlContainer.html();
+						}
+					},
+					// { data: "loanReference", render: renderForPaymentLinkColumn},
+					{ data: "contactInfoHtml",
+						render: function ( data, type, row, meta ) {
+							const props = _.map(columnDataType.contactInfoHtml,(columnType) => {
+								if(columnType.data.startsWith("userData")) {
+									return columnType.data
+								}
+							});
+							const colHtmlDiv = $(".contactInfoDataTableColumn").clone();
+							_.forEach(props,(prop) => {
+								if(prop) {
+									colHtmlDiv.find( "." + prop.replace( new RegExp( "\\.", 'g' ), "-" ) ).html( _.get( row, prop, "" ) )
+								}
+							});
+							const isInBankruptcy = _.get(row,"isInBankruptcy","false");
+							if(!!isInBankruptcy && isInBankruptcy.toString().toLowerCase() === "true") {
+								colHtmlDiv.find(".contactInfo-isInBankruptcy").css("display","inline");
+							}
+							colHtmlDiv.css("display", "block");
+							return colHtmlDiv.html();
+						}
+					},
+					{ data: "modifiedBeginningPrincipal"},
+					{ data: "customModifiedInterest",render: function ( data, type, row, meta ) {
+						        const modifiedInterestAmount = _.get(row,"modifiedInterestAmount","");
+							const excludeInterest = _.get(row,"excludeInterest","false").toString().toLowerCase() === "true";
+							if((!modifiedInterestAmount || modifiedInterestAmount.replace(/[\$\s,\-]/g, "") === "") && !excludeInterest) {
+								return "--";
+							}
+							if(excludeInterest) {
+								return "$0 (Excluded)";
+							}
+							return modifiedInterestAmount;
+						}},
+					{ data: "customAccruedInterest",render: function ( data, type, row, meta ) {
+							const accruedInterest = _.get(row,"accruedInterest","");
+							const forgiveAccruedInterest = _.get(row,"forgiveAccruedInterest","false").toString().toLowerCase() === "true";
+							if((!accruedInterest || accruedInterest.replace(/[\$\s,\-]/g, "") === "") && !forgiveAccruedInterest) {
+								return "--";
+							}
+							if(forgiveAccruedInterest) {
+								return "$0 (Forgiven)";
+							}
+							return accruedInterest;
+						}},
+					{ data: "adjustedPayment"},
+					{ data: "finalpayoffAmount"},
+					{ data: "loanSetdate"},
+					{ data: "lastLoanModificationCreatedDate"},
+					{ data: "lastLoanModificationCreatedByData.email"},
+					{ data: "isInCollections", render: function ( data, type, row, meta ) {
+                        return data && data.toString().toLowerCase() === "true"?"Yes": "No"
+					}}
+				]
+			} );
+
+			$( '#modifiedLoansList_table_filter input' ).off("keyup keypress input").on( 'keyup', function( e ) {
+				if(this.value.length > 3 === 0) {
+					uTable.search( this.value ).draw();
+				}
+			} );
+			tableElement.parent().addClass( 'table-responsive' );
+		});
+		function renderForPaymentLinkColumn(data, type, row, meta) {
+			return $("<a></a>").attr("href", "/admin/getAchUserDetails/" + row["id"]).html(data)[0].outerHTML;
+		}
+    </script>
+{% endblock %}

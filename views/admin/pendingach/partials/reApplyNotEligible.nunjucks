@@ -1,0 +1,4 @@
+{% extends "layout/layout.nunjucks" %}
+{% block body %}
+<h1>Not eligible for re-apply</h1>
+{% endblock %}

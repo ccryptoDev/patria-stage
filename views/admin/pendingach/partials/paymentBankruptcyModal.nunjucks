@@ -1,0 +1,380 @@
+<style type="text/css">
+    .modal-reason-container textarea {
+        width: 100%;
+        height: 75px;
+        /*display: block;*/
+        /*height: 100px;*/
+    }
+    #bankruptcyCollectionModal .bankruptcy-discharge-section{
+        margin-bottom: 25px;
+    }
+    #bankruptcyCollectionModal .bankruptcy-discharge-section .flex-box-item.header-item {
+        flex: 0 0 120px;
+        align-self: center;
+    }
+    #bankruptcyCollectionModal .bankruptcy-lawyer-wrapper {
+        margin-bottom: 30px;
+    }
+    #bankruptcyCollectionModal .bankruptcy-lawyer-section {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    #bankruptcyCollectionModal .bankruptcy-discharge-section #txtBankruptcyDischargeDate, #bankruptcyCollectionModal .bankruptcy-discharge-section #ddBankruptcyTypes {
+        width: 200px;
+        margin: 0;
+    }
+    #bankruptcyCollectionModal .bankruptcy-lawyer-section input[type=text], #bankruptcyCollectionModal .bankruptcy-lawyer-section select {
+        margin: 0;
+        width: 100%;
+        min-width: unset !important;
+    }
+    #bankruptcyCollectionModal .bankruptcy-lawyer-section .flex-box-item.header-item {
+        padding-top: 0;
+        padding-bottom: 0;
+        flex: 0 0 20px;
+    }
+    #bankruptcyCollectionModal .bankruptcy-lawyer-section .flex-box-item.value-item {
+        padding-top: 0;
+    }
+    #bankruptcyCollectionModal .bankruptcy-lawyer-address-section {
+
+    }
+    #bankruptcyCollectionModal .bankruptcy-lawyer-address-section .bankruptcy-lawyer-section {
+        flex: 1 1 33.333%;
+    }
+</style>
+<!-- Bankruptcy Modal -->
+<div id="bankruptcyCollectionModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content" style="float: left;width: 100%;">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Bankruptcy</h4>
+            </div>
+            <div class="modal-body bgColorWhite" style="float: left;width: 100%;">
+                <form id="frmCollectionsBankruptcy">
+                    <div class="flex-box-table-row bankruptcy-discharge-section">
+                        <div class="flex-box-item header-item">
+                            <label for="txtBankruptcyDischargeDate">Discharge Date:</label>
+                        </div>
+                        <div class="flex-box-item value-item">
+                            <input type="text" id="txtBankruptcyDischargeDate" class="form-control" name="dischargeDate" value="02-08-2020"/>
+                        </div>
+                    </div>
+                    <div class="flex-box-table-row bankruptcy-discharge-section">
+                        <div class="flex-box-item header-item">
+                            <label for="ddBankruptcyTypes">Bankruptcy Type:</label>
+                        </div>
+                        <div class="flex-box-item value-item">
+                            <select id="ddBankruptcyTypes" class="form-control" name="bankruptcyType">
+                                <option disabled value="">Select a type </option>
+                                <option value="7">Chapter 7</option>
+                                <option value="9">Chapter 9</option>
+                                <option value="11">Chapter 11</option>
+                                <option value="12">Chapter 12</option>
+                                <option selected value="13">Chapter 13</option>
+                                <option value="15">Chapter 15</option>
+                            </select>
+                        </div>
+                    </div>
+                    <h4 style="margin-bottom: 20px">Lawyer Contact Information</h4>
+                    <div class="bankruptcy-lawyer-wrapper">
+                        <div class="flex-box-table-col bankruptcy-lawyer-section">
+                            <div class="flex-box-item header-item">
+                                <label for="txtBankruptcyLawyerFirm">Law Firm (optional):</label>
+                            </div>
+                            <div class="flex-box-item value-item">
+                                <input type="text" id="txtBankruptcyLawyerFirm" class="form-control" value="test firm" name="lawyerFirm"/>
+                            </div>
+                        </div>
+                        <div class="flex-box-table-row">
+                            <div class="flex-box-table-col bankruptcy-lawyer-section flex-box-item">
+                                <div class="flex-box-item header-item">
+                                    <label for="txtBankruptcyLawyerName">Name:</label>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <input type="text" id="txtBankruptcyLawyerName" class="form-control" value="My Lawyer Name test" name="lawyerName"/>
+                                </div>
+                            </div>
+                            <div class="flex-box-table-col bankruptcy-lawyer-section flex-box-item" style="flex: 0 0 210px;">
+                                <div class="flex-box-item header-item">
+                                    <label for="txtBankruptcyLawyerPhone">Phone:</label>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <input type="text" id="txtBankruptcyLawyerPhone" class="form-control" name="lawyerPhone" value="6568584741"/>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="flex-box-table-col bankruptcy-lawyer-section">
+                            <div class="flex-box-item header-item">
+                                <label for="txtBankruptcyLawyerAddress">Address:</label>
+                            </div>
+                            <div class="flex-box-item value-item">
+                                <input type="text" id="txtBankruptcyLawyerAddress" class="form-control" name="lawyerAddress" value="223 S St"/>
+                            </div>
+                        </div>
+                        <div class="flex-box-table-row bankruptcy-lawyer-address-section">
+                            <div class="flex-box-table-col bankruptcy-lawyer-section flex-box-item">
+                                <div class="flex-box-item header-item">
+                                    <label for="txtBankruptcyLawyerCity">City:</label>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <input type="text" id="txtBankruptcyLawyerCity" class="form-control" value="Pleasant Grove" name="lawyerCity"/>
+                                </div>
+                            </div>
+                            <div class="flex-box-table-col bankruptcy-lawyer-section flex-box-item">
+                                <div class="flex-box-item header-item">
+                                    <label for="ddBankruptcyLawyerState">State:</label>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <select class="form-control" id="ddBankruptcyLawyerState" name="lawyerState">
+                                        <option selected value="GA">Georgia</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="flex-box-table-col bankruptcy-lawyer-section flex-box-item">
+                                <div class="flex-box-item header-item">
+                                    <label for="txtBankruptcyLawyerZip">Zip:</label>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <input type="text" id="txtBankruptcyLawyerZip" class="form-control" name="lawyerZip" value="84602"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                {#                <form id="frmCollectionsBankruptcy">#}
+                {#                    <div class="flex-box-table-row bankruptcy-discharge-section">#}
+                {#                        <div class="flex-box-item header-item">#}
+                {#                            <label for="txtBankruptcyDischargeDate">Discharge Date:</label>#}
+                {#                        </div>#}
+                {#                        <div class="flex-box-item value-item">#}
+                {#                            <input type="text" id="txtBankruptcyDischargeDate" class="form-control" name="dischargeDate"/>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                <div class="flex-box-table-row bankruptcy-discharge-section">#}
+                {#                    <div class="flex-box-item header-item">#}
+                {#                        <label for="ddBankruptcyTypes">Bankruptcy Type:</label>#}
+                {#                    </div>#}
+                {#                    <div class="flex-box-item value-item">#}
+                {#                        <select id="ddBankruptcyTypes" class="form-control" name="bankruptcyType">#}
+                {#                            <option disabled selected value="">Select a type </option>#}
+                {#                            <option value="7">Chapter 7</option>#}
+                {#                            <option value="9">Chapter 9</option>#}
+                {#                            <option value="11">Chapter 11</option>#}
+                {#                            <option value="12">Chapter 12</option>#}
+                {#                            <option value="13">Chapter 13</option>#}
+                {#                            <option value="15">Chapter 15</option>#}
+                {#                        </select>#}
+                {#                    </div>#}
+                {#                </div>#}
+                {#                    <h4 style="margin-bottom: 20px">Lawyer Contact Information</h4>#}
+                {#                    <div class="bankruptcy-lawyer-wrapper">#}
+                {#                        <div class="flex-box-table-col bankruptcy-lawyer-section">#}
+                {#                            <div class="flex-box-item header-item">#}
+                {#                                <label for="txtBankruptcyLawyerFirm">Law Firm (optional):</label>#}
+                {#                            </div>#}
+                {#                            <div class="flex-box-item value-item">#}
+                {#                                <input type="text" id="txtBankruptcyLawyerFirm" class="form-control" name="lawyerFirm"/>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                        <div class="flex-box-table-row">#}
+                {#                            <div class="flex-box-table-col bankruptcy-lawyer-section flex-box-item">#}
+                {#                                <div class="flex-box-item header-item">#}
+                {#                                    <label for="txtBankruptcyLawyerName">Name:</label>#}
+                {#                                </div>#}
+                {#                                <div class="flex-box-item value-item">#}
+                {#                                    <input type="text" id="txtBankruptcyLawyerName" class="form-control" name="lawyerName"/>#}
+                {#                                </div>#}
+                {#                            </div>#}
+                {#                            <div class="flex-box-table-col bankruptcy-lawyer-section flex-box-item" style="flex: 0 0 210px;">#}
+                {#                                <div class="flex-box-item header-item">#}
+                {#                                    <label for="txtBankruptcyLawyerPhone">Phone:</label>#}
+                {#                                </div>#}
+                {#                                <div class="flex-box-item value-item">#}
+                {#                                    <input type="text" id="txtBankruptcyLawyerPhone" class="form-control" name="lawyerPhone"/>#}
+                {#                                </div>#}
+                {#                            </div>#}
+
+                {#                        </div>#}
+
+                {#                        <div class="flex-box-table-col bankruptcy-lawyer-section">#}
+                {#                            <div class="flex-box-item header-item">#}
+                {#                                <label for="txtBankruptcyLawyerAddress">Address:</label>#}
+                {#                            </div>#}
+                {#                            <div class="flex-box-item value-item">#}
+                {#                                <input type="text" id="txtBankruptcyLawyerAddress" class="form-control" name="lawyerAddress"/>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                        <div class="flex-box-table-row bankruptcy-lawyer-address-section">#}
+                {#                            <div class="flex-box-table-col bankruptcy-lawyer-section flex-box-item">#}
+                {#                                <div class="flex-box-item header-item">#}
+                {#                                    <label for="txtBankruptcyLawyerCity">City:</label>#}
+                {#                                </div>#}
+                {#                                <div class="flex-box-item value-item">#}
+                {#                                    <input type="text" id="txtBankruptcyLawyerCity" class="form-control" name="lawyerCity"/>#}
+                {#                                </div>#}
+                {#                            </div>#}
+                {#                            <div class="flex-box-table-col bankruptcy-lawyer-section flex-box-item">#}
+                {#                                <div class="flex-box-item header-item">#}
+                {#                                    <label for="ddBankruptcyLawyerState">State:</label>#}
+                {#                                </div>#}
+                {#                                <div class="flex-box-item value-item">#}
+                {#                                    <select class="form-control" id="ddBankruptcyLawyerState" name="lawyerState">#}
+                {#                                        <option disabled selected value="">Choose a state</option>#}
+                {#                                    </select>#}
+                {#                                </div>#}
+                {#                            </div>#}
+                {#                            <div class="flex-box-table-col bankruptcy-lawyer-section flex-box-item">#}
+                {#                                <div class="flex-box-item header-item">#}
+                {#                                    <label for="txtBankruptcyLawyerZip">Zip:</label>#}
+                {#                                </div>#}
+                {#                                <div class="flex-box-item value-item">#}
+                {#                                    <input type="text" id="txtBankruptcyLawyerZip" class="form-control" name="lawyerZip"/>#}
+                {#                                </div>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                </form>#}
+                <div class="bankruptcy-collection-input-section modal-reason-container">
+                    <label for="txtBankruptcyCollectionReason">Please enter a comment: </label>
+                    <textarea class="form-control" id="txtBankruptcyCollectionReason" name="bankruptcyCollectionReason" >my test reason</textarea>
+                    <label class="bankruptcyCollectionReason-error error" style="display: none;"></label>
+                </div>
+                <label class="bankruptcy-collection-server-error error" style="display: none;margin-top:10px;"></label>
+
+            </div>
+            <br>
+            <div class="modal-footer bg-info" style="float: left;width: 100%;">
+                <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+                <input type="button"  class="btn btn-primary bankruptcy-collection-confirm-button" value="Save"  id="btnSaveBankruptcyDischarge" >
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Bankruptcy Modal -->
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		setupBankruptcyModalEvents();
+	});
+	function toggleBankruptcyModal(isShow) {
+		const chargeOffModal = $("#bankruptcyCollectionModal");
+		chargeOffModal.modal(isShow?"show": "hide");
+	}
+	function setupBankruptcyModalEvents() {
+		const bankruptcyModal = $("#bankruptcyCollectionModal");
+		$.validator.addMethod('atLeastMin', function (value, el, param) {
+			return value.length >= param;
+		});
+		$("#frmCollectionsBankruptcy").validate({
+			rules: {
+				"dischargeDate": { required: true },
+				"lawyerFirm": { required: true },
+				"lawyerName": { required: true },
+				"lawyerPhone": { required: true, verifyPhoneNumber: true },
+				"lawyerAddress": { required: true },
+				"lawyerCity": { required: true },
+				"lawyerState": { required: true },
+				"lawyerZip": { required: true, atLeastMin: 5 },
+				"bankruptcyType": {required: true}
+			},
+			messages: {
+				"dischargeDate": { required: "Please enter a discharge date" },
+				"lawyerFirm": { required: "Please enter a firm (optional)" },
+				"lawyerName": { required: "Please enter a name" },
+				"lawyerPhone": { required: "Please enter a phone number", verifyPhoneNumber: "Please enter a valid phone number" },
+				"lawyerAddress": { required: "Please enter a address" },
+				"lawyerCity": { required: "Please enter a city" },
+				"lawyerState": { required: "Please select a state" },
+				"lawyerZip": { required: "Please enter a zipcode",atLeastMin: "Please enter a valid zipcode" },
+				"bankruptcyType": { required: "Please select a bankruptcy type" },
+			},
+		});
+
+		bankruptcyModal.find("#txtBankruptcyDischargeDate").datepicker({
+			dateFormat: "mm-dd-yy",
+		});
+
+		bankruptcyModal.on("hidden.bs.modal", function(e) {
+			toggleServerError(".bankruptcy-collection-server-error");
+			toggleServerError(".bankruptcyCollectionReason-error");
+			$("#txtBankruptcyCollectionReason").removeClass("error").val("");
+		});
+		bankruptcyModal.on("show.bs.modal", function(e) {
+			ajaxGet("/admin/getStates").then(function(states) {
+				const stateDropDown = bankruptcyModal.find("#ddBankruptcyLawyerState");
+				_.forEach(states, function(state) {
+					stateDropDown.append($("<option></option>").val(state.stateCode).html(state.stateName));
+				})
+			}, function(xhr) {
+				const errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : "There was an unknown error that occurred.";
+				console.error("An error had occurred: " + errorMessage);
+				toggleServerError(".bankruptcy-collection-server-error", errorMessage);
+			})
+		});
+		bankruptcyModal.find("#txtBankruptcyLawyerPhone").on("keyup paste drop", function(){
+			$(this).val(formatUSPhoneNumber($(this).val()));
+		});
+
+		bankruptcyModal.find("#txtBankruptcyLawyerZip").on("keyup paste drop", function(){
+			$(this).val(formatUSZipCode($(this).val()));
+		});
+		bankruptcyModal.find("input, select").on("change input", function(e){
+			$(this).valid();
+		});
+
+		$("#btnSaveBankruptcyDischarge").on("click", function() {
+			const confirmReason = $("#txtBankruptcyCollectionReason").val();
+			toggleServerError(".bankruptcyCollectionReason-error");
+			if(!confirmReason) {
+				$("#txtBankruptcyCollectionReason").addClass("error");
+				toggleServerError(".bankruptcyCollectionReason-error","Please enter an explanation");
+			}else {
+				$("#txtBankruptcyCollectionReason").removeClass("error");
+				toggleServerError(".bankruptcyCollectionReason-error");
+			}
+			if($("#frmCollectionsBankruptcy").valid() && !!confirmReason){
+				console.error("submitting bankruptcy workflow: " + JSON.stringify({confirmReason:confirmReason, paymentId: {{ paymentmanagementdata.id | stringify if paymentmanagementdata and paymentmanagementdata.id else '' | stringify}}, bankruptcy:convertFormDataToJson("#frmCollectionsBankruptcy")}));
+				sendPaymentBankruptcyUpdate("/admin/ajaxUpdatePaymentBankruptcy", {confirmReason:confirmReason, paymentId: {{ paymentmanagementdata.id | stringify if paymentmanagementdata and paymentmanagementdata.id else '' | stringify}}, bankruptcy:convertFormDataToJson("#frmCollectionsBankruptcy")},"/admin/showAllBankruptcies", ".bankruptcy-collection-server-error");
+			}
+		});
+		$("#txtBankruptcyCollectionReason").on("change input", function() {
+			if(!!$(this).val()) {
+				$("#txtBankruptcyCollectionReason").removeClass("error");
+				toggleServerError(".bankruptcyCollectionReason-error");
+			}
+		})
+	}
+
+	function sendPaymentBankruptcyUpdate(url, data, redirectTo, errorSelector, jqueryAjaxContentType="json") {
+		const deferred = $.Deferred();
+		if(!!url && data) {
+			toggleServerError(errorSelector);
+			ajaxPost(url,data,jqueryAjaxContentType).then(function(results) {
+				if(results) {
+					if(!!redirectTo) {
+						window.location.href=redirectTo
+					}
+					deferred.resolve(results);
+				}else {
+					const noResponseError = "There was an unknown error that occurred.";
+					if(!!errorSelector) {
+						toggleServerError( errorSelector, noResponseError)
+					}
+					deferred.reject({message: noResponseError})
+				}
+			}, function(xhr) {
+				const errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : "There was an unknown error that occurred.";
+				if(!!errorSelector) {
+					toggleServerError( errorSelector, errorMessage )
+				}else {
+					console.error("An error had occurred: " + errorMessage);
+				}
+			})
+		}
+		return deferred
+	}
+</script>

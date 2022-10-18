@@ -1,0 +1,119 @@
+.section-start-application-form {
+  &-container {
+    background: #fff;
+    padding: 3.6rem;
+    border-radius: 1.4rem;
+  }
+
+  &-wrapper {
+    form {
+      display: flex;
+      flex-direction: column;
+      row-gap: 2.4rem;
+      & h2 {
+        color: var(--color-main-2);
+      }
+
+      & .terms-wrapper {
+        font-size: 12px;
+      }
+    }
+  }
+  // LOAN FIELDS
+  &-loan-fields-wrapper {
+    display: flex;
+
+    & #loanAmount-wrapper {
+      position: relative;
+      &:before {
+        position: absolute;
+        content: "$";
+        color: var(--color-blue-1);
+        font-weight: 600;
+        top: 50%;
+        left: 1.6rem;
+        transform: translateY(-50%);
+      }
+
+      #loanAmount {
+        padding-left: 3rem;
+      }
+    }
+
+    & input,
+    & select {
+      height: 5.6rem;
+      box-sizing: border-box;
+      width: 24.6rem;
+    }
+    & input {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-right: none;
+    }
+
+    & select {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  //   PERSONAL FIELD
+  &-personal-fields-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1.2rem;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .section-start-application {
+    height: auto;
+
+    &-wrapper {
+      align-items: start;
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .section-start-application {
+    &-wrapper {
+      align-items: center;
+    }
+
+    &-text-container {
+      max-width: 100%;
+    }
+  }
+  .section-start-application-form-loan-fields-wrapper input,
+  .section-start-application-form-loan-fields-wrapper select {
+    height: auto;
+    width: 100%;
+  }
+  .section-start-application-form-loan-fields-wrapper
+    #loanAmount-wrapper
+    #loanAmount {
+    padding-left: 3.6rem;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .section-start-application-form {
+    &-loan-fields-wrapper,
+    &-personal-fields-wrapper {
+      display: flex;
+      flex-direction: column;
+      row-gap: 1.2rem;
+    }
+
+    &-loan-fields-wrapper {
+      & select,
+      & #loanAmount-wrapper #loanAmount {
+        border-radius: 0.8rem;
+        border-right: 1px solid;
+        border: 1px solid var(--color-secondary-2);
+      }
+    }
+  }
+}

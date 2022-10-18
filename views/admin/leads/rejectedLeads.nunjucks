@@ -1,0 +1,182 @@
+{% extends "layout/layout.nunjucks" %}
+
+{% block body %}
+	<style>
+		.custom-control {
+			width: 325px;
+			margin-bottom: 10px;
+			display: flex;
+			flex: 1 1 25%;
+			justify-content: space-between;
+			align-content: center;
+			padding: 0 30px 0 20px;
+		}
+
+		.custom-select {
+			width: 325px;
+			margin-bottom: 10px;
+			display: flex;
+			justify-content: space-between;
+			align-content: center;
+			padding-left: 15px;
+		}
+
+		.custom-select > .dup-days {
+			width: 75px;
+		}
+
+		.tables {
+			padding-top: 40px;
+
+		}
+
+		.custom-select.dup {
+			padding-left: 20px;
+		}
+
+		.action:hover {
+			cursor: pointer;
+			color: lighten(20%);
+		}
+
+		.select-styled {
+			text-align: center;
+			width: 141px;
+			padding: 1px;
+			border-radius: 0;
+			border: 1px solid lightgray;
+			position: relative;
+		}
+
+		.select-styled select {
+			background: transparent;
+			line-height: 1;
+			border: 0;
+			padding: 0;
+			border-radius: 0;
+			width: 100%;
+			z-index: 10;
+			font-size: 1em;
+		}
+
+		.input-list {
+			width: 141px;
+			padding-left: 10px;
+		}
+	</style>
+
+	<section class="content-header">
+		<h1>
+			Rejected Lead Details
+			<small>preview of Rejected Lead Details</small>
+		</h1>
+		<ol class="breadcrumb">
+			<li><a href="/admin/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+			<li class="active">Rejected Lead Details</li>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="box">
+			<div class="box-header with-border">
+				<h3 class="box-title">Rejected Lead Details Table</h3>
+			</div>
+			<div class="box-body">
+				<div class="container-fluid">
+					<table class="table table-striped table-bordered  dataTable" id="declinedLeads_table">
+						<thead>
+						<tr>
+							<th>#</th>
+							<th>Lead Id</th>
+							<th>Stage</th>
+							<th>Reason</th>
+							<th>Source</th>
+							<th>Email</th>
+							<th>Phone</th>
+							<th>First Name</th>
+							<th>Last Name</th>
+							<th>Created</th>
+						</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			const listTableId = "declinedLeads_table";
+			const tableElement = $("#"+listTableId);
+			if ($.fn.DataTable.isDataTable(tableElement)) {
+				tableElement.DataTable().destroy();
+				tableElement.find("tbody").empty();
+			}
+			const columnDataType = {
+				"loopId": "ignore",
+				"lead.referral.uid": "string",
+				"lead.customer.personal.homePhone": "phone",
+				"stage": "int",
+				"createdAt": "date",
+			};
+			// case "11": sorttypevalue = { "updatedAt": sorttype }; break;
+			const uTable = tableElement.DataTable({
+				initComplete: function (settings, json) {
+				},
+				processing: true,
+				serverSide: true,
+				destroy: true,
+				language: {
+					loadingRecords: "Please wait - loading..."
+				},
+				paging: true,
+				pagingType: "full_numbers",
+				ajax: {
+					url: "/admin/ajaxGetDeniedLeadApiData",
+					data: function (d) {
+						_.forEach(d.columns, (col) => {
+							const columnType = columnDataType[col.data] || "string";
+							col["dataType"] = columnType;
+						})
+					}
+				},
+				order: [[9, 'asc']],
+				lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
+				pageLength: 25,
+				columns: [
+					{data: "loopId", orderable: false, searchable: false},
+					{ data: "id"
+						// , render: function ( data, type, row, meta ) {
+						// 	let uid = "--";
+						// 	if(!!data) {
+						// 		uid = data;
+						// 	}
+						// 	const id = row.id;
+						// 	if(!!id) {
+						// 		return "<a href=\"/admin/lead/rejected/" + id + "\">" + uid + "</a>"
+						// 	}else {
+						// 		return "--";
+						// 	}
+						// }
+					},
+					{ data: "stage"},
+					{ data: "reason"},
+					{ data: "source"},
+					{ data: "email"},
+					{ data: "lead.customer.personal.homePhone"},
+					{data: "firstname"},
+					{data: "lastname"},
+					{data: "createdAt"},
+				]
+			});
+
+			$('#' + listTableId + '_filter input').off("keyup keypress input").on('keyup', function (e) {
+				if (this.value.length > 3 === 0) {
+					uTable.search(this.value).draw();
+				}
+			});
+
+			tableElement.parent().addClass('table-responsive');
+		});
+	</script>
+{% endblock %}

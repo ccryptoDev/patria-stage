@@ -1,0 +1,582 @@
+
+<div  style="text-align: center;margin-top: 20px;">
+    {% if req.session.rolename =='Admin' %}
+        {% if paymentmanagementdata.screentracking.moveToArchive == 1 %}
+            <button type="button" class="btn btn-primary" id="unarchive"  onclick="$('#movetoUnarchiveModal').modal('show');">Unarchive</button>&nbsp;&nbsp;
+        {% else %}
+            <button type="button" class="btn btn-primary" id="archive"  onclick="$('#movetoarchiveModal').modal('show');">Archive</button>&nbsp;&nbsp;
+        {% endif %}
+    {% endif %}
+        <!--Buttons for Unapproved Applicants-->
+        {% if not paymentmanagementdata.screentracking.signACHAuthorization and not paymentmanagementdata.screentracking.signChangeScheduleAuthorization %}
+            <!-- Approve button -->
+            {% if paymentmanagementdata.status === "PENDING" and (not paymentmanagementdata.screentracking.moveToArchive or paymentmanagementdata.screentracking.moveToArchive === 0) and  req.session.rolename == "Admin" %}
+                <input type="hidden" id="partnerHasSignature" value="{{partnerHasSignature}}">
+                <button type="button" class="btn btn-primary" id="approveloan">Approve</button>&nbsp;&nbsp;
+            {% endif %}
+            <!-- Originate button-->
+            {% if paymentmanagementdata.status === "ORIGINATION" and (not paymentmanagementdata.screentracking.moveToArchive or paymentmanagementdata.screentracking.moveToArchive === 0) %}
+                <button type="button" class="btn btn-primary" id="btnOriginateLoan">Originate</button>&nbsp;&nbsp;
+            {% endif %}
+            <!-- Re-Apply button-->
+            {% if (paymentmanagementdata.status === "COMPLETED" or paymentmanagementdata.status === "SETTLED" or  paymentmanagementdata.status === "WAIVED") and isEligibleToReApply and  not paymentmanagementdata.screentracking.isInReApplyWorkflow and (not paymentmanagementdata.screentracking.moveToArchive or paymentmanagementdata.screentracking.moveToArchive === 0) %}
+                <button type="button" class="btn btn-primary" id="btnReApplyLoan">Re-Apply</button>&nbsp;&nbsp;
+            {% endif %}
+
+        {% endif %}
+            <!-- Change Funding Type button-->
+            {% if (screentracking.iscompleted == 0 and not screentracking.isRejectedContract and (not screentracking.moveToArchive or screentracking.moveToArchive === 0)) %}
+                <button type="button" class="btn btn-primary" id="btnChangeIncompleteFundingType">Change Funding Type</button>&nbsp;
+            {% endif %}
+            <!-- Send Invite button-->
+            {% if canSendLeadInviteUrl and (not paymentmanagementdata.screentracking.moveToArchive or paymentmanagementdata.screentracking.moveToArchive === 0) %}
+                <button type="button" class="btn btn-primary" id="btnSendLeadInviteEmail">Send Invite</button>&nbsp;&nbsp;
+            {% endif %}
+            <!-- Reject button -->
+            {% if ((paymentmanagementdata.status === "PENDING" or paymentmanagementdata.status === "INCOMPLETE" or paymentmanagementdata.status === "ORIGINATION") and not paymentmanagementdata.screentracking.isRejectedContract) and (not paymentmanagementdata.screentracking.moveToArchive or paymentmanagementdata.screentracking.moveToArchive === 0)  and req.session.rolename =='Admin' %}
+                <button type="button" class="btn btn-primary" id="denyloan" data-toggle="modal" data-target="#denyModal">Reject</button>&nbsp;&nbsp;
+            {% endif %}
+            <!-- Deny Re-Application button -->
+            {% if (paymentmanagementdata.eligiblereapply === undefined or paymentmanagementdata.eligiblereapply )%}
+                <button type="button" class="btn btn-primary" id="btnDenyReApplication" data-toggle="modal" data-target="#ReApplyModal">Deny Re-Application</button>&nbsp;&nbsp;
+            {% endif %}
+            <!-- Allow Re-Application button (only if they have been denied Re-application)-->
+            {% if (paymentmanagementdata.eligiblereapply === false or paymentmanagementdata.eligiblereapply === "0") %}
+                <button type="button" class="btn btn-primary" id="btnAllowReApplication" data-toggle="modal" data-target="#ReApplyModal">Allow Re-Application</button>&nbsp;&nbsp;
+            {% endif %}
+            {% if paymentmanagementdata.screentracking.signACHAuthorization or paymentmanagementdata.screentracking.signChangeScheduleAuthorization %}
+            <!-- Send Re-sign email button-->
+            <button type="button" class="btn btn-primary" id="btnSendResignEmail">Send Email Reminder to Re-sign</button>&nbsp;&nbsp;
+            {% endif %}
+            <!-- Send Forgot Password Email button-->
+            <button type="button" class="btn btn-primary" id="btnSendForgotPasswordLink">Send Forgot Password Email</button>&nbsp;&nbsp;
+        <!-- Preview Offers button-->
+        {% if (screentracking.iscompleted == 0 and not screentracking.isRejectedContract and (not screentracking.moveToArchive or screentracking.moveToArchive === 0) and screentracking.offers and screentracking.offers.length > 0 )%}
+            <button type="button" class="btn btn-primary" id="btnPreviewOffers" data-toggle="modal" data-target="#previewOffersModal">Preview Offers</button>&nbsp;&nbsp;
+        {% endif %}
+</div>
+<h3>User Information{% if paymentmanagementdata.isInBankruptcy %}<span class="user-info-tab-isInBankruptcy"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-weight: bold;color:#f39c12;"><i class='fa fa-exclamation-triangle' aria-hidden='true' style="margin-right: 5px;" ></i>DO NOT CONTACT!&nbsp;-&nbsp;In Bankruptcy</span></span>{% endif %}</h3>
+{% if paymentmanagementdata.isInCollections %}<span class="userData-lastname" style="font-weight: bold"></span><span class="collections-tab-isInBankruptcy" ><span style="font-weight: bold;color:#f39c12;"><i class='fa fa-exclamation-triangle' aria-hidden='true' style="margin-right: 5px;" ></i>This user is in collections.</span></span>{% endif %}
+<br/>
+{% if not paymentmanagementdata and screentracking and screentracking.reApplyAuthorizationSignatureNeeded %}
+    <div style="color: red; font-size:16px; font-weight: bold"><i class='fa fa-exclamation-triangle' aria-hidden='true' style="margin-right: 5px;" ></i>Re-apply contract signature needed!</div>
+{% else %}
+{% if paymentmanagementdata.screentracking.signACHAuthorization or paymentmanagementdata.screentracking.signChangeScheduleAuthorization %}
+    <div style="color: red; font-size:16px; font-weight: bold"><i class='fa fa-exclamation-triangle' aria-hidden='true' style="margin-right: 5px;" ></i>Re-sign of contract is needed!</div>
+{% endif %}
+{% endif %}
+<div id="responsemessage"></div>
+<div class="table-responsive">
+    <form role="form" method="POST" enctype="multipart/form-data" action="">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th width="20%">Application Reference</th>
+                    <td>{% if paymentmanagementdata and paymentmanagementdata.id %} <a href="/admin/viewIncomplete/{{paymentmanagementdata.id}}">{{ paymentmanagementdata.screentracking.applicationReference }} </a>{% else %} {{ paymentmanagementdata.screentracking.applicationReference }}{% endif %}</td>
+                </tr>
+                <tr>
+                    <th width="20%">User Reference</th>
+                    <td> <a href="/admin/viewUserDetails/{{user.id}}">{{ user.userReference }} </a><button id="btnEditUserData" class="btn btn-primary" style="margin-left: 50px;">Edit User</button></td>
+                </tr>
+
+                <tr>
+                    <th width="20%">Name</th>
+                    <td>{{ user.firstname }} {{ user.lastname }}</td>
+                </tr>
+                <tr>
+                    <th>Email Address</th>
+                    <td>{{ user.email }}</td>
+                </tr>
+                <tr>
+                    <th>Phone Number</th>
+                    <td>{{ user.phoneNumber }}</td>
+                </tr>
+                <tr>
+                    <th>Date of Birth</th>
+                    <td>{{ user.dateofBirth }}</td>
+                </tr>
+                <tr>
+                    <th>SSN</th>
+                    <td>{{ user.ssn_number | ssnFormat }}</td>
+                </tr>
+                <tr>
+                    <th>Address</th>
+                    <td>{{ user.addresses }} <br/>
+                        {% if user.street %}
+                            {{ user.street }} <br/>
+                        {% endif %}
+                        {{ user.city }} <br/>
+                        {{ user.state }}, {{ user.zipCode }} <br/>
+                    </td>
+                </tr>
+{#                <tr>#}
+{#                    <th>LastScreen Name</th>#}
+{#                    <td>{{ screentracking.lastScreenName }}</td>#}
+{#                </tr>#}
+                <tr>
+                    <th>Created Date</th>
+                    <td>{{ paymentmanagementdata.screentracking.createdAt }}</td>
+                </tr>
+                {%if leadData %}
+                <tr>
+                    <th>Lead Source</th>
+                    <td>{{ leadData }}</th>
+                </tr>
+                {% endif %}
+                <tr>
+                    <th>LastScreen Details</th>
+                    <td><pre id="json" style="background:#FFF; border:none;">{{ screenData }}</pre></td>
+                </tr>
+                {% if paymentmanagementdata.screentracking.loanstatus %}
+                    <tr>
+                        <th>Income Status</th>
+                        <td><pre id="json1" style="background:#FFF; border:none;">{{ paymentmanagementdata.screentracking.loanstatus }}</pre></td>
+                    </tr>
+
+                            <tr>
+                        <th>Income Description</th>
+                        <td><pre id="json2" style="background:#FFF; border:none;">{{ paymentmanagementdata.screentracking.loandescription }}</pre></td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <th>Annual Income </th>
+                    <td>{{ annualIncome | $format(true,2)}}</td>
+                </tr>
+                <tr>
+                <th>Monthly Income </th>
+                <td>{{ monthlyIncomeAmount | $format(true,2) }}</td>
+                </tr>
+                <tr>
+                    <th>Requested Loan Amount </th>
+                    <td>{{ screentracking.requestedLoanAmount | $format(true,2)}}</td>
+                </tr>
+{#                <tr>#}
+{#                    <th>Anticipated Financed Amount</th>#}
+{#                    <td>{{ screentracking.requestedLoanAmount }}</td>#}
+{#                </tr>#}
+{#                <tr>#}
+{#                    <th>PreDTI Debt</th>#}
+{#                    <td>{{ screentracking.preDTIMonthlyAmount }}</td>#}
+{#                </tr>#}
+{#                <tr>#}
+{#                    <th>PreDTI Debt(%)</th>#}
+{#                    <td>{{ screentracking.preDTIPercentValue }}</td>#}
+{#                </tr>#}
+{#                <tr>#}
+{#                    <th>Payroll Detected Income </th>#}
+{#                    <td>{{ payroll_detected }}</td>#}
+{#                </tr>#}
+{#                <tr>#}
+{#                    <th>Counter offered </th>#}
+{#                    <td>{{ counterOfferincomplete }}</td>#}
+{#                </tr>#}
+                <tr>
+                    <th>Income Type</th>
+                    {% if paymentmanagementdata.screentracking.incometype == "Manually" %}
+                        <td>Entered Manually</td>
+                    {% elseif paymentmanagementdata.screentracking.incometype == "Automatically" %}
+                        <td>Detected from Payroll</td>
+                    {% else %}
+                        <td>Modified by admin</td>
+                    {% endif %}
+                </tr>
+{#                {% set deniedlength = screentracking.rulesDetails.approvedrulemsg.length %}#}
+{#                <tr>#}
+{#                    <th>Underwriting Rules</th>#}
+{#                    <td> {% for approvemsg in  screentracking.rulesDetails.approvedrulemsg %}<p>{{ approvemsg }} </p>{% endfor %}</td>#}
+{#                </tr>#}
+{#                <tr>#}
+{#                    {% if screentracking.rulesDetails.ruledatacount %}#}
+{#                        <tr>#}
+{#                        <th>User Rule Values</th>#}
+{#                        <td> {% for ruledatacount in screentracking.rulesDetails.ruledatacount %}<p>{{ ruledatacount }} </p>{% endfor %} </td>#}
+{#                        <td>&nbsp;</td>#}
+{#                        </tr>#}
+{#                    {% endif %}#}
+{#                    <th>Application Created By</th>#}
+{#                    <td>{{ screentracking.user.underwriter }}</td>#}
+{#                </tr>#}
+               {% if paymentmanagementdata.status == 'DENIED' %}
+                   <tr>
+                       <th>Denied Details</th>
+                       <td> <div style=" color: #a94442; border-radius: 4px; margin-bottom: 20px; padding: 15px;">{{paymentmanagementdata.declinereason}}</div></td>
+                   </tr>
+               {% endif %}
+            </tbody>
+        </table>
+{#        <div class="text-center" id="underwritersection">#}
+{#            <button type="button" class="btn btn-primary" id="incompleteDenyloan" data-toggle="modal" data-target="#incompleteDenyModal">Deny</button>#}
+{#        </div>#}
+    </form>
+</div>
+{% include "admin/pendingach/partials/originateOrApproveAndFundPartial.nunjucks" %}
+{% include "admin/partials/ach/editUserInfoPartial.nunjucks" %}
+
+<!-- Reject Loan Modal -->
+      <div id="denyModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-md">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header bg-primary">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Reject Confirmation</h4>
+            </div>
+            <form role="form" method="POST" enctype="multipart/form-data" action="">
+            <div class="modal-body bgColorWhite">
+              <p><strong>Are you sure you want to reject this application?</strong></p>
+
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <th width="30%"> Eligible to reapply </th>
+                                <td>
+                                     <div class="checkbox checkbox-primary checkbox-inline">
+                                       <input type="radio" id="inlineRadio1"  autocomplete="off" name="eligiblereapply" value="1"  >
+                                       <label for="inlineRadio1" > Yes </label>
+                                     </div>
+                                     <div class="checkbox checkbox-primary checkbox-inline">
+                                        <input type="radio" id="inlineRadio2" autocomplete="off" name="eligiblereapply"  value="0" checked="checked" >
+                                        <label for="inlineRadio2" > No </label>
+                                     </div>
+                                </td>
+                            </tr>
+                            <tr>
+                              <th>Reject Reason</th>
+                              <td>
+                                <textarea class="form-control" id="declinereason" name="declinereason" required></textarea>
+                                <strong><span id="declineerromessage" class="error"></span></strong>
+                              </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                   </div>
+
+              <div class="modal-footer bg-info">
+              <button type="submit" data-dismiss="modal" class="btn btn-primary" id="denyconfirm">Confirm</button>
+              <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+              </div>
+            </form>
+           </div>
+
+          </div>
+        </div>
+
+<!-- Deny Re-Application Confirmation Modal -->
+<div id="ReApplyModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            {% if (paymentmanagementdata.eligiblereapply === undefined or paymentmanagementdata.eligiblereapply ) %}
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Deny Future Re-Applications?<h4>
+                </div>
+                <div class="modal-body bgColorWhite">
+                    <p><strong>Are you sure you want to deny future re-applications?</strong></p><br/>
+                    <p>This will not affect the current loan status. It <strong>will</strong> prevent the customer from applying for future loans when this one has been completed.</p>
+                    <strong><span id="denyReApplyErrorMessage" class="error"></span></strong>
+                </div>
+            {% endif %}
+            {% if (paymentmanagementdata.eligiblereapply === false or paymentmanagementdata.eligiblereapply === "0") %}
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Allow Future Re-Applications?</h4>
+                </div>
+                <div class="modal-body bgColorWhite">
+                    <p><strong>Are you sure you want to allow future re-applications?</strong></p><br/>
+                    <p>This will not affect current loan status. It <strong>will</strong> allow the customer to re-apply for future loans when this loan has been completed.</p>
+                </div>
+            {% endif %}
+            <div class="modal-footer bg-info">
+                {% if (paymentmanagementdata.eligiblereapply === false or paymentmanagementdata.eligiblereapply === "0") %}
+                    <button type="button" class="btn btn-primary" id="btnConfirmAllowReApplication">Allow</button>
+                {% else %}
+                    <button type="button" class="btn btn-primary" id="btnConfirmDenyReApplication">Confirm</button>
+                {% endif %}
+                <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="sendLeadApiInviteErrorModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Error sending invite email</h4>
+            </div>
+                <div class="modal-body bgColorWhite">
+                    <p><span id="sendLeadApiInviteErrorLabel" class="error" ></span></p>
+                </div>
+
+                <div class="modal-footer bg-info">
+                    <button type="button" data-dismiss="modal" class="btn btn-primary">Close</button>
+                </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="previewOffersModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md" style="width: 80%">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Offers Preview</h4>
+            </div>
+            <div class="modal-body bgColorWhite">
+                <div id='offers_container'>
+                    <div id="offerdiv" class="flex-wrap flex-j-space-evenly">
+
+                        {% if screentracking.offers.length > 0 %}
+                            {% set idx = 0 %}
+                            {% for offer in screentracking.offers %}
+                                {% set idx = idx + 1 %}
+                                <div class="offerBox_container-static">
+                                    <div class="offerBox" style="cursor: unset;box-shadow: unset;">
+                                        <div class="flex-column flex-align-center">
+                                            <div class="col-lg-12">
+                                                <p class="monthlyPaymet_lable text-center" style="color:#fff">Estimated Payment</p>
+                                                <p class="monthlyPaymet_text text-center">{{ offer.regularPayment | $format }}</p>
+                                            </div>
+
+                                            <div class="offerDetails flex-column flex-align-center"
+                                                 style="width: 100%;">
+                                                <div class="offerSection flex-j-space-between">
+                                                    <p class="offerBox_lable"  style="color:#fff">Loan Offer</p>
+                                                    <p class="offerBox_text"  style="color:#fff">
+                                                        ${{ screentracking.requestedLoanAmount }}</p>
+                                                </div>
+                                                <div class="offerSection flex-j-space-between">
+                                                    <p class="offerBox_lable"  style="color:#fff">Term:</p>
+                                                    <p class="offerBox_text"  style="color:#fff">{{ offer.term }} Payments</p>
+                                                </div>
+                                                <div class="offerSection flex-j-space-between">
+                                                    <p class="offerBox_lable"  style="color:#fff">APR:</p>
+                                                    <p class="offerBox_text"  style="color:#fff">{{ offer.interestRate }}%</p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                            {% else %}
+                               <h3>No available offers</h3>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer bg-info">
+                <button type="button" data-dismiss="modal" class="btn btn-primary">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="incompleteChangeFundingPaymentTypeModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Change Funding Payment Type</h4>
+            </div>
+            <div class="modal-body bgColorWhite">
+                 <div>
+                     <form role="form" id="frmEditIncompleteFundingPaymentType" >
+                         <p>Note: If you change the funding payment type, the loan start date could change.</p>
+                         <div class="rdbMethodOfIncompleteFundingSection" style="margin-left: 20px; ">
+                             <div style="margin-bottom: 10px;">
+                                 <input type="radio" class="rdbMethodOfIncompleteFunding" name="rdbMethodOfIncompleteFunding" {% if screentracking.incompleteFundingPaymentType == "ACH" %}checked{% endif %} id="rdbACHIncompleteFundingMethod" value="ACH" style="margin-right: 5px"/>
+                                 <label for="rdbACHFundingMethod" style="font-weight: normal !important;">ACH</label>
+                             </div>
+                             <div style="margin-bottom: 10px;">
+                                 <input type="radio" class="rdbMethodOfIncompleteFunding" name="rdbMethodOfIncompleteFunding" {% if screentracking.incompleteFundingPaymentType == "WIRE" %}checked{% endif %} id="rdbWireIncompleteFundingMethod" value="WIRE" style="margin-right: 5px"/>
+                                 <label for="rdbWireFundingMethod" style="font-weight: normal !important;">Wire</label>
+                             </div>
+                             <div style="margin-bottom: 10px;">
+                                 <input type="radio" class="rdbMethodOfIncompleteFunding" name="rdbMethodOfIncompleteFunding" {% if screentracking.incompleteFundingPaymentType == "DEBIT" %}checked{% endif %} id="rdbDebitCardIncompleteFundingMethod" value="DEBIT" style="margin-right: 5px"/>
+                                 <label for="rdbDebitCardFundingMethod" style="font-weight: normal !important;">Debit Card</label>
+                             </div>
+                         </div>
+                     </form>
+                        <label class="error" id="lblIncompleteFundingTypeChangeError" style="text-align: center;display: none;"></label>
+                 </div>
+            </div>
+
+            <div class="modal-footer bg-info">
+                <button type="button" data-dismiss="modal" class="btn btn-primary">Close</button>
+                <button type="button" class="btn btn-primary" id="btnIncompleteFundingTypeSave">Save</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $("#btnEditUserData").on("click", function(e) {
+            e.preventDefault();
+            showUserEditModal();
+        });
+        $("#approveloan, #btnOriginateLoan").on("click", function(e) {
+            e.preventDefault();
+
+            $('#approveModal').modal("show");
+        });
+        $("#btnChangeScheduleForFundingPaymentType").on("click", function(e) {
+            e.preventDefault();
+            const formElement = "#frmModalEditFundingPaymentType";
+            $(formElement + " .rdbMethodOfFunding-custom-error").css("display", "none");
+            const fundingMethod = $("#frmEditFundingPaymentType input.rdbMethodOfFunding:checked").val();
+            if(!fundingMethod) {
+                $(formElement + " .rdbMethodOfFunding-custom-error").html("Please select a method of funding.").css("display", "block");
+            }else {
+                const newOriginateDate = $(formElement + " #hiddenOriginateDate").val();
+                savePaymentScheduleChanges(formElement, newOriginateDate);
+            }
+        });
+
+        $("#btnReApplyLoan").on("click", function(e) {
+            e.preventDefault();
+            window.location.href = "/admin/re-apply/application/{{ user.id }}";
+        });
+        $("#btnSendLeadInviteEmail").on("click", function(e) {
+            e.preventDefault();
+
+            const userId = "{{ user.id }}";
+            const screenId = "{{ screentracking.id }}";
+            ajaxPost("/admin/ajaxSendLeadInviteEmail", {userId: userId, screenId: screenId}).then(
+            function(response) {
+                console.error(JSON.stringify(response));
+                window.location.reload();
+            },
+            function(xhr) {
+            const errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : "There was an unknown error that occurred.";
+                console.error(errorMessage);
+                toggleUserInfoChangeErrors("#sendLeadApiInviteErrorLabel", errorMessage);
+                $("#sendLeadApiInviteErrorModal").modal("show");
+            });
+        });
+
+        //Button to send resign link
+        $("#btnSendResignEmail").on("click", function(e) {
+            e.preventDefault();
+            const userId = "{{ user.id }}";
+            const screenId = "{{ screentracking.id }}";
+            ajaxPost("/admin/ajaxSendResignEmail", { userId: userId, screenId: screenId})
+                .then(
+                    function(response) {
+                        console.error(JSON.stringify(response));
+                        window.location.reload();
+                    },
+                    function(err) {
+                        const errorMessage = err.responseJSON && err.responseJSON.message ? err.responseJSON.message : "There was no error response message";
+                        console.error(errorMessage)
+
+                    }
+                )
+        });
+
+        //Button to send forgot password link
+        $("#btnSendForgotPasswordLink").on("click", function(e) {
+            e.preventDefault();
+
+            const email = "{{ user.email }}";
+            ajaxPost("/sendforgotpassword", { forgotemail: email} )
+                .then(
+                    function(response) {
+                        console.error(JSON.stringify(response));
+                        window.location.reload();
+                    },
+                    function(err) {
+                        const errorMessage = err.responseJSON && err.responseJSON.message ? err.responseJSON.message : "There was no error response message";
+                        console.error(errorMessage)
+
+                    }
+                )
+        });
+
+
+      const incompleteFormElement = $("#frmEditIncompleteFundingPaymentType");
+      const originalIncompleteFundingType = "{{ screentracking.incompleteFundingPaymentType  }}";
+      $("#btnChangeIncompleteFundingType").on("click", function(e) {
+        e.preventDefault();
+        toggleUserInfoChangeErrors("#lblIncompleteFundingTypeChangeError");
+        incompleteFormElement.find("input.rdbMethodOfIncompleteFunding").removeAttr("checked");
+          if(!!originalIncompleteFundingType) {
+            incompleteFormElement.find("input.rdbMethodOfIncompleteFunding[value=" + originalIncompleteFundingType + "]").prop("checked", true);
+          }
+          $("#incompleteChangeFundingPaymentTypeModal").modal("show");
+      });
+
+          $("#btnIncompleteFundingTypeSave").on("click", function(e) {
+            e.preventDefault();
+            toggleUserInfoChangeErrors("#lblIncompleteFundingTypeChangeError");
+            const selectedValue = incompleteFormElement.find("input.rdbMethodOfIncompleteFunding:checked").val();
+            if(!!selectedValue) {
+              console.error("clicked me: " + selectedValue);
+              ajaxPost("/admin/changeIncompleteFundingPaymentType", {screenId: "{{screentracking.id}}", fundingPaymentType:selectedValue}).then(function(results) {
+                window.location.reload();
+              }, function(xhr) {
+                const errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : "There was an unknown error that occurred.";
+                console.error(errorMessage);
+                toggleUserInfoChangeErrors("#lblIncompleteFundingTypeChangeError",errorMessage);
+              })
+            }else {
+              toggleUserInfoChangeErrors("#lblIncompleteFundingTypeChangeError","Funding payment type is required. You can click cancel if you don't want to save.");
+            }
+        });
+
+        //Button to deny Re-Application
+        $("#btnConfirmDenyReApplication").on("click", function(e) {
+            e.preventDefault();
+            const userId = "{{user.id}}";
+            ajaxPost("/admin/denyreapplication", {userId: userId})
+                .then( function(response) {
+                    console.log("Successful denial for re-application.");
+                    window.location.reload();
+                },
+                function(err) {
+                    const errorMessage = err.responseJSON && err.responseJSON.message ? err.responseJSON.message : "There was an unknown error."
+                    console.error(errorMessage);
+                });
+        });
+
+        //Button to Allow Re-Application
+        $("#btnConfirmAllowReApplication").on("click", function(e) {
+            e.preventDefault();
+            const userId = "{{user.id}}";
+            toggleUserInfoChangeErrors("#denyReApplyErrorMessage");
+            ajaxPost("/admin/allowreapplication", {userId: userId})
+                .then( function(response) {
+                    console.log(JSON.stringify(response));
+                    window.location.reload();
+                },
+                function(err) {
+                    toggleUserInfoChangeErrors("#denyReApplyErrorMessage", "There was an internal server error");
+                    console.error(JSON.stringify(err));
+                });
+        })
+    });
+
+    function toggleUserInfoChangeErrors(selector, message) {
+        if(!!selector) {
+            if(!message){
+                $(selector).html("").css("display", "none");
+            }else {
+                $(selector).html(message).css("display", "block");
+            }
+        }
+    }
+
+
+</script>
+

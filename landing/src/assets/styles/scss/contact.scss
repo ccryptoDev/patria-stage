@@ -1,0 +1,21 @@
+.contact-section {
+  &-cards-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 2rem;
+    padding: 6rem 0;
+
+    & .card {
+      &-header {
+        text-transform: uppercase;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .contact-section-cards-layout {
+    grid-template-columns: 1fr;
+    padding: 0;
+  }
+}

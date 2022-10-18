@@ -1,0 +1,273 @@
+{% extends "frontend/homev3/newHome.nunjucks" %}
+{% block body %}
+
+<div class="faq-title">
+	<div class="faq-title-container">
+		<h3>Questions</h3>
+		<div class="page-track-container">
+			<ul class="page-track">
+				<li>You are here: </li>
+				<li class="home"><a href="/"> Home </a></li>
+				<li class="active"><a href="/faq"> Questions</a></li>
+		</div>
+	</div>
+</div>
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<h3>Frequently Asked Questions</h3>
+				<p>Occasionally our customers have questions so we put together below the most frequently questions that are asked.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>Is Applying For A Loan Online Safe?</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>Yes, it is. When you provide us with your personal and work information during the application process, your information is handled in a safe and secure online environment. HTTPS or Hypertext Transfer Protocol Secure connection is used to keep all the information secure in our system. Also, your application data is encrypted at the time of application, which makes it even safer.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>How Do I Check My Payoff Loan Balance?</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>The best way to check the repayment amount is to contact our Customer Service Department and request your balance.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>What Is The Time Period Of The Loan?</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>As it is a short term loan, you will be given 4 to 12 months to repay it, depending upon the terms you select. Opting installment loan gives you a longer time period to pay back the loan as compared to a payday loan. If you decide to make any prepayment of your loan, as opposed to the terms of your agreement, no penalties will be charged to you.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>What If I Miss A Payment Or Fall Into Default?</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>Life is unpredictable and you can often run out of resources to repay the loan on time. Under such circumstances, the best option is to communicate the problem to us on time so we can arrange to fix the issue. We strive to enhance your lending experience and that is only possible if you inform us timely of any problem that may keep you from repaying your loan as defined in the terms of the agreement. You can contact us in such situation and seek guidance and professional advice from our highly trained customer service representatives. Late payment or non-payment of your loan may result in additional fees or collection activities, or both. Please review your loan agreement for further information.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>When Will I Be Required To Repay My Installment Loan?</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>Repayment is based upon the terms of the agreement you sign; however, you have the ability to preselect the length of your loan and payment frequency.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>Can I Use My Installment Loan As I Please?</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>You may utilize the loan in any way that you choose. We advise our customers to spend the loan amount wisely and analyze all options before adding a new debt responsibility.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>When Can I Expect To Receive My Loan?</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>Once we receive an application from a marketing partner or here at EagelAdvance.com, it is processed quickly. If the loan application is approved, funds will be transferred the very next working day (excluding bank holidays and weekends) into your bank accounts. You can also receive funds on the same day of application, depending upon the time the transaction has occurred. You can also contact our Customer Service Department to check if a transfer can be made on the same day and if any fees may apply.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>How Will I Receive My Money?</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>Once your loan application has been approved, funds are electronically transferred to your bank account via an ACH/EFT transaction the next business day.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>How Much Can I Borrow?</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>Our loans typically range from $300 to $700. In the future, we may be able to increase your loan amounts based on your history of timely payments, etc. We want to reward you for being a VIP customer!</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>Do You Assess The Major Credit Bureaus During The Application Process?</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>No, we do not check the major credit bureaus while conducting the application process.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>Does Having Bad Or No Credit Matter?</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>Our unique underwriting process provides solutions to consumers which traditional banks may not offer. We traditionally don’t evaluate the “credit score” of a customer, but we may use other bureaus that offer a broader picture concerning your ability to repay a loan.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>What Sort Of Collateral Is needed To Qualify For A Loan?</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>Besides the ability to conveniently repay your loan with your current employment and financial status, no specific collateral is required.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>How Many Active Loans Can I Have?</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>It is important to note that our installment loan product is NOT a Payday Loan where some Payday Lenders will allow multiple accounts. We believe in keeping things simple and only allowing 1 active loan per person with an amortization schedule to show exactly what you will owe assuming no early payoff. Hypothetically, if you have a current loan and wanted to refinance to obtain more money (terms and conditions apply), you would essentially rewrite your loan to a new account number paying the old loan off in that scenario. We would love to discuss your options.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>What Are The Requirements To Apply For A Loan?</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>Patria ensures consumers are able to timely repay their loans before an approval for a loan is granted. Your employment details, basic personal information, and basic financial information are the essential details that are required at the time of application. This information will help us in determining and evaluating, with regards to our underwriting standards, whether a loan offer should be extended to an applicant on not. We are a solutions based company.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>What Is An Installment Loan?</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>A loan that is repaid through a series of equal payments, made at equal intervals of time, known as installments; is commonly referred to as an installment loan. It provides the consumer enough flexibility to budget and administer their expenses once the loan agreement has been signed and fulfilled. Each installment payment reduces the principal amount balance you are obligated to pay. Usually, short-term installment loans, such as those offered by Patria, will have a minimum payback period of 4 to 12 months. Patria strives to develop product innovations and options for our customers.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_7">
+	<div class="section_7_items">
+		<h2>Need To Contact Us?</h2>
+		<a href="/contact" class="button button-apply">Go Here</a>
+	</div>
+</section>
+{% endblock %}

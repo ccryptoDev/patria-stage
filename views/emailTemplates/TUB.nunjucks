@@ -1,0 +1,4 @@
+<p>
+Thank you for applying with Patria Lending.  In order to proceed with your application, we will need you to answer authentication questions. Please proceed to the link below to complete the application process.  Should you have any questions, please contact Customer Care at customercare@Patrialending.com.                                                                                                                                                                                                                                                                                                                             Thank you, Customer Care 
+    <a href="{{ completeApplicationLink }}">LINK<a>
+</p>

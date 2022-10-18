@@ -1,0 +1,20 @@
+<script type="text/javascript" src="/vue/adminAddApplication/vueAdminAddApplication.umd.js"></script>
+<link rel="stylesheet" href="/styles/los/los.css">
+<script>
+    $(document).ready(() => {
+        new Vue({
+            el: '#vue-admin-add-application',
+            data: {
+                maximumRequestedLoanAmount: {{ sails.config.loanDetails.maximumRequestedLoanAmount }},
+              minimumRequestedLoanAmount:{{ sails.config.loanDetails.minimumRequestedLoanAmount }}
+            },
+            components: {
+                'vue-admin-add-application': window["vueAdminAddApplication"]
+            }
+        })
+    })
+</script>
+
+<div id="vue-admin-add-application">
+    <vue-admin-add-application :maximumrequestedloanamount="maximumRequestedLoanAmount" :minimumrequestedloanamount="minimumRequestedLoanAmount"></vue-admin-add-application>
+</div>

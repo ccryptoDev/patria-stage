@@ -1,0 +1,145 @@
+<!-- Approve Modal -->
+<div id="approveModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <form role="form" id="frmFundLoanApproval" >
+            <input class="" type="hidden" id="paymentID" name="paymentID" value="{{ paymentmanagementdata.id }}"/>
+            <!-- Modal content-->
+            <div class="modal-content" style="float: left;width: 100%;">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">
+                        {% if paymentmanagementdata.status == "ORIGINATION" %}
+                            Originate Contract
+                        {% else %}
+                            Confirm Application Funding
+                        {% endif %}
+                    </h4>
+                </div>
+                {% if not isEligibleForOriginate %}
+                    <div class="modal-body bgColorWhite" style="float: left;width: 100%;">
+                        <div class="can-originate-content">
+                            {% if not paymentmanagementdata.fundingPaymentType %}
+                                <div style="font-size: 16px;font-weight: bold;margin-bottom: 10px;color:#f39c12;"><i class='fa fa-exclamation-triangle' aria-hidden='true' style="margin-right: 5px;" ></i>A funding payment type has not been selected.</div>
+                                <div style="font-weight: bold;">Note: You can select a funding payment type under the "Payment Schedule" tab.</div>
+                            {% else %}
+                                <div style="font-size: 16px;font-weight: bold;margin-bottom: 10px;color:#f39c12;"><i class='fa fa-exclamation-triangle' aria-hidden='true' style="margin-right: 5px;" ></i>The loan start date of {{ paymentmanagementdata.loanSetdate | dateMinusTz('MMMM D, YYYY')  }} is in the past. A payment schedule change is required.</div>
+                                <div style="font-weight: bold;">Note: You can change the schedule under the "Payment Schedule" tab. You will need to come back here after the new contract is signed.</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="modal-footer bg-info" style="float: left;width: 100%;">
+                        <button type="button" data-dismiss="modal" class="btn btn-primary">Close</button>
+                    </div>
+                    {% elif paymentmanagementdata.fundingPaymentType === "ACH" and not paymentmanagementdata.account and (not accountDetail or accountDetail.length == 0) %}
+                    <div class="modal-body bgColorWhite" style="float: left;width: 100%;">
+                        <div class="can-originate-content">
+                            <div style="font-size: 16px;font-weight: bold;margin-bottom: 10px;color:#f39c12;"><i class='fa fa-exclamation-triangle' aria-hidden='true' style="margin-right: 5px;" ></i>A bank account is required to be added for ACH.</div>
+                            <div style="font-weight: bold;">Note: You can add a bank account under the "Bank Accounts" tab.</div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="modal-footer bg-info" style="float: left;width: 100%;">
+                        <button type="button" data-dismiss="modal" class="btn btn-primary">Close</button>
+                    </div>
+                {%  else %}
+                    <div class="modal-body bgColorWhite" style="float: left;width: 100%;">
+                        <div class="can-originate-content">
+                            <div style="font-size: 16px;margin-bottom: 10px;">
+                                {% if paymentmanagementdata.status == "ORIGINATION" %}
+                                    You are about to mark this loan as originated with the following information:
+                                {% else %}
+                                    You are about to mark this loan as active and funding will be for the following:
+                                {% endif %}
+                                <div class="flex-box-table-col schedule-item-data not-eligible-content" style="margin: 0 auto;width: 70%;">
+                                    <div class="flex-box-item flex-box-table-row">
+                                        <div class="flex-box-item header-item">
+                                            <span>Amount:</span>
+                                        </div>
+                                        <div class="flex-box-item value-item">
+                                            <span>{{ paymentmanagementdata.screentracking.requestedLoanAmount  | $format}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex-box-item flex-box-table-row">
+                                        <div class="flex-box-item header-item">
+                                            <span>Funding Payment Type:</span>
+                                        </div>
+                                        <div class="flex-box-item value-item">
+                                            <div class="fundingPaymentTypeSelected">
+                                                {% if paymentmanagementdata.fundingPaymentType == "WIRE" %}
+                                                    <span>Wire</span>
+
+                                                    {% elif paymentmanagementdata.fundingPaymentType == "DEBIT" %}
+                                                    <span>Debit Card</span>
+                                                {% else %}
+                                                    <span>ACH</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-box-item flex-box-table-row">
+                                        <div class="flex-box-item header-item">
+                                            <span>Originate Date:</span>
+                                        </div>
+                                        <div class="flex-box-item value-item">
+                                            <span>{{ paymentmanagementdata.loanSetdate | dateMinusTz('MMMM D, YYYY')  }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex-box-item flex-box-table-row">
+                                        <div class="flex-box-item header-item">
+                                            <span>First Payment Date:</span>
+                                        </div>
+                                        <div class="flex-box-item value-item">
+                                            <span>{{ paymentmanagementdata.nextPaymentSchedule | dateMinusTz('MMMM D, YYYY')  }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="cannot-originate-content">
+                            <div style="font-size: 16px;font-weight: bold;margin-bottom: 10px;">
+                                {% if paymentmanagementdata.status == "ORIGINATION" %}
+                                    Are you sure you want to originate this loan?
+                                {% else %}
+                                    Are you sure you want to Approve and Fund this loan?
+                                {% endif %}
+                            </div>
+                        </div>
+                        <br/>
+                        <label class="error" id="originateOrApproveLoanError" style="display: none"></label>
+                    </div>
+                    <div class="modal-footer bg-info" style="float: left;width: 100%;">
+                        <input type="button"  class="btn btn-primary" value="Confirm" id="btnConfirmOriginateOrApprovalFunding" >
+                        <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+                    </div>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $("#btnConfirmOriginateOrApprovalFunding").on("click",function(e) {
+            e.preventDefault();
+            toggleUserInfoChangeErrors("#originateOrApproveLoanError");
+            //   /admin/ajaxApproveAndFundLoan
+            const isEligibleForOriginate = "{{ isEligibleForOriginate }}";
+            const status = "{{ paymentmanagementdata.status }}";
+            if(isEligibleForOriginate.trim().toLowerCase() === "true") {
+                ajaxPost("/admin/ajaxOriginateOrApproveAndFundLoan", {paymentId: "{{paymentmanagementdata.id}}"}).then(function(results) {
+                    if(results && !!results.redirectUrl) {
+                        window.location.href = results.redirectUrl;
+                    }else {
+                        window.location.reload();
+                    }
+                }, function(xhr) {
+                    toggleUserInfoChangeErrors("#originateOrApproveLoanError", xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : "There was an unknown error trying to " + (status === "ORIGINATION"?"originate":"approve and fund") + " this loan.");
+                })
+            }else {
+                toggleUserInfoChangeErrors("#originateOrApproveLoanError", "There was problem checking eligibility on this " + (status === "ORIGINATION"?"originate":"approval") + ". An unknown error occurred.");
+            }
+        });
+
+    })
+</script>

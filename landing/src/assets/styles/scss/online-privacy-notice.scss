@@ -1,0 +1,46 @@
+#privacy-notice {
+  margin-right: 20px;
+}
+.privacy-notice-section {
+
+  &-description {
+    padding: 6rem 0;
+    & .container {
+      max-width: 960px;
+    }
+    &-list {
+      & > li {
+        display: flex;
+        flex-direction: column;
+        row-gap: 24px;
+        &:not(:first-child) {
+          margin-top: 48px;
+        }
+
+        & h5 {
+          color: var(--color-blue-1);
+          font-size: 20px;
+        }
+
+        & p {
+          font-size: 14px;
+        }
+
+        & > ul {
+          display: flex;
+          flex-direction: column;
+          row-gap: 12px;
+          list-style: disc;
+          & li {
+            font-size: 14px;
+          }
+        }
+
+        & .minimin-requirements-list {
+          margin-left: 20px;
+          list-style: disc;
+        }
+      }
+    }
+  }
+}

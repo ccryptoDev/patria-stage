@@ -1,0 +1,134 @@
+<form role="form" id="frmEditFundingPaymentType" >
+    <div class="rdbMethodOfFundingSection" style="margin-left: 20px; ">
+        <div style="margin-bottom: 10px;">
+            <input type="radio" class="rdbMethodOfFunding" name="rdbMethodOfFunding" {% if paymentmanagementdata.fundingPaymentType == "ACH" %}checked{% endif %} id="rdbACHFundingMethod" value="ACH" style="margin-right: 5px"/>
+            <label for="rdbACHFundingMethod" style="font-weight: normal !important;">ACH</label>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <input type="radio" class="rdbMethodOfFunding" name="rdbMethodOfFunding" {% if paymentmanagementdata.fundingPaymentType == "WIRE" %}checked{% endif %} id="rdbWireFundingMethod" value="WIRE" style="margin-right: 5px"/>
+            <label for="rdbWireFundingMethod" style="font-weight: normal !important;">Wire</label>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <input type="radio" class="rdbMethodOfFunding" name="rdbMethodOfFunding" {% if paymentmanagementdata.fundingPaymentType == "DEBIT" %}checked{% endif %} id="rdbDebitCardFundingMethod" value="DEBIT" style="margin-right: 5px"/>
+            <label for="rdbDebitCardFundingMethod" style="font-weight: normal !important;">Debit Card</label>
+        </div>
+    </div>
+</form>
+<style>
+    @media (min-width: 768px) {
+        .editFundingPaymentTypeModal .modal-dialog {
+            width: 845px;
+            margin: 30px auto;
+        }
+        .editFundingPaymentTypeModal .modal-content {
+            -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        .editFundingPaymentTypeModal .modal-sm {
+            width: 545px;
+        }
+    }
+    #frmModalEditFundingPaymentType .payment-schedule-calendar-content-container .calendar-legend .legend-flex-container:nth-child(1) {
+        flex: 0 0 200px;
+    }
+    #frmModalEditFundingPaymentType .payment-schedule-calendar-content-container .calendar-legend .legend-flex-container:nth-child(2) {
+        flex: 0 0 179px;
+    }
+    #frmModalEditFundingPaymentType .payment-schedule-calendar-content-container .calendar-legend .legend-flex-container:nth-child(3) {
+        flex: 0 0 152px;
+    }
+    #frmModalEditFundingPaymentType .payment-schedule-calendar-content-container .calendar-legend .legend-flex-container:nth-child(4) {
+        flex: 0 0 144px;
+    }
+</style>
+
+<div class="modal fade editFundingPaymentTypeModal" role="dialog">
+    <div class="modal-dialog modal-md">
+        <form role="form" id="frmModalEditFundingPaymentType" >
+            <input class="" type="hidden" id="editFundingPaymentTypePaymentId" name="editFundingPaymentTypePaymentId" value="{{ paymentmanagementdata.id }}"/>
+            <!-- Modal content-->
+            <div class="modal-content" style="float: left;width: 100%;">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Change Schedule For Payment Type</h4>
+                </div>
+                <div class="modal-body bgColorWhite" style="float: left;width: 100%;font-size: 16px">
+                    <div>
+                        <p><strong>The chosen payment type of '<span class="chosenFundingPaymentType"></span>' requires a schedule change since it changes the origination date.   </strong></p>
+                        <br/>
+                        <div class="editFundingModalChangeScheduleInclude" style="display: none;">
+                            <div style="font-size: 16px;margin-bottom: 20px;"><i>Note: A change in the schedule will mark the loan as needing a new contract re-signed..</i></div>
+                            {% include "admin/partials/ach/paymentScheduleCalendarModal.nunjucks" %}
+                        </div>
+                        <p><strong>Please confirm funding the application.</strong></p><br/>
+                        <label class="rdbMethodOfFunding-custom-error error" style="display: none"></label>
+                    </div>
+                    <br/>
+                    <div class="modal-footer bg-info" style="float: left;width: 100%;">
+                        <input type="button"  class="btn btn-primary" value="Change Schedule"  id="btnChangeScheduleForFundingPaymentType"/>
+                        <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        const formElement = $(".rdbMethodOfFundingSection").closest("form");
+        const formModalElement = $("#frmModalEditFundingPaymentType");
+        if(formElement.length > 0) {
+
+            const pmStatus = "{{ paymentmanagementdata.status }}";
+            let originalFundingPaymentType = "{{ paymentmanagementdata.fundingPaymentType}}";
+            let determineOriginateChange = determineOriginDateToChange(originalFundingPaymentType);
+            if(["ORIGINATION", "PENDING"].indexOf(pmStatus) >= 0) {
+                $(".editFundingPaymentTypeModal").on("hidden.bs.modal", function(e) {
+                    formElement.find("input.rdbMethodOfFunding").removeAttr("checked");
+                    formElement.find("input.rdbMethodOfFunding[value=" + originalFundingPaymentType + "]").prop("checked", true);
+                    setupEditFundingPaymentTypeModal(formModalElement, originalFundingPaymentType,determineOriginateChange, false);
+                });
+                formElement.find("input.rdbMethodOfFunding").on("change", function(e) {
+                    e.preventDefault();
+                    if($(this).is(":checked")) {
+                        let selectedValue = $(this).val();
+                        console.error("clicked me: " + selectedValue);
+                        determineOriginateChange = determineOriginDateToChange(selectedValue);
+                        if(determineOriginateChange.doesOriginateChange) {
+                            $(".editFundingPaymentTypeModal .editFundingModalChangeScheduleInclude").css("display", "block");
+
+                            //check if already originate date
+                                setupEditFundingPaymentTypeModal(formModalElement, selectedValue, determineOriginateChange, true);
+                        } else {
+                            $(".editFundingPaymentTypeModal .editFundingModalChangeScheduleInclude").css("display", "none");
+                            setupEditFundingPaymentTypeModal(formModalElement, selectedValue,determineOriginateChange, false);
+                            ajaxPost("/admin/changeFundingPaymentType", {paymentId: "{{paymentmanagementdata.id}}", fundingPaymentType:selectedValue}).then(function(results) {
+                                window.location.reload();
+                            }, function(xhr) {
+                                console.error(xhr.responseText)
+                                if(!!originalFundingPaymentType) {
+                                    selectedValue = originalFundingPaymentType;
+                                }
+                            })
+                        }
+                    }
+                });
+            }
+        }
+
+    });
+    function setupEditFundingPaymentTypeModal(formElement, paymentTypeSelected, determineObj, isShowModal = false) {
+
+         console.error(JSON.stringify(determineObj));
+        const originateDate = determineObj.originateDate;
+        const firstPaymentDateToUse = determineObj.firstPaymentDateToUse;
+        setupCalendarModal(formElement.attr("id"), originateDate, firstPaymentDateToUse);
+        if(isShowModal) {
+            formElement.find(".chosenFundingPaymentType").html(paymentTypeSelected);
+            $(".editFundingPaymentTypeModal").modal("show");
+        }
+    }
+
+
+</script>

@@ -1,0 +1,86 @@
+<style>
+    .contract-wrapper {
+        width: 8.5in;
+        padding: 20px;
+    }
+
+    .no-break {
+        page-break-inside: avoid;
+    }
+
+    .new-page {
+        page-break-before: always;
+        margin-top: 40px;
+    }
+
+    table {
+        border-collapce: collapse;
+        border-spacing: 0;
+    }
+
+    table,
+    table tr {
+        border: none;
+    }
+
+    table td,
+    table th {
+        text-align: left;
+        border: 1px solid;
+        padding: 10px;
+    }
+
+    table th {
+        background: #ebebeb;
+    }
+
+    .link-string {
+        word-break: break-word;
+    }
+
+    .field {
+        padding: 20px;
+        display: flex;
+        align-items: end;
+        width: 100%;
+    }
+    .field div {
+        display: inline-block;
+    }
+    .field .label {
+        white-space: nowrap;
+    }
+    .field .value {
+        border-bottom: 1px solid;
+        width: 100%;
+    }
+</style>
+
+<div class="page">
+    <table style="border: none; padding: 0">
+        <thead style="border: none; padding: 0">
+            <tr style="border: none; padding: 0">
+                <td style="border: none; padding-bottom: 20px">
+                    <h4 style="text-align: center;margin:0; padding:0;">Patria Agreement </h4>
+                </td>
+            </tr>
+        </thead>
+        <tbody style="border: none; padding: 0">
+            <tr style="border: none; padding: 0">
+                <td style="border: none; padding: 0">
+
+                    <div class="contract-wrapper">
+                        {% include "document/patriaAgreement/header.nunjucks" %}
+                        {% include "document/patriaAgreement/truthInLending.nunjucks" %}
+                        {% include "document/patriaAgreement/paymentSchedule.nunjucks" %}
+                        {% include "document/patriaAgreement/intimization.nunjucks" %}
+                        {% include "document/patriaAgreement/terms.nunjucks" %}
+                        {% include "document/patriaAgreement/signaturePage.nunjucks" %}
+                        {% include "document/patriaAgreement/paymentAuthorization.nunjucks" %}
+                        {% include "document/patriaAgreement/disclosure.nunjucks" %}
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

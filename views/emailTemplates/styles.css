@@ -1,0 +1,45 @@
+.email-body {
+    text-align: justify;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    max-width: 992px;
+    font-size: 14px;
+    font-family: Spartan;
+}
+
+.action-button {
+    border-radius: 8px;
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 12px 26px;
+    position: relative;
+    cursor: pointer;
+    font-family: Spartan;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    background: #1e84be;
+    color: #fff;
+    text-decoration: none;
+}
+
+.logo-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.note-wrapper {
+    padding: 12px;
+    border-radius: 14px;
+    border: 1px solid #eccb88;
+}
+
+.note-wrapper p {
+    color: #be881e;
+    margin: 0;
+}
+
+table p {
+    margin: 5px 0;
+}

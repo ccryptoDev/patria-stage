@@ -1,0 +1,126 @@
+// GENERAL CONFIG
+main .banner {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  & .container {
+    height: 100%;
+  }
+
+  & span,
+  & a,
+  & a:visited {
+    color: #fff;
+    font-weight: 600;
+  }
+  & h1,
+  & h2,
+  & p,
+  & a {
+    color: #fff;
+  }
+
+  & a.link {
+    color: var(--color-blue-1);
+  }
+
+  & .layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 3.2rem;
+    height: 100%;
+  }
+}
+
+// ABOUT US PAGE
+.about-section-banner {
+  height: 40vh;
+  background: url("../../images/backgrounds/bg-about-us.png");
+
+  & .layout {
+    max-width: 767px;
+  }
+}
+
+// APPLY PAGE
+.section-start-application {
+  background: url("../../images/backgrounds/bg-loan.png");
+  height: 50vh;
+  width: 100%;
+  padding: 6rem 0 5rem;
+}
+
+.section-apply-about-us-banner {
+  background: url("../../images/backgrounds/bg-about-us.png");
+  padding: 6rem 0;
+}
+
+// CONTACT US PAGE
+.contact-section-banner {
+  height: 30vh;
+  background: url("../../images/backgrounds/bg-contact-us.png");
+  padding: 6rem 0 5rem;
+}
+
+// OUR LOANS PAGE
+.loans-section-banner {
+  height: 40vh;
+  background: url("../../images/backgrounds/bg-our-loans.png") no-repeat;
+  padding: 6rem 0 5rem;
+
+  & .layout {
+    row-gap: 24px;
+    max-width: 767px;
+    margin-top: 8rem;
+  }
+}
+
+// FAQ PAGE
+.faq-section-banner {
+  height: 30vh;
+  background: url("../../images/backgrounds/bg-faq.png");
+  padding: 6rem 0 5rem;
+}
+
+// PRIVACY NOTICE PAGE
+.privacy-notice-section-banner {
+  height: 20vh;
+  background: url("../../images/backgrounds/bg-online-privacy-notice.png");
+  padding: 6rem 0 5rem;
+}
+
+// PRIVACY PAGE
+.privacy-section-banner {
+  height: 30vh;
+  background: url("../../images/backgrounds/bg-privacy.png");
+  padding: 6rem 0 5rem;
+}
+
+// RATES PAGE
+.rates-section-banner {
+  height: 30vh;
+  background: url("../../images/backgrounds/bg-rates.png");
+  padding: 6rem 0 5rem;
+}
+
+// RESOURCES PAGE
+.resources-section-banner {
+  height: 30vh;
+  background: url("../../images/backgrounds/bg-resources.png");
+  padding: 6rem 0 5rem;
+}
+
+// TERMS OF USE PAGE
+.terms-section-banner {
+  height: 30vh;
+  background: url("../../images/backgrounds/bg-terms-of-use.png");
+  padding: 6rem 0 5rem;
+}
+
+@media screen and (max-width: 992px) {
+  .banner {
+    height: auto;
+  }
+}

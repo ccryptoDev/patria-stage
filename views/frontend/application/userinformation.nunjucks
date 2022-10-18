@@ -1,0 +1,85 @@
+{% extends "frontend/layoutv3/layout.nunjucks" %}
+
+{% block body %}
+<div id="userinformation">
+<div class="container">
+	<div class="inner-content">
+		<div class="heading">
+	        <div class="logoMiddle">
+	        	<img src="images/imgv3/logo.png" class="img-reponsive" />
+	        </div>
+	    </div>
+    	<div class="row">
+    		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 personalInfoInner">
+    			<div class="whitebox infoForm">
+					<div class="v-center">
+						<div class="h-center">
+							<form class="formclass signupForm" id="userinfoform" action="/createuser" method="POST" data-validation="btnDisable" name="userinfo" autocomplete="off">
+								<input type="hidden" id="practicemanagement" name="practicemanagement" value="{{ practice.id }}" />
+								<input type="hidden" id="sid" name="sid"  />
+								<input type="hidden" id="isTwilioEnabled" name="isTwilioEnabled" value="{{ isTwilioEnabled }}"/>
+								<input type="hidden" id="isPhoneVerified" name="isPhoneVerified"/>
+    							<br />
+								<h3>Welcome to {{LenderShortName}}!</h3>
+								<br /><br />
+								<div class="row">
+									<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+										<div class="form-group">
+											<input type="text" class="form-control form-application" id="firstname" name="firstname" placeholder="First Name"  value="{{ req.session.first_name }}" required>
+										</div>
+									</div>
+									<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+										<div class="form-group">
+											<input type="text" class="form-control form-application" id="middlename" name="middlename" placeholder="Middle Name" value="{{ req.session.middle_name }}">
+										</div>
+									</div>
+									<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+										<div class="form-group ">
+											<input type="text" class="form-control form-application" id="lastname" name="lastname" placeholder="Last Name" value="{{ req.session.last_name }}" required>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+										<div class="form-group">
+											<input type="text" class="form-control form-application" id="email" name="email" placeholder="Email Address" value="">
+										</div>
+									</div>
+									<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+										<div class="form-group">
+											<input type="text" class="form-control form-application" id="phone" name="phone" placeholder="Mobile Number" data-mask="000-000-0000" maxlength="12" value="" required>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+										<div class="form-group">
+											<input type="password" class="form-control form-application" id="password" name="password" placeholder="Password" value="">
+										</div>
+									</div>
+									<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+										<div class="form-group">
+											<input type="password" class="form-control form-application" id="confirmpassword" name="confirmpassword" placeholder="Password Confirm" value="">
+										</div>
+									</div>
+								</div>
+								<br />
+								<div class="error-message error" style="display: none;"></div>
+								<div>
+									<div class="server-error error" style="display: {{ 'block' if applicationerror and not applicationerror == ''  else 'none' }};" >{{ applicationerror }}</div>
+									<button type="button" class="btn-application" onclick="checkIfVerificationNeeded()">Apply</button>
+								</div>
+								<br />
+    						</form>
+
+						</div>
+					</div>
+				</div>
+				 {% include "twilio/twilioVerificationTemplate.nunjucks" %}
+    		</div>
+    	</div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

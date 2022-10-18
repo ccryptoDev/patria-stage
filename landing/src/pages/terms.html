@@ -1,0 +1,26 @@
+<div>
+  <section class="terms-section-banner banner">
+    <div class="container layout">
+      <h1>
+        Terms of Use
+      </h1>
+    </div>
+  </section>
+
+  <section class="terms-section-description">
+    <div class="container">
+      <iframe
+        src="terms-of-use.html"
+        id="document-iframe"
+        frameborder="0"
+      ></iframe>
+    </div>
+  </section>
+  <script>
+    const iframe = document.getElementById("document-iframe");
+    iframe.onload = function() {
+      iframe.style.height =
+        iframe.contentWindow.document.body.scrollHeight + "px";
+    };
+  </script>
+</div>

@@ -1,0 +1,33 @@
+{% extends "frontend/homev3/newHome.nunjucks" %}
+{% block body %}
+
+<div class="optout-title">
+	<div class="optout-title-container">
+		<h3>Subscription Management</h3>
+		<div class="page-track-container">
+			<ul class="page-track">
+				<li>You are here: </li>
+				<li class="home"><a href="/"> Home </a></li>
+				<li class="active"><a href="/optout"> Subscription Management</a></li>
+		</div>
+	</div>
+</div>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info how-it-works optout">
+				<p>Are you looking to optout of our Email and/or SMS/Text messaging? Please call 855-767-7033 or contact send us an email at <a href="mailto:Info@Patria.com">Info@Patria.com</a> with your full name, email, whether you would like to unsubscribe from Email or SMS/Text Notifications, and whether you are a current applicant, current customer, or past customer. Please allow us up to 10 business days to fulfill your request.<br><br>Please note that all requests are manually processed. Our business hours are Monday through Friday, 8 am to 4:30 pm Central Time.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<section class="section section_7">
+	<div class="section_7_items">
+		<h2>Need To Contact Us?</h2>
+		<a href="/contact" class="button button-apply">Go Here</a>
+	</div>
+</section>
+{% endblock %}

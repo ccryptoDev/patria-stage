@@ -1,0 +1,229 @@
+{% extends "layout/layout.nunjucks" %}
+{% block body %}
+  <section class="content-header">
+      <h1>
+        View Practice Details
+        <small>preview of View Practice Details</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="/admin/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="/admin/managepractice"><i class="fa fa-dashboard"></i>Manage Practice</a></li>
+        <li class="active">View Practice Details</li>
+      </ol>
+    </section>
+
+    <section class="content">
+      <div class="box">
+
+        <div class="box-header with-border">
+          <h3 class="box-title">View Practice Details</h3>
+          <span class="pull-right">
+              <a href="/admin/managepractice"><button type="button" class="btn btn-primary"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Back</button></a>
+          </span>
+        </div>
+
+
+        <div class="box-body">
+
+          <div id="tabs">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#practiceinfo">Practice Details</a></li>
+                <li class=""><a data-toggle="tab" href="#practicepaymentinfo">Payment Information</a></li>
+            </ul>
+
+            <div class="tab-content">
+
+                <div id="practiceinfo" class="tab-pane fade in active">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                    <br>
+                    <div class="panel-group">
+                      <div class="panel panel-primary">
+                        <div class="panel-heading">Practice Information</div>
+                        <div class="panel-body">
+                          <table class="table table-bordered">
+                            <tbody>
+                              <tr>
+                               <th width="50%">Contact Name</th>
+                                <td>{{practiceData.ContactName}}</td>
+                              </tr>
+                              <tr>
+                               <th>Email Address</th>
+                                <td>{{practiceData.PracticeEmail}}</td>
+                              </tr>
+                              <tr>
+                               <th>Practice Name</th>
+                                <td>{{practiceData.PracticeName}}</td>
+                              </tr>
+                              <tr>
+                               <th>Practice Url</th>
+                                <td>
+                                {% if practiceData.UrlSlug!='' %}
+                                 <a href="{{practiceData.UrlSlug}}" target="_blank">{{practiceData.UrlSlug}}</a>
+                                {% else %}
+                                  --
+                                {% endif %}
+                              </td>
+                              </tr>
+                              <tr>
+                               <th>Location Name</th>
+                                <td>{{practiceData.LocationName}}</td>
+                              </tr>
+                              <tr>
+                               <th>Street Address</th>
+                                <td>{{practiceData.StreetAddress}}</td>
+                              </tr>
+                              <tr>
+                               <th>City</th>
+                                <td>{{practiceData.City}}</td>
+                              </tr>
+                              <tr>
+                               <th>State Code</th>
+                                <td>
+                                 {{ practiceData.StateCode }}
+                                </td>
+                              </tr>
+                              <tr>
+                               <th>Zip Code</th>
+                                <td>{{practiceData.ZipCode}}</td>
+                              </tr>
+                             <!-- <tr>
+                               <th>Date Of Birth</th>
+                                <td>{{practiceData.dateofBirth}}</td>
+                              </tr>
+                              <tr>
+                               <th>Social Security Number</th>
+                                <td>{{practiceData.ssnNumber}}</td>
+                              </tr>-->
+                              <tr>
+                               <th>Phone Number</th>
+                                <td>{{practiceData.PhoneNo}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        </div>
+                      </div>
+
+                      <div class="panel-group">
+                        <div class="panel panel-primary">
+                          <div class="panel-heading">Transunion Information</div>
+
+                          <div class="panel-body">
+							  <h4>Credit Report Codes</h4>
+                            <table class="table table-bordered">
+                              <tbody>
+                                <tr>
+                                 <th width="50%">Industry Code</th>
+                                  <td>{{practiceData.industryCode}}</td>
+                                </tr>
+                                <tr>
+                                 <th>Member Code</th>
+                                  <td>{{practiceData.memberCode}}</td>
+                                </tr>
+                                <tr>
+                                 <th>Prefix Code</th>
+                                  <td>{{practiceData.prefixCode}}</td>
+                                </tr>
+                                <tr>
+                                 <th>Password</th>
+                                  <td>{{practiceData.apiPassword}}</td>
+                                </tr>
+                              </tbody>
+							</table>
+							<hr/>
+							<h4>Prescreen Codes</h4>
+                            <table class="table table-bordered">
+                              <tbody>
+                                <tr>
+                                 <th width="50%">Industry Code</th>
+                                  <td>{{practiceData.prescreen.industryCode}}</td>
+                                </tr>
+                                <tr>
+                                 <th>Member Code</th>
+                                  <td>{{practiceData.prescreen.memberCode}}</td>
+                                </tr>
+                                <tr>
+                                 <th>Prefix Code</th>
+                                  <td>{{practiceData.prescreen.prefixCode}}</td>
+                                </tr>
+                                <tr>
+                                 <th>Password</th>
+                                  <td>{{practiceData.prescreen.password}}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+
+                        </div>
+                      </div>
+
+                      <div class="panel-group">
+                        <div class="panel panel-primary">
+                          <div class="panel-heading">Banking  Information</div>
+
+                          <div class="panel-body">
+                            <table class="table table-bordered">
+                              <tbody>
+                                <tr>
+                                 <th width="50%">Bank Name</th>
+                                  <td>{{practiceData.Bankname}}</td>
+                                </tr>
+                                <tr>
+                                 <th>Primary Bank Account Holder</th>
+                                  <td>{{practiceData.Accountholder}}</td>
+                                </tr><tr>
+                                 <th>Account Number</th>
+                                  <td>{{practiceData.Accountnumber}}</td>
+                                </tr>
+                                <tr>
+                                 <th>Routing Number</th>
+                                  <td>{{practiceData.Routingnumber}}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+
+                        </div>
+                      </div>
+
+                      <div class="panel-group">
+                        <div class="panel panel-primary">
+                          <div class="panel-heading">Credit Card Information</div>
+
+                          <div class="panel-body">
+                            <table class="table table-bordered">
+                              <tbody>
+                                <tr>
+                                 <th width="50%">Cardholder Name</th>
+                                  <td>{{practiceData.Cardholdername}}</td>
+                                </tr>
+                                <tr>
+                                 <th>Credit Card Number </th>
+                                  <td>{{practiceData.CreditCardNumber}}</td>
+                                </tr>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+
+                <div id="practicepaymentinfo" class="tab-pane fade">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h3>Payment Information</h3>
+                    {% include "admin/practice/paymentDetails.nunjucks"%}
+                  </div>
+                </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+{% endblock %}

@@ -1,0 +1,305 @@
+
+<style>
+    .modal-table-head {
+        margin: 0;
+        position: sticky;
+        top: 0;
+        color: #D5DDE5;
+    {# font-family: Lato, Roboto, sans-serif; #}
+    {# font-weight: 500;
+    font-size: 12px; #}
+    }
+
+    .table-fill {
+    {# background: white; #}
+    {# overflow: hidden; #}
+        border-radius:7px;
+        border-collapse: collapse !important;
+        margin: auto;
+    {# padding:5px; #}
+        width: 100%;
+    }
+
+    .th-modal {
+        color: #D5DDE5;
+        background: #2f61b7;
+        border-top: none;
+        border-bottom: 4px solid #9ea7af !important;
+    {# border-right: 1px solid #9ea7af !important; #}
+        padding: 24px;
+        font-weight: 500;
+        font-size: 15px;
+        text-align: left;
+    {# text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); #}
+        vertical-align: middle;
+    }
+
+
+    th:first-child {
+        overflow: hidden;
+        border-top-left-radius: 7px;
+    }
+
+    th:last-child {
+        overflow: hidden;
+        border-top-right-radius: 7px;
+        border-right: none;
+    }
+
+    .tr-modal {
+        color: #666B85;
+    }
+
+    .tr-modal:nth-child(even) td {
+    {# background: #EBEBEB; #}
+        background: #efefef;
+    }
+
+
+    .td-modal {
+        overflow: hidden;
+        padding: 20px;
+        text-align: left;
+        vertical-align: middle;
+    }
+
+
+
+</style>
+
+<div class="modal-dialog modal-md">
+    <form id="makepayment-form" action="" method="POST" onsubmit="return false;">
+        <input type="hidden" id="makepayment-loanId" name="loanId" value="{{ paymentmanagementdata.id }}" />
+        <input type="hidden" id="makepayment-includeAccruedInterest" name="includeAccruedInterest" value="{{ '1' if( dialogState.includeAccruedInterest ) else '0' }}" />
+        <input type="hidden" id="makepayment-excludeFees" name="includeAccruedInterest" value="{{ '0' if( dialogState.excludeFees ) else '1' }}" />
+        {% if( paymentLedger.hasScheduleError ) %}
+            <div id="makepayment-content-notice" class="modal-content show">
+                <div class="modal-body bgColorWhite text-center">
+                    <h3 style="margin:0 0 10px 0;padding-bottom:4px;color:#14BBA5;font-family:Lato,Roboto,sans-serif;font-size:24px;font-weight:500;line-height:29px;">Amend Payment</h3>
+                    <div class="row text-left">
+                        <div class="col-xs-12 text-center">
+                            <p>This feature is not available. The payment schedules dates do not match up with the contract dates. Please fix those and try again.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-info">
+                    <button type="button" id="makepayment-notice-cancel" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        {% else %}
+
+            {% if not dialogState.amendData %}
+                <div id="makepayment-content-notice" class="modal-content show">
+                    <div class="modal-body bgColorWhite text-center">
+                        <h3 style="margin:0 0 10px 0;padding-bottom:4px;color:#14BBA5;font-family:Lato,Roboto,sans-serif;font-size:24px;font-weight:500;line-height:29px;">{% if dialogState.isAmendPayoff %}Amend Payoff{% else %}Amend Payment{% endif %}</h3>
+                        <div class="row text-left">
+                            <div class="col-xs-12 text-center">
+                                <p>There is no eligible scheduled payment to amend or there was an error trying to get the next eligible payment.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-info">
+                        <button type="button" id="makepayment-notice-cancel" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            {% else %}
+                <div id="makepayment-content-form" class="modal-content show">
+                <div class="modal-body bgColorWhite text-center">
+                    <h3 style="margin:0 0 35px 0;padding-bottom:4px;color:#FA2225;font-family:Lato,Roboto,sans-serif;font-size:24px;font-weight:500;line-height:29px;">Amend Payment</h3>
+                    <div class="row">
+                        <div class="col-xs-5 col-xs-offset-1">
+                            <div class="form-group text-left">
+                                <label for="makepayment-paymentDate" style="margin-left:20px;color:#5A7DA1;font-family:'Avenir Next',Roboto,Lato,sans-serif;font-size:11px;font-weight:500;line-height:14px;">PAYMENT DATE</label>
+                                <input type="text" id="makepayment-paymentDate" name="paymentDate" class="form-control makepayment-paymentDate" value="{{ moment( paymentDate ).format( 'MM/DD/YYYY' ) }}" required datepicker style="height:40px;border-radius:20px;padding-left:20px;background-color:#F0F4F8;color:#5A7DA1;font-family:'Avenir Next',Roboto,Lato,sans-serif;font-size:13px;font-weight:500;line-height:20px;" />
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="form-group text-left">
+                                <label for="makepayment-amount" style="margin-left:20px;color:#5A7DA1;font-family:'Avenir Next',Roboto,Lato,sans-serif;font-size:11px;font-weight:500;line-height:14px;">AMEND AMOUNT</label>
+                                <input type="text" id="makepayment-amount" name="amount" class="form-control" value="{{ paymentAmount | $format }}" required style="height:40px;border-radius:20px;padding-left:20px;background-color:#F0F4F8;color:#5A7DA1;font-family:'Avenir Next',Roboto,Lato,sans-serif;font-size:13px;font-weight:500;line-height:20px;" />
+                                <label class="makepayment-amount-error error" style="display: none">The error message that will go here will be red.</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-5 col-xs-offset-1">
+                            <div class="form-group text-left" style="margin-left:20px;font-size:16px;font-weight:500;line-height:14px;">
+                                <div>
+                                    <input type="checkbox" value="true" id="chkMakePaymentDebitCardTransaction" name="chkMakePaymentDebitCardTransaction">
+                                    <label for="chkMakePaymentDebitCardTransaction" style="margin-left: 10px;">Pay with Debit Card</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="form-group text-left" style="margin-left:20px;font-size:16px;font-weight:500;line-height:14px;">
+                                <div>
+                                    <input type="checkbox" value="true" id="chkMakePaymentAmendPayOff" name="chkMakePaymentAmendPayOff">
+                                    <label for="chkMakePaymentAmendPayOff" style="margin-left: 10px;">Amend Payoff</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row makePaymentDialogBankAccountSection" {% if dialogState.useDebitCard %}style="display: none"{% endif %}>
+                        <div class="col-xs-10 col-xs-offset-1">
+                            <div class="form-group text-left">
+                                <label for="makepayment-accountId" style="margin-left:20px;color:#5A7DA1;font-family:'Avenir Next',Roboto,Lato,sans-serif;font-size:11px;font-weight:500;line-height:14px;">BANK ACCOUNT</label>
+                                <div id="makepayment-accountId-ctrl">
+                                    <select id="makepayment-accountId" name="accountId" class="form-control" style="background-color:#F0F4F8;color:#5A7DA1;font-family:'Avenir Next',Roboto,Lato,sans-serif;font-size:13px;font-weight:500;">
+                                        {% for chkAcct in userCheckingAccounts %}
+                                            <option value="{{ chkAcct.id }}">{{ chkAcct.label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% if oldLedger.missedPayments.length > 0 %}
+                        <div>
+					<span style="font-weight: bold;color:#f39c12;"><i class='fa fa-exclamation-triangle' aria-hidden='true' style="margin-right: 5px;" ></i>
+            			Warning! All payments are applied to the OLDEST past due payment <br/>(not the current payment).
+					</span>
+                        </div>
+                    {% endif %}
+                    <p style="margin:16px 0;">This payment will be amended with following information: </p>
+                    <div style="position:relative;">
+                        <div id="makepayment-breakdown" style="position:relative;">
+                            <div class="row text-left" style="font-family:'Avenir Next',Roboto,Lato,sans-serif;font-weight:500;">
+                                <div class="col-xs-10 col-xs-offset-1">
+                                    <div style="width:450px;margin:0 auto;">
+                                        <table class="table table-bordered" style="border:1px solid black;">
+                                            <tbody>
+                                            {% if futureLedger %}
+                                                <tr>
+                                                    <td colspan="1">
+                                                        <div class="makepayment-fb-jc-sp" style="display: block">
+                                                            <div style="font-weight: bold">PROJECTED FUTURE</div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-right" colspan="3">
+                                                        <div>{{ paymentDate | dateMinusTz("MMMM D, YYYY") }}</div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="makepayment-fb-jc-sp" style="display: block">
+                                                            <div style="text-align: right;">INTEREST</div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-right" colspan="3">
+                                                        <div>{{ futureLedger.unpaidInterest | $format }}</div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="makepayment-fb-jc-sp" style="display: block">
+                                                            <div style="text-align: right;">PRINCIPAL</div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-right" colspan="3">
+                                                        <div>{{ futureLedger.principalPayoff | $format }}</div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="makepayment-fb-jc-sp" style="display: block">
+                                                            <div style="text-align: right;">PAYOFF</div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-right" colspan="3">
+                                                        <div>{{ (futureLedger.principalPayoff + futureLedger.unpaidInterest) | $format }}</div>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+
+                                            <tr>
+                                                <td>
+                                                    <div class="makepayment-fb-jc-sp" style="display: block">
+                                                        <div style="font-weight: bold">AMENDED PAYMENT</div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-right" colspan="3">
+                                                    {{ preview.scheduleDate | dateMinusTz("MMMM D, YYYY") }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="makepayment-fb-jc-sp" style="display: block">
+                                                        <div style="text-align: right;">AMOUNT</div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-right" colspan="3">
+                                                    {{ paymentAmount | $format }}
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="text-right"></td>
+                                                <td class="text-right" >Now</td>
+                                                <td class="text-right" >Payment</td>
+                                                <td class="text-right" >After</td>
+                                            </tr>
+
+
+
+
+                                            <tr>
+                                                <td class="text-right"></td>
+                                                <td class="text-right" >Scheduled</td>
+                                                <td class="text-right" >Payment</td>
+                                                <td class="text-right" >Waived</td>
+                                            </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="makepayment-fb-jc-sp" style="display: block;">
+                                                            <div class="text-right">Interest</div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{ preview.amend.amendCurrentInterest | $format }}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{ preview.amend.amendAppliedInterest | $format }}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{ preview.amend.amendLeftOverInterest | $format }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="makepayment-fb-jc-sp" style="display: block;">
+                                                            <div class="text-right">Principal</div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{ preview.amend.amendCurrentPrincipal | $format }}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{ preview.amend.amendAppliedPrincipal | $format }}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{ preview.amend.amendLeftOverPrincipal | $format }}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-info">
+                    <button type="button" id="makepayment-form-cancel" data-dismiss="modal" class="btn btn-secondary">Cancel</button>
+                    <button type="button" id="makepayment-form-submit" class="btn btn-primary btn-confirm" style="position:relative;height:40px;">
+                        Next
+                        <i id="makepayment-form-submit-spin" class="fa fa-spinner fa-spin hide"></i>
+                    </button>
+                </div>
+            </div>
+            {% endif %}
+
+
+        {% endif %}
+       {% include "admin/makepayment/partials/makePaymentContentConfirm.nunjucks" %}
+    </form>
+</div>

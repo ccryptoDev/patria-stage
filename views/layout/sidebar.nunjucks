@@ -1,0 +1,72 @@
+{# <aside class="main-sidebar" style="background-image: linear-gradient( #38A6FF, #29DBC2 ); font-color: #107189"> #}
+<aside class="main-sidebar">
+	<section class="sidebar">
+		<div class="user-panel">
+			<div class="pull-left image">
+				<i class="fa fa-user" style="font-size:30px; color:#FFF; padding:5px 0px 0px 4px;"></i>
+			</div>
+			<div class="pull-left info">
+				<p>{{ req.user.name }}</p>
+				<a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+			</div>
+		</div>
+
+		<ul class="sidebar-menu">
+			{% if req.user.rolename =='Rep' or req.user.rolename =='Admin' %}
+				<li><a href="/admin/dashboard"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
+				<li><a href="/admin/freshLeadsList"><i class="fa fa-folder"></i><span>Fresh Leads</span></a></li>
+				<li><a href="/admin/rejectedLeads"><i class="fa fa-folder"></i><span>Rejected Leads</span></a></li>
+				<li><a href="/admin/getOpenApplicationDetails"><i class="fa fa-folder"></i><span>Pending Applications</span></a></li>
+				<li><a href="/admin/showAllPerforming"><i class="fa fa-folder"></i><span>Active Contracts</span></a></li>
+				<li><a href="/admin/showAllDenied"><i class="fa fa-folder"></i><span>Denied Applications</span></a></li>
+				<li><a href="/admin/getArchivedOpenDetails"><i class="fa fa-folder"></i><span>Archived Open Applications</span></a></li>
+				<li><a href="/admin/showAllCompleted"><i class="fa fa-folder"></i><span>Completed Contracts</span></a></li>
+				<li><a href="/admin/showChargedOff"><i class="fa fa-folder"></i><span>Charged Off Applications</span></a></li>
+				<li><a href="/admin/showSettled"><i class="fa fa-folder"></i><span>Settled Applications</span></a></li>
+				<li><a href="/admin/showAllBankruptcies"><i class="fa fa-folder"></i><span>Bankruptcy Contracts</span></a></li>
+				{% if req.user.rolename == "Admin" or req.user.collectionRoleName == "COLLECTION_MANAGER" or req.user.collectionRoleName == "COLLECTION_STAFF" %}
+					<li class="treeview">
+						<a href="#">
+							<i class="fa fa-th"></i> <span>Collections</span>
+							<span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+						</a>
+						<ul class="treeview-menu">
+							{% if req.user.rolename == "Admin" or req.user.collectionRoleName == "COLLECTION_MANAGER" %}
+								<li><a href="/admin/collections/all"><i class="fa fa-folder"></i><span>All Collections</span></a></li>
+								<li><a href="/admin/collections/pending"><i class="fa fa-folder"></i><span>Pending Collections</span></a></li>
+							{% endif %}
+							<li><a href="/admin/collections/mycollections"><i class="fa fa-folder"></i><span>Show My Collection Items</span></a></li>
+							<li><a href="/admin/collections/promisetopay"><i class="fa fa-folder"></i><span>Show Promise To Pay</span></a></li>
+							<li><a href="/admin/show-modified-loans"><i class="fa fa-folder"></i><span>Show Modified Loans</span></a></li>
+						</ul>
+					</li>
+				{% endif %}
+
+				<li><hr /></li>
+				{% if req.user.rolename =='Admin' %}
+					<li class="treeview">
+						<a href="#">
+							<i class="fa fa-th"></i> <span>Settings</span>
+							<span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+						</a>
+						<ul class="treeview-menu">
+							<li><a href="/admin/managelogactivity"><i class="fa  fa-history"></i><span>Audit Log</span></a></li>
+							<li><a href="/admin/adminuserlist"><i class="fa fa-user"></i><span>Admin Manage Users</span></a></li>
+							<li><a href="/admin/leads"><i class="fa fa-drivers-license-o"></i><span>Manage Leads</span></a></li>
+							<li><a href="/admin/nacha"><i class="fa fa-drivers-license-o"></i><span>Nacha Submissions</span></a></li>
+							<li><a href="/admin/nachacredentials"><i class="fa fa-drivers-license-o"></i><span>Nacha Credentials</span></a></li>
+						</ul>
+					</li>
+					{# <li><hr /></li> #}
+				{% endif %}
+
+				<li><a href="/admin/manageusers"><i class="fa fa-user"></i><span>All Customers</span></a></li>
+
+			{% endif %}
+
+			<li><a href="/admin/reports"><i class="fa fa-folder"></i><span>Reports</span></a></li>
+			<li>&nbsp;</li>
+		</ul>
+		<p>&nbsp;</p>
+	</section>
+</aside>

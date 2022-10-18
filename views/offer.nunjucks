@@ -1,0 +1,19 @@
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<div class="container">
+ 	<p class="text-center" style="font-size: 150%;">You've been pre-approved</p>
+  	<p class="text-center">Check your offer below</p>
+  	<div class="row justify-content-center">
+        <div class="card" style="width: 19rem;">
+            <div class="card-body text-center">
+                <h4 class="card-title">Loan Amount: 500 $</h4> 
+                <p class="card-text">Payment Amount: 79 $</p>
+                <p class="card-text">Payment Term: 24 </p>
+                <p class="card-text">Payment Frequency: Monthly</p>
+                <p class="card-text">APR Percentage: 782.3 %</p>
+                <a href="#" class="btn btn-primary">Select Offer</a>
+            </div>
+        </div>  
+  	</div>
+</div>

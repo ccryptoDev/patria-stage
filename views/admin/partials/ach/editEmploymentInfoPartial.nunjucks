@@ -1,0 +1,275 @@
+<style>
+    .float-select-label {
+        opacity: 1 !important;
+    }
+    #frmEditEmploymentDetailsForm .label-error-shown-block {
+        /*position: relative !important;*/
+        text-align: left;
+        left: 0;
+        min-height: 20px;
+    }
+</style>
+<div id="editEmployerDetailsModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md" style="width:80%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header bg-primary" >
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Employment Info</h4>
+            </div>
+            <div class="modal-body bgColorWhite" style="float: left;width: 100%;" >
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 personalInfoInner los-content">
+                    <div class="whitebox infoForm">
+                        <form id="frmEditEmploymentDetailsForm">
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <p align="left">Income Type</p>
+                                        <select class="form-control form-application"  id="slbTypeOfIncomeEdit" name="typeOfIncome">
+                                            <option disabled="disabled">Select an Option</option>
+                                            <option value="disability_income" {% if currentEmploymentHistory.typeOfIncome === "disability_income" %}selected{% endif %}>Disability Income</option>
+                                            <option value="social_security" {% if currentEmploymentHistory.typeOfIncome === "social_security" %}selected{% endif %}>Social Security</option>
+                                            <option value="employed" {% if currentEmploymentHistory.typeOfIncome === "employed" %}selected{% endif %}>Employed</option>
+                                            <option value="unemployed" {% if currentEmploymentHistory.typeOfIncome === "unemployed" %}selected{% endif %}>Unemployed</option>
+                                            <option value="pension" {% if currentEmploymentHistory.typeOfIncome === "pension" %}selected{% endif %}>Pension</option>
+                                            <option value="others" {% if currentEmploymentHistory.typeOfIncome === "others" %}selected{% endif %}>Others (Child Support, Welfare etc.)</option>
+                                        </select>
+                                        <div class="label-error-shown-block"><label id="slbTypeOfIncomeEdit-error" for="slbTypeOfIncomeEdit" class="error" style="display:none;"></label></div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <p align="left">Employer Name</p>
+                                        <input class="form-control form-application"  id="txtEmployerNameEdit" name="employerName" value="{{ currentEmploymentHistory.employerName }}"/>
+                                        <div class="label-error-shown-block"><label id="txtEmployerNameEdit-error" for="txtEmployerNameEdit" class="error" style="display:none;"></label></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <p align="left">Employer Phone</p>
+                                        <input class="form-control form-application"  name="employerPhone" id="txtEmployerPhoneEdit" data-mask="000-000-0000" maxlength="12" autocomplete="on" required  value="{{ currentEmploymentHistory.employerPhone }}">
+                                        <div class="label-error-shown-block"><label id="txtEmployerPhoneEdit-error" for="txtEmployerPhoneEdit" class="error" style="display:none;"></label></div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <p align="left">Employer Status</p>
+                                        <select class="form-control form-application"  id="sblEmployerStatusEdit" name="employerStatus">
+                                            <option disabled="disabled">Select an Option</option>
+                                            <option value="full_time" {% if currentEmploymentHistory.employerStatus === "full_time" %}selected{% endif %}>Full Time</option>
+                                            <option value="part_time" {% if currentEmploymentHistory.employerStatus === "part_time" %}selected{% endif %}>Part Time</option>
+                                        </select>
+                                        <div class="label-error-shown-block"><label id="sblEmployerStatusEdit-error" for="sblEmployerStatusEdit" class="error" style="display:none;"></label></div>
+                                    </div>
+                                 </div>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <p align="left">Monthly Income</p>
+                                        <input class="form-control form-application"  type="text" name="monthlyIncome" id="txtMonthlyIncomeEdit"  value="{{ currentEmploymentHistory.monthlyIncome }}">
+                                        <div class="label-error-shown-block"><label id="txtMonthlyIncomeEdit-error" for="txtMonthlyIncomeEdit" class="error" style="display:none;"></label></div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <p align="left">Payment Frequency</p>
+                                            <select class="form-control form-application" id="sblPayFrequencyEdit" name="payFrequency"  required>
+                                                <option disabled value="Select an Option">Select an Option</option>
+                                                <option value="B" {% if currentEmploymentHistory.payFrequency == "B" %}selected{% endif %}>Bi-Weekly</option>
+                                                <option value="M" {% if currentEmploymentHistory.payFrequency == "M" %}selected{% endif %}>Monthly</option>
+                                                <option value="S" {% if currentEmploymentHistory.payFrequency == "S" %}selected{% endif %}>Semi-Monthly</option>
+                                                <option value="W" {% if currentEmploymentHistory.payFrequency == "W" %}selected{% endif %}>Weekly</option>
+                                            </select>
+                                        <div class="label-error-shown-block"><label id="sblPayFrequencyEdit-error" for="sblPayFrequencyEdit" class="error" style="display:none;"></label></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <p align="left">Last Pay Date</p>
+                                        <input type="text" id="txtLastPayDateEdit" max="9999-12-31" name="lastPayDate" class="form-control form-application date-range-filter" data-date-format="mm/dd/yyyy"
+                                               onfocus="(this.type='date')" required value="{{ currentEmploymentHistory.lastPayDate | dateMinusTz("MM/DD/YYYY") }}">
+                                        <div class="label-error-shown-block"><label id="txtLastPayDateEdit-error" for="txtLastPayDateEdit" class="error" style="display:none;"></label></div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <p align="left">Next Pay Date</p>
+                                        <input type="text" id="txtNextPayDateEdit" max="9999-12-31" name="nextPayDate" class="form-control form-application date-range-filter" data-date-format="mm/dd/yyyy"
+                                               onfocus="(this.type='date')" required value="{{ currentEmploymentHistory.nextPayDate | dateMinusTz("MM/DD/YYYY") }}">
+                                        <div class="label-error-shown-block"><label id="txtNextPayDateEdit-error" for="txtNextPayDateEdit" class="error" style="display:none;"></label></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <p align="left">Second Pay Date</p>
+                                        <input type="text" id="txtSecondPayDateEdit" max="9999-12-31" name="secondPayDate" class="form-control form-application date-range-filter" data-date-format="mm/dd/yyyy"
+                                               onfocus="(this.type='date')" value="{{ currentEmploymentHistory.secondPayDate | dateMinusTz("MM/DD/YYYY") }}">
+                                        <div class="label-error-shown-block"><label id="txtSecondPayDateEdit-error" for="txtSecondPayDateEdit" class="error" style="display:none;"></label></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="row">
+                                    <div style="margin-top: 10px;min-height: 30px;">
+                                        <label class="error" id="lblEditEmployerDetailsError" style="width: 100%;text-align: center;display: none;"  ></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="modal-footer bg-info" style="float: left;width: 100%;">
+                <button type="button" id="btnSaveEmployerInfoEdit" class="btn btn-primary">Save</button>
+                <button type="button" id="btnCancelEmployerInfoEdit" class="btn btn-primary">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+  $(document).ready(function() {
+    const currentPaymentDatesObj = {
+      lastPayDate: "{{ currentEmploymentHistory.lastPayDate | dateMinusTz("YYYY-MM-DD") }}",
+      nextPayDate: "{{ currentEmploymentHistory.nextPayDate | dateMinusTz("YYYY-MM-DD") }}",
+      secondPayDate: "{{ currentEmploymentHistory.secondPayDate | dateMinusTz("YYYY-MM-DD") }}",
+    }
+
+    const employmentEditForm = $("#frmEditEmploymentDetailsForm");
+    $("#btnSaveEmployerInfoEdit").on("click", function(e) {
+      e.preventDefault();
+      toggleEmployerChangeErrors("#frmEditEmploymentDetailsForm #lblEditEmployerDetailsError");
+      if(employmentEditForm.valid()){
+        const serializeForm = employmentEditForm.serializeArray();
+        const employerPostData = {};
+        _.forEach( serializeForm, function( formData ) {
+          if(formData.name.endsWith("PayDate") && !!formData.value){
+            employerPostData[ formData.name ] = formData.value.indexOf("-") < 0? moment(formData.value, "MM/DD/YYYY").format("YYYY-MM-DD"):formData.value;
+          }else if(formData.name === "monthlyIncome" && !!formData.value){
+            employerPostData[ formData.name ] = !!formData.value?parseFloat(formData.value):parseFloat("{{ currentEmploymentHistory.monthlyIncome }}" || "0");
+          }else if(formData.name === "employerPhone" && !!formData.value){
+           employerPostData[ formData.name ] = formData.value.replace(/[^0-9.]/g, "");
+          }else {
+           employerPostData[formData.name] = formData.value;
+          }
+        } );
+        ajaxPost("/user/ajaxUpdateEmployerTabInformation", {employerData: employerPostData,userId: "{{ currentEmploymentHistory.user }}"}).then(function(results) {
+          window.location.reload();
+        }, function(xhr) {
+          toggleEmployerChangeErrors("#frmEditEmploymentDetailsForm #lblEditEmployerDetailsError", xhr.responseJSON && !!xhr.responseJSON.message? xhr.responseJSON.message: "There was an unknown error trying to update employment info.");
+        });
+      }
+    });
+    $("#btnCancelEmployerInfoEdit").on("click", function(e) {
+      e.preventDefault();
+      hideEmployerEditModal();
+      $("#txtEmployerNameEdit").val("{{ currentEmploymentHistory.employerName }}");
+      $("#txtEmployerPhoneEdit").val("{{ currentEmploymentHistory.employerPhone | phoneformat(true)}}");
+      $("#txtMonthlyIncomeEdit").val(parseFloat("{{ currentEmploymentHistory.monthlyIncome }}" || "0").toString());
+
+      $("#slbTypeOfIncomeEdit option").removeAttr("selected")
+      $("#slbTypeOfIncomeEdit").find("option[value={{ currentEmploymentHistory.typeOfIncome }}]").prop("selected","selected");
+
+      $("#sblEmployerStatusEdit option").removeAttr("selected")
+      $("#sblEmployerStatusEdit").find("option[value={{ currentEmploymentHistory.employerStatus }}]").prop("selected","selected");
+
+      $("#sblPayFrequencyEdit option").removeAttr("selected")
+      $("#sblPayFrequencyEdit").find("option[value={{ currentEmploymentHistory.payFrequency }}]").prop("selected","selected");
+
+      $("#txtLastPayDateEdit").attr( "data-date",moment(currentPaymentDatesObj.lastPayDate, "YYYY-MM-DD").format("MM/DD/YYYY")).attr("type","text").val(moment(currentPaymentDatesObj.lastPayDate, "YYYY-MM-DD").format( "MM/DD/YYYY")).trigger("change");
+      $("#txtNextPayDateEdit").attr( "data-date",moment(currentPaymentDatesObj.nextPayDate, "YYYY-MM-DD").format("MM/DD/YYYY")).attr("type","text").val(moment(currentPaymentDatesObj.nextPayDate, "YYYY-MM-DD").format( "MM/DD/YYYY")).trigger("change");
+      if(!!currentPaymentDatesObj.secondPayDate) {
+        $("#txtSecondPayDateEdit").attr( "data-date",moment(currentPaymentDatesObj.secondPayDate, "YYYY-MM-DD").format("MM/DD/YYYY")).attr("type","text").val(moment(currentPaymentDatesObj.secondPayDate, "YYYY-MM-DD").format( "MM/DD/YYYY")).trigger("change");
+      }else {
+        $("#txtSecondPayDateEdit").val("");
+      }
+
+      employmentEditForm.find("label.error").css("display","none").html("");
+    });
+    $.validator.addMethod("isValidFloatNumber", function(value, element) {
+      if(!value) {
+        return false;
+      }
+      try{
+        return !isNaN(Number(value));
+      }catch(exc) {
+        return false;
+      }
+    });
+    $.validator.addMethod("isDateSameOrBeforeToday", function(value, element) {
+      if(!value) {
+        return true;
+      }
+      try{
+        const currentValue = value.indexOf("-") < 0? moment(value, "MM/DD/YYYY").format("YYYY-MM-DD"):value;
+        if(!!$(element).attr("name") && !!currentPaymentDatesObj[$(element).attr("name")] &&  currentValue === currentPaymentDatesObj[$(element).attr("name")]) {
+          return true;
+        }
+        return moment(currentValue, "YYYY-MM-DD").startOf("day").isSameOrBefore(moment().startOf("day"), "day");
+      }catch(exc) {
+        return false;
+      }
+    });
+    $.validator.addMethod("isDateAfterToday", function(value, element) {
+      if(!value) {
+        return true;
+      }
+      try{
+        const currentValue = value.indexOf("-") < 0? moment(value, "MM/DD/YYYY").format("YYYY-MM-DD"):value;
+        if(!!$(element).attr("name") && !!currentPaymentDatesObj[$(element).attr("name")] &&  currentValue === currentPaymentDatesObj[$(element).attr("name")]) {
+          return true;
+        }
+        return moment(currentValue, "YYYY-MM-DD").startOf("day").isAfter (moment().startOf("day"), "day");
+      }catch(exc) {
+        return false;
+      }
+    });
+    employmentEditForm.validate({
+      rules: {
+        "typeOfIncome": { required: true },
+        "employerName": { required: true },
+        "employerStatus": { required: true },
+        "employerPhone": { required: true, minlength: 12, maxlength: 12 },
+        "payFrequency": { required: true },
+        "monthlyIncome": { required: true, isValidFloatNumber:true},
+        "lastPayDate": { required: true, isDateSameOrBeforeToday:true },
+        "nextPayDate": { required: true, isDateAfterToday:true},
+        "secondPayDate": { isDateAfterToday:true},
+      },
+      messages: {
+        "typeOfIncome": { required: "Income Type is required." },
+        "employerName": { required: "Employer Name is required." },
+        "employerStatus": { required: "Employer status is required." },
+        "employerPhone": { required: "Employer Phone number is required.", minlength: "Invalid employer phone number.", maxlength: "Invalid employer phone number." },
+        "payFrequency": { required: "Pay Frequency is required.",},
+        "monthlyIncome": { required: "Monthly Income is required.",   isValidFloatNumber:"Monthly Income must be a valid number"},
+        "lastPayDate": { required: "Last Pay Date is required.", isDateSameOrBeforeToday:"Last pay date must be the same or after today." },
+        "nextPayDate": { required: "Next Pay Date is required.", isDateAfterToday:"Next pay date must be after today." },
+        "secondPayDate": { isDateAfterToday:"Second pay date must be after today." },
+      },
+      errorPlacement: function( err, el ) {
+        var errId = err.attr( "id" );
+        var errEl = $( "#" + errId );
+        if( errEl.length === 1 ) {
+          errEl.html( err.html() );
+        } else {
+          err.appendTo( el.parent() );
+        }
+      },
+      unhighlight: function( el ) {
+        var $el = $( "#" + $(el).attr( "id" ) + "-error" );
+        if( $el.length === 1 ) {
+          $el.html( "" );
+        }
+      }
+    } );
+  });
+  function showEmployerEditModal() {
+    $("#editEmployerDetailsModal").modal("show");
+  }
+  function hideEmployerEditModal() {
+    $("#editEmployerDetailsModal").modal("hide");
+  }
+</script>

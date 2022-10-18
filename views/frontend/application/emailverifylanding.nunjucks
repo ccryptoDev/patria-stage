@@ -1,0 +1,36 @@
+{% extends "frontend/layoutv3/layout.nunjucks" %}
+{% block body %}
+<div id="emailverifylanding">
+    <br /><br />
+    <div class="text-center">
+        <h2 style="color:#606060; font-weight:400;">Thank you, your email has been verified.</h2>
+    </div>
+    <br /><br />
+    {# {% if( level == 2 ) %}
+        <div class="text-center">
+            <button class="btn btn-default" onclick="window.location.href='/banktransaction'">Continue</button>
+        </div>
+    {% elseif( level == 3 ) %}
+        <div class="text-center">
+            <button class="btn btn-default" onclick="window.location.href='/myoffers'">Continue</button>
+        </div>
+    {% elseif( level == 4 ) %}
+        <div class="text-center">
+            <button class="btn btn-default" onclick="window.location.href='/contract'">Continue</button>
+        </div>
+    {% elseif( level == 5 ) %}
+        <div class="text-center">
+            <button class="btn btn-default" onclick="window.location.href='/finalize'">Continue</button>
+        </div>
+    {% elseif( level == 6 ) %}
+        <div class="text-center">
+            <button class="btn btn-default" onclick="window.location.href='/dashboard'">Continue</button>
+        </div>  
+    {% else %}
+        <div class="text-center">
+            <button class="btn btn-default" onclick="window.location.href='/login'">Continue</button>
+        </div>      
+    {% endif %} #}
+    <br /><br />
+</div>
+{% endblock %}

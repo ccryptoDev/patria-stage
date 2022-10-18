@@ -1,0 +1,188 @@
+{% extends "layout/layout.nunjucks" %}
+{% block body %}
+<div class="background-shortform" id="re-apply-offers-section">
+     <form id="re-apply-offers-form" data-validation="btnDisable" autocomplete="off">
+        <input type="hidden" id="uid" name="uid" value="{{ user.id }}" />
+        <input type="hidden" id="screenId" name="screenId" value="{{ screentracking.id }}" />
+        <input type="hidden" id="offerid" name="offerid" value="{{ screentracking.offers[0].id }}" />
+    </form>
+    <div class="container">
+        <div class="inner-content">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 personalInfoInner los-content">
+                <div class="whitebox infoForm">
+                    <div><h2>Re-apply Offers</h2></div>
+                    <div class="fe-preapproved text-center">
+                        <p>{{ user.firstname }} has been <strong>pre-approved</strong> for up to</p>
+                    </div>
+                    <div class="fe-approved-upto text-center">
+                        <p>${{ screentracking.requestedLoanAmount }}</p>
+                    </div>
+                    <hr>
+                    <div class="fe-selectoffer text-center">Select the re-apply offer.</div>
+
+                    <div id='offers_container'>
+                        <div id="offerdiv" class="flex-wrap flex-j-space-evenly">
+
+                            {% if screentracking.offers.length > 0 %}
+                                {% set idx = 0 %}
+                                {% for offer in screentracking.offers %}
+                                    {% set idx = idx + 1 %}
+                                    <div class="offerBox_container" data-offer-id="{{ offer.id }}">
+                                        <div class="offerBox-overlay"></div>
+                                        <div class="offerBox">
+                                            <div class="flex-column flex-align-center">
+                                                <div class="col-lg-12">
+                                                    <p class="monthlyPaymet_lable text-center">Estimated Payment</p>
+                                                    <p class="monthlyPaymet_text text-center">{{ offer.regularPayment | $format }}</p>
+                                                </div>
+                                                <div class="selected-offer flex-j-center flex-align-center">
+                                                    <div class="selected-offer-status">
+                                                        <div class="selected-offer-content selected-offer-border-bottom-active flex-j-center flex-align-center"
+                                                             style="display: none">
+                                                            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg"
+                                                                 viewBox="0 0 52 52">
+                                                                <circle class="checkmark__circle" cx="26" cy="26" r="25"
+                                                                        fill="none" />
+                                                                <path class="checkmark__check" fill="none"
+                                                                      d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
+                                                            <p>Currently Selected Offer</p>
+                                                        </div>
+                                                        <div
+                                                                class="nonselected-offer-content flex-j-center flex-align-center">
+                                                            <hr>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="offerDetails flex-column flex-align-center"
+                                                     style="width: 100%;">
+                                                    <div class="offerSection flex-j-space-between">
+                                                        <p class="offerBox_lable">Loan Offer</p>
+                                                        <p class="offerBox_text">
+                                                            ${{ screentracking.requestedLoanAmount }}</p>
+                                                    </div>
+                                                    <div class="offerSection flex-j-space-between">
+                                                        <p class="offerBox_lable">Term:</p>
+                                                        <p class="offerBox_text">{{ offer.term }} Payments</p>
+                                                    </div>
+                                                    <div class="offerSection flex-j-space-between">
+                                                        <p class="offerBox_lable">APR:</p>
+                                                        <p class="offerBox_text">{{ offer.interestRate }}%</p>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-lg-12 offerBox_footer">
+                                                    <button type="button" class="btn btn-primary selectOfferBtn"
+                                                            onclick="reApplyOfferSelection(this)">Select Offer</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+
+                        </div>
+                    </div>
+                    <div class="opt-in-services-customize text-center offerBox_footer" style="padding-bottom: 20px;" >
+                        <div>
+                            <label id="reApplyOfferSubmitServer-error" class="error" style="display:none;position: unset !important;"></label>
+                            <br/>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="btnSubmitReApplySelectedCustomOffer" style="margin-left: 10px;" disabled>Finish Re-apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{#    {% include "twilio/twilioVerificationTemplate.nunjucks" %}#}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#re-apply-offers-section .offerBox-overlay").hover(function() {
+                const $btn = $(this).siblings(".offerBox").find(".selectOfferBtn");
+                $btn.toggleClass("hovered");
+            });
+            $("#re-apply-offers-section .offerBox").hover(function() {
+                const $btn = $(this).find(".selectOfferBtn");
+                $btn.toggleClass("hovered");
+            });
+            $("#re-apply-offers-section .offerBox-overlay").click(function() {
+                const offerEl = $(this).siblings(".offerBox").find(".selectOfferBtn");
+                // let isLOSPage = $(this).parents(".offersPage").hasClass("offersPage");
+                reApplyOfferSelection( offerEl );
+            });
+            $("#re-apply-offers-section .offerBox").click(function() {
+                const offerEl = $(this).find(".selectOfferBtn");
+                // let isLOSPage = $(this).parents(".offersPage").hasClass("offersPage");
+                reApplyOfferSelection( offerEl );
+            });
+
+
+            $("#re-apply-offers-section #viewFeesToggle").on("click", function() {
+                $(".optServices").slideToggle("fast");
+                $(".offerDetails").slideToggle("fast");
+            });
+
+            $("#btnSubmitReApplySelectedCustomOffer").on("click", function(e) {
+              e.preventDefault();
+              if(!!$("#re-apply-offers-form #offerid").val() && !!$("#re-apply-offers-form #screenId").val()) {
+                submitReApplyOffers();
+              }
+            });
+        });
+
+        function reApplyOfferSelection( thisElement ) {
+            $("#re-apply-offers-section .selectOfferBtn").text("Select Offer");
+
+            $(thisElement).text("Selected");
+            $("#re-apply-offers-section .selectOfferBtn").css("background", "#0a053829");
+            $(thisElement).css("background", "#0a05388a");
+
+            const $el = $("#re-apply-offers-section .offerBox_container").has( thisElement );
+            const $boxOverlay = $("#re-apply-offers-section .offerBox_container").has( thisElement ).children(".offerBox-overlay");
+            const offerid = $el.attr( "data-offer-id" );
+            $( "#re-apply-offers-section #offerid" ).val( offerid );
+
+            $("#re-apply-offers-section .offerBox-overlay").removeClass("offerBox-selected").fadeIn();
+            $boxOverlay.addClass("offerBox-selected").fadeOut();
+            $( "#re-apply-offers-section .offerBox_container").find( ".selected-offer" ).removeClass("selected-offer-active");
+            $( "#re-apply-offers-section .offerBox_container").find(".selected-offer-content").hide();
+            $( "#re-apply-offers-section .offerBox_container").find(".nonselected-offer-content").fadeIn();
+            $el.find( ".selected-offer" ).addClass("selected-offer-active");
+            $el.find( ".nonselected-offer-content" ).hide();
+            $el.find( ".selected-offer-content" ).fadeIn();
+          $( "#re-apply-offers-section #btnSubmitReApplySelectedCustomOffer").removeAttr("disabled");
+        }
+
+        function submitReApplyOffers() {
+            const serializeForm = $( "#re-apply-offers-form" ).serializeArray();
+            const postData = {};
+            _.forEach( serializeForm, function( formData ) {
+                postData[ formData.name ] = formData.value;
+            } );
+            //todo add url
+            ajaxPost("/admin/ajaxReApplyOfferSubmission", postData).then(function(res) {
+                console.log( "POST offers====>", res );
+                if( res && !!res.redirect ) {
+                    window.location.href = res.redirect;
+                }else {
+                  window.location.href = "/admin/freshLeadsList"
+                }
+            }, function(xhr) {
+                console.error(xhr.responseText)
+                toggleReApplyOfferServerError("#reApplyOfferSubmitServer-error", xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : "There was an unknown error trying to submit offer.");
+            })
+
+            return false;
+        }
+        function toggleReApplyOfferServerError(selector, message = null) {
+            if(!!message) {
+                $( selector ).html( message ).css( "display", "block" );
+            }else {
+                $( selector ).html( "" ).css( "display", "none" );
+            }
+        }
+    </script>
+{% endblock %}

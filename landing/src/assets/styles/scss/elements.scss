@@ -1,0 +1,101 @@
+// INPUTS
+.input-wrapper,
+.form-input {
+  width: 100%;
+}
+.form-input {
+  padding: 1.9rem 1.6rem;
+  border: 1px solid var(--color-secondary-2);
+  color: var(--color-main-1);
+  border-radius: 0.8rem;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+// BUTTONS
+
+.button-wrapper {
+  & button,
+  & a {
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: "Spartan";
+    box-sizing: border-box;
+    display: flex;
+    column-gap: 10px;
+    padding: 13px 3rem;
+    align-items: start;
+    text-decoration: none;
+  }
+}
+
+.button-contained {
+  background: var(--color-blue-1);
+  color: #fff;
+  border: none;
+}
+
+.button-outlined {
+  background: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+}
+.button-inverted {
+  background: #fff;
+  color: var(--color-blue-1);
+}
+.button-wrapper {
+  display: flex;
+  & a {
+    text-decoration: none;
+  }
+}
+
+.notification {
+  display: flex;
+  align-items: start;
+  column-gap: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--color-orange-3);
+  & ul {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2.6rem;
+  }
+  & p {
+    color: var(--color-orange-1);
+    font-size: 12px;
+  }
+}
+
+.link,
+.link:visited {
+  color: var(--color-blue-1);
+  font-weight: 600;
+  background: transparent;
+  outline: none;
+  border: none;
+  padding: 0;
+  font-size: 1.4rem;
+}
+
+.mr-20 {
+  margin-right: 20px;
+}
+
+// LIST STYLES
+.list-letters {
+  list-style: none;
+  counter-reset: list;
+  li:before {
+    content: counter(list, lower-alpha) ") ";
+    counter-increment: list;
+    position: absolute;
+    left: 0;
+  }
+}

@@ -1,0 +1,382 @@
+
+<div>
+    <div style="float: right; margin-top: 10px">
+        <button type="button" class="btn btn-primary" id="btnChangePaymentStatus" data-toggle="modal" data-target="#statusModal">Change a Payment Status</button>
+        {% if paymentmanagementdata.disableAutoAch == true %}
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#enableAchModal">Re-Enable Automatic ACH Processing</button>
+            {% else %}
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#enableAchModal">Disable Automatic ACH Processing</button>
+        {% endif %}
+    </div>
+<h3>Payment Transactions</h3>
+<br/>
+<div class="table-responsive">
+    <table class="table table-bordered payment-transaction-details">
+        <thead>
+        <tr>
+            <th style="width: 10px">SNO</th>
+            <th>Transaction Id</th>
+            <th>Transaction Date</th>
+            <th>Type</th>
+            <th>Schedule Date</th>
+            <th>Status</th>
+            <th>Payment Type</th>
+            <th>Paid Amount</th>
+            <th>Paid Interest</th>
+            <th>Paid Principal</th>
+            <th>Waived Amount</th>
+            <th>Waived Interest</th>
+            <th>Waived  Principal</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if paymentTransactions %}
+            {% set lp = 0 %}
+            {% for paymentTransaction in  paymentTransactions %}
+                {% set lp = lp+1 %}
+                <tr>
+                    <td>{{ lp }}</td>
+                    <td>{{ paymentTransaction.transactionId }}</td>
+                    <td>{{ paymentTransaction.transactionDate | dateMinusTz("MMM DD, YYYY") }}</td>
+                    <td class="transformCase">{{ paymentTransaction.transactionTypeForDisplay}}</td>
+                    {%  if paymentTransaction.transactionType == "PAYMENT" and  paymentTransaction.transactionMeta.initiator === "automatic" %}
+                        <td>{{ paymentTransaction.transactionMeta.date | dateMinusTz("MMM DD, YYYY") }}</td>
+                    {% else %}
+                        <td>{% if paymentTransaction.transactionType == "AMENDED" %}
+                                {{ paymentTransaction.transactionMeta.waivedOriginalDate | dateMinusTz("MMM DD, YYYY") }}
+                            {% endif %}</td>
+                    {% endif %}
+                    <td><span style="font-weight: bold;">{{ paymentTransaction.statusForDisplay }}</span>
+                        {% if paymentTransaction.status === "DECLINED" and paymentTransaction.returnReason %}
+                            <br/>
+                            ({{paymentTransaction.returnReason }})
+                        {% endif %}
+                    </td>
+                    <td>{{ paymentTransaction.typeForDisplay }}</td>
+                    <td>{{ paymentTransaction.amount | $format(true,2) }}</td>
+                    <td>{{ paymentTransaction.transactionMeta.interestAmount | $format(true,2) }}</td>
+                    <td>{{ paymentTransaction.transactionMeta.principalAmount | $format(true,2) }}</td>
+
+                    <td>{{ paymentTransaction.transactionMeta.waivedAmount | $format(true,2) }}</td>
+                    <td>{{ paymentTransaction.transactionMeta.waivedInterest | $format(true,2) }}</td>
+                    <td>{{ paymentTransaction.transactionMeta.waivedPrincipal | $format(true,2) }}</td>
+                </tr>
+                {% if paymentScheduledata.status === "Replaced" %}
+                    {% set lp = lp-1 %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+
+</div>
+
+<!-- Change Payment Transaction Status Modal -->
+<div id="statusModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4>Manual Status Change</h4>
+            </div>
+            <div class="modal-body bgColorWhite">
+                <p><strong>Are you sure you want to manually change the payment status?</strong></p>
+                <p>Changing the payment status should only be done if the payment automation is not correct. Changing loan
+                    payments and balances should typically be done in advance through scheduling a payment.
+                    Retroactively changing payment transaction status may cause errors since payment transactions have already been
+                    submitted for ACH processing.</p>
+                <strong><span id="changePaymentStatusErrorMessage" class="error"></span></strong>
+                <div class="select-payment-dropdown" id="selectorDiv">
+                    <label class="payment-transaction-select-label" style="margin-right: 10px;">Transaction Id:
+                        <select id="paymentTransactionIdSelect" class="form-control input-sm" style="width: 129px; margin-left: 3px;">
+                            <option value="0">Select a Transaction</option>
+                            {% if paymentTransactions %}
+                                {% set i = 0 %}
+                                {% for paymentTransaction in paymentTransactions %}
+                                    {%  set i = i+1 %}
+                                    {% if (not "Funding" in paymentTransaction.transactionTypeForDisplay) and (not "Waive" in paymentTransaction.transactionTypeForDisplay) and (not "Defer" in paymentTransaction.transactionTypeForDisplay) %}
+                                        <option value="{{ paymentTransaction.transactionId }},{{ paymentTransaction.status }}">{{ paymentTransaction.transactionId }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </label>
+                </div>
+                <div id="paymentManualStatusChange">
+                <!-- This will populate with the appropriate options depending on the user's selection.-->
+                </div>
+            </div>
+            <div class="modal-footer bg-info" id="changeStatusModalFooter">
+                <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toggle Auto ACH Processing Modal -->
+<div id="enableAchModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4>Automatic ACH Processing</h4>
+            </div>
+            <div class="modal-body bgColorWhite">
+                {% if paymentmanagementdata.disableAutoAch == true %}
+                    <p><strong>Are you sure you want to re-enable automatic ACH processing</strong></p>
+                    <p>The automatic processing of ACH payments was disabled on this account.</p>
+                    <p>Re-enabling automatic ACH processing will cause the payment to go out again, potentially causing issues with the NACHA files. Are you sure you want to enable automatic ACH processing on this account?</p>
+                {% else %}
+                    <p><strong>Are you sure you want to disable Automatic ACH Processing on this account?</strong></p>
+                    <p>If you disable automatic ACH processing on this account, no payments will be collected. Are you sure you want to proceed?</p>
+                {% endif %}
+                <strong><span id="toggleAutoAchErrorMessage" class="error"></span></strong>
+            </div>
+            <div class="modal-footer bg-info">
+                <button type="button" class="btn btn-primary" id="btnConfirmToggleAchProcessing">Confirm</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    $(document).ready(function () {
+      const declineCodes = {
+        "R01": "Insufficient funds",
+        "R02": "Account Closed",
+        "R03": "No Account / Unable to Locate Account",
+        "R04": "Invalid Account Number Structure",
+        "R05": "Unauthorized Debit to Consumer Account Using Corporate SEC Code",
+        "R06": "Returned per ODFI's Request",
+        "R07": "Authorization Revoked by Customer",
+        "R08": "Payment Stopped",
+        "R09": "Uncollected Funds",
+        "R10": "Customer Advises Not Authorized, Improper, or Ineligible",
+        "R11": "Check Truncation Entry Return",
+        "R12": "Account Sold to Another DFI",
+        "R13": "Invalid ACH Routing Number",
+        "R14": "Representative Payee Deceased or Unable to Continue in That Capacity",
+        "R15": "Beneficiary or Account Holder (Other Than a Representative Payee) Deceased",
+        "R16": "Account Frozen / Entry Returned Per OFAC Instruction",
+        "R17": "File Record Edit Criteria",
+        "R18": "Improper Effective Entry Date",
+        "R19": "Amount Field Error",
+        "R20": "Non-Transaction Account",
+        "R21": "Invalid Company Identification",
+        "R22": "Invalid Individual ID Number",
+        "R23": "Credit Entry Refused by Receiver",
+        "R24": "Duplicate Entry",
+        "R25": "Addenda Error",
+        "R26": "Mandatory Field Error",
+        "R27": "Trace Number Error",
+        "R28": "Routing Number Check Digit Error",
+        "R29": "Corporate Customer Advises Not Authorized",
+        "R30": "RDFI Not Participant in Check Truncation Program",
+        "OTHER": "Other"
+      }
+      let declineOptions = `<option value="0">Select Decline Reason</option>`;
+      for (const [code, reason] of Object.entries(declineCodes)) {
+        declineOptions = declineOptions + `<option value=${code}>${reason}</option>`;
+      }
+
+      //Submit Status Change Button
+      $("#statusModal").on("click", "#btnConfirmChangePaymentStatus", function(e) {
+        e.preventDefault();
+        toggleErrors("#changePaymentStatusErrorMessage");
+        const paymentData = $("#paymentTransactionIdSelect").val().split(',');
+        const transactionId = paymentData[0]
+        const currentStatus = paymentData[1]
+        submitManualStatusChange(transactionId, currentStatus, declineCodes);
+      });
+
+      //Payment Transaction Id dropdown
+      $("#statusModal #paymentTransactionIdSelect").on("change", function() {
+        let paymentData = $("#paymentTransactionIdSelect").val().split(',');
+        let currentPaymentStatus = paymentData[1];
+        if ($("#btnConfirmChangePaymentStatus")) {
+          $("#btnConfirmChangePaymentStatus").remove();
+        }
+        getStatusOptions(currentPaymentStatus, declineOptions);
+      })
+
+      //Declined Reasons Dropdown
+      $("#statusModal").on("change", "#declineReasonSelect", function() {
+        if ($("#declineReasonSelect").val() === "OTHER") {
+          $("#paymentManualStatusChange").append(
+            $("<p/>").text("Please provide a reason why this payment was declined:"),
+            $("<textarea/>")
+              .attr("rows", "2")
+              .attr("style", "width: 100%")
+              .attr("required", true)
+              .attr("id", "otherDeclineReason")
+          )
+        }
+        if (["R02", "R07", "R08", "R16"].indexOf($("#declineReasonSelect").val()) >=0) {
+          toggleErrors("#changePaymentStatusErrorMessage", "WARNING! Using this decline code will disable automatic ACH submission!")
+        } else { toggleErrors("#changePaymentStatusErrorMessage") }
+        if ($("#btnConfirmChangePaymentStatus").length < 1){
+            $("#changeStatusModalFooter").prepend(
+              `<button type="button" class="btn btn-primary" id="btnConfirmChangePaymentStatus">Confirm status change</button>`
+            )
+        }
+      })
+
+      //PENDING select new status dropdown
+      $("#statusModal").on("change", "#newStatusSelect", function() {
+        if ($("#newStatusSelect").val() === "DECLINED") {
+          $("#paymentManualStatusChange").append(
+            $("<div/>").attr("id", "declineDiv").append(
+                $("<br/>"),
+                $("<p/>").text("Please provide a reason for marking this payment as DECLINED:"),
+                $("<select/>")
+                  .attr("id", "declineReasonSelect")
+                  .attr("style", "width: 406px; margin-left: 3px;")
+                  .addClass("form-control input-sm")
+                  .append(declineOptions)
+          ))
+        }
+        if ($("#newStatusSelect").val() === "PAID") {
+          if ($("#declineDiv")) {$("#declineDiv").remove()}
+          if ($("#btnConfirmChangePaymentStatus".length <= 0)) {
+          $("#changeStatusModalFooter").prepend(
+            `<button type="button" class="btn btn-primary" id="btnConfirmChangePaymentStatus">Confirm status change</button>`
+          )}
+        }
+      })
+
+      // Confirm Toggle automatic ACH Processing
+      $("#btnConfirmToggleAchProcessing").on("click", function() {
+        let disableAutoAch = true;
+        const paymentManagementId = "{{ paymentmanagementdata.id }}";
+        if ("{{ paymentmanagementdata.disableAutoAch }}" === "true") {
+          disableAutoAch = false;
+        }
+        ajaxPost("/admin/ajaxToggleAutoAch", {id: paymentManagementId, disableAutoAch: disableAutoAch})
+            .then(
+              function(response) {
+                console.log(JSON.stringify(response));
+                window.location.reload();
+              },
+              function(err) {
+                const errorMessage = err.responseJSON && err.responseJSON.message ? err.responseJSON.message : "There was a server error. Please try again later.";
+                console.log(JSON.stringify(err));
+                toggleErrors("#toggleAutoAchErrorMessage",errorMessage);
+              }
+            )
+      })
+    });
+
+    function getStatusOptions(currentPaymentStatus, declineOptions) {
+      $("#paymentManualStatusChange").empty();
+
+      switch (currentPaymentStatus) {
+        case "0": {
+          $("#paymentManualStatusChange").append(
+            $("<p>Select a transaction from the dropdown to continue</p>")
+          );
+          break;
+        }
+        case "PAID": {
+          $("#paymentManualStatusChange").append(
+            $("<br/>"),
+            $("<p/>").text("This payment is currently marked as PAID. Please provide a reason for changing it's status to DECLINED:"),
+            $("<select/>")
+              .attr("id", "declineReasonSelect")
+              .addClass("form-control input-sm")
+              .append(declineOptions)
+        );
+          break;
+        }
+        case "DECLINED": {
+          $("#paymentManualStatusChange").append(
+            $("<p/>").text("This payment is currently marked as DECLINED. This means that the ACH was unable to clear. Are you sure you want to mark it as paid?")
+          );
+          $("#changeStatusModalFooter").prepend(
+            `<button type="button" class="btn btn-primary" id="btnConfirmChangePaymentStatus">Confirm status change</button>`
+          );
+          break;
+        }
+        case "PENDING": {
+          $("#paymentManualStatusChange").append(
+            $("<p/>").text("This payment is currently marked as PENDING. This means that it was likely recently submitted to ACH for processing. It is not recommended that it be changed. The system WILL change it again when processing is completed."),
+            $("<select/>")
+                .attr("id", "newStatusSelect")
+                .attr("style", "margin-left: 3px, width: 406px")
+                .addClass("form-control input-sm")
+                .append(
+                  $("<option/>").text("Select a new status").attr("value", "0"),
+                  $("<option/>").text("Mark as PAID").attr("value", "PAID"),
+                  $("<option/>").text("Mark as DECLINED").attr("value", "DECLINED")
+                )
+          );
+        }
+      }
+
+    }
+
+    function toggleErrors(selector, message) {
+      if(!!selector) {
+        if(!message){
+          $(selector).html("").css("display","none");
+        } else {
+          $(selector).html(message).css("display", "block");
+        }
+      }
+    }
+
+    function submitManualStatusChange(id, currentStatus, declineCodes) {
+      let updatedStatus = "";
+      let declineCode = "";
+      let declineReason = "";
+      switch (currentStatus) {
+        case "PAID":
+          updatedStatus = "DECLINED";
+          declineCode = $("#declineReasonSelect").val();
+          if (declineCode === "OTHER") {
+            declineReason = $("#otherDeclineReason").val();
+          } else {
+            declineReason = declineCodes[declineCode]
+            console.log(declineReason);
+          }
+          break;
+        case "DECLINED":
+          updatedStatus = "PAID";
+          break;
+        case "PENDING":
+          updatedStatus = $("#newStatusSelect").val();
+          if (updatedStatus === "DECLINED") {
+            declineCode = $("#declineReasonSelect").val();
+            if (declineCode === "OTHER") {
+              declineReason = $("#otherDeclineReason").val();
+            } else {
+              declineReason = declineCodes[declineCode]
+            }
+          }
+          break;
+      }
+      if ((updatedStatus === "DECLINED" && declineCode === "OTHER" && declineReason === "") || (updatedStatus === "DECLINED" && declineCode === "0")) {
+        toggleErrors("#changePaymentStatusErrorMessage", "Please provide a valid DECLINED reason.");
+      } else if (id === "0") {
+        toggleErrors("#changePaymentStatusErrorMessage", "You must select a valid payment ")
+      } else {
+        ajaxPost("/admin/ajaxUpdatePaymentStatus", { status: updatedStatus, id: id, declineCode: declineCode, declineReason: declineReason})
+          .then(
+            function(response) {
+              console.log(JSON.stringify(response));
+              console.log(`Transaction Id ${id} will be changed to status ${updatedStatus}.`);
+              window.location.reload();
+            },
+            function(err) {
+              const errorMessage = err.responseJSON && err.responseJSON.message ? err.responseJSON.message : "There was a server error. Please try again later.";
+              console.log(errorMessage);
+              toggleErrors("#changePaymentStatusErrorMessage", errorMessage );
+
+            }
+          )
+
+
+      }
+
+    }
+</script>

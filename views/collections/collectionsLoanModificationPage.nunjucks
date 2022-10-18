@@ -1,0 +1,1113 @@
+{% extends "layout/layout.nunjucks" %}
+{% block body %}
+<style type="text/css">
+    @supports (zoom:1.5) {
+        input.bigger-checkbox[type=checkbox] {
+            zoom: 1.5;
+        }
+    }
+    @supports not (zoom:1.5) {
+        input.bigger-checkbox[type=checkbox] {
+            transform: scale(1.5);
+            margin: 15px;
+        }
+    }
+    #chargeOffCollectionModal .charge-off-total-past-due, #settleCollectionModal .settle-total-past-due {
+        font-weight: bold;
+    }
+    #chargeOffCollectionModal .modal-body, #settleCollectionModal .modal-body {
+        font-size: 16px;
+    }
+    .modal-reason-container textarea {
+        width: 100%;
+        height: 75px;
+    }
+    .error{border-color:red;}
+    .success{
+        color:#3c763d;
+        font-size:14px;
+    }
+    .checkbox input[type="radio"] {
+        opacity: 1!important;
+    }
+    .modal-footer .btn-primary {
+        width: 150px;
+    }
+    .field-container .field-group {
+        margin-bottom: 10px;
+    }
+    .field-group .field-label {
+        display: inline-block;
+        width:100%;
+        padding-left: 12px;
+        text-align: left;
+    }
+    .field-group .field-value {
+        width: 100%;
+    }
+    .field-group .field-value:focus {
+        border-color: #29D4A3 !important;
+    }
+    .field-group .field-value {
+        border-radius: 20px;
+        border: 1px solid #F0F4F8;
+        background: #F0F4F8;
+        margin-top: 5px;
+        width: 100%;
+        height: 40px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+    }
+
+    .loan-modification-form-section .loan-modification-form-flex-box .flex-box-table-col .flex-box-item.header-item {
+        flex: 0 0 23px;
+    }
+    .loan-modification-form-section .loan-modification-form-flex-box .flex-box-table-col, .loan-modification-form-section .loan-modification-checkboxes .flex-box-table-row   {
+        /*flex: 0 0 310px;*/
+        padding: 10px 25px;
+    }
+    .loan-modification-form-section .loan-modification-checkboxes .flex-box-table-row .flex-box-item.value-item{
+        flex: 0 0 25px;
+    }
+    .loan-modification-form-section .loan-modification-checkboxes .bigger-checkbox {
+        margin: 1px 0 0;
+    }
+    .loan-modification-form-section .loan-modification-checkboxes .flex-box-table-row .flex-box-item {
+       padding: 5px;
+    }
+    .loan-modification-payment-schedule-calendar {
+        padding-left: 25px;
+    }
+    .payment-schedule-calendar-content-container {
+        width: 750px;
+    }
+    .loan-modification-form-section .loan-modification-form-flex-box .flex-box-table-col .flex-box-item {
+        padding:0 0 3px 5px;
+    }
+    .loan-modification-form-section .loan-modification-preview-button-container {
+        padding-left: 25px;
+        text-align: right;
+        width: 775px;
+    }
+    .loan-modification-preview-schedule-container .loan-modification-save-actions .flex-box-item {
+        text-align: right;
+    }
+    .loan-modification-preview-schedule-container .loan-modification-save-actions .flex-box-item .btn-primary {
+        width: 75px;
+    }
+    .loan-modification-save-modal-loan-details .flex-box-table-col {
+        width: 75%;
+        align-self: end;
+        text-align: right;
+        margin-bottom: 20px;
+    }
+    .loan-modification-save-modal-loan-details .flex-box-table-col .flex-box-item.header-item{
+       font-weight: bold;
+    }
+    .loan-modification-form-section input.loan-modification-form-input {
+        width: 255px;
+    }
+    .loan-modification-summary-container .loan-modification-summary .flex-box-item.header-item, .loan-modification-form-section .loan-modification-summary-preview .flex-box-item.header-item {
+        font-weight: bold;
+        flex: 0 0 15%;
+        text-align: right;
+        padding-right: 10px;
+    }
+    .loan-modification-form-section .loan-modify-calculate-section .flex-box-table-col:first-child {
+        padding-right: 0;
+    }
+    .loan-modification-form-section .loan-modify-calculate-section .flex-box-table-col:nth-child(2) {
+        padding-left: 0;
+    }
+</style>
+    <section class="content-header">
+        <h1>
+            Loan Modification
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="/admin/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li><a href="/admin/getAchDetails"><i class="fa fa-dashboard"></i>Manage Applications</a></li>
+            <li class="active"><a href="/admin/getAchUserDetails/{{ paymentmanagementdata.id }}"><i class="fa fa-dashboard"></i>Back to Applications Details</a></li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Loan modification for contract: {{ paymentmanagementdata.loanReference }}{% if paymentmanagementdata.isInLoanModification %}<span>&nbsp;&nbsp;-&nbsp;&nbsp;</span><span style="font-weight: bold;color:#f39c12;"><i class='fa fa-exclamation-triangle' aria-hidden='true' style="margin-right: 5px;" ></i>Loan Modified</span>{% endif %}</h3>
+                <span class="pull-right">
+                <a href="/admin/getAchUserDetails/{{ paymentmanagementdata.id }}"><button type="button" class="btn btn-primary"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Back</button></a>
+              </span>
+            </div>
+            <div class="box-body">
+                <h4>Summary</h4>
+                <div class="loan-modification-summary-container">
+                    <div class="loan-modification-summary">
+
+                        <div class="flex-box-table-col">
+                            <div class="flex-box-table-row flex-box-item">
+                                <div class="flex-box-item header-item">
+                                    <span>Name: </span>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <span>{{ paymentmanagementdata.user.firstname }} {{ paymentmanagementdata.user.lastname }}</span>
+                                </div>
+                            </div>
+                            <div class="flex-box-table-row flex-box-item">
+                                <div class="flex-box-item header-item">
+                                    <span>Email: </span>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <span>{{ paymentmanagementdata.user.email }}</span>
+                                </div>
+                            </div>
+                            <div class="flex-box-table-row flex-box-item">
+                                <div class="flex-box-item header-item">
+                                    <span>Phone: </span>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <span>{{ paymentmanagementdata.user.phoneNumber | phoneformat }}</span>
+                                </div>
+                            </div>
+                            <div class="flex-box-table-row flex-box-item">
+                                <div class="flex-box-item header-item">
+                                    <span>Loan Amount: </span>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <span>{{ paymentmanagementdata.screentracking.requestedLoanAmount | $format(true,2) }}</span>
+                                </div>
+                            </div>
+                            <div class="flex-box-table-row flex-box-item">
+                                <div class="flex-box-item header-item">
+                                    <span>Estimated APR: </span>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <span> {{ (ledger.estimatedApr * 100) | $format(false,2)}}%</span>
+                                </div>
+                            </div>
+                                <div class="flex-box-table-row flex-box-item">
+                                    <div class="flex-box-item header-item">
+                                        <span>Loan Term: </span>
+                                    </div>
+                                    <div class="flex-box-item value-item">
+                                        <span> {{ paymentmanagementdata.loantermcount }}</span>
+                                    </div>
+                                </div>
+                            <div class="flex-box-table-row flex-box-item">
+                                <div class="flex-box-item header-item">
+                                    <span>Total Principal Paid: </span>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <span> {{ ledger.totalPrincipalPaid | $format(true,2) }}</span>
+                                </div>
+                            </div>
+                            <div class="flex-box-table-row flex-box-item">
+                                <div class="flex-box-item header-item">
+                                    <span>Total Interest Paid: </span>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <span> {{ ledger.totalInterestPaid | $format(true,2) }}</span>
+                                </div>
+                            </div>
+
+                            <div class="flex-box-table-row flex-box-item">
+                                <div class="flex-box-item header-item">
+                                    <span>Payment Amount: </span>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <span>{{ ledger.regularPayment | $format(true,2) }}</span>
+                                </div>
+                            </div>
+
+                            <div class="flex-box-table-row flex-box-item">
+                                <div class="flex-box-item header-item">
+                                    <span>Payment Frequency: </span>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <span>{{ periodicityTextData[paymentmanagementdata.paymentFrequency] }}</span>
+                                </div>
+                            </div>
+                                <div class="flex-box-table-row flex-box-item">
+                                    <div class="flex-box-item header-item">
+                                        <span>Maturity Date: </span>
+                                    </div>
+                                    <div class="flex-box-item value-item">
+                                        <span> {{ paymentmanagementdata.maturityDate | date('MMMM D, YYYY')}}</span>
+                                    </div>
+                                </div>
+                                <div class="flex-box-table-row flex-box-item">
+                                    <div class="flex-box-item header-item">
+                                        <span>Remaining Balance: </span>
+                                    </div>
+                                    <div class="flex-box-item value-item">
+                                        <span> {{ ledger.principalPayoff | $format(true,2) }}</span>
+                                    </div>
+                                </div>
+
+                            {% if  ledger.totalAmountPastDue > 0  %}
+                            <div class="flex-box-table-row flex-box-item">
+                                <div class="flex-box-item header-item">
+                                    <span>Late Accrued Interest: </span>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <span>{{ (ledger.lateAccruedInterest + ledger.remainingDeferredAmount + ledger.remainingForgivenInterestAmount) | $format(true,2) }}</span>
+                                </div>
+                            </div>
+                            <div class="flex-box-table-row flex-box-item">
+                                <div class="flex-box-item header-item">
+                                    <span>Past Due Interest: </span>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <span>{{ (ledger.unpaidInterest + ledger.accruedInterest ) | $format(true,2) }}</span>
+                                </div>
+                            </div>
+                            <div class="flex-box-table-row flex-box-item">
+                                <div class="flex-box-item header-item">
+                                    <span>Past Due Principal: </span>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <span>{{ ledger.pastDuePrincipalAmount | $format(true,2) }}</span>
+                                </div>
+                            </div>
+                           {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-box-table-row loan-modification-form-flex-box">
+                    <div class="flex-box-item header-item" style="padding: 0 25px;flex:1 1 100%">
+                        <hr style="border-top: 1px solid black;"/>
+                    </div>
+                </div>
+                <div class="loan-modification-form-section">
+                    <label class="loan-modification-preview-server-error error" style="display: none"></label>
+                    <form id="frmModifyLoan">
+                        <div class="flex-box-table-row">
+                            <div class="flex-box-item" style="flex:0 0 330px;border-right: 1px solid black;">
+                                <div class="flex-box-table-row loan-modification-form-flex-box">
+
+                                    <div class="flex-box-table-col flex-box-item" style="padding-left: 0;padding-top: 0;">
+                                        <div class="flex-box-item header-item">
+                                            <h4>Negotiations</h4>
+                                        </div>
+                                    </div>
+                                    <div class="flex-box-table-col flex-box-item" style="justify-content: center;font-weight: bold;font-size: 18px;text-align: right;padding-top: 0;">
+                                        <div class="flex-box-item header-item">
+                                            <a id="btnLoanModifyResetForm" href="javascript:void(0);">Reset</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex-box-table-row loan-modification-form-flex-box loan-modify-calculate-section">
+                                    <div class="flex-box-table-col flex-box-item">
+                                        <div class="flex-box-item header-item">
+                                            <label>Total Modified Finance Amount:</label>
+                                        </div>
+                                        <div class="flex-box-item value-item">
+                                            <input type="hidden" id="txtLoanModifyMaxFinancedAmount" name="maxFinancedAmount" class="currency-element" value="{{ ledger.totalAmountOwned | $format(false,2) if ledger.totalAmountOwned else '0'}}"/>
+                                            <input type="hidden" id="txtLoanModifyUnParsedTotalFinancedAmount" name="totalFinancedAmount" class="unparsed-field currency-element" value="{{ ledger.totalAmountOwned if ledger.totalAmountOwned else '0'}}"/>
+                                            <input type="number" id="txtLoanModifyTotalFinancedAmount" name="totalFinancedAmountDisplay" class="form-control loan-modification-form-input currency-element"  value="{{ ledger.totalAmountOwned if ledger.totalAmountOwned else '0'}}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if ledger.totalInterestOwed > 0 %}
+                                <div class="flex-box-table-col loan-modification-form-flex-box loan-modification-checkboxes" >
+                                    {% if (ledger.lateAccruedInterest + ledger.remainingDeferredAmount + ledger.remainingForgivenInterestAmount) > 0 %}
+                                    <div class="flex-box-table-row flex-box-item">
+                                        <div class="flex-box-item value-item">
+                                            <input type="checkbox" class="bigger-checkbox reactive-loan-modify-element" id="chkForgiveAccruedInterest" name="forgiveAccruedInterest" value="true"/>
+                                        </div>
+                                        <div class="flex-box-item header-item">
+                                            <label for="chkForgiveAccruedInterest">
+                                                <span>Forgive {{ (ledger.lateAccruedInterest + ledger.remainingDeferredAmount + ledger.remainingForgivenInterestAmount) | $format(true,2) }} of Late Accrued Interest</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+
+
+                                    <div class="flex-box-table-row flex-box-item">
+                                        <div class="flex-box-item value-item">
+                                            <input type="checkbox" class="bigger-checkbox reactive-loan-modify-element" id="chkExcludeInterest" name="excludeInterest" value="true"/>
+                                        </div>
+                                        <div class="flex-box-item header-item">
+                                            <label for="chkExcludeInterest">
+                                                <span>Exclude {{ ledger.totalInterestOwed | $format(true,2) }} of Current Interest</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                <div class="flex-box-table-row loan-modification-form-flex-box loan-modify-payment-and-window-section loan-modify-calculate-section">
+                                    <div class="flex-box-table-col flex-box-item">
+                                        <div class="flex-box-item header-item">
+                                            <label for="txtLoanModifyNewPrincipal">Adjusted Payment Amount:</label>
+                                        </div>
+                                        <div class="flex-box-item value-item">
+                                            <input type="hidden" id="txtLoanModifyUnParsedAdjustedPaymentAmount" name="adjustedPaymentAmount" class="unparsed-field currency-element" value="{{ ledger.regularPayment if ledger.regularPayment else '0'}}"/>
+                                            <input type="number" id="txtLoanModifyAdjustedPaymentAmount" name="adjustedPaymentAmountDisplay" class="form-control loan-modification-form-input reactive-loan-modify-element currency-element" value="{{ ledger.regularPayment }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex-box-table-row loan-modification-form-flex-box loan-modify-payment-and-window-section loan-modify-calculate-section">
+                                    <div class="flex-box-table-col flex-box-item">
+                                        <div class="flex-box-item header-item">
+                                            <label for="txtLoanModifyNewPrincipal">Number of Payments: </label>
+                                        </div>
+                                        <div class="flex-box-item value-item">
+                                            <input type="hidden" id="txtLoanModifyUnParsedNumberOfPayments" name="requiredNumberOfPayments" class="unparsed-field number-element" value="{{ paymentmanagementdata.loantermcount if paymentmanagementdata.loantermcount else '24'}}"/>
+                                            <input type="number" id="txtLoanModifyNumberOfPayments" name="requiredNumberOfPaymentsDisplay" class="form-control loan-modification-form-input reactive-loan-modify-element number-element" value="{{ paymentmanagementdata.loantermcount if paymentmanagementdata.loantermcount else '24'}}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex-box-item" style="padding-left: 30px;">
+                                {% include "collections/partials/collectionsLoanModificationNegotiationPreview.nunjucks" %}
+                            </div>
+                        </div>
+                        <div class="flex-box-table-row loan-modification-form-flex-box">
+                            <div class="flex-box-item header-item" style="padding: 0 25px;flex:1 1 100%">
+                                <hr style="border-top: 1px solid black;"/>
+                            </div>
+                        </div>
+                        <h4>Accounting</h4>
+                        <div class="flex-box-table-row loan-modification-form-flex-box">
+                            <div class="flex-box-table-col flex-box-item" style="flex: 0 0 300px;">
+                                <div class="flex-box-item header-item">
+                                    <label for="txtLoanModifyNewPrincipal">Total Principal Amount:</label>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <input type="number" id="txtLoanModifyNewPrincipal" name="newPrincipalAmount" class="form-control loan-modification-form-input currency-element"  value="{{ ledger.principalPayoff | $format(false,2) if ledger and ledger.principalPayoff else '0' }}">
+                                </div>
+                            </div>
+                            <div class="flex-box-table-col flex-box-item" style="flex:0 0 410px;">
+                                <div class="flex-box-item header-item">
+                                    <label for="txtLoanModifyNewInterest">
+                                        <span>Total Interest Amount: <i></i></span>
+                                    </label>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <input type="number" id="txtLoanModifyNewInterest" name="newInterestAmount" {% if ledger.totalAmountOwned - ledger.principalPayoff > 0 %}disabled{% endif %}  class="form-control loan-modification-form-input currency-element" value="{{ (ledger.totalAmountOwned - ledger.principalPayoff) | $format(false,2) }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-box-table-row loan-modification-form-flex-box">
+                            <div class="flex-box-item header-item" style="padding: 0 25px;flex:1 1 100%">
+                                <hr style="border-top: 1px solid black;"/>
+                            </div>
+                        </div>
+                        <h4>When to collect payments:</h4>
+                        <div class="loan-modification-payment-schedule-calendar">
+                            <label style="margin-bottom: 3px;">Select a Start Date (next payment):</label>
+{#                            {% include "admin/partials/ach/paymentScheduleCalendarModal.nunjucks" %}#}
+                        </div  >
+                        <div class="loan-modification-preview-button-container">
+{#                            <button id="btnPreviewNewPaymentSchedule" class="btn btn-primary">Preview</button>#}
+                            <button id="btnLoanModificationSave" class="btn btn-primary" style="display: none;" >Save</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="loan-modification-preview-schedule-container" style="display: none;">
+                    <h4>Preview Results</h4>
+                    <div class="table-responsive">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th style="width: 10px">SNO</th>
+                                    <th>Beginning Principal Balance</th>
+                                    <th>Principal</th>
+                                    <th>Interest</th>
+                                    <th>Beginning Interest Due</th>
+                                    <th>Cumulative Paid Principal</th>
+                                    <th>Cumulative Paid Interest</th>
+                                    <th>Schedule Amount</th>
+                                    <th>Days In Cycle</th>
+                                    <th>Rate per Cycle</th>
+                                    <th>Cumulative Paid Total</th>
+                                    <th>Schedule Date</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tbLoanModificationPreviewSchedule">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="loan-modification-save-actions">
+                        <div class="flex-box-table-row">
+                            <div class="flex-box-item">
+                                <button id="btnLoanModificationSave" class="btn btn-primary">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Loan Modification Save Payment Schedule Modal -->
+    <div id="loanModificationSaveModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content" style="float: left;width: 100%;">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modifying Loan '{{ paymentmanagementdata.loanReference }}'</h4>
+                </div>
+                <div class="modal-body bgColorWhite" style="float: left;width: 100%;">
+                    <p>You are about to modify this loan. This will create a new loan with the following changes:</p>
+                    <div class="loan-modification-save-modal-loan-details">
+                        <div class="flex-box-table-col">
+                            <div class="flex-box-table-row flex-box-item">
+                                <div class="flex-box-item header-item">
+                                    <span>New Principal:</span>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <span class="loan-modify-save-modal-principal"></span>
+                                </div>
+                            </div>
+                            <div class="flex-box-table-row flex-box-item">
+                                <div class="flex-box-item header-item">
+                                    <span>New Interest: </span>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <span class="loan-modify-save-modal-interest"></span>
+                                </div>
+                            </div>
+                            <div class="flex-box-table-row flex-box-item">
+                                <div class="flex-box-item header-item">
+                                    <span>Adjusted Payment: </span>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <span class="loan-modify-save-modal-adjusted-payment"></span>
+                                </div>
+                            </div>
+                            <div class="flex-box-table-row flex-box-item">
+                                <div class="flex-box-item header-item">
+                                    <span>Number of Payments: </span>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <span class="loan-modify-save-modal-number-of-payments"></span>
+                                </div>
+                            </div>
+                            <div class="flex-box-table-row flex-box-item">
+                                <div class="flex-box-item header-item">
+                                    <span>Payment Start Date: </span>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <span class="loan-modify-save-modal-start-date"></span>
+                                </div>
+                            </div>
+                            <div class="flex-box-table-row flex-box-item">
+                                <div class="flex-box-item header-item">
+                                    <span>Frequency: </span>
+                                </div>
+                                <div class="flex-box-item value-item">
+                                    <span class="loan-modify-save-modal-frequency"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="font-size: 20px;">Are you sure you want to modify this loan?</p>
+                    <div class="settle-collection-input-section modal-reason-container">
+                        <label>Please enter a comment: </label>
+                        <textarea class="form-control" id="txtLoanModificationSaveReason" name="loanModificationSaveReason"></textarea>
+                        <label class="loanModificationSaveReason-error error" style="display: none;"></label>
+                    </div>
+                    <label class="loan-modification-save-server-error error" style="display: none;margin-top:10px;"></label>
+                </div>
+                <br>
+                <div class="modal-footer bg-info" style="float: left;width: 100%;">
+                    <input type="button"  class="btn btn-primary loan-modification-save-confirm-button" value="Yes"  id="btnLoanModificationSaveConfirm" >
+                    <button type="button" data-dismiss="modal" class="btn btn-primary">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Loan Modification Save Payment Schedule Modal -->
+
+    {% if paymentmanagementdata.isInLoanModification %}
+        <!-- Loan Already Modified Modal -->
+        <div id="loanModificationAlreadyModifiedModal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content" style="float: left;width: 100%;">
+                    <div class="modal-header bg-primary">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Loan Modification</h4>
+                    </div>
+                    <div class="modal-body bgColorWhite" style="float: left;width: 100%;">
+                        <p><span style="font-weight: bold;color:#f39c12;"><i class='fa fa-exclamation-triangle' aria-hidden='true' style="margin-right: 5px;" ></i>Loan Modified</span></p>
+                        <p style="font-weight: bold">This contract is already in a loan modification. Do you want to continue?</p>
+                    </div>
+                    <br>
+                    <div class="modal-footer bg-info" style="float: left;width: 100%;">
+                        <button type="button" data-dismiss="modal" class="btn btn-primary">Yes</button>
+                        <input type="button"  class="btn btn-primary loan-modification-already-modified-confirm-button" value="No" id="btnLoanModificationAlreadyModifiedConfirm" >
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Loan Already Modified Modal -->
+    {% endif %}
+<style type="text/css">
+    @media (max-width: 1024px) {
+        .payment-schedule-calendar-content-container,.loan-modification-form-section .loan-modification-preview-button-container {
+            width: 100%;
+        }
+        /* float: left; */
+        .scheduleCalendarContainer.custom-inline-datepicker .ui-datepicker-multi .ui-datepicker-group {
+            margin: 0 auto;
+            float: unset;
+            width: 262px;
+        }
+        .scheduleCalendarContainer.custom-inline-datepicker .ui-datepicker {
+            width:100% !important;
+        }
+        .payment-schedule-calendar-content-container .calendar-legend .legend-flex-parent-container {
+            flex-direction: column;
+        }
+        .payment-schedule-calendar-content-container .calendar-legend .legend-flex-parent-container .legend-flex-container {
+            flex: 0 0 50px !important;
+            width: 180px;
+        }
+        .payment-schedule-calendar-content-container .calendar-legend, .payment-schedule-calendar-content-container .calendar-legend .flex-box-table-row {
+            height: auto;
+        }
+    }
+    @media (max-width: 768px) {
+
+        .loan-modification-payment-schedule-calendar {
+            padding-left: 0;
+        }
+        .loan-modification-form-section .loan-modification-form-flex-box .flex-box-table-col, .loan-modification-form-section .loan-modification-checkboxes .flex-box-table-row {
+            padding-left: 0;
+            padding-right: 0;
+        }
+        .loan-modification-form-section .loan-modification-form-flex-box {
+            display: block;
+        }
+        .loan-modification-summary .flex-box-table-col .flex-box-table-row, .loan-modification-summary .flex-box-item.header-item, .loan-modification-summary-preview .flex-box-table-col .flex-box-table-row, .loan-modification-summary-preview .flex-box-item.header-item {
+            flex-direction: column;
+            align-self: flex-start;
+        }
+        .loan-modification-summary .flex-box-item.value-item {
+            word-break: break-word;
+        }
+    }
+</style>
+<script type="text/javascript">
+	$(document).ready(function() {
+		// movePaymentFrequencySection();
+		$.validator.addMethod(
+			"loanModifyCheckNegotiationAmountsDoesCalculate",
+			function(value, element) {
+				let doesCalculate = false;
+				const modifiedFinancedAmount = getFormElementValue("totalFinancedAmount");
+				const adjustedPaymentAmount = getFormElementValue("adjustedPaymentAmount");
+				const numberOfPayments = getFormElementValue("requiredNumberOfPayments");
+
+				if(validateModifiedMaximumFinanceAmount() && validateModifiedMinimumFinanceAmount() && adjustedPaymentAmount > 0 && numberOfPayments > 0){
+					const calcFinanceAmount = calculateFinancedAmount(adjustedPaymentAmount,numberOfPayments);
+					const calcAdjustedPaymentAmount = calculateAdjustedPayment(modifiedFinancedAmount,numberOfPayments);
+					const calcNumberOfPayments = calculateNumberOfPayments(modifiedFinancedAmount,adjustedPaymentAmount);
+
+					doesCalculate = doesAmountFieldEqual(calcFinanceAmount,modifiedFinancedAmount) && doesAmountFieldEqual(calcAdjustedPaymentAmount, adjustedPaymentAmount) && doesAmountFieldEqual(calcNumberOfPayments, numberOfPayments);
+				}
+				if(!doesCalculate){
+					$("#txtLoanModifyAdjustedPaymentAmount").addClass("error");
+				}else {
+					$(" #txtLoanModifyAdjustedPaymentAmount").removeClass("error");
+				}
+				return doesCalculate;
+			},
+			"Negotiation amounts above do not calculate into a normalized payment schedule. Click 'Calculate' on a field above to readjust."
+		);
+		$.validator.addMethod(
+			"loanModifyCheckFinanceAmountNotExceededTotalOwed",
+			function(value, element) {
+				const isValidModifiedMaximumFinanceAmount = validateModifiedMaximumFinanceAmount();
+				if(!isValidModifiedMaximumFinanceAmount){
+					$(".loan-modify-calculate-section button").attr("disabled");
+                }
+				return isValidModifiedMaximumFinanceAmount;
+			},
+			function (params, element) {
+				const interestAmount = getRequiredInterestAmountOwed();
+				const principalAmount = getRequiredPrincipalAmountOwed();
+
+				return "Modified Finance Amount should not exceed the total amount owed of " + parseCurrency(interestAmount + principalAmount);
+			}
+		);
+		$.validator.addMethod(
+			"loanModifyCheckFinanceAmountLessThanInterestOwed",
+			function(value, element) {
+				const isValidModifiedMinimumFinanceAmount = validateModifiedMinimumFinanceAmount();
+				if(!isValidModifiedMinimumFinanceAmount){
+					$(".loan-modify-calculate-section button").attr("disabled");
+				}
+				return isValidModifiedMinimumFinanceAmount;
+			},
+			function (params, element) {
+				const interestAmount = getRequiredInterestAmountOwed();
+				return "Modified Finance Amount should not be less than the interest owed of " + parseCurrency(interestAmount);
+			}
+		);
+		$.validator.addMethod(
+			"loanModifyCheckInterestAndPrincipalAmountsEqualFinanceAmount",
+			function(value, element) {
+				const principalAmount = getFormElementValue("newPrincipalAmount");
+				const interestAmount = getFormElementValue("newInterestAmount");
+				const totalFinanceAmount = getFormElementValue("totalFinancedAmount");
+				const isTotal =parseFloat(totalFinanceAmount.toFixed(2)) === parseFloat((principalAmount+interestAmount).toFixed(2));
+				if(isTotal){
+					$("#txtLoanModifyNewInterest").removeClass("error")
+				}else {
+					$("#txtLoanModifyNewInterest").addClass("error")
+				}
+				return isTotal;
+			},
+			"Principal and interest amounts must total the modified finance amount."
+		);
+		$.validator.addMethod(
+			"loanModifyNumberAmountsGreaterThanZero",
+			function(value, element) {
+				return !!value && parseFloat(value) > 0;
+			},
+			"This value should be more than zero."
+		);
+		$("#frmModifyLoan").validate({
+			rules: {
+				"totalFinancedAmountDisplay": {required: true, loanModifyNumberAmountsGreaterThanZero:true, loanModifyCheckFinanceAmountNotExceededTotalOwed:true, loanModifyCheckFinanceAmountLessThanInterestOwed:true},
+				"newPrincipalAmount": { required: true, loanModifyCheckInterestAndPrincipalAmountsEqualFinanceAmount:true },
+				"newInterestAmount": { required: true},
+				"adjustedPaymentAmountDisplay": { required: true, loanModifyNumberAmountsGreaterThanZero:true },
+				"requiredNumberOfPaymentsDisplay": {required: true, loanModifyNumberAmountsGreaterThanZero:true, loanModifyCheckNegotiationAmountsDoesCalculate: true}
+			},
+			messages: {
+				"totalFinancedAmountDisplay": {required: "Please enter a modified finance amount."},
+				"newPrincipalAmount": { required: "Please enter a total principal amount."},
+				"newInterestAmount": { required:  "Please enter a total interest amount." },
+				"adjustedPaymentAmountDisplay": { required: "Please enter an adjusted amount." },
+				"requiredNumberOfPaymentsDisplay": {required:  "Please enter the number of payments."}
+			},
+		});
+        setupLoanModificationEvents();
+        setupLoanModificationSaveModalEvents();
+	});
+	//page events
+    function setupLoanModificationSaveModalEvents() {
+		const loanModificationSaveModal = $("#loanModificationSaveModal");
+		loanModificationSaveModal.on("hidden.bs.modal", function(e) {
+			toggleServerError(".loan-modification-save-server-error");
+			toggleServerError(".loanModificationSaveReason-error");
+			$("#txtLoanModificationSaveReason").removeClass("error").val("");
+		});
+		loanModificationSaveModal.on("show.bs.modal", function(e) {
+			$(".loan-modify-save-modal-principal").html(parseCurrency($("#txtLoanModifyNewPrincipal").val().replace(/[\$\s,]/g, "")));
+			$(".loan-modify-save-modal-adjusted-payment").html(parseCurrency($("#txtLoanModifyAdjustedPaymentAmount").val().replace(/[\$\s,]/g, "")));
+            $(".loan-modify-save-modal-number-of-payments").html($("#txtLoanModifyNumberOfPayments").val());
+            let interestAmount = parseCurrency($("#txtLoanModifyNewInterest").val().replace(/[\$\s,]/g, ""));
+            const excludeInterest = $("#frmModifyLoan #chkExcludeInterest").is(":checked");
+             if(excludeInterest) {
+             	interestAmount = parseCurrency(0) + " (excluded)";
+             }
+			$(".loan-modify-save-modal-interest").html(interestAmount);
+
+			$(".loan-modify-save-modal-start-date").html($("#txtSelectedFirstPaymentDate").val());
+            $(".loan-modify-save-modal-frequency").html($("#sbPayFrequency option:selected").html());
+		});
+		$("#btnLoanModificationSaveConfirm").on("click", function(e) {
+			e.preventDefault();
+            saveNewLoanModifications();
+		})
+		$("#txtLoanModificationSaveReason").on("change input", function() {
+			if(!!$(this).val()) {
+				$("#txtLoanModificationSaveReason").removeClass("error");
+				toggleServerError(".loanModificationSaveReason-error");
+			}
+		});
+    }
+	function setupLoanModificationEvents() {
+		$("#txtLoanModifyTotalFinancedAmount, #txtLoanModifyNumberOfPayments, #txtLoanModifyAdjustedPaymentAmount").on("keyup change input", function(e) {
+			const parentSection = $(this).parent();
+			const unParsedField = parentSection.find("input.unparsed-field");
+			let unParsedValue = parseFloat(unParsedField.val()).toFixed(2);
+			if($(this).is(".number-element")){
+				unParsedValue = parseInt(Math.ceil(parseFloat(unParsedField.val()))).toString();
+			}
+			if(unParsedValue !== $(this).val()) {
+				unParsedField.val($(this).val());
+			}
+		});
+
+		$("#txtLoanModifyTotalFinancedAmount").on("keyup change input", function(e) {
+			if($(this).valid()){
+				// autoCalculatePrincipalAndInterestFromFinanceAmount();
+				$("#txtLoanModifyAdjustedPaymentAmount, #txtLoanModifyNumberOfPayments").removeAttr("disabled");
+				$("#txtLoanModifyAdjustedPaymentAmount").trigger("change");
+			}else {
+				$("#txtLoanModifyAdjustedPaymentAmount, #txtLoanModifyNumberOfPayments").attr("disabled","disabled").removeClass("error").parent().find(".error").css("display","none");
+			}
+		});
+
+        $("#txtLoanModifyAdjustedPaymentAmount, #txtLoanModifyNumberOfPayments").on("keypress change input", function(e) {
+            if($("#txtLoanModifyTotalFinancedAmount").valid()) {
+				calculateNegotiationEvent( $( this ) );
+			}
+			 $("#txtLoanModifyAdjustedPaymentAmount, #txtLoanModifyNumberOfPayments").valid();
+        });
+
+		$("#frmModifyLoan #txtLoanModifyNewInterest").on("keypress change input", function(e) {
+            $("#frmModifyLoan #txtLoanModifyNewPrincipal").valid();
+		});
+
+		$("#frmModifyLoan input[type=text],#frmModifyLoan input[type=number],#frmModifyLoan input[type=checkbox],#frmModifyLoan select").on("keypress change input", _.debounce(function(e) {
+			toggleNegotiationPaymentPreview(null,true);
+				const numberOfPayments = getFormElementValue("requiredNumberOfPayments");
+				if(numberOfPayments < 100) {
+					createNegotiationPaymentPreview();
+				}
+        }, 250));
+
+
+		$("#chkExcludeInterest").on("change", function() {
+			processExcludeInterest();
+			if($("#txtLoanModifyTotalFinancedAmount, #txtLoanModifyAdjustedPaymentAmount").valid()) {
+				$("#txtLoanModifyAdjustedPaymentAmount").trigger("change");
+			}
+		});
+		$("#chkForgiveAccruedInterest").on("change", function() {
+			processForgiveLateAccruedInterest();
+			if($("#txtLoanModifyTotalFinancedAmount,#txtLoanModifyAdjustedPaymentAmount").valid()) {
+				$("#txtLoanModifyAdjustedPaymentAmount").trigger("change");
+			}
+		});
+
+        $("#btnPreviewNewPaymentSchedule").on("click", function(e) {
+        	e.preventDefault();
+			createNewPaymentSchedule();
+        })
+		$("#btnLoanModificationSave").on("click", function(e) {
+			e.preventDefault();
+			$("#loanModificationSaveModal").modal("show");
+		});
+        $("#btnLoanModifyResetForm").on("click", function(e) {
+			e.preventDefault();
+		    resetAmounts();
+			$("#txtLoanModifyAdjustedPaymentAmount").trigger("change");
+		});
+
+        const isLoanModification = {{ paymentmanagementdata.isInLoanModification | stringify if paymentmanagementdata.isInLoanModification else 'false' | stringify }};
+        if(!!isLoanModification && isLoanModification.toString().toLowerCase() === "true"){
+        	//load already loan mod modal
+            $("#loanModificationAlreadyModifiedModal").modal("show");
+            $("#btnLoanModificationAlreadyModifiedConfirm").on("click", function(e) {
+            	e.preventDefault();
+				window.history.back();
+            })
+        }
+		$("#txtLoanModifyAdjustedPaymentAmount").trigger("change");
+    }
+
+    //payment preview
+	function displayPaymentSchedule(newPaymentScheduleObj) {
+
+		const tbody = $("#tbLoanModificationPreviewSchedule");
+		_.forEach(newPaymentScheduleObj,function(paymentSchedule, index) {
+			const row = $("<tr/>");
+			row.append($("<td/>").html(index+1));
+			row.append($("<td/>").html(parseCurrency(paymentSchedule.startBalanceAmount)));
+			row.append($("<td/>").html(parseCurrency(paymentSchedule.principalAmount)));
+			row.append($("<td/>").html(parseCurrency(paymentSchedule.interestAmount)));
+			row.append($("<td/>").html(parseCurrency(paymentSchedule.remainingInterest)));
+			row.append($("<td/>").html(parseCurrency(paymentSchedule.cumulativePrincipalPaid)));
+			row.append($("<td/>").html(parseCurrency(paymentSchedule.cumulativeInterestPaid)));
+			row.append($("<td/>").html(parseCurrency(paymentSchedule.amount)));
+			row.append($("<td/>").html(paymentSchedule.daysInCycle));
+			row.append($("<td/>").html(paymentSchedule.interestRate));
+			row.append($("<td/>").html(parseCurrency(paymentSchedule.cumulativeTotalPaid)));
+			row.append($("<td/>").html(formatDate(paymentSchedule.date)));
+			tbody.append(row);
+		});
+		$(".loan-modification-preview-schedule-container").css("display", "block");
+	}
+	function clearDisplayPaymentSchedule() {
+		$(".loan-modification-preview-schedule-container").css("display", "none");
+		$("#tbLoanModificationPreviewSchedule").empty();
+	}
+
+    //negotiations
+    function calculateNegotiationEvent(thisField) {
+		const inputField =  $("#txtLoanModifyAdjustedPaymentAmount, #txtLoanModifyNumberOfPayments").not(thisField);
+		const parentSection = inputField.closest(".loan-modify-calculate-section");
+		const unParsedInputField = parentSection.find("input.unparsed-field");
+		const updatedValue = calculatePaymentField(unParsedInputField.attr("name"));
+		if(updatedValue > 0) {
+			unParsedInputField.val(updatedValue);
+			if(inputField.is(".number-element")){
+				inputField.val(parseInt(Math.ceil(updatedValue)));
+			}else {
+				inputField.val(parseFloat(updatedValue.toFixed(2)));
+			}
+			autoCalculatePrincipalAndInterestFromFinanceAmount();
+		}
+    }
+    function processForgiveLateAccruedInterest() {
+		const principalAmount = getRequiredPrincipalAmountOwed();
+		const interestAmount = getRequiredInterestAmountOwed();
+		const overallTotal = principalAmount + interestAmount;
+		$("#txtLoanModifyUnParsedTotalFinancedAmount").val(overallTotal);
+		$("#txtLoanModifyTotalFinancedAmount").val( parseFloat(overallTotal.toFixed(2)));
+    	autoCalculatePrincipalAndInterestFromFinanceAmount();
+    }
+	function processExcludeInterest() {
+		const isExcludeInterest =  getFormElementValue("excludeInterest");
+		if(isExcludeInterest) {
+			$("#chkForgiveAccruedInterest").prop("checked",true).attr("disabled", "disabled");
+		}else {
+			$("#chkForgiveAccruedInterest").removeAttr("checked").removeAttr("disabled", "disabled");
+		}
+		const principalAmount = getRequiredPrincipalAmountOwed();
+		const interestAmount = getRequiredInterestAmountOwed();
+		const overallTotal = principalAmount + interestAmount;
+		$("#txtLoanModifyUnParsedTotalFinancedAmount").val(overallTotal);
+		$("#txtLoanModifyTotalFinancedAmount").val( parseFloat(overallTotal.toFixed(2)));
+		autoCalculatePrincipalAndInterestFromFinanceAmount();
+	}
+
+	function autoCalculatePrincipalAndInterestFromFinanceAmount() {
+
+		const modifiedFinanceAmount = getFormElementValue("totalFinancedAmount");
+		let interestAmount = getRequiredInterestAmountOwed();
+
+		const totalPrincipalAmountField = $("#txtLoanModifyNewPrincipal");
+		const totalInterestAmountField = $("#txtLoanModifyNewInterest");
+
+        let principalPayOff = modifiedFinanceAmount - interestAmount;
+
+		if(principalPayOff < 0) {
+			principalPayOff = 0;
+		}else {
+			principalPayOff = parseFloat(principalPayOff.toFixed(2));
+        }
+		totalInterestAmountField.val(interestAmount).trigger("change");
+		if(interestAmount > 0) {
+			totalInterestAmountField.attr("disabled","disabled");
+        }else {
+			totalInterestAmountField.removeAttr("disabled");
+        }
+		totalPrincipalAmountField.val(principalPayOff).trigger("change");
+	}
+	function validateModifiedMaximumFinanceAmount() {
+		const interestOwed = getRequiredInterestAmountOwed();
+		const principalOwed = getRequiredPrincipalAmountOwed();
+		const currentModifiedFinancedAmount = getFormElementValue( "totalFinancedAmount" );
+		if(interestOwed === 0) {
+			return true;
+		} else {
+			return currentModifiedFinancedAmount <= parseFloat(( interestOwed + principalOwed).toFixed(2) );
+		}
+	}
+	function validateModifiedMinimumFinanceAmount() {
+    	const interestOwed = getRequiredInterestAmountOwed();
+    	const principalOwed = getRequiredPrincipalAmountOwed();
+		const currentModifiedFinancedAmount = getFormElementValue("totalFinancedAmount");
+        if(interestOwed === 0){
+        	return true;
+        }else {
+			return currentModifiedFinancedAmount >= interestOwed;
+        }
+	}
+
+	function getRequiredPrincipalAmountOwed() {
+		let principalPayOff = {{ ledger.principalPayoff | stringify if ledger and ledger.principalPayoff else 0 | stringify }};
+		principalPayOff = parseFloat(principalPayOff);
+		return parseFloat(principalPayOff.toFixed(2));
+    }
+	function getRequiredInterestAmountOwed() {
+		const isForgiveLateAccruedInterest =  getFormElementValue("forgiveAccruedInterest");
+		const isExcludeInterest =  getFormElementValue("excludeInterest");
+		let lateAccruedInterest = {{ ledger.lateAccruedInterest | stringify if ledger and ledger.lateAccruedInterest else 0 | stringify }};
+		lateAccruedInterest = parseFloat(lateAccruedInterest);
+		let currentAccruedInterest = {{ ledger.currentAccruedInterest | stringify if ledger and ledger.currentAccruedInterest else 0 | stringify }};
+        let pastDueInterest = {{ ledger.unpaidInterest | stringify if ledger and ledger.unpaidInterest else 0 | stringify }};
+        currentAccruedInterest = parseFloat((currentAccruedInterest + pastDueInterest).toFixed(2));
+		if(isExcludeInterest) {
+			return 0
+        }else if(isForgiveLateAccruedInterest){
+			return parseFloat(currentAccruedInterest.toFixed(2));
+        }else {
+			return  parseFloat((lateAccruedInterest + currentAccruedInterest).toFixed(2));
+        }
+    }
+    function calculatePaymentField(formElementName) {
+    	const totalFinancedAmount = getFormElementValue("totalFinancedAmount");
+    	const adjustedPayment = getFormElementValue("adjustedPaymentAmount");
+		const requiredNumberOfPayments = getFormElementValue("requiredNumberOfPayments");
+
+		if(totalFinancedAmount <=0 || adjustedPayment <=0 || requiredNumberOfPayments <= 0){
+			return "";
+        }
+		switch(formElementName) {
+            case "totalFinancedAmount":
+            	return calculateFinancedAmount(adjustedPayment,requiredNumberOfPayments);
+			case "adjustedPaymentAmount":
+				return calculateAdjustedPayment(totalFinancedAmount,requiredNumberOfPayments);
+			case "requiredNumberOfPayments":
+				return calculateNumberOfPayments(totalFinancedAmount,adjustedPayment);
+            default:
+            	return "";
+        }
+    }
+    function calculateFinancedAmount(adjustedPayment, requiredNumberOfPayments) {
+		if(adjustedPayment > 0 && requiredNumberOfPayments > 0){
+			let changedFinancedAmount = parseFloat((adjustedPayment * requiredNumberOfPayments).toFixed(2));
+			let totalAmount = {{ ledger.totalAmountOwned | stringify if ledger and ledger.totalAmountOwned else '0' | stringify }};
+			totalAmount = parseFloat(totalAmount.toFixed(2));
+			if(requiredNumberOfPayments === 1){
+                return adjustedPayment;
+			}else {
+					return changedFinancedAmount;
+            }
+		}
+		return "";
+    }
+	function calculateAdjustedPayment(financedAmount, requiredNumberOfPayments) {
+		if(financedAmount > 0 && requiredNumberOfPayments > 0){
+			if(requiredNumberOfPayments === 1){
+				return financedAmount
+            }
+			return parseFloat(financedAmount / requiredNumberOfPayments);
+		}
+		return "";
+	}
+	function calculateNumberOfPayments(financedAmount, adjustedPayment) {
+    	if(financedAmount > 0 && adjustedPayment > 0){
+    		if(financedAmount < adjustedPayment){
+    			return 1;
+            }
+    		return parseFloat(financedAmount / adjustedPayment);
+        }
+    	return "";
+	}
+    function resetAmounts() {
+		let lateAccruedInterest = {{ ledger.lateAccruedInterest | stringify if ledger and ledger.lateAccruedInterest else '0' | stringify }};
+		let currentAccruedInterest = {{ ledger.currentAccruedInterest | stringify if ledger and ledger.currentAccruedInterest else '0' | stringify }};
+		let principalPayOff = {{ ledger.principalPayoff | stringify if ledger and ledger.principalPayoff else '0' | stringify }};
+		let adjustedPayment = {{ ledger.regularPayment | stringify if ledger and ledger.regularPayment else '0' | stringify }};
+		let numberOfPayments = {{ paymentmanagementdata.loantermcount| stringify if paymentmanagementdata.loantermcount else '0' | stringify }};
+        let pastDueInterest = {{ ledger.unpaidInterest | stringify if ledger and ledger.unpaidInterest else '0' | stringify }};
+
+        $("#txtLoanModifyAdjustedPaymentAmount").val(parseFloat(adjustedPayment.toFixed(2)));
+        $("#txtLoanModifyUnParsedAdjustedPaymentAmount").val(adjustedPayment);
+        $("#txtLoanModifyNumberOfPayments").val(parseInt(numberOfPayments));
+		$("#txtLoanModifyUnParsedNumberOfPayments").val(numberOfPayments);
+		$("#frmModifyLoan input[type=checkbox]").removeAttr("checked");
+		const total = parseFloat(lateAccruedInterest + currentAccruedInterest + principalPayOff + pastDueInterest);
+
+		$("#txtLoanModifyTotalFinancedAmount").val(parseFloat(total.toFixed(2))).trigger("change");
+		$(".loan-modify-calculate-section button").removeAttr("disabled");
+		$("#btnCalculateLoanModifyFinanceAmount").attr("disabled","disabled");
+		$("#txtLoanModifyUnParsedTotalFinancedAmount").val(total);
+		autoCalculatePrincipalAndInterestFromFinanceAmount();
+    }
+
+	    //server side ajax
+    function createNewPaymentSchedule() {
+		toggleServerError("loan-modification-preview-server-error");
+		const loanModifyForm = $("#frmModifyLoan");
+		loanModifyForm.find(".txtSelectedFirstPaymentDate").removeClass("error");
+		loanModifyForm.find(".txtSelectedFirstPaymentDate-custom-error").css("display", "none");
+		const changedFirstPaymentDate = loanModifyForm.find(".txtSelectedFirstPaymentDate").val();
+		const newFrequency = loanModifyForm.find(".sbPayFrequency").val();
+		const bankHolidayDirection = loanModifyForm.find(".sbBankHoliday").val();
+		const payID = {{ paymentmanagementdata.id | stringify if paymentmanagementdata and paymentmanagementdata.id else '' | stringify}};
+
+		if(loanModifyForm.valid() && !!changedFirstPaymentDate) {
+			let requestObj = {firstPaymentDate: changedFirstPaymentDate,paymentId: payID,bankHolidayDirection:bankHolidayDirection,payFrequency: newFrequency,totalFinancedAmount:0 };
+			const mergedObj = {};
+			_.forEach(loanModifyForm.serializeArray(), function(serializeObj) {
+				mergedObj[serializeObj.name] = serializeObj.value.replace(/[\$\s,]/g, "");
+			});
+            requestObj = _.assign({},requestObj,mergedObj);
+			clearDisplayPaymentSchedule();
+			ajaxPost("/admin/ajaxGetNewPaymentSchedulePreview",requestObj).then(function(responseObj) {
+				displayPaymentSchedule(responseObj.paymentSchedule);
+			},function(xhr) {
+				const errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : "There was an unknown error that occurred.";
+					console.error("An error had occurred: " + errorMessage);
+				toggleServerError("loan-modification-preview-server-error", errorMessage)
+			});
+		}else if(!changedFirstPaymentDate){
+			loanModifyForm.find(".txtSelectedFirstPaymentDate").addClass("error");
+			loanModifyForm.find(".txtSelectedFirstPaymentDate-custom-error").html("Please select a start date on the calendar above.").css("display", "block");
+        }
+    }
+
+
+    function saveNewLoanModifications() {
+      toggleServerError(".loan-modification-save-server-error");
+		toggleServerError(".loanModificationSaveReason-error");
+		const confirmReason = $("#txtLoanModificationSaveReason").val();
+		if(!confirmReason) {
+			$("#txtLoanModificationSaveReason").addClass("error");
+			toggleServerError(".loanModificationSaveReason-error","Please enter a comment");
+		}else {
+			$("#txtLoanModificationSaveReason").removeClass("error");
+			toggleServerError(".loanModificationSaveReason-error");
+			const payID = {{ paymentmanagementdata.id | stringify if paymentmanagementdata and paymentmanagementdata.id else '' | stringify}};
+			ajaxPost("/admin/ajaxSaveNewLoanModifications",{paymentId:payID, confirmReason:confirmReason}).then(function(responseObj) {
+				if(responseObj) {
+					window.location.href="/admin/getAchUserDetails/" + payID
+                }
+			},function(xhr) {
+				const errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : "There was an unknown error that occurred.";
+				console.error("An error had occurred: " + errorMessage);
+				toggleServerError("loan-modification-preview-server-error", errorMessage)
+			});
+		}
+    }
+	function toggleServerError(selector, message = null) {
+		if(!!message) {
+			$( selector ).html( message ).css( "display", "block" );
+		}else {
+			$( selector ).html( "" ).css( "display", "none" );
+		}
+	}
+
+	//static util methods
+	function parseCurrency(currencyValue, fractionDigits = 0, fractionMaxDigits= 2) {
+		if(!currencyValue) {
+			currencyValue = 0;
+		}
+
+		return parseFloat(currencyValue.toString()).toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: fractionMaxDigits, minimumFractionDigits: fractionDigits });
+	}
+	function formatDate(dateValue) {
+		if(dateValue) {
+			return moment(dateValue).format("MMMM D, YYYY");
+		}
+		return "";
+	}
+	function doesAmountFieldEqual(fieldAmount1, fieldAmount2) {
+    	return (fieldAmount1 > 0 && fieldAmount2 > 0 && (fieldAmount1 === fieldAmount2 || parseFloat(fieldAmount1.toFixed(2)) ===  parseFloat(fieldAmount2.toFixed(2))));
+    }
+	function getFormElementValue(formElementName, isSelectBoxForDisplay = false) {
+		const elements = $("#frmModifyLoan").find("input[name=" + formElementName + "],select[name=" + formElementName + "]");
+		if(elements && elements.length > 0) {
+			const foundElement = $(elements[0]);
+
+			if(isSelectBoxForDisplay && foundElement.is("select")){
+				return foundElement.find("option:selected").html();
+			}else if(foundElement.hasClass("currency-element")){
+				return parseFloat(foundElement.val().replace(/[\$\s,]/g, ""))
+			}else if(foundElement.hasClass("number-element")) {
+				return parseFloat(foundElement.val().replace(/[\$\s,]/g, ""));
+			}else if(foundElement.is("[type=checkbox]")){
+				return foundElement.is(":checked");
+			}else {
+				return foundElement.val();
+			}
+		}
+	}
+</script>
+{% endblock %}

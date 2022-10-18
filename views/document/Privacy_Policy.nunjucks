@@ -1,0 +1,235 @@
+<style type="text/css">
+	.table {
+	    border-collapse: collapse;
+	    border-spacing: 0;
+	}
+	.table-bordered > thead > tr > th, .table-bordered > tbody > tr > td {
+		border:1px solid #dddddd;
+		padding: 8px;
+    	line-height: 1.42857143;
+		vertical-align: middle;
+	}
+	.policy-txt1 ul, li {list-style: outside none disc;}
+	.modal-body ul {
+		margin-left: 5% !important;
+	}
+	.policy-bg2 {
+		background-color: #808B96;
+
+	}
+	.policy-bg1 {
+		background-color: #867D69;
+	}
+	.policy-with2 {
+		background-color: #D7D0BF;
+	}
+</style>
+<div class="table-responsive">
+  <table class="table table-bordered">
+<thead>
+<tr>
+	<th class="policy-bg1"><h1>FACTS </h1></th>
+	<th class="policy-with2">
+		<strong>WHAT DOES {{LenderLongName}} D/B/A {{LenderShortName}} DO WITH YOUR PERSONAL INFORMATION?</strong>
+	</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td class="policy-bg2">Why? </td>
+	<td class="policy-txt1">
+		Financial companies choose how they share your personal information.  Consumers have the right to limit some but not all sharing. This notice tells you how we collect, share, and protect your personal information. Please read this notice carefully to understand what we do.
+	</td>
+</tr>
+
+<tr>
+	<td class="policy-bg2">What? </td>
+	<td class="policy-txt1">
+		The types of personal information we collect, and share depend on the product or service you have with us. This information can include:
+		<ul>
+			<li>Social Security number and checking account information</li>
+			<li>Payment history and income</li>
+			<li>Employment information and wire transfer instructions</li>
+		</ul>
+	</td>
+</tr>
+
+<tr>
+	<td class="policy-bg2">How? </td>
+	<td class="policy-txt1">
+		All financial companies need to share customers personal information to run their everyday business. In the section below, we list the reasons financial companies can share their customers personal  information; the reason  {{MerchantName}} d/b/a {{StoreName}} chooses to share; and whether you can limit this sharing.
+	</td>
+</tr>
+</table>
+
+<table class="table table-bordered">
+<tr>
+	<td class="policy-bg2">Reasons we can share your personal information</td>
+	<td class="policy-bg2">Does {{MerchantName}}, d/b/a {{StoreName}} share?</td>
+	<td class="policy-bg2">Can you limit this sharing?</td>
+</tr>
+<tr>
+	<td class="policy-txt1">
+	<strong>For our everyday business purposes –</strong>
+	<p>such as to process your transactions, maintain your account(s), respond to court orders and legal investigations, or report to credit bureaus</p>
+	</td>
+	<td class="policy-txt1">Yes</td>
+	<td class="policy-txt1">No</td>
+</tr>
+<tr>
+	<td class="policy-txt1">
+	<strong>For our marketing purposes –</strong>
+	<p>to offer our products and services to you</p>
+	</td>
+	<td class="policy-txt1">Yes</td>
+	<td class="policy-txt1">No</td>
+</tr>
+<tr>
+	<td class="policy-txt1"><strong>For joint marketing</strong> with other financial companies</td>
+	<td class="policy-txt1">No</td>
+	<td class="policy-txt1">We don't share</td>
+</tr>
+<tr>
+	<td class="policy-txt1">
+		<strong>For our affiliates’ everyday business purposes – </strong>
+		<p>information about your transactions and experiences</p>
+	</td>
+	<td class="policy-txt1">Yes</td>
+	<td class="policy-txt1">No</td>
+</tr>
+<tr>
+	<td class="policy-txt1">
+		<strong>For our affiliates’ everyday business purposes – </strong>
+		<p>information about your credit worthiness</p>
+	</td>
+	<td class="policy-txt1">Yes</td>
+	<td class="policy-txt1">Yes</td>
+</tr>
+<tr>
+	<td class="policy-txt1">
+		<strong>For our affiliates to market to you</strong>
+	</td>
+	<td class="policy-txt1">Yes</td>
+	<td class="policy-txt1">Yes</td>
+</tr>
+<tr>
+	<td class="policy-txt1">
+		<strong>For non-affiliates to market to you</strong>
+	</td>
+	<td class="policy-txt1">No</td>
+	<td class="policy-txt1">We don't share</td>
+</tr>
+</table>
+
+<table class="table table-bordered">
+	<tbody>
+	<tr>
+		<td class="policy-bg2">To limit our sharing</td>
+		<td class="policy-txt1">
+			<ul>
+				<li>Call {{LenderPhone}} - our menu will prompt you through your choices or</li>
+				<li>Visit us on the web at www.patria.com</li>
+				<li>Contact us via email at support@patria.com</li>
+			</ul>
+			Please note:<br><br>
+			If you are a new customer, we can begin sharing your information 30 days from the date we sent this notice. When you are no longer our customer, we can share your information as described in this notice.<br><br>
+			However, you can contact us at any time to limit our sharing.
+		</td>
+	</tr>
+	<tr>
+		<td class="policy-bg2">Questions? </td>
+		<td class="policy-txt1">
+			Call {{LenderPhone}} or go to www.patria.com
+		</td>
+	</tr>
+</table>
+
+<table class="table table-bordered">
+<tr> <td colspan="2" class="policy-bg2">Who we are </td></tr>
+<tr>
+	<td>Who is providing this notice?</td>
+	<td class="policy-txt1">
+		{{LenderLongName}} d/b/a {{LenderShortName}}, a business entity of the Wakpamni Lake Community District of the Oglala Sioux Tribe, is providing this privacy policy.
+	</td>
+</tr>
+</table>
+
+<table class="table table-bordered">
+<tr> <td colspan="2" class="policy-bg2">What we do </td></tr>
+<tr>
+	<td><h5>How does {{MerchantName}}, d/b/a {{StoreName}} protect my personal information?</h5></td>
+	<td class="policy-txt1">
+		<p>To protect your personal information from unauthorized access and use, we use security measures. These measures include computer safeguards and secured files and buildings. </p>
+	</td>
+</tr>
+<tr>
+	<td><h5>How does {{MerchantName}}, d/b/a {{StoreName}} collect my personal information?</h5></td>
+	<td class="policy-txt1">
+		We collect your personal information, for example, when you:<br>
+		<ul>
+			<li>Apply for a loan</li>
+			<li>Give us your income information</li>
+			<li>Tell us where to send the money</li>
+			<li>Provide account information</li>
+			<li>Provide employment information</li>
+		</ul>
+		We also collect your personal information from others, such as credit bureaus, affiliates or other companies.
+	</td>
+</tr>
+<tr>
+	<td><h5>Why can’t I limit all sharing?</h5></td>
+	<td class="policy-txt1">
+		You have the right to limit only:<br>
+		<ul>
+			<li>Sharing for affiliates’ everyday business purposes – information about your creditworthiness</li>
+			<li>Affiliates from using your information to market to you</li>
+			<li>Sharing for nonaffiliates to market to you </li>
+		</ul>
+	</td>
+</tr>
+<tr>
+	<td><h5>What happens when I limit sharing for an account, I hold jointly with someone else?</h5></td>
+	<td class="policy-txt1">
+		Your choices will apply to everyone on your account.
+	</td>
+</tr>
+</table>
+
+<table class="table table-bordered">
+<tr> <td colspan="2" class="policy-bg2">Definitions </td></tr>
+<tr>
+	<td><h5>Affiliates</h5></td>
+	<td class="policy-txt1">
+		Companies related by common ownership or control. They can be financial and non-financial companies.
+		<ul>
+			<li><i>Our affiliates include other business entities of the Oglala Sioux Tribe</i></li>
+		</ul>
+	</td>
+</tr>
+<tr>
+	<td><h5>Non-affiliates</h5></td>
+	<td class="policy-txt1">
+		Companies not related by common ownership or control. They can be financial and nonfinancial companies.
+		<ul>
+			<li><i>{{MerchantName}}, d/b/a {{StoreName}} does not share with non-affiliates so they can market to you.</i></li>
+		</ul>
+	</td>
+</tr>
+<tr>
+	<td><h5>Joint Marketing</h5></td>
+	<td class="policy-txt1">
+		Companies related by common ownership or control. They can be financial and non-financial companies.
+		<ul>
+			<li><i>A formal agreement between non-affiliated financial companies that together market financial products or services to you.</i></li>
+		</ul>
+	</td>
+</tr>
+</table>
+	<p><span style="float:left;margin-left:10%;">Application Date: {{ todaydate }}</span> <span style="float:right; width:33%;">Application #: {{loanID}}</span></p>
+	<br>	Rev: 7.2017
+</div>
+<p>
+	<input type="checkbox" id="privacyPolicyAgree" {% if isPropertyTrue(agreementCheckboxes, "privacyPolicyAgree", true)  %}checked{% endif %} />
+	<label for="privacyPolicyAgree">I agree to the privacy and policy (test)</label>
+</p>
+

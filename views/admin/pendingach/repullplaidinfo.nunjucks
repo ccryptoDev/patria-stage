@@ -1,0 +1,48 @@
+{% if repullCount>0 %}
+  <style type="text/css">
+  #repullplaidinfopanel > .panel-default > .panel-heading{
+    margin: 10px !important;
+  }
+  .repullplaidinfopanel-heading {
+      background-color: #f5f5f5;
+      border-color: #ddd;
+      color: #333;
+      margin: 10px !important;
+  }
+  .panel-group .panel-heading + .panel-collapse > .list-group, .panel-group .panel-heading + .panel-collapse > .panel-body{
+    border:none !important;
+  }
+  </style>
+  <h3>
+     Repulled Bank Information
+  </h3>  
+  <div class="panel-group" id="repullplaidinfopanel">
+    <div class="panel panel-default panel-faq">
+       {% set repcounter = 1 %}
+       {% set repsubaccountval = 0 %}
+       {% for repulldata in  repullDetails %}
+
+           <div class="panel-heading" style="background-color: #dbdbdb !important;"> <a data-toggle="collapse" data-parent="" href="#repullinfo_{{repulldata.id}}">
+              <h4 align="left">
+                 {{ repulldata.accountName }} - {{ repulldata.accountNumber }} - {{ institutionName }} - (Repull Date : {{ repulldata.createdAt }} )
+                 <i class="pull-right more-less glyphicon glyphicon-plus"></i>
+
+                 <input type="hidden" name="repullpanelstatus{{repulldata.id}}" id="repullpanelstatus{{repulldata.id}}" value="0" class="repullpanelstatus">
+              </h4></a> 
+           </div>
+
+           <div id="repullinfo_{{repulldata.id}}" class="panel-collapse collapse repullplaidinfodiv">
+              <div class="panel-body" id="content_repullinfo_{{repulldata.id}}">
+
+              </div>                 
+          </div>
+
+        {% set repcounter = repcounter+1 %}
+       {% endfor %} 
+    </div>
+  </div> 
+{% else %}
+    
+{% endif %}
+    
+

@@ -1,0 +1,211 @@
+{% extends "layout/layout.nunjucks" %}
+{% block body %}
+    <section class="content-header">
+        <h1>
+            Fresh Leads Details
+            <small>preview of Fresh Leads Details</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="/admin/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li class="active">Fresh Leads Details</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Fresh Leads Details Table</h3>
+            </div>
+            <div class="box-body">
+                <div class="container-fluid leads-list-container">
+                    <table class="table table-striped table-bordered  dataTable" id="freshLeadsList_table">
+                        <thead>
+                        <tr>
+                            <th style="width: 10px">#</th>
+                            <th>Application Reference</th>
+                            <th>Name</th>
+                            <th>Email Address</th>
+                            <th>Phone Number</th>
+                            <th>Loan Amount</th>
+                            <th>Application Status</th>
+                            <th>Created Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- filter for lead completion -->
+    <div class="completed-filter-section" style="display: none">
+        <label class="completed-filter-label" style="margin-right: 10px;">Application Status:
+            <select id="completedFilterSelect" class="form-control input-sm" style="width: 129px; margin-left: 3px;">
+                <option value="0">Completed Leads Only</option>
+                <option value="1">Show Incomplete Leads</option>
+                <option value="2">Show All Leads</option>
+            </select>
+        </label>
+    </div>
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            const collectionsAccountStatusDisplay = {
+                WAITING_TO_COLLECT: "Collecting",
+                NOT_IN_COLLECTIONS: "Not in collections",
+                CHARGEOFF:"Charged Off",
+                SETTLED: "Settled",
+                IN_LOAN_MODIFICATION: "In Loan Modification",
+                PROMISE_TO_PAY: "Promise To Pay",
+                LATE_FIRST_PAYMENT: "Late First Payment"
+            };
+            const tableElement = $( "#freshLeadsList_table" );
+
+            if ( $.fn.DataTable.isDataTable( tableElement ) ) {
+                tableElement.DataTable().destroy();
+                tableElement.find("tbody").empty();
+            }
+            const columnDataType = {
+                "loopId": "ignore",
+                "combinedReference": [
+                    {data: "applicationReference",dataType:"string", defaultValue: ""},
+                    {data: "paymentData.loanReference", dataType:"string", defaultValue: ""},
+                    {data: "paymentData.id", dataType:"string", defaultValue: ""},
+                ],
+                "usersName": [
+                    {data: "userData.firstname",dataType:"string"},
+                    {data: "userData.lastname", dataType:"string"},
+                ],
+                "userData.phoneNumber": "phone",
+                "requestedLoanAmount": "currency",
+                "applicationStatus": [
+                    {data: "iscompleted",dataType:"int", defaultValue: 0, dir: "asc"},
+                    {data: "paymentData.status", dataType:"string"},
+                    {data: "isReApply", dataType:"boolean"},
+                     {data: "userData.lead", dataType:"string"},
+                        {data: "userData.isFromLeadApi", dataType:"boolean"},
+                     {data: "origin", dataType:"string"},
+                ],
+                "createdAt": "date"
+            };
+            const uTable = tableElement.DataTable( {
+                initComplete: function(settings, json) {
+                    $(".leads-list-container .dataTables_filter").prepend($(".completed-filter-section .completed-filter-label").clone())
+                },
+                processing: true,
+                serverSide: true,
+                destroy: true,
+                language: {
+                    loadingRecords: "Please wait - loading..."
+                },
+                paging: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url:"/admin/ajaxFreshLeadList",
+                    method: "POST",
+                    data: function ( d ) {
+                        _.forEach(d.columns, (col) => {
+                            const columnType = columnDataType[col.data];
+                            col["dataType"] = columnType;
+                            if(col.data === "usersName") {
+                                col["orderByField"] = columnType[1];
+                            }
+                            if(col.data === "applicationStatus") {
+                                col["orderByField"] = columnType[0];
+                            }
+                            d["isCompletedFilter"] = $("#completedFilterSelect").val();
+                        })
+                    }
+                },
+                order: [ [ 7, 'asc' ] ],
+                lengthMenu: [ [ 10, 25, 50, 100 ], [ 10, 25, 50, 100 ] ],
+                pageLength: 100,
+                columns: [
+                    { data: "loopId", orderable: false, searchable: false},
+                    { data: "combinedReference", orderable: false, searchable: true,
+                        render: function ( data, type, row, meta ) {
+                        // console.error(JSON.stringify(row))
+                            const iscompleted = parseInt(_.get(row, "iscompleted", "0"));
+                            const id = _.get(row, "id", "").replace("--","");
+                            const paymentId = _.get(row, "paymentData.id", "").replace("--","");
+
+                            const appReference = _.get(row, "applicationReference", "").replace("--","");
+                            const loanReference = _.get(row, "paymentData.loanReference", "").replace("--","");
+                                 if(iscompleted === 1) {
+                                     if(!!paymentId && !!loanReference) {
+                                         return renderForPaymentLinkColumn(loanReference, paymentId);
+                                     }else {
+                                         return "--"
+                                     }
+                                }else {
+                                    if(!!id && !!appReference) {
+                                        return renderForScreentrackingLinkColumn( appReference, id  );
+                                    }else {
+                                        return "--";
+                                    }
+                                }
+                        }},
+                    { data: "usersName",
+                        render: function ( data, type, row, meta ) {
+
+                            const firstName = _.get(row, "userData.firstname", "");
+                            const lastName = _.get(row, "userData.lastname", "");
+                            if(!firstName && !lastName) {
+                                return "--"
+                            } else {
+                                return firstName + " " + lastName;
+                            }
+                        }
+                    },
+                    { data: "userData.email"},
+                    { data: "userData.phoneNumber"},
+                    { data: "requestedLoanAmount"},
+                    { data: "applicationStatus",
+                        render: function ( data, type, row, meta ) {
+                            const iscompleted = parseInt(_.get(row, "iscompleted", "0"));
+                          const isFromLeadApi = _.get(row, "userData.isFromLeadApi", false);
+                          const origin = _.get(row, "origin", null);
+                          let suffix = "";
+                          if(origin === "Add Application") {
+                            suffix = " <span style=\"font-size:12px; font-weight:bold;\">(Add Application)</span>";
+                          }else if(origin === "Website") {
+                            suffix = " <span style=\"font-size:12px; font-weight:bold;\">(Website)</span>";
+                          }else {
+                            //console.error("lead api: " + isFromLeadApi);
+
+                            const isReApply = row.isReApply;
+                            if(isReApply === true) {
+                              suffix = " <span style=\"font-size:12px; font-weight:bold;\">(Re-Apply)</span>";
+                            }else if(isFromLeadApi === true) {
+                              suffix = " <span style=\"font-size:12px; font-weight:bold;\">(Lead API)</span>";
+                            }
+                          }
+                          if(iscompleted === 1) {
+                            return "Finished" + suffix;
+                          }else {
+                            return "Incomplete" + suffix
+                          }
+                        }},
+                    { data: "createdAt"},
+                ]
+            } );
+
+
+            //isCompleted filter
+            $( '#freshLeadsList_table_filter').on("change", "#completedFilterSelect", function() {
+                uTable.draw();
+            });
+
+
+            tableElement.parent().addClass( 'table-responsive' );
+        });
+        function renderForPaymentLinkColumn(linkData, paymentId) {
+            return $("<a></a>").attr("href", "/admin/getAchUserDetails/" + paymentId).html(linkData)[0].outerHTML;
+        }
+        function renderForScreentrackingLinkColumn(linkData, screenTrackingId) {
+            return $("<a></a>").attr("href", "/admin/viewIncomplete/" + screenTrackingId).html(linkData)[0].outerHTML;
+        }
+    </script>
+{% endblock %}

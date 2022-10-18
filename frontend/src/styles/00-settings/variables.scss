@@ -1,0 +1,97 @@
+:root {
+  --header-height: 7.4rem;
+  --footer-height: 192px;
+
+  //TEXT COLORS
+  --heading-color: var(--dark-00);
+  --paragraph-color: var(--dark-02);
+  --label-color: var(--dark-00);
+  --hint-color: var(--dark-03);
+  --disabled-color: var(--dark-04);
+  --placeholder-color: var(--dark-03);
+  --error-color: var(--color-danger);
+
+  // SHADOWS
+  //Input Forms Depth
+  --boxshadow-inset-01: inset 0px 0.5px 4px rgba(96, 97, 112, 0.32);
+  //Background Level
+  --boxshadow-00: none;
+  //Button Pressed & Cards default
+  --boxshadow-01: 0px 0px 1px rgba(40, 41, 61, 0.08),
+    0px 0.5px 2px rgba(96, 97, 112, 0.16);
+  //Button Default
+  --boxshadow-02: 0px 0px 1px rgba(40, 41, 61, 0.04),
+    0px 2px 4px rgba(96, 97, 112, 0.16);
+  //Navigations
+  --boxshadow-03: 0px 0px 2px rgba(40, 41, 61, 0.04),
+    0px 4px 0.8rem rgba(96, 97, 112, 0.16);
+  //BUTTON & CARD Raised (On Hover)
+  --boxshadow-04: 0px 2px 4px rgba(40, 41, 61, 0.04),
+    0px 0.8rem 1.6rem rgba(96, 97, 112, 0.16);
+  //PICKERS
+  --boxshadow-05: 0px 2px 0.8rem rgba(40, 41, 61, 0.04),
+    0px 1.6rem 2.4rem rgba(96, 97, 112, 0.16);
+  //MODALS
+  --boxshadow-06: 0px 2px 0.8rem rgba(40, 41, 61, 0.08),
+    0px 2rem 3.2rem rgba(96, 97, 112, 0.24);
+
+  // BORDERS
+  --border-width: 1px solid;
+  --border-width-md: 2px solid;
+
+  //HR and Divider
+  --hr-divider: 1px solid var(--dark-border);
+
+  //FONT WEIGHTS
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-semibold: 500;
+  --font-weight-bold: 600;
+  --font-weight-extra-bold: 700;
+
+  //INPUTS
+  --input-placeholder-color: "";
+  --input-label-color: "";
+
+  //LINKS
+  --link-color: var(--color-secondary);
+
+  //TABLES
+
+  //BUTTONS
+
+  //TABS
+
+  //SIDE-NAV
+  --sidenav-open-width: 21rem;
+  --sidenav-folded-width: 4.6rem;
+}
+
+.dark-mode {
+  // // SCOPE THE SAME VARIABLES ABOVE TO THEIR DARK MODE VALUES
+  // //Class will be applied when enabled to override defaults above
+
+  // SHADOWS
+  //Input Forms Depth
+  --boxshadow-inset-01: inset 0px 0.5px 4px rgba(0, 0, 0, 0.32);
+  //Background Level
+  --boxshadow-00: none;
+  //Button Pressed & Cards default
+  --boxshadow-01: 0px 0px 1px rgba(40, 41, 61, 0.08),
+    0px 1px 2px rgba(0, 0, 0, 0.32);
+  //Button Default
+  --boxshadow-02: 0px 0px 1px rgba(0, 0, 0, 0.04),
+    0px 2px 4px rgba(0, 0, 0, 0.32);
+  //Navigations
+  --boxshadow-03: 0px 0px 2px rgba(0, 0, 0, 0.04),
+    0px 4px 0.8rem rgba(0, 0, 0, 0.32);
+  //BUTTON & CARD Raised (On Hover)
+  --boxshadow-04: 0px 2px 4px rgba(0, 0, 0, 0.04),
+    0px 0.8rem 1.6rem rgba(0, 0, 0, 0.32);
+  //PICKERS
+  --boxshadow-05: 0px 2px 0.8rem rgba(0, 0, 0, 0.04),
+    0px 1.6rem 2.4rem rgba(0, 0, 0, 0.32);
+  //MODALS
+  --boxshadow-06: 0px 2px 0.8rem rgba(0, 0, 0, 0.08),
+    0px 2rem 3.2rem rgba(0, 0, 0, 0.32);
+}

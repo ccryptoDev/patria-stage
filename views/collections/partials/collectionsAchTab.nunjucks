@@ -1,0 +1,51 @@
+<h3>Collections{% if paymentmanagementdata.isInBankruptcy %}<span class="userData-lastname" style="font-weight: bold"></span><span class="collections-tab-isInBankruptcy" ><span>&nbsp;&nbsp;-&nbsp;&nbsp;</span><span style="font-weight: bold;color:#f39c12;"><i class='fa fa-exclamation-triangle' aria-hidden='true' style="margin-right: 5px;" ></i>In Bankruptcy</span></span>{% endif %}</h3>
+<div>
+	{% if paymentmanagementdata.isInCollections %}<span class="userData-lastname" style="font-weight: bold"></span><span class="collections-tab-isInBankruptcy" ><span style="font-weight: bold;color:#f39c12;"><i class='fa fa-exclamation-triangle' aria-hidden='true' style="margin-right: 5px;" ></i>This user is in collections.</span></span>
+	{% else %}
+		{% if paymentmanagementdata.isInPendingCollections %}<span class="userData-lastname" style="font-weight: bold"></span><span class="collections-tab-isInBankruptcy" ><span style="font-weight: bold;color:#f39c12;"><i class='fa fa-exclamation-triangle' aria-hidden='true' style="margin-right: 5px;" ></i>This user is in pending collections.</span></span>{% endif %}
+	{% endif %}
+</div>
+<br>
+<div class="collections-action-button-container">
+	{% if req.user.rolename =='System Admin' %}
+		{% if paymentmanagementdata.status === "ACTIVE" and  (paymentmanagementdata.isInCollections or paymentmanagementdata.isInPendingCollections) %}
+			<button id="btnChargeOff" class="btn btn-primary">Charge Off</button>
+			<button id="btnSettle" class="btn btn-primary">Settle</button>
+{#			<a id="btnModifyLoan" class="btn btn-primary" href="/admin/loan-modification/{{ paymentmanagementdata.id }}">Modify Loan</a>#}
+		{% endif %}
+	{% endif %}
+	{% if not paymentmanagementdata.isInBankruptcy %}
+		<button id="btnProcessBankruptcy" class="btn btn-primary">Bankruptcy</button>
+	{% endif %}
+	{% if paymentLedger.totalAmountOwedWithLateFees > 0 and not paymentmanagementdata.moveToArchive and (paymentmanagementdata.status == "ACTIVE" or paymentmanagementdata.status == "CHARGEOFF") %}
+		<button id="btnMakePaymentCollections" class="btn btn-primary">Make Payment</button>
+	{% endif %}
+</div>
+
+{% include "collections/partials/collectionsPaymentWorkflowModals.nunjucks" %}
+{% include "collections/partials/collectionsPastDueTabContent.nunjucks" %}
+
+{% if paymentmanagementdata.status === "ACTIVE" %}
+	{% include "collections/partials/collectionsPromiseToPayTabContent.nunjucks" %}
+{% endif %}
+{% include "collections/partials/collectionsCommentsList.nunjucks" %}
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#btnChargeOff").on("click", function(e) {
+			e.preventDefault();
+			toggleChargeOffModal(true);
+		});
+		$("#btnSettle").on("click", function(e) {
+			e.preventDefault();
+			toggleSettleModal(true);
+		});
+		$("#btnProcessBankruptcy").on("click", function(e) {
+			e.preventDefault();
+			toggleBankruptcyModal(true);
+		});
+
+		$(window).on('popstate', function() {
+			window.location.reload();
+		});
+	});
+</script>

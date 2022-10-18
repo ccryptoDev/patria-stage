@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="./assets/styles/css/style.css"
+    />
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="./assets/images/favicon.png"
+    />
+    <title>Patria Lending</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="wrapper">
+          <div class="logo">
+            <img src="assets/images/logo.png" alt="patria-lending" />
+          </div>
+          <nav>
+            <ul class="header-menu-list header-menu-list-lg">
+              <li>
+                <a href="/about" onclick="route()" class="navlink">
+                  about us
+                </a>
+              </li>
+              <li>
+                <a href="/loans" onclick="route()" class="navlink">
+                  our loans
+                </a>
+              </li>
+              <li>
+                <a href="/" onclick="route()" class="navlink selected">
+                  apply
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/application/login"
+                  id="/application/login"
+                  onclick="route()"
+                  class="navlink"
+                >
+                  my account
+                </a>
+              </li>
+              <li>
+                <button type="button" id="burder-menu-btn">
+                  <img src="assets/images/burger-menu.png" alt="" />
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <div class="menu" id="menu-lg">
+      <div class="container">
+        <div class="layout">
+          <div class="menu-start-app-card">
+            <p>
+              Appling is easy. Apprrovals are fast. Some business day funding
+              may be available.
+            </p>
+            <div class="button-wrapper">
+              <a
+                href="/application"
+                onclick="route()"
+                id="/application"
+                class="button-contained"
+                >Start Application</a
+              >
+            </div>
+          </div>
+          <nav class="menu-links">
+            <ul class="header-menu-list header-menu-list-lg">
+              <li class="menu-item-sm">
+                <a href="/about" onclick="route()" class="navlink">
+                  about us
+                </a>
+              </li>
+              <li class="menu-item-sm">
+                <a href="/loans" onclick="route()" class="navlink">
+                  our loans
+                </a>
+              </li>
+              <li class="menu-item-sm">
+                <a href="/" onclick="route()" class="navlink selected">
+                  apply
+                </a>
+              </li>
+              <li class="menu-item-sm">
+                <a href="/application/login" onclick="route()" class="navlink">
+                  my account
+                </a>
+              </li>
+
+              <li>
+                <a href="/resources" onclick="route()" class="navlink">
+                  Resources
+                </a>
+              </li>
+              <li>
+                <a href="/faq" onclick="route()" class="navlink">
+                  FAQs
+                </a>
+              </li>
+              <li>
+                <a href="/privacy" onclick="route()" class="navlink">
+                  Privacy
+                </a>
+              </li>
+              <li>
+                <a href="/contact" onclick="route()" class="navlink">
+                  Contact Us
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <div class="menu-backdrop" id="menu-backdrop"></div>
+
+    <main id="main-page">
+      <section class="section-start-application banner">
+        <div class="container">
+          <div class="section-start-application-wrapper">
+            <div class="section-start-application-text-container">
+              <h1>Get the money you need in minutes</h1>
+              <div class="section-start-application-description">
+                Offering personal loans up to $2,500* to help manage life’s
+                unexpected events. Big or small, we are always here to help you!
+              </div>
+            </div>
+            <div class="section-start-application-form-container">
+              <div class="section-start-application-form-wrapper">
+                <form action="">
+                  <h2>Start Application</h2>
+
+                  <div
+                    class="section-start-application-form-loan-fields-wrapper"
+                  >
+                    <div id="loanAmount-wrapper" class="input-wrapper">
+                      <input
+                        type="text"
+                        id="loanAmount"
+                        name="loanAmount"
+                        placeholder="Loan amount"
+                        class="form-input"
+                      />
+                    </div>
+                    <div class="input-wrapper">
+                      <select
+                        name="purposeOfLoan"
+                        id="purposeOfLoan"
+                        class="form-input"
+                      >
+                        <option value="">no options</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div
+                    class="section-start-application-form-personal-fields-wrapper"
+                  >
+                    <div class="input-wrapper">
+                      <input
+                        type="text"
+                        name="firstName"
+                        placeholder="First Name"
+                        class="form-input"
+                      />
+                    </div>
+                    <div class="input-wrapper">
+                      <input
+                        type="text"
+                        name="lastName"
+                        placeholder="Last Name"
+                        class="form-input"
+                      />
+                    </div>
+                    <div class="input-wrapper">
+                      <input
+                        type="text"
+                        name="email"
+                        placeholder="Email"
+                        class="form-input"
+                      />
+                    </div>
+                    <div class="input-wrapper">
+                      <input
+                        type="text"
+                        name="phoneNumber"
+                        placeholder="Phone number"
+                        class="form-input"
+                      />
+                    </div>
+                  </div>
+                  <div class="button-wrapper">
+                    <button type="submit" class="button-contained">
+                      Get Started
+                      <img src="assets/images/arrow-right-white.png" alt="->" />
+                    </button>
+                  </div>
+                  <div class="terms-wrapper">
+                    This site is protected by
+                    <a href="/" class="link"> Google Privacy Policy </a>and
+                    <a href="/" class="link">
+                      Terms of Use apply.
+                    </a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-options">
+        <div class="container">
+          <div class="section-options-wrapper">
+            <h2>Flexible Options In Three Easy Steps</h2>
+
+            <ul class="section-options-cards">
+              <li class="card">
+                <div class="card-header">
+                  <img src="assets/images/aboutus.png" alt="about us" />
+                  <h5>Tell us about yourself</h5>
+                </div>
+                <p>
+                  We just need a little bit of information to access your offer.
+                </p>
+              </li>
+
+              <li class="card">
+                <div class="card-header">
+                  <img src="assets/images/loanamount.png" alt="about us" />
+                  <h5>Choose your loan amount</h5>
+                </div>
+                <p>
+                  If you qualify, you can borrow up to $2,500*
+                </p>
+              </li>
+
+              <li class="card">
+                <div class="card-header">
+                  <img src="assets/images/payment.png" alt="about us" />
+                  <h5>Get your maney</h5>
+                </div>
+                <p>
+                  Your money can be in your account as soon as the same business
+                  day!
+                </p>
+              </li>
+            </ul>
+            <div class="button-wrapper">
+              <a href="contact.html" class="button-contained">
+                Let’s Get Started
+                <img src="assets/images/arrow-right-white.png" alt="->" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-apply-about-us-banner banner">
+        <div class="container layout">
+          <h2>About Us</h2>
+          <p>
+            We are here <b>to help the 40+ million Americans </b> who do not
+            have access to short-term credit through conventional banks each
+            year. These underserved customers deserve an option to manage their
+            unforeseen expenses. Best in class technology and analytics enables
+            us to provide a Fast, Secure and Private way to solve your financial
+            needs. <b>Apply today</b> and you may
+            <b>get your funds in minutes</b> via your debit card or same/next
+            business day funding via ACH.
+          </p>
+          <p>
+            We are <b>Patria Lending.</b> We offer online small dollar credit
+            products that help our borrowers bridge the gap between today’s
+            unexpected expenses and tomorrow’s opportunities. We are owned by
+            and operated by the Otoe-Missouria Tribe. For more information about
+            the <span>Otoe-Missouria Tribe</span>, please click
+            <a href="">here</a>.
+          </p>
+          <div class="button-wrapper">
+            <a href="" class="button-outlined">About Us</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-customerPortal">
+        <div class="container">
+          <div class="section-customerPortal-header">
+            <h2>Customer Portal</h2>
+            <p>
+              Once you become an active Patria Lending borrower, you can manage
+              your account 24/7 using our online customer portal!
+            </p>
+            <div class="button-wrapper">
+              <a href="" class="button-inverted">
+                Log In Here
+                <img src="assets/images/arrow-right-blue.png" alt="->" />
+              </a>
+            </div>
+          </div>
+          <ul class="section-customerPortal-cards">
+            <li class="section-customerPortal-card">
+              <div class="section-customerPortal-card-header">
+                <img src="assets/images/shield.png" alt="shield" />
+                <p>Apply For a New Loan</p>
+              </div>
+              <div class="section-customerPortal-card-content">
+                <img src="assets/images/landing/startApp.png" alt="startApp" />
+              </div>
+            </li>
+
+            <li class="section-customerPortal-card">
+              <div class="section-customerPortal-card-header">
+                <img src="assets/images/shield.png" alt="shield" />
+                <p>Apply For a New Loan</p>
+              </div>
+              <div class="section-customerPortal-card-content">
+                <img
+                  src="assets/images/landing/cp-userInfo.png"
+                  alt="userInfo"
+                />
+              </div>
+            </li>
+
+            <li class="section-customerPortal-card">
+              <div class="section-customerPortal-card-header">
+                <img src="assets/images/shield.png" alt="shield" />
+                <p>Apply For a New Loan</p>
+              </div>
+              <div class="section-customerPortal-card-content">
+                <img
+                  src="assets/images/landing/cp-documentCenter.png"
+                  alt="documentCenter"
+                />
+              </div>
+            </li>
+
+            <li class="section-customerPortal-card">
+              <div class="section-customerPortal-card-header">
+                <img src="assets/images/shield.png" alt="shield" />
+                <p>Apply For a New Loan</p>
+              </div>
+              <div class="section-customerPortal-card-content">
+                <img
+                  src="assets/images/landing//cp-loanInfo.png"
+                  alt="loanInformation"
+                />
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <!-- MODAL -->
+    <div class="modal" id="privacy-termsOfUseModal">
+      <div class="backdrop"></div>
+      <div class="dialog">
+        <button class="close-modal" type="button"></button>
+        <h3 class="heading">TERMS OF USE</h3>
+        <div class="modal-content">
+          <iframe src="terms-of-use.html" frameborder="0"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal" id="privacy-privacyNoticeModal">
+      <div class="backdrop"></div>
+      <div class="dialog">
+        <button class="close-modal" type="button"></button>
+        <h3 class="heading">Privacy Policy</h3>
+        <div class="modal-content">
+          <iframe src="privacy-notice.html" frameborder="0"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal" id="online-privacy-privacyNotice">
+      <div class="backdrop"></div>
+      <div class="dialog">
+        <button class="close-modal" type="button"></button>
+        <h3 class="heading">Patria Lending LLC Online Privacy Notice</h3>
+        <div class="modal-content">
+          <iframe src="online-privacy-notice-agreement.html" frameborder="0"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="container footer-container">
+        <div class="account footer-section">
+          <img src="assets/images/logo-Light.png" alt="patria-lending" />
+          <ul class="account-list">
+            <li><a href="/">Create Account</a></li>
+            <li><a href="/">Sign Up</a></li>
+            <li><a href="/">Start Application</a></li>
+          </ul>
+        </div>
+        <div class="policies footer-section">
+          <ul class="policies-socials">
+            <li>
+              <img src="assets/images/socials/Facebook.png" alt="Facebook" />
+            </li>
+            <li>
+              <img src="assets/images/socials/Instagram.png" alt="Instagram" />
+            </li>
+            <li>
+              <img src="assets/images/socials/LinkedIn.png" alt="LinkedIn" />
+            </li>
+            <li>
+              <img src="assets/images/socials/Twitter.png" alt="Twitter" />
+            </li>
+          </ul>
+          <ul class="policies-list footer-section">
+            <li>
+              <button type="button" id="privacy-termsOfUseButton">
+                Terms of Use
+              </button>
+            </li>
+            <li>
+              <button type="button" id="privacy-privacyNoticeButton">
+                Privacy Policy
+              </button>
+            </li>
+            <li>
+              <a href="/contact" id="/contact" onclick="route()">Contact us</a>
+            </li>
+          </ul>
+        </div>
+        <div class="news">
+          <div class="news-heading">News and Special Offers</div>
+          <form class="input-wrapper email-input-wrapper">
+            <input
+              type="text"
+              name="newsAndOffers"
+              placeholder="Email"
+              class="form-input"
+            />
+            <button type="submit">
+              <img src="assets/images/arrow-right-black.png" alt="arrow" />
+            </button>
+          </form>
+        </div>
+      </div>
+    </footer>
+  </body>
+
+  <script type="module" src="js/index.js" defer></script>
+  <script type="module" src="js/router.js" defer></script>
+  <script type="module" src="js/modal.js" defer></script>
+</html>

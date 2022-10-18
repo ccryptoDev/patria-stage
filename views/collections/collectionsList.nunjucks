@@ -1,0 +1,648 @@
+{% extends "../layout/layout.nunjucks" %}
+{% block body %}
+	<style type="text/css">
+		@supports (zoom:1.5) {
+			input.bigger-checkbox[type=checkbox] {
+				zoom: 1.5;
+			}
+		}
+		@supports not (zoom:1.5) {
+			input.bigger-checkbox[type=checkbox] {
+				transform: scale(1.5);
+				margin: 15px;
+			}
+		}
+		.assignButtonsContainerGroup .button-group {
+			display: inline-block;
+		}
+		.assignButtonsContainerGroup {
+			margin-top: 10px;
+		}
+		.server-error-container {
+			padding-top:10px;
+		}
+		.missed-payment-column .missed-payment-value {
+			margin-right: 10px;
+		}
+		#missedPaymentDetailsModal .missed-payment-details-container {
+			width: 70%;
+			margin: 0 auto;
+		}
+		#missedPaymentDetailsModal .missed-payment-details-container .flex-box-table-col {
+			border: 1px solid black;
+			margin-bottom: 20px;
+		}
+		#missedPaymentDetailsModal .missed-payment-details-container .flex-box-item.header-item {
+			font-weight: bold;
+		}
+		.past-due-filter-label {
+			margin-right: 10px;
+		}
+		/*#missedPaymentDetailsModal .missed-payment-details-container .flex-box-table-row .flex-box-item {*/
+		/*	flex: 0 0 35%;*/
+		/*}*/
+		/*#missedPaymentDetailsModal .missed-payment-details-container .flex-box-table-row{*/
+		/*	justify-content: center;*/
+		/*}*/
+	</style>
+    <section class="content-header">
+        <h1>
+            {% if collectionType === "mycollections" %}
+                {% set listTableId = "myCollectionsList_table" %}
+                {% set listTitle = "Assigned Collection Details" %}
+            {% elseif collectionType === "all" %}
+                 {% set listTableId = "allCollectionsList_table" %}
+                {% set listTitle = "All Collection Details" %}
+			{% elseif collectionType === "promisetopay" %}
+				{% set listTableId = "promiseToPayCollectionsList_table" %}
+				{% set listTitle = "Promise To Pay Collection Details" %}
+			{% elseif collectionType === "pending" %}
+				{% set listTableId = "pendingCollectionsList_table" %}
+				{% set listTitle = "Pending Collection Details" %}
+			{% else %}
+				{% set listTableId = "unassignedCollectionsList_table" %}
+				{% set listTitle = "Unassigned Collection Details" %}
+            {% endif %}
+            {{ listTitle }}
+            <small>preview of {{ listTitle }}</small>
+
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="/admin/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li class="active">{{ listTitle }}</li>
+
+			<li></li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">{{ listTitle }} Table</h3>
+            </div>
+            <div class="box-body">
+                <div class="container-fluid collections-list-container">
+                    <table class="table table-striped table-bordered dataTable" id="{{ listTableId }}">
+                        <thead>
+                        <tr>
+							<th style="width: 20px">
+								{% if req.user | doesUserContainRole(["Admin", "COLLECTION_MANAGER"]) %}
+									<div>
+										<input type="checkbox" class="bigger-checkbox" name="selectDeselectAll" id="chkSelectDeselectAll"/>
+									</div>
+								{% endif %}
+							</th>
+                            <th style="width: 10px">#</th>
+                            <th style="width: 75px;">App & Loan Reference</th>
+                            <th>Personal Info</th>
+                            <th>Payoff Amount</th>
+                            <th>Contract Amount</th>
+                            <th># of Missed Payments</th>
+                            <th>Oldest DPD</th>
+                            <th>Contracted Date</th>
+                            <th>Collections Start Date</th>
+							<th>Last Payment</th>
+                            <th>Assigned To</th>
+                            <th>{% if collectionType !== "promisetopay" %}Status{% else %}Scheduled Contact{% endif %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+	<div id="assignToOthersModal" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-md">
+			<div class="modal-content" style="float: left;width: 100%;">
+				<div class="modal-header bg-primary">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Assign Loan</h4>
+				</div>
+				<div class="modal-body bgColorWhite" style="float: left;width: 100%;">
+					<label for="userAssignSelect">Select a User to assign:</label>
+					<input type="hidden" id="txtIsAssignToRole" value=""/>
+					<select class="form-control" id="userAssignSelect" name="assignToUser">
+						<option disabled selected value="">Choose one</option>
+						{% if adminUsers and adminUsers.length > 0 %}
+							<option disabled readonly value=""></option>
+							<option disabled readonly value="">---------------Users---------------</option>
+							{% for adminUser in adminUsers %}
+								<option class="user-assign-type" value="{{ adminUser.id}}">{{ adminUser.name }}</option>
+							{% endfor %}
+						{% endif %}
+						{% if unassignedRole %}
+							<option disabled readonly value=""></option>
+						    <option disabled readonly value="">---------------Unassign---------------</option>
+							<option class="unassign-type" value="{{ unassignedRole.id }}">Unassign user from loan</option>
+						{% endif %}
+					</select>
+					<label class="error assignToUser-error" style="display: none"></label>
+				</div>
+				<br>
+				<div class="modal-footer bg-info" style="float: left;width: 100%;">
+					<input type="button"  class="btn btn-primary assign-changing-button" value="Assign"  id="btnAssignedOtherConfirm" >
+					<button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="alreadyAssignedModal" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-md">
+				<div class="modal-content" style="float: left;width: 100%;">
+					<div class="modal-header bg-primary">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Already Assigned</h4>
+					</div>
+					<div class="modal-body bgColorWhite" style="float: left;width: 100%;">
+						<p>One or more of these loans are already assigned to someone. Do you still want to re-assign it?</p>
+					</div>
+					<br>
+					<div class="modal-footer bg-info" style="float: left;width: 100%;">
+						<input type="button"  class="btn btn-primary assign-changing-button" value="Yes"  id="btnAlreadyAssignedConfirm" >
+						<button type="button" data-dismiss="modal" class="btn btn-primary">No</button>
+					</div>
+				</div>
+		</div>
+	</div>
+	<div id="missedPaymentDetailsModal" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-md">
+			<div class="modal-content" style="float: left;width: 100%;">
+				<div class="modal-header bg-primary">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Missed Payments for <span class="missed-payment-loan-reference"></span></h4>
+				</div>
+				<div class="modal-body bgColorWhite" style="float: left;width: 100%;">
+						<div class="missed-payment-details-container blank-container" style="display: none">
+							<div class="flex-box-table-col">
+								<div class="flex-box-table-row flex-box-item">
+									<div class="flex-box-item header-item">
+										<span>Payment Amount:</span>
+									</div>
+									<div class="flex-box-item value-item">
+										<span class="missed-payment-amount"></span>
+									</div>
+								</div>
+								<div class="flex-box-table-row flex-box-item">
+									<div class="flex-box-item header-item">
+										<span>Payment Scheduled Date:</span>
+									</div>
+									<div class="flex-box-item value-item">
+										<span class="missed-payment-date"></span>
+									</div>
+								</div>
+								<div class="flex-box-table-row flex-box-item">
+									<div class="flex-box-item header-item">
+										<span># of Days Past Due</span>
+									</div>
+									<div class="flex-box-item value-item">
+										<span class="missed-payment-past-due"></span>
+									</div>
+								</div>
+							</div>
+						</div>
+				</div>
+				<br>
+				<div class="modal-footer bg-info" style="float: left;width: 100%;">
+					<button type="button" data-dismiss="modal" class="btn btn-primary">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- datatable column templates -->
+	<div class="contactInfoDataTableColumn" style="display: none;">
+		<div class="flex-box-table-col">
+			<div class="flex-box-table-row flex-box-item name-container" style="padding:0;">
+				<span class="userData-firstname" style="font-weight: bold"></span>&nbsp;<span class="userData-lastname" style="font-weight: bold"></span><span class="contactInfo-isInBankruptcy" style="display: none"><span>&nbsp;&nbsp;-&nbsp;&nbsp;</span><span style="font-weight: bold;color:#f39c12;"><i class='fa fa-exclamation-triangle' aria-hidden='true' style="margin-right: 5px;" ></i>In Bankruptcy</span></span>
+			</div>
+			<div class="flex-box-table-row flex-box-item email-container" style="padding:0;">
+				<div class="flex-box-item userData-email" style="padding:0;"><span></span></div>
+			</div>
+			<div class="flex-box-table-row flex-box-item phone-container" style="padding:0;">
+				<div class="flex-box-item userData-phoneNumber" style="padding:0;"><span></span></div>
+			</div>
+		</div>
+	</div>
+	<div class="assignActionColumn" style="display: none;">
+			<div class="assign-action-checkbox">
+				<input type="checkbox" class="bigger-checkbox assign-action"  name="assignActionCheckbox_" id="chkAssignActionCheckbox_"/>
+				<input type="hidden" class="currentAssignmentUser" value=""/>
+				<input type="hidden" class="collectionPaymentId" value=""/>
+				<input type="hidden" class="collectionApplicationReference" value=""/>
+			</div>
+	</div>
+	<div class="past-due-filter-section" style="display: none">
+		<label class="past-due-filter-label">Past Due:
+		<select id="pastDueFilterSelect" class="form-control input-sm" style="width: 129px;margin-left: 3px;">
+			<option value=""></option>
+			<option value="1">1 to 30 days</option>
+			<option value="2">31 to 60 days</option>
+			<option value="3">61 to 90 days</option>
+			<option value="4">91 to 120 days</option>
+			<option value="5">120+ days</option>
+		</select>
+		</label>
+	</div>
+	<div class="missedPaymentTemplate" style="display: none;">
+		<div class="missed-payment-column">
+			<span class="missed-payment-value" ></span><a href="javascript:void(0);" class="missed-payment-more-details" onclick="updateMissedPaymentModalData(this)" >(Details)</a>
+		</div>
+
+	</div>
+	<div class="assignButtonsContainer" style="display: none;">
+		<div class="assignButtonsContainerGroup">
+			<div class="button-group"><button id="btnAssignToMe" class="btn-primary">Assign To Me</button></div>
+			<div class="button-group"><button id="btnAssignToOther" class="btn-primary">Assign</button></div>
+			<div class="button-group" style="margin-left: 5px;">
+
+				{% if collectionType === "unassigned" %}
+					<a href="/admin/collections/all">Show All</a>
+				{% elseif collectionType !== "promisetopay" %}
+					<a href="/admin/collections/unassigned">Show Unassigned</a>
+				{% endif %}
+			</div>
+			<div class="server-error-container" style="display: none;">
+				<label class="error server-error-label"></label>
+			</div>
+		</div>
+	</div>
+
+	<div class="appAndLoanReferenceDisplayContainer" style="display: none;">
+		<div class="app-reference-container"></div>
+		<div class="loan-reference-container"><span></span></div>
+	</div>
+	<div class="mostRecentPaymentDisplayContainer" style="display: none;">
+		<div class="most-recent-payment-date"><span></span></div>
+		<div class="most-recent-payment-amount"><b>Amount: </b><span></span></div>
+	</div>
+    <script type="text/javascript">
+		$(document).ready(function() {
+
+			const listTableId = {{listTableId | stringify}};
+			const collectionType = {{ collectionType | stringify if collectionType else 'all' | stringify}};
+
+			const canUserAssign = {{req.user | doesUserContainRole(["Admin", "COLLECTION_MANAGER"]) | stringify }};
+			const collectionsAccountStatusDisplay = {
+				WAITING_TO_COLLECT: "Collecting",
+				CHARGEOFF:"Charged Off",
+				SETTLED: "Settled",
+				IN_LOAN_MODIFICATION: "In Loan Modification",
+				PROMISE_TO_PAY: "Promise To Pay",
+				LATE_FIRST_PAYMENT: "Late First Payment"
+			};
+			if(!!listTableId && !!collectionType) {
+				const tableElement = $( '#' + listTableId );
+				if ( $.fn.DataTable.isDataTable( tableElement ) ) {
+					tableElement.DataTable().destroy();
+					tableElement.find("tbody").empty();
+				}
+				const columnDataType = {
+					"loopId": "ignore",
+					"payOffAmount": "currency",
+					"missedPayments":[
+						{data: "totalNumberOfPastDue",dataType:"int"},
+					],
+					"appAndLoanReference":[
+						{data: "screenTrackingData.applicationReference",dataType:"string"},
+						{data: "loanReference",dataType:"string"},
+					],
+					"oldestDaysPastDue": "int",
+					"loanSetdate": "date",
+					"movedToCollectionsDate": "date",
+					"assignAction": "blank",
+					"contactScheduleReminderDate": "datetime",
+					"screenTrackingData.requestedLoanAmount": "currency",
+					"mostRecentPayment": [
+						{data: "lastPaymentMadeDate",dataType:"date"},
+						{data: "lastPaymentAmount", dataType:"currency"},
+					],
+					"currentlyAssignedUser": [
+						{data: "collectionAssignedUserData.name",dataType:null},
+						{data: "collectionAssignedUserData.id", dataType:null},
+						{data: "collectionAssignStatus", dataType:null}
+					],
+					"contactInfoHtml": [
+						{data: "userData.firstname",dataType:null},
+						{data: "userData.lastname",dataType:null},
+						{data: "userData.email",dataType:null},
+						{data: "userData.phoneNumber",dataType:"phone"},
+						{data: "isInBankruptcy",dataType:null},
+					],
+				};
+				const uTable = tableElement.DataTable( {
+					initComplete: function(settings, json) {
+						if(canUserAssign && collectionType !== "mycollections") {
+							$( ".assignButtonsContainer .assignButtonsContainerGroup" ).insertBefore( $( '#' + listTableId ) );
+							updateAssignActionButtonStatus( tableElement );
+						}
+						$(".collections-list-container .dataTables_filter").prepend($(".past-due-filter-section .past-due-filter-label").clone())
+					},
+					processing: true,
+					serverSide: true,
+					destroy: true,
+					language: {
+						loadingRecords: "Please wait - loading..."
+					},
+					paging: true,
+					pagingType: "full_numbers",
+					ajax: {
+						url:"/admin/ajaxGetCollections/" + collectionType,
+						data: function ( d ) {
+							_.forEach(d.columns, (col) => {
+								const columnType = columnDataType[col.data];
+								col["dataType"] = columnType;
+								if(col.data === "contactInfoHtml") {
+									col["orderByField"] = columnType[2];
+								}
+								if(["currentlyAssignedUser","missedPayments","appAndLoanReference","mostRecentPayment"].indexOf(col.data) >=0) {
+									col["orderByField"] = columnType[0];
+								}
+								d["dpdFilter"] = $("#pastDueFilterSelect").val();
+							})
+						}
+					},
+					order: [ [ 7, 'asc' ] ],
+					lengthMenu: [ [ 10, 25, 50, 100 ], [ 10, 25, 50, 100 ] ],
+					pageLength: 10,
+					columns: [
+						{
+							data: "assignAction",
+							render: function( data, type, row, meta ) {
+
+								const clonedCheckboxDiv = $(".assignActionColumn").clone();
+								const assignCheckbox = clonedCheckboxDiv.find(".assign-action-checkbox input[type=checkbox]");
+								const id = row["id"];
+
+								$(assignCheckbox).attr("id", $(assignCheckbox).attr("id")+id).attr("name", $(assignCheckbox).attr("name")+id);
+
+
+									const collectionAssignedUser = _.get(row,"collectionAssignedUserData.id","");
+									if(!!collectionAssignedUser) {
+										clonedCheckboxDiv.find( ".currentAssignmentUser" ).val(collectionAssignedUser );
+									}
+
+								clonedCheckboxDiv.find( ".collectionPaymentId" ).val(id);
+								return clonedCheckboxDiv.html();
+							}, orderable: false, searchable: false, visible: canUserAssign && collectionType !== "mycollections"
+						},
+						{ data: "loopId", orderable: false, searchable: false},
+						{ data: "appAndLoanReference",
+								render: function ( data, type, row, meta ) {
+									const htmlContainer = $(".appAndLoanReferenceDisplayContainer").clone();
+									htmlContainer.find(".app-reference-container").html(renderForPaymentLinkColumn(_.get(row,"screenTrackingData.applicationReference","--"),"",row,null));
+									htmlContainer.find(".loan-reference-container span").html(row["loanReference"]);
+									return htmlContainer.html();
+								}
+						},
+						{ data: "contactInfoHtml",
+							render: function ( data, type, row, meta ) {
+									const props = _.map(columnDataType.contactInfoHtml,(columnType) => {
+										if(columnType.data.startsWith("userData")) {
+											return columnType.data
+										}
+									});
+								const colHtmlDiv = $(".contactInfoDataTableColumn").clone();
+									_.forEach(props,(prop) => {
+										if(prop) {
+											colHtmlDiv.find( "." + prop.replace( new RegExp( "\\.", 'g' ), "-" ) ).html( _.get( row, prop, "" ) )
+										}
+									});
+								const isInBankruptcy = _.get(row,"isInBankruptcy","false");
+								if(!!isInBankruptcy && isInBankruptcy.toString().toLowerCase() === "true") {
+									colHtmlDiv.find(".contactInfo-isInBankruptcy").css("display","inline");
+								}
+								colHtmlDiv.css("display", "block");
+										return colHtmlDiv.html();
+							}
+						},
+						{ data: "payOffAmount"},
+						{ data: "screenTrackingData.requestedLoanAmount"},
+						{
+							data: "missedPayments", render: function( data, type, row, meta ) {
+								const numOfPastDue = parseInt( _.get( row, "totalNumberOfPastDue", "0" ) );
+								if(numOfPastDue > 0) {
+									const missedPaymentCopy = $( ".missedPaymentTemplate" ).clone();
+									missedPaymentCopy.find( ".missed-payment-column span.missed-payment-value" ).html( numOfPastDue );
+									missedPaymentCopy.find( ".missed-payment-column a.missed-payment-more-details" ).attr( "id", row["id"] );
+									return missedPaymentCopy.html();
+								} else {
+									return "--";
+								}
+							},
+						},
+						{ data: "oldestDaysPastDue"},
+						{ data: "loanSetdate"},
+						{data: "movedToCollectionsDate"},
+						{data: "mostRecentPayment",
+							render: function ( data, type, row, meta ) {
+								const lastPaymentMadeDate = _.get(row, "lastPaymentMadeDate","").replace( "--", "" );
+								const lastPaymentAmount = _.get(row, "lastPaymentAmount","").replace( "--", "" );
+								if(!!lastPaymentMadeDate && !!lastPaymentAmount) {
+									const mostRecentHtmlGroup = $( ".mostRecentPaymentDisplayContainer" ).clone();
+									mostRecentHtmlGroup.find( ".most-recent-payment-date span" ).html( lastPaymentMadeDate );
+									mostRecentHtmlGroup.find( ".most-recent-payment-amount span" ).html( lastPaymentAmount );
+									return mostRecentHtmlGroup.html();
+								}else {
+									return "--";
+								}
+							},
+							orderable: false, searchable: false},
+						{data: "currentlyAssignedUser",
+							render: function ( data, type, row, meta ) {
+							  let assignedUserNameOrGroup = _.get(row,"collectionAssignedUserData.name", _.get(row,"collectionAssignStatus", "Unassigned"));
+								return assignedUserNameOrGroup;
+							}
+						},
+						{% if collectionType !== "promisetopay"%}
+								{data: "collectionsAccountStatus",
+									render: function ( data, type, row, meta ) {
+										const displayStatus = collectionsAccountStatusDisplay[data];
+										return !!displayStatus?displayStatus:collectionsAccountStatusDisplay.WAITING_TO_COLLECT;
+									},
+								}
+						{% else %}
+								{data: "contactScheduleReminderDate"}
+						{% endif %}
+					]
+				} );
+
+				$( '#' + listTableId + '_filter input' ).off("keyup keypress input").on( 'keyup', function( e ) {
+					if(this.value.length > 3 === 0) {
+						uTable.search( this.value ).draw();
+					}
+				} );
+
+				//dpd filter
+				$( '#' + listTableId + '_filter').on("change", "#pastDueFilterSelect", function() {
+					uTable.draw();
+				});
+
+				tableElement.parent().addClass( 'table-responsive' );
+				createAssignToEvents(tableElement);
+
+				$("#chkSelectDeselectAll").on("click", function(e) {
+					if($(this).is(":checked")){
+						//deselect
+						$(".assign-action-checkbox input[type=checkbox]").prop("checked",true);
+					}else {
+						$(".assign-action-checkbox input[type=checkbox]").removeAttr("checked");
+					}
+					$(".assign-action-checkbox input[type=checkbox]").trigger("change");
+				});
+
+				$(".collections-list-container").on("change", " .assign-action-checkbox input.assign-action", function(e) {
+					toggleServerError();
+					updateAssignActionButtonStatus(tableElement);
+				} );
+
+
+				$("#missedPaymentDetailsModal").on("hidden.bs.modal", function(e) {
+					$("#missedPaymentDetailsModal .missed-payment-details-container").not(".blank-container").remove();
+					$("#missedPaymentDetailsModal .missed-payment-loan-reference").html("");
+				});
+			}
+		});
+
+		function renderForPaymentLinkColumn(data, type, row, meta) {
+			return $("<a></a>").attr("href", "/admin/getAchUserDetails/" + row["id"]).html(data)[0].outerHTML;
+		}
+		function createAssignToEvents(tableElement) {
+			let userId = {{ req.user.id | stringify if req.user and req.user.id else '' | stringify  }};
+			$("#btnAssignedOtherConfirm").on("click", function(e) {
+				e.preventDefault();
+				const assignToUserSelect = $("#userAssignSelect");
+				if(!assignToUserSelect.val()) {
+					assignToUserSelect.parent().find("label.error").html("Please choose a user.").css("display","block");
+				}else {
+					$("#assignToOthersModal").modal("hide");
+					const selectUserOrRoleField = $("#userAssignSelect option:selected");
+					const isUnassigned = selectUserOrRoleField.hasClass("unassign-type");
+					if(!isUnassigned && checkIfAlreadyAssigned(tableElement, null)){
+						$("#alreadyAssignedModal").modal("show");
+					}else {
+						$("#btnAlreadyAssignedConfirm").trigger("click");
+					}
+				}
+			});
+
+			$("#btnAlreadyAssignedConfirm").on("click", function(e) {
+				e.preventDefault();
+				$("#alreadyAssignedModal").modal("hide");
+				let assignedInfoArray = null;
+				if($("#alreadyAssignedModal .assign-changing-button").hasClass("is-assign-to-me")) {
+					assignedInfoArray = getCheckboxAssignInfo( tableElement, userId, false );
+				}else {
+					const selectUserOrRoleField = $("#userAssignSelect option:selected");
+					const isUnassigned = selectUserOrRoleField.hasClass("unassign-type");
+					assignedInfoArray = getCheckboxAssignInfo( tableElement, selectUserOrRoleField.val(), isUnassigned );
+				}
+				assignContractToUser(assignedInfoArray);
+			});
+
+			$("#btnAssignToOther").on("click", function(e) {
+				e.preventDefault();
+				toggleServerError();
+				$("#alreadyAssignedModal .assign-changing-button").removeClass("is-assign-to-me").addClass("is-assign-to-other");
+				$("#assignToOthersModal").modal("show");
+			});
+			$("#btnAssignToMe").on("click", function(e) {
+				e.preventDefault();
+				toggleServerError();
+				$("#alreadyAssignedModal .assign-changing-button").removeClass("is-assign-to-other").addClass("is-assign-to-me");
+				if(checkIfAlreadyAssigned(tableElement,userId)){
+					$("#alreadyAssignedModal").modal("show");
+				}else {
+					$("#btnAlreadyAssignedConfirm").trigger("click");
+				}
+			});
+		}
+		function checkIfAlreadyAssigned(tableElement,loggedInUserId){
+			const assignCheckboxes = tableElement.find(".assign-action-checkbox input.assign-action:checked");
+				return _.some(assignCheckboxes, function(assignCheckbox) {
+					let currentlyAssignedUser = $( assignCheckbox ).parent().find( "input.currentAssignmentUser" ).val().replace( /[^\d\w]/g, "" );
+						return !!currentlyAssignedUser  &&  (!loggedInUserId || loggedInUserId !== currentlyAssignedUser);
+				})
+		}
+		function getCheckboxAssignInfo(tableElement, assignToUser,isUnassigned=false) {
+			const assignedPaymentIds = [];
+			const assignCheckboxes = tableElement.find(".assign-action-checkbox input.assign-action:checked");
+			assignCheckboxes.each(function(i, checkBoxItem) {
+				const paymentId = $(checkBoxItem).parent().find("input.collectionPaymentId").val();
+				assignedPaymentIds.push(paymentId);
+			});
+			const response = {
+				paymentIds: assignedPaymentIds
+			};
+			if(isUnassigned) {
+				response["isUnassigned"] = true;
+			}else {
+				response["isUnassigned"] = false;
+				response["assignToUser"] = assignToUser;
+			}
+			return response;
+		}
+
+		function updateAssignActionButtonStatus(tableElement) {
+			if(tableElement.find(".assign-action-checkbox input.assign-action:checked").length === 0){
+				$("#btnAssignToMe").attr("disabled","disabled");
+				$("#btnAssignToOther").attr("disabled","disabled")
+			}else {
+				$("#btnAssignToMe").removeAttr("disabled");
+				$("#btnAssignToOther").removeAttr("disabled")
+			}
+		}
+
+		function toggleServerError(errorMessage=null){
+			if(!!errorMessage){
+				$(".server-error-container label.error").html(errorMessage).parent().css("display", "block");
+			}else {
+				$(".server-error-container label.error").html("").parent().css("display", "none");
+			}
+		}
+
+		function updateMissedPaymentModalData(linkElement) {
+			//missed-payment-container-blank
+			const paymentId = $(linkElement).attr("id");
+			ajaxPost("/admin/getPassDuePaymentsForDisplay", {paymentId: paymentId}).then(function(results) {
+					if(results && results.paymentSchedule && results.paymentSchedule.length > 0) {
+						$("#missedPaymentDetailsModal .missed-payment-loan-reference").html(results.loanReference);
+						_.forEach(results.paymentSchedule, function(paymentObj) {
+							const clonedContainer = $("#missedPaymentDetailsModal .missed-payment-details-container.blank-container").clone().removeClass("blank-container").css("display","block");
+							clonedContainer.find(".missed-payment-amount").html(paymentObj.amount?parseFloat(paymentObj.amount.toString()).toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2, minimumFractionDigits: 0 }): "--");
+							clonedContainer.find(".missed-payment-date").html(paymentObj.date?moment(paymentObj.date).format("MM-DD-YYYY"): "--");
+							clonedContainer.find(".missed-payment-past-due").html(paymentObj.numberOfDaysPasDue?paymentObj.numberOfDaysPasDue: "--");
+							$("#missedPaymentDetailsModal .missed-payment-details-container").parent().append(clonedContainer);
+						});
+						$("#missedPaymentDetailsModal").modal("show");
+					}
+			},function(xhr) {
+				const errorJson = xhr.responseJSON || {message: ""};
+				const errorMessage = "There was an error trying to get past due payment details. " + (!!errorJson.message?errorJson.message:"");
+				console.error(errorMessage);
+				toggleServerError(errorMessage);
+			})
+		}
+
+		//ajax calls
+		function assignContractToUser(assignedRequestData) {
+			if(assignedRequestData) {
+				ajaxPost("/admin/ajaxAssignToUser",assignedRequestData).then(function(results) {
+					if(results && results.allUpdated) {
+						window.location.reload();
+					}else {
+						toggleServerError("Not all loans were assigned. An unknown error had occurred.");
+					}
+				}, function(xhr) {
+					const errorJson = xhr.responseJSON || {message: "There was an unknown error trying to assign."};
+					const errorMessage = errorJson.error?errorJson.error.message:errorJson.message;
+					console.error(errorMessage);
+					toggleServerError(errorMessage);
+				})
+			}
+		}
+
+    </script>
+{% endblock %}
+

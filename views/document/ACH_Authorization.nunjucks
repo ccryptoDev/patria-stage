@@ -1,0 +1,26 @@
+<div>
+    <div>
+        <strong>ACH AUTHORIZATION</strong>
+        <br><br>
+        You authorize Lender to initiate ACH credit and debit entries to the bank account indicated below for all amounts owing in connection with this Agreement, including without limitation all principal amounts, finance charges, service fees, returned item fees and collection agency fees. This authorization shall remain in full force and effect until Lender has received a written notice of termination from you in such time and manner as to afford Lender a reasonable opportunity to act upon it. Your consent to this authorization is not a condition of Lender’s extension of credit to you.
+        <br><br>
+
+        <strong>Bank Name:
+            {{ bank.accountName }}
+        </strong>
+        <br>
+        <strong>Transit ABA Number:
+            {{ bank.routingNumber }}
+        </strong>
+        <br>
+        <strong>Deposit Account Number:
+            {{ bank.accountNumber }}</strong>
+        <br><br>
+
+        <p>{{iroutp}}</p>
+        <br>
+        <div>{{ signatureHTML.achDebitSignature}}</div>
+        <p>{{date}}</p>
+
+    </div>
+</div>

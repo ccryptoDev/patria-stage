@@ -1,0 +1,81 @@
+<style>
+    .heading h4 {
+        text-align: center;
+        line-height: 2;
+        margin: 0;
+        font-weight: bold;
+    }
+
+    .heading h4:first-child {
+        border-bottom: 1px solid;
+        text-align: center;
+        line-height: 2;
+        margin: 0;
+        font-weight: bold;
+    }
+
+    .date {
+        text-align: right;
+        line-height: 1.5;
+        margin-bottom: 10px;
+    }
+
+    .date span {
+        padding: 1px;
+    }
+
+    .underline {
+        border-bottom: 1px solid;
+    }
+
+    .address-wrapper {
+        display: flex;
+        justify-content: space-between;
+        min-width: 300px;
+    }
+
+    .address-block {
+        width: 50%;
+    }
+
+    .address-block -heading {
+        margin-bottom: 20px;
+        font-weight: bold;
+        text-transform: upperCase;
+    }
+
+    .address-block ul {
+        list-style: none;
+    }
+
+    .address-block ul li {
+        line-height: 1.5;
+    }
+</style>
+<div>
+    <div class="heading">
+        <h4>PATRIA PERSONAL LOAN TRUTH IN LENDING ACT</h4>
+        <h4>DISCLOSURE</h4>
+    </div>
+    <div class="date">
+        <span>Date:</span>
+        <span class="underline">{{ dateSigned }}</span>
+    </div>
+    <div class="address-wrapper">
+        <div class="address-block">
+            <h4 class="address-block-heading">Borrower:</h4>
+            <ul>
+                <li>{{ user.firstName }} {{ user.lastName }}</li>
+                <li>{{ user.street }}</li>
+                <li>{{ user.city }}, {{ user.state }} {{ user.zipCode }}</li>
+            </ul>
+        </div>
+        <div class="address-block">
+            <h4 class="address-block-heading">CREDITOR:</h4>
+            <ul>
+                <li>{{ tribe.name }} Lending LLC</li>
+                <li>{{ tribe.addressLine1 }}</li>
+                <li>{{ tribe.addressLine2 }}</li>
+            </ul>
+        </div>
+    </div>

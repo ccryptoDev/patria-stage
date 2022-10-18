@@ -1,0 +1,134 @@
+<body>
+    <head>
+        <style>
+        body {
+            background-color: white;
+            font-family:"Neo Sans fonts", Verdana, sans-serif ;
+        }
+		h2 {
+			font-family:helvetica;
+		}
+
+        .creditAuth-document-layout {
+            padding: 0px 48px 0px 48px;
+        }
+    
+
+{# COPIED STYLES #}
+		h5 {
+			color: black;
+			font-family:helvetica;
+			font-weight: 700;
+		}
+
+		.creditAuth-document-layout p, .creditAuth-document-layout li, .creditAuth-document-layout p1,  {
+			color: black;
+			font-family: helvetica;
+			margin: 0px;
+		}
+		.creditAuth-document-layout {
+			padding: 0px 48px 0px 48px;
+		}
+		.creditAuth-document-layout p{
+			font-size: 14px;
+		}
+		.creditAuth-document-layout h3{
+			font-size: 24px;
+		}
+
+        .creditAuth-document-body{
+            height: 600px;
+        }
+
+
+		.creditAuth-document-footer{
+			display: flex;
+			justify-content: flex-end;
+		}
+		.creditAuth-document-footer p1{
+			font-size: 10px;
+		}
+		.creditAuth-document-footer p1 span{
+			margin-left: 10px;
+		}
+        .creditAuth-title-wrapper{
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+		.creditAuth-document-layout .title{
+            width: 50%;
+			display: block;
+			text-align: center;
+		}
+		.creditAuth-document-layout .subtitle{
+			display: block;
+			text-align: center;
+			margin-top: 0;
+		}
+
+		.creditAuth-document-layout .document-divider{
+			overflow: visible;
+			padding: 0;
+			border: none;
+			border-top: medium double #333;
+			color: #333;
+			text-align: center;
+		}
+
+		.creditAuth-document-layout .document-divider:after {
+			content: "§";
+			display: inline-block;
+			position: relative;
+			top: -0.7em;
+			font-size: 1.5em;
+			padding: 0 0.25em;
+			background: white;
+		}
+
+		.creditAuth-document-layout .document-divider-2 {
+			border: 0;
+			height: 1px;
+			background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+		}
+
+      </style>
+    </head >
+    <div class="creditAuth-document-layout">
+        <br><br>
+        <p> {{LenderLongName}} </p>
+		<p> {{LenderMailingAddress}} </p>
+		<p> {{LenderEmailAddress}} </p>
+		<p> {{LenderPhone}} </p>
+        <br><br>
+        <div class="creditAuth-title-wrapper">
+            <h3 class="title">Borrower Authorization and Release To Obtain Personal Credit Information</h3>
+        </div>
+        <hr class="document-divider">
+        <br>
+        <div class="creditAuth-document-body">
+            <p style="text-align: justify;"> By submitting this application I also hereby
+                certify that all the above information is accurate and complete. I authorize <span class="practiceName">
+                {{ practiceName }} </span> and its financing servicer {{LenderShortName}} to obtain credit reports on
+                me and to verify any information I provided on this application including my employment history,
+                information about my bank relationships and extension of credit.</p>
+            <br>
+            <p style="text-align: justify;"> I understand that I am not
+                obligated to provide creditor this authorization to review such "consumer reports". However, I have voluntarily agreed that such reports can be released to creditor so that
+                it will consider my credit application, extension of credit, or with respect to any extension or
+                modification of existing credit.</p>
+            
+        </div>
+        <br><br>
+
+        <div class="creditAuth-document-footer">
+            <p>
+                Date:&nbsp;{{ agreementObject.date }}
+            </p>
+            <br><br>
+            <p>
+                <span>Ip:&nbsp;{{ ip }}</span>
+            </p>
+        </div>
+    </div>
+</body>

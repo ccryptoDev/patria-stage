@@ -1,0 +1,380 @@
+/*eslint-disable*/
+import React from "react";
+import styled from "styled-components";
+
+const Wrapper = styled.section`
+  .list {
+    display: flex;
+    flex-direction: column;
+    row-gap: 24px;
+    & > li {
+      display: flex;
+      flex-direction: column;
+      row-gap: 24px;
+
+      & p {
+        font-size: 14px;
+      }
+
+      & > ul {
+        display: flex;
+        flex-direction: column;
+        row-gap: 24px;
+        row-gap: 12px;
+        list-style: disc;
+        & li {
+          font-size: 14px;
+        }
+      }
+
+      & .minimin-requirements-list {
+        margin-left: 20px;
+        list-style: disc;
+      }
+    }
+  }
+`;
+
+const Section = () => {
+  return (
+    <Wrapper>
+      <div className="print-page">
+        <ul className="list">
+          <li>
+            <p>
+              <b>
+                This Online Privacy Notice (the "online notice") applies to
+                Patria Lending's websites and mobile applications (each a "Site"
+                or collectively "Sites") and explains how we may collect, use,
+                share and protect information from visitors and users ("you",
+                "your") of our Sites.
+              </b>
+            </p>
+          </li>
+          <li>
+            <p>
+              Please read this online notice carefully. This online notice may
+              change from time to time (see Changes to our online notice).
+            </p>
+          </li>
+          <li>
+            <p>
+              <b>Information We collect</b>
+            </p>
+          </li>
+          <li>
+            <p>
+              <b>Definition Of Personal Information</b>
+            </p>
+
+            <p>
+              "Personal Information" is information that, either alone or in
+              combination with other information, can be used to identify you.
+              Examples of Personal Information include, among others, name,
+              email address, phone number, and mailing address. Personal
+              Information includes certain information we collect when you apply
+              for, or obtain, a financial product or service from us, which can
+              include your Social Security number, account number, income,
+              account balances, payment history, credit history, and credit
+              scores. When we combine Personal Information with other
+              information, we treat the combined information as Personal
+              Information.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              <b>Information You Provide</b>
+            </p>
+
+            <p>
+              We collect Personal Information you provide via forms, surveys,
+              applications or other online fields including your name, mailing
+              or email addresses, telephone, mobile numbers, or account numbers.
+              The exact information we need to collect will depend on the
+              purpose of the form. We will indicate on the form whether a
+              particular field of information is mandatory or optional. If you
+              choose not to provide certain information, we may not be able to
+              provide requested services.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              <b>Information Collected Automatically From You</b>
+            </p>
+
+            <p>
+              We use technologies that automatically collect information
+              (including Personal Information) about you. For example, we
+              collect the following information:
+            </p>
+            <ul>
+              <li>
+                <p>
+                  <b> Cookies And Other Tracking Technologies.</b> A cookie is a
+                  small text file that is stored on a user's computer for
+                  record-keeping purposes. We use cookies on our Sites. We do
+                  not link the information we store in cookies to any personal
+                  information you submit while on our site. We use session ID
+                  cookies and persistent cookies. We use session cookies to make
+                  it easier for you to navigate our site. A session ID cookie
+                  expires when you close your browser. A persistent cookie
+                  remains on your hard drive for an extended period of time. You
+                  can remove persistent cookies by following directions provided
+                  in your Internet browser's "help" file.
+                </p>
+                <p>
+                  We set a persistent cookie to store your passwords, so you
+                  don't have to enter it more than once. Persistent cookies also
+                  enable us to track and target the interests of our users to
+                  enhance the experience on our site. If you choose to not have
+                  your browser accept cookies from our website, you will not be
+                  able to subscribe to the service offerings on the website.
+                </p>
+                <p>
+                  The use of cookies, tags and scripts by third parties is not
+                  covered by our online notice. These technologies are used in
+                  analyzing trends, administering the site, tracking users'
+                  movements around the site and to gather demographic
+                  information about our user base as a whole. We may receive
+                  reports based on the use of these technologies by these
+                  companies on an individual as well as aggregated basis. We do
+                  not have access or control over these cookies. You can opt-
+                  out from third parties' use of cookies by visiting each third
+                  parties' advertising opt-out page or by utilizing "do not
+                  track" functionality in your web browser.
+                </p>
+              </li>
+              <li>
+                <p>
+                  <b> Log Files.</b> As is true of most web sites, we gather
+                  certain information automatically and store it in log files.
+                  This information may include internet protocol (IP) addresses,
+                  browser type, internet service provider (ISP), referring/exit
+                  pages, operating system, date/time stamp, and/or clickstream
+                  data. We do not link this automatically collected data to
+                  other information we collect about you. We do this to improve
+                  services we offer you.
+                </p>
+              </li>
+              <li>
+                <p>
+                  <b> Analytics.</b> We use Google Analytics, a web analytics
+                  service provided by Google, Inc. ("Google") to collect certain
+                  information relating to your use of our website. Google
+                  Analytics uses "cookies" to help analyze how users use the
+                  site. You can find out more about how Google uses data when
+                  you visit our sites by visiting "How Google uses data when you
+                  use our partners' sites or apps" at
+                  <a
+                    href="http://www.google.com/policies/privacy/partners/"
+                    className="link"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    www.google.com/policies/privacy/partners/
+                  </a>
+                  .
+                </p>
+              </li>
+              <li>
+                <p>
+                  <b> Web Server Logs.</b> Web server logs are activity records
+                  created by the device that delivers the web pages you request
+                  to your internet browser. For example, a web server log may
+                  record the search term you entered or the link you clicked on
+                  to bring you to the web page. The web server log also may
+                  record information about your device, such as your IP address,
+                  operating system, and internet browser.
+                </p>
+              </li>
+              <li>
+                <p>
+                  <b> Relationship-Based Advertising.</b> We may use information
+                  about your relationship with us (such as your borrowing
+                  history) to help determine which advertisements or offers to
+                  present to you.
+                </p>
+              </li>
+              <li>
+                <p>
+                  <b> Geolocation / IP Address.</b> We capture your IP address
+                  when you use our Sites, such as when you submit an application
+                  and electronically sign a loan agreement.
+                </p>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p>
+              <b>How We Use Personal Information</b>
+            </p>
+
+            <p>
+              Our primary purpose in collecting your Personal Information is to
+              provide you with the products, services, and information that you
+              request. We may use your Personal information to maintain,
+              support, and answer any customer service-related questions. We may
+              also aggregate your information with the information other users
+              provide for business purposes such as to analyze data, conduct
+              research, identify usage trends, develop and improve products or
+              services, and enhance our Sites. We also may use this data for
+              audit, loss prevention, and anti-fraud purposes and to comply with
+              laws and regulations. We may use information for other purposes
+              not listed here with your consent.
+            </p>
+          </li>
+          <li>
+            <p>
+              <b>Security</b>
+            </p>
+
+            <p>
+              The security of your personal information is important to us. We
+              have implemented administrative, physical, and technical
+              safeguards to reduce the risk of accidental loss or unauthorized
+              access, use, alteration, and disclosure of Personal Information in
+              our possession or under our control. We take reasonable security
+              measures to ensure sensitive data entered on the Sites is
+              encrypted and transmitted in a secure way.
+            </p>
+            <p>
+              While we use encryption to protect Personal Information
+              transmitted online, we also protect your information offline. Our
+              employees are periodically trained on the importance of
+              information security and privacy issues to ensure compliance with
+              all applicable laws and regulations. The servers on which we store
+              Personal Information are kept in a safe and secure environment.
+            </p>
+            <p>
+              Notwithstanding these safeguards to store information in a secure
+              environment that is not publicly available, we cannot guarantee
+              the safety and integrity of your Personal Information during
+              transmission and after we receive it. No method of transmission
+              over the Internet, or method of electronic storage, is 100% secure
+              from third parties such as hackers from illegally obtaining access
+              to Personal Information. Therefore, we do not represent or warrant
+              that your Personal Information will be protected against loss,
+              misuse or alteration by third parties.
+            </p>
+          </li>
+          <li>
+            <p>
+              <b>Retention Of Personal Information</b>
+            </p>
+
+            <p>
+              We will retain your personal information for as long as necessary
+              to fulfill the purposes for which your Personal Information has
+              been collected as outlined in this online notice or our Privacy
+              Notice. We may also retain Personal Information to the extent
+              required by law.
+            </p>
+          </li>
+          <li>
+            <p>
+              <b>Links To Other Sites</b>
+            </p>
+
+            <p>
+              Our Sites may contain links to other third-party sites or
+              integrate with third-party services and technologies (e.g.
+              identity verification or account verification technologies) not
+              covered by this online notice. Please be aware that we are not
+              responsible for the privacy practices or the content of these
+              third-party sites. If you submit Personal Information to any of
+              those sites, your information is governed by their privacy
+              policies. We encourage you to be aware when you leave our site and
+              to read the privacy policies of each and every site that collects
+              Personal Information.
+            </p>
+          </li>
+          <li>
+            <p>
+              <b>Changes To Your Information</b>
+            </p>
+
+            <p>
+              If your Personal Information changes, you may update your
+              information within the My Account section of our site at
+              <a
+                href="http://www.patrialending.com"
+                className="link"
+                target="_blank"
+                rel="noreferrer"
+              >
+                www.patrialending.com
+              </a>
+              . You also may email a request to us at
+              <a href="mailto:customercare@patrialending.com" className="link">
+                customercare@patrialending.com
+              </a>
+              . We will process such requests in accordance with applicable law.
+            </p>
+          </li>
+          <li>
+            <p>
+              <b>Protecting Children's Privacy Online</b>
+            </p>
+
+            <p>
+              The Children's Online Privacy Protection Act ("COPPA") protects
+              children under the age 13 from the online collection of personal
+              information. Our Sites are directed to a general audience and may
+              be assessed by the public. Our Sites are not directed to
+              individuals under the age of thirteen (13). We do not knowingly
+              collect, use, or disclose personal information from or to children
+              under the age of thirteen (13) and we request that these
+              individuals do not provide Personal Information through our Sites.
+              For more information about COPPA, visit the Federal Trade
+              Commission website: http://www.ftc.gov.
+            </p>
+          </li>
+          <li>
+            <p>
+              <b>Changes To Our Online Notice</b>
+            </p>
+
+            <p>
+              We may update this online notice to reflect changes to our
+              information practices. When we do, we will revise the updated date
+              at the top of this notice. If we make any material changes to this
+              online notice then we will notify you here, by email using the
+              e-mail address specified in your account or by means of a notice
+              on other Sites prior to the change becoming effective. We
+              encourage you to periodically review this page for the latest
+              information on our privacy practices.
+            </p>
+          </li>
+          <li>
+            <p>
+              <b>Contact Us</b>
+            </p>
+
+            <p>
+              If you have any questions regarding our online notice, please
+              contact us:
+            </p>
+          </li>
+          <li>
+            <p>
+              Patria Lending LLC
+              <br />
+              8151 Hwy 177
+              <br />
+              Red Rock, OK 74651
+              <br />
+              customercare@patrialending.com
+              <br />
+              (800) 640-2093
+              <br />
+            </p>
+          </li>
+        </ul>
+      </div>
+    </Wrapper>
+  );
+};
+
+export default Section;

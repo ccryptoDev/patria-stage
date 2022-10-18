@@ -1,0 +1,185 @@
+<style type="text/css">
+    #chargeOffCollectionModal .charge-off-total-past-due, #settleCollectionModal .settle-total-past-due {
+        font-weight: bold;
+    }
+    #chargeOffCollectionModal .modal-body, #settleCollectionModal .modal-body {
+        font-size: 16px;
+    }
+    .modal-reason-container textarea {
+        width: 100%;
+        height: 75px;
+        /*display: block;*/
+        /*height: 100px;*/
+    }
+</style>
+<!-- Charge Off Modal -->
+<div id="chargeOffCollectionModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content" style="float: left;width: 100%;">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Charge Off</h4>
+            </div>
+            <div class="modal-body bgColorWhite" style="float: left;width: 100%;">
+                <p>You are about to charge off this contract<span class="charge-off-has-past-due-amount" style="display: none"> with a total past due amount of <span class="charge-off-total-past-due"></span></span><span class="charge-off-note-section"> which will remove it from preforming and will no longer attempt to collect payments.</span></p>
+                <p>Are you sure you want to charge off this contract?</p>
+                <div class="charge-off-collection-input-section modal-reason-container">
+                    <label>Please enter an explanation: </label>
+                    <textarea class="form-control" id="txtChargeOffCollectionReason" name="chargeOffCollectionReason"></textarea>
+                    <label class="chargeOffCollectionReason-error error" style="display: none;"></label>
+                </div>
+                <label class="charge-off-collection-server-error error" style="display: none;margin-top:10px;"></label>
+            </div>
+            <br>
+            <div class="modal-footer bg-info" style="float: left;width: 100%;">
+                <input type="button"  class="btn btn-primary charge-off-collection-confirm-button" value="Yes"  id="btnConfirmChargeOffCollection" >
+                <button type="button" data-dismiss="modal" class="btn btn-primary">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Charge Off Modal -->
+<!-- Settle Modal -->
+<div id="settleCollectionModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content" style="float: left;width: 100%;">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Settle</h4>
+            </div>
+            <div class="modal-body bgColorWhite" style="float: left;width: 100%;">
+                <p>You are about to settle this contract<span class="settle-has-past-due-amount" style="display: none"> and there is still a remaining balance of <span class="settle-total-past-due"></span></span>.<span class="settle-note-section"> This action will remove it from preforming and will no longer attempt to collect payments.</span></p>
+                <p>Are you sure you want to settle this contract?</p>
+                <div class="settle-collection-input-section modal-reason-container">
+                    <label>Please enter an explanation: </label>
+                    <textarea class="form-control" id="txtSettleCollectionReason" name="settleCollectionReason"></textarea>
+                    <label class="settleCollectionReason-error error" style="display: none;"></label>
+                </div>
+                <label class="settle-collection-server-error error" style="display: none;margin-top:10px;"></label>
+            </div>
+            <br>
+            <div class="modal-footer bg-info" style="float: left;width: 100%;">
+                <input type="button"  class="btn btn-primary settle-collection-confirm-button" value="Yes"  id="btnConfirmSettleCollection" >
+                <button type="button" data-dismiss="modal" class="btn btn-primary">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Settle Modal -->
+
+<script type="text/javascript">
+    $(document).ready(function() {
+		setupChargeOffModalEvents();
+		setupSettledModalEvents();
+    });
+    function toggleChargeOffModal(isShow) {
+		toggleWorkflowModal("#chargeOffCollectionModal", isShow);
+	}
+	function toggleSettleModal(isShow) {
+		toggleWorkflowModal("#settleCollectionModal", isShow);
+	}
+	function toggleWorkflowModal(modalSelector, isShow) {
+		const chargeOffModal = $(modalSelector);
+		chargeOffModal.modal(isShow?"show": "hide");
+	}
+
+    function setupChargeOffModalEvents() {
+		const chargeOffModal = $("#chargeOffCollectionModal");
+		chargeOffModal.on("hidden.bs.modal", function(e) {
+			toggleServerError(".charge-off-collection-server-error");
+			toggleServerError(".chargeOffCollectionReason-error");
+			$("#txtChargeOffCollectionReason").removeClass("error").val("");
+			chargeOffModal.find(".charge-off-has-past-due-amount").css("display", "none").find(".charge-off-total-past-due").html("");
+		});
+		chargeOffModal.on("show.bs.modal", function(e) {
+			const totalPastDueAmount = {{paymentmanagementdata.totalAmountPastDue | stringify if paymentmanagementdata and paymentmanagementdata.totalAmountPastDue >= 0 else "" | stringify }};
+			if(!!totalPastDueAmount) {
+				const hasPastDueElement = chargeOffModal.find(".charge-off-has-past-due-amount");
+				hasPastDueElement.find(".charge-off-total-past-due").html(parseFloat(totalPastDueAmount).toLocaleString( "en-US", { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits:2 } ));
+				hasPastDueElement.css("display", "inline");
+            }
+		});
+		$("#btnConfirmChargeOffCollection").on("click", function() {
+			const confirmReason = $("#txtChargeOffCollectionReason").val();
+			toggleServerError(".chargeOffCollectionReason-error");
+			if(!confirmReason) {
+				$("#txtChargeOffCollectionReason").addClass("error");
+				toggleServerError(".chargeOffCollectionReason-error","Please enter an explanation");
+			}else {
+				$("#txtChargeOffCollectionReason").removeClass("error");
+				toggleServerError(".chargeOffCollectionReason-error");
+				sendPaymentWorkflowActions("/admin/ajaxUpdatePaymentWorkFlow", {workflow: "CHARGEOFF", confirmReason:confirmReason, paymentId: {{ paymentmanagementdata.id | stringify if paymentmanagementdata and paymentmanagementdata.id else '' | stringify}}},"/admin/collections/chargeoff", ".charge-off-collection-server-error");
+			}
+		})
+		$("#txtChargeOffCollectionReason").on("change input", function() {
+			if(!!$(this).val()) {
+				$("#txtChargeOffCollectionReason").removeClass("error");
+				toggleServerError(".chargeOffCollectionReason-error");
+			}
+		});
+    }
+	function setupSettledModalEvents() {
+		const settleModal = $("#settleCollectionModal");
+		settleModal.on("hidden.bs.modal", function(e) {
+			toggleServerError(".settle-collection-server-error");
+			toggleServerError(".settleCollectionReason-error");
+			$("#txtSettleCollectionReason").removeClass("error").val("");
+			settleModal.find(".settle-has-past-due-amount").css("display", "none").find(".settle-total-past-due").html("");
+		});
+		settleModal.on("show.bs.modal", function(e) {
+			const totalPastDueAmount = {{paymentmanagementdata.totalAmountPastDue | stringify if paymentmanagementdata and paymentmanagementdata.totalAmountPastDue >= 0 else "" | stringify }};
+			if(!!totalPastDueAmount) {
+				const hasPastDueElement = settleModal.find(".settle-has-past-due-amount");
+				hasPastDueElement.find(".settle-total-past-due").html(parseFloat(totalPastDueAmount).toLocaleString( "en-US", { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits:2 } ));
+				hasPastDueElement.css("display", "inline");
+			}
+		});
+		$("#btnConfirmSettleCollection").on("click", function() {
+			const confirmReason = $("#txtSettleCollectionReason").val();
+			toggleServerError(".settleCollectionReason-error");
+			if(!confirmReason) {
+				$("#txtSettleCollectionReason").addClass("error");
+				toggleServerError(".settleCollectionReason-error","Please enter an explanation");
+			}else {
+				$("#txtSettleCollectionReason").removeClass("error");
+				toggleServerError(".settleCollectionReason-error");
+				sendPaymentWorkflowActions("/admin/ajaxUpdatePaymentWorkFlow", {workflow: "SETTLED", confirmReason:confirmReason, paymentId: {{ paymentmanagementdata.id | stringify if paymentmanagementdata and paymentmanagementdata.id else '' | stringify}}},"/admin/collections/settled", ".settle-collection-server-error");
+			}
+		});
+		$("#txtSettleCollectionReason").on("change input", function() {
+			if(!!$(this).val()) {
+				$("#txtSettleCollectionReason").removeClass("error");
+				toggleServerError(".settleCollectionReason-error");
+			}
+		})
+	}
+
+    function sendPaymentWorkflowActions(url, data, redirectTo, errorSelector, jqueryAjaxContentType="json") {
+		const deferred = $.Deferred();
+		if(!!url && data) {
+			toggleServerError(errorSelector);
+			ajaxPost(url,data,jqueryAjaxContentType).then(function(results) {
+				if(results) {
+					if(!!redirectTo) {
+						window.location.href=redirectTo
+					}
+					deferred.resolve(results);
+				}else {
+					const noResponseError = "There was an unknown error that occurred.";
+					if(!!errorSelector) {
+						toggleServerError( errorSelector, noResponseError)
+					}
+					deferred.reject({message: noResponseError})
+				}
+			}, function(xhr) {
+				const errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : "There was an unknown error that occurred.";
+				if(!!errorSelector) {
+					toggleServerError( errorSelector, errorMessage )
+				}else {
+					console.error("An error had occurred: " + errorMessage);
+				}
+			})
+		}
+		return deferred
+	}
+</script>

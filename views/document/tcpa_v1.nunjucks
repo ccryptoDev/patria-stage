@@ -1,0 +1,244 @@
+<body>
+	<head>
+	<style>
+		body {
+			background-color: white;
+			font-family:"Neo Sans fonts", Verdana, sans-serif;
+		}
+		h5 {
+			color: black;
+			font-family:helvetica;
+			font-weight: 700;
+		}
+
+
+		.SMS-document-layout p, .SMS-document-layout li, .SMS-document-layout p1,  {
+			color: black;
+			font-family: helvetica;
+			margin: 0px;
+		}
+		.SMS-document-layout {
+			padding: 0px 48px 0px 48px;
+		}
+		.SMS-document-layout p{
+			font-size: 14px;
+		}
+		.SMS-document-layout h3{
+			font-size: 24px;
+		}
+
+
+	
+		.SMS-help-section-wrapper{
+			display: flex;
+			justify-content: space-around;
+			margin: 0 35px;
+		}
+
+		.SMS-help-section{
+			{# width: 100%; #}
+			padding: 10px;
+		}
+		.SMS-help-section p{
+			font-size: 12px;
+		}
+
+		.SMS-contact-info-section{
+			margin: 60px 0 100px 0;
+		}
+		.SMS-contact-info-section h4{
+			text-align: center;
+			margin-bottom: 30px;
+			font-weight: 700;
+
+		}
+		.SMS-contact-info-section > p{
+			margin: 0 45px;
+		}
+
+		.SMS-address{			
+			text-align: left;
+			margin-left: 45px;
+			margin-top: 20px;
+		}
+		.SMS-address p{
+			margin-bottom: 0px;
+			font-size: 12px;
+		}
+
+		.SMS-document-footer{
+			margin: 0 35px;
+			display: flex;
+			justify-content: center;
+		}
+		.SMS-document-footer p1{
+			font-size: 10px;
+		}
+		.SMS-document-footer p1 span{
+			margin-left: 10px;
+		}
+
+		.SMS-document-layout .title{
+			display: block;
+			text-align: center;
+		}
+		.SMS-document-layout .subtitle{
+			display: block;
+			text-align: center;
+			margin-top: 0;
+		}
+
+
+		.SMS-document-layout .document-divider{
+			overflow: visible;
+			padding: 0;
+			border: none;
+			border-top: medium double #333;
+			color: #333;
+			text-align: center;
+		}
+
+		.SMS-document-layout .document-divider:after {
+			content: "§";
+			display: inline-block;
+			position: relative;
+			top: -0.7em;
+			font-size: 1.5em;
+			padding: 0 0.25em;
+			background: white;
+		}
+
+		.SMS-document-layout .document-divider-2 {
+			border: 0;
+			height: 1px;
+			background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+		}
+
+
+		.SMS-document-layout .license-info p{
+			margin:0px;
+			text-align: center;
+			font-size: 10px;
+		}
+
+	</style>
+	</head >
+	<div class="SMS-document-layout">
+		<br><br>
+		{# <h style="margin:0px; text-align: center; font-size: 220%; font-weight:500">  #}
+		{# <h2 class="title uppercase">{{LenderShortName}}</h2>
+		<h3 class="subtitle">
+			SMS Text Message Policy
+		</h3> #}
+		<hr class="document-divider">
+		<br>
+		<p style="margin:0px 45px; text-align: left;"> Need SMS policy, Credit Pull Consent </p>
+		<br />
+
+		<div style="margin:0px 45px; text-align: left;">
+			<ul style="list-style-type:disc; margin-left: 35px;">
+				<li style="margin:5px; text-align: left;">Wireless and Text Messaging Policy </li>
+			</ul>
+		</div>
+		<br />
+
+		<p style="margin:0px 45px; text-align: left;"> By providing your cell phone number, you have provided us with 
+		consent to send you text messages in conjunctions with the services you have requested. Your cellular provider’s 
+		Msg&Data Rates may apply to our confirmation message and all subsequent messages. You understand the text messages
+		 we send may be seen by anyone with access to your phone. Accordingly, you should take steps to safeguard your 
+		 phone and your text messages if you want them to remain private. </p>
+		<br />
+
+		<p style="margin:0px 45px; text-align: left;"> Please notify us immediately if you change mobile numbers or plan 
+		to provide your phone to another person. If we modify this Text Message Policy, we will notify you by sending you 
+		a text message with a link to the new policy. We may terminate our text message program at any time. If you have 
+		any questions about this policy, would like us to mail you a paper copy of this policy or are having problems 
+		receiving or stopping our text messages, please contact us using the following information: Patria, LLC, P.O. Box 645, Santa Ysabel, CA 92070. </p>
+		<br />
+
+		<p style="margin:0px 45px; text-align: left;"> You agree and consent to be contacted by Lender, our agents, employees, 
+		affiliates, loan servicing companies, and third-party collectors through the use of email, telephone calls, facsimiles 
+		and/or SMS text messages to your cellular, pager, facsimile, home or work numbers, as well as any other telephone number 
+		you have provided in conjunction with this loan, including the use of automatic telephone dialing systems, autodialers, 
+		or an artificial or prerecorded voice for the purposes of providing service to you for this Loan and service and offers 
+		for related products and services. You consent to Lender’s use of your personal information to provide the services you 
+		have requested, including services that display customized content and advertising. </p>
+		<br />
+
+
+		
+		<!--
+		<br />
+
+		<p style="margin: 0 45px;"> You agree and consent to be contacted by the Company,
+			our agents and/or employees by SMS regarding your loan application and/or services you have requested.</p>
+		<br>
+		<hr class="document-divider-2">
+		<br>
+
+
+		<div class="SMS-help-section-wrapper">
+			<div class="SMS-help-section">
+				<h5> Opt-out or STOP </h5>
+				<p> If you wish to stop receiving text messages from
+					{{LenderShortName}}, reply STOP to any text message sent.
+				</p>
+			</div>
+
+			<div class="SMS-help-section">
+				<h5> Help or Support </h5>
+				<p> If at any time you need contact information or
+					information on how to stop text messages, reply to any text message sent by replying <strong>HELP</strong>.
+				</p>
+			</div>
+		</div>
+
+
+		<br>
+
+		<hr class="document-divider-2">
+
+
+		<div class="SMS-document-end-wrapper">
+
+		
+			<div class="SMS-contact-info-section">
+				<h4>Questions?</h4>
+				<p> 
+					Any questions regarding this policy or to have a copy of
+					the policy mailed to your address of record please contact: </p>
+				<div class="SMS-address">
+					<p> {{LenderLongName}} </p>
+					<p> {{LenderMailingAddress}} </p>
+					<p> {{LenderEmailAddress}} </p>
+					<p> {{LenderPhone}} </p>
+				</div>
+			</div>
+
+			<div class="license-info-wrapper">
+				{# <hr class="document-divider-2"> #}
+				<div class="license-info">
+					<div class="SMS-document-footer">
+						<p>
+							Date:&nbsp;{{ agreementObject.date }}
+						</p>
+					
+						<br>
+						{# <br> #}
+						<p>
+							<span>
+								Ip:&nbsp;{{ ip }}
+							</span>
+						</p>
+					</div>
+				</div>
+
+			</div>
+			{# <br>
+			<br> #}
+
+		</div>
+
+		-->
+	</div>
+</body>

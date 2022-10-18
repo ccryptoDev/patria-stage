@@ -1,0 +1,64 @@
+{% extends "frontend/homev3/newHome.nunjucks" %}
+{% block body %}
+
+<div class="title">
+	<div class="title-container">
+		<h3>About Patria</h3>
+		<div class="page-track-container">
+			<ul class="page-track">
+				<li>You are here: </li>
+				<li class="home"><a href="/"> Home </a></li>
+				<li class="active"><a href="/about"> About Patria </a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>Patria, LLC is a financial services company specializing in online installment loans. We are the leader with our years of dedicated team member service and industry knowledge.<br><br>Our company was founded upon years of solid experience, based on integrity, honesty, and exceptional customer service.</p>
+				<h3>Patria Is The Solution</h3>
+				<p>Providing online installment loans to many customers in select states, our main lending product is our highly sought after installment loan product. The benefit of this type of loan allows flexibility to customers financing needs and much more. Short-term financing solutions are ever so critical in today’s environment.</p>
+				<h4>We are here to help.</h4>
+				<p>At Patria, LLC, we firmly believe that if we provide a great service to our customers, then our reputation will be on the level of what our customers expect. Your expectations are thoroughly discussed with an open conversation during our initial conversation with you. Let us help take care of an online installment loan that fits your financial circumstances when a need arises.</p>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>What Are The Next Steps?</h2>
+	</div>
+</section>
+
+<section class="section-login">
+	<div class="button-container">
+		<a href="/apply" class="apply">New Loan > Get Started</a>
+		<a href="/login" class="apply">Returning Customer Login</a>
+	</div>
+</section>
+
+<section class="section section_a">
+	<div class="section_a_items">
+		<h2>No Service States</h2>
+	</div>
+</section>
+
+<section class="section section_about">
+	<div class="row">
+		<div>
+			<div class="section_about_info">
+				<p>Patria, LLC does not provide installment loan services to those who live in the following states: Arkansas, Arizona, California, Colorado, Connecticut, District of Columbia, Georgia, Idaho, Illinois, Kansas, Massachusetts, Maryland, Maine, Michigan, Minnesota, Montana, North Carolina, New Hampshire, New Jersey, New York, Ohio, Oregon, Pennsylvania, Virginia, Vermont, West Virginia, Washington, Wisconsin, and Wyoming. Subject to change without notice. <a href="#">View License</a>.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section_7">
+	<div class="section_7_items">
+		<h2>Need To Contact Us?</h2>
+		<a href="/contact" class="button button-apply">Go Here</a>
+	</div>
+</section>
+{% endblock %}
