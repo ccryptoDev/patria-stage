@@ -578,12 +578,22 @@ async function updateOfferData(screenTracking, key, value) {
 
 async function isUserApplicationExist(user, isCompleted = false) {
   try {
+    const isStaging = process.env.NODE_ENV === "staging";
+
     const query = {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      ssnNumber: user.ssnNumber,
-      zipCode: user.zipCode,
+      $or: [
+        { ssnNumber: user.ssnNumber },
+        {
+          $and: [
+            { firstName: user.firstName }, { lastName: user.lastName }, { zipCode: user.zipCode }
+          ]
+        }
+      ]
     };
+
+    if (isStaging) {
+      query.$or.shift();
+    }
 
     const userData = await User.findUserByAttr(query);
 
@@ -594,6 +604,7 @@ async function isUserApplicationExist(user, isCompleted = false) {
 
     return { isExistent: !!userApplication, data: userApplication };
   } catch (error) {
+
     return { isExistent: false };
   }
 }
