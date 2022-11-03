@@ -142,10 +142,10 @@ const FlinkService = {
     }
   },
 
-  storeAchAccount: async function(user, flinksAccountDetails) {
+  storeAchAccount: async function(user, flinksAccountDetails, screenTrackingId) {
     try {
       const payload = {
-        user: user.id,
+        screenTrackingId: screenTrackingId,
         billingAddress1: `${user.street} ${user.state} ${user.city}`,
         billingCity: user.city,
         billingFirstName: user.firstName,
@@ -155,10 +155,12 @@ const FlinkService = {
         routingNumber: flinksAccountDetails?.routingNumber, // not returned in Flinks tests
         accountNumber: flinksAccountDetails?.accountNumber,
         financialInstitution: flinksAccountDetails?.institution,
-        default: true,
+        isDefault: true,
       };
 
-      await PaymentAccountToken.addAchPaymentData(payload);
+      const lmsBaseUrl = sails?.config?.appManagement.LMS_DEV_URL;
+
+      await Axios.post(`${lmsBaseUrl}/api/application/addCard`, payload);
 
       return { ok: true };
     } catch (error) {
