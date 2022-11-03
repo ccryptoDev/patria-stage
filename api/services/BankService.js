@@ -18,7 +18,7 @@ async function getAchPaymentMethodData(userId) {
 
 async function getDefaultPaymentMethodData(userId) {
 	console.log({ userId }); 
-	return PaymentAccountToken.findOne({ user: userId, default: true });
+	return PaymentAccountToken.findOne({ user: userId, isDefault: true });
 }
 
 async function listAchAccountsForUser(userId) {
