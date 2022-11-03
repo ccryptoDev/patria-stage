@@ -185,7 +185,7 @@ module.exports = {
 	createPaymentSchedule: createPaymentSchedule,
 	updatePaymentSchedule: updatePaymentSchedule,
 	updateForMakePaymentDetail: updateForMakePaymentDetail,
-	setTheManualReview,
+	handleUnderwritingStatus,
 	// updateBalance: updateBalance
 	updateStatus: updateStatus,
 	updateUserStatus: updateUserStatus,
@@ -221,18 +221,22 @@ module.exports = {
 	LOAN_STATUS,
 };
 
-async function setTheManualReview(screentracking, context) {
+async function handleUnderwritingStatus(screentracking, context) {
 	try {
-		const { QUEUED } = sails.config.RULE_STATUS;
+		const { QUEUED, FAILED } = sails.config.RULE_STATUS;
 		const status = context.underwritingDecision.status;
-		if (status !== QUEUED) {
-			return null;
-		}
 		const screenId = screentracking.id;
-		await PaymentManagement.update({ screenTracking: screenId }, { status: LOAN_STATUS.MANUAL_REVIEW });
+		if (status === QUEUED) {
+			await PaymentManagement.update({ screenTracking: screenId }, { status: LOAN_STATUS.MANUAL_REVIEW });
+			return;
+		}
 
+		if (status === FAILED) {
+			await PaymentManagement.update({ screenTracking: screenId }, { status: LOAN_STATUS.DENIED });
+		}
+		return null;
 	} catch (error) {
-		console.log("\n\nERROR::setTheManualReview:", error);
+		console.log("\n\nERROR::handleUnderwritingStatus:", error);
 	}
 }
 async function getPaymentCollection(query) {
