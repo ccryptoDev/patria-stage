@@ -31,20 +31,32 @@ const requestBankDetails = async ({
       30
     );
 
-    sails.log.info("17thStep#requestBankDetails.requestBankDetails::userAccountDetails", userAccountDetails);
+    sails.log.info(
+      "17thStep#requestBankDetails.requestBankDetails::userAccountDetails",
+      userAccountDetails
+    );
 
     const selectedCheckingAccount = userAccountDetails?.Accounts?.[0];
-    FlinksService.storeAchAccount(userDetail, {
-      routingNumber: selectedCheckingAccount?.RoutingNumber || selectedCheckingAccount?.TransitNumber,
-      accountNumber: selectedCheckingAccount?.AccountNumber,
-      institution: userAccountDetails?.Institution,
-    });
+    await FlinksService.storeAchAccount(
+      userDetail,
+      {
+        routingNumber:
+          selectedCheckingAccount?.RoutingNumber ||
+          selectedCheckingAccount?.TransitNumber,
+        accountNumber: selectedCheckingAccount?.AccountNumber,
+        institution: userAccountDetails?.Institution,
+      },
+      screenTracking.id
+    );
 
     const {
       data: userAttrResponse,
     } = await FlinkService.getUserAnalysisAttribute(flinkCreds);
 
-    sails.log.info("17thStep#requestBankDetails.requestBankDetails::userAttrResponse", userAttrResponse);
+    sails.log.info(
+      "17thStep#requestBankDetails.requestBankDetails::userAttrResponse",
+      userAttrResponse
+    );
 
     ClarityResponseModel.saveClarityResponse(
       screenTracking,
@@ -464,7 +476,10 @@ const requestBankDetails = async ({
     //   }
     // }
 
-    sails.log.info("17thStep#requestBankDetails.requestBankDetails::finished", context);
+    sails.log.info(
+      "17thStep#requestBankDetails.requestBankDetails::finished",
+      context
+    );
     return setScreenTrackingContext(screenTracking, context);
   } catch (error) {
     sails.log.error("17thStep#requestBankDetails::Err ::", error);
