@@ -10,6 +10,7 @@ export const renderCardDetail = (form) => [
     format: "################",
     placeholder: "Card Number",
     message: form.cardNumber.message,
+    disabled: false,
   },
   {
     value: form.fullName.value,
@@ -17,6 +18,7 @@ export const renderCardDetail = (form) => [
     component: TextField,
     placeholder: "Full Name",
     message: form.fullName.message,
+    disabled: true,
   },
   {
     value: form.expirationDate.value,
@@ -25,6 +27,7 @@ export const renderCardDetail = (form) => [
     format: "##/##",
     placeholder: "Expiration Date",
     message: form.expirationDate.message,
+    disabled: false,
   },
   {
     value: form.securityCode.value,
@@ -33,5 +36,6 @@ export const renderCardDetail = (form) => [
     maxLength: 3,
     placeholder: "Security Code",
     message: form.securityCode.message,
+    disabled: false,
   },
 ];
