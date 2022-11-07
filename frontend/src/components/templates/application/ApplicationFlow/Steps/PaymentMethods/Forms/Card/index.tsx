@@ -34,7 +34,12 @@ const CardPayment = ({
       <div className="fields-wrapper">
         {renderCardDetail(form).map(({ component: Component, ...field }) => {
           return (
-            <Component key={field.name} {...field} onChange={onChangeHandler} />
+            <Component
+              key={field.name}
+              {...field}
+              onChange={onChangeHandler}
+              disabled={field.disabled}
+            />
           );
         })}
       </div>

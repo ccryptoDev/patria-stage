@@ -97,6 +97,7 @@ const FormComponent = ({
         };
 
         const result: any = await createNewUserApplication(parsedPayload);
+        // console.log("result.error", result.error);
         // IF THE USER IS REGISTERED WITH IDENTITY VALIDATION RISK - CALL KBA/OTP VALIDATION POPUP
         if (
           result &&
@@ -128,6 +129,21 @@ const FormComponent = ({
         ) {
           history.push("application/thankyou");
           return;
+        }
+        if (
+          result &&
+          result.error &&
+          result.error.error.message &&
+          result.error.error.status === "failed" &&
+          !result.error.context.screentrackingId
+        ) {
+          const isDuplicate = String(result.error.error.message)
+            .toLowerCase()
+            .includes("duplicate");
+          if (isDuplicate) {
+            history.push("application/thankyou");
+            return;
+          }
         }
         if (
           result &&
