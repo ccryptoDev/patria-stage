@@ -198,7 +198,7 @@ async function setScreenTrackingContext(screenTracking, context = {}) {
   // };
   // LogActivityService.createUnderwritingLog(context.underwritingDecision, screenTracking);
   await createRuleHistory(screenTracking, context);
-  PaymentManagementModel.setTheManualReview(screenTracking, context);
+  PaymentManagementModel.handleUnderwritingStatus(screenTracking, context);
   await Object.assign(screenTracking, {
     underwritingDecision: context.underwritingDecision,
   }).save();
